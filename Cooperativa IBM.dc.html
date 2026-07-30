@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"IBM Plex Sans","Helvetica Neue",Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;color:#161616}
+  a{color:#0f62fe;text-decoration:none}
+  a:hover{color:#0043ce}
+  ::-webkit-scrollbar{width:10px;height:10px}
+  ::-webkit-scrollbar-thumb{background:#d4d9df;border-radius:8px}
+</style>
+</helmet>
+<div style="display:flex;height:100vh;width:100%;background:#000;overflow:hidden;font-family:'IBM Plex Sans','Helvetica Neue',Helvetica,Arial,sans-serif">
+
+  <!-- SIDEBAR -->
+  <aside style="width:280px;flex:0 0 280px;background:#000;display:flex;flex-direction:column;padding:28px 24px;color:#fff">
+    <div onClick="{{ goInicio }}" style="font-size:20px;font-weight:700;letter-spacing:-0.02em;cursor:pointer;line-height:1.2;margin-bottom:44px">IBM Cooperativa<br>de Empleados</div>
+    <nav style="display:flex;flex-direction:column;gap:6px;flex:1">
+      <sc-for list="{{ nav }}" as="item" hint-placeholder-count="5">
+        <div onClick="{{ item.go }}" style="{{ item.style }}">{{ item.label }}</div>
+      </sc-for>
+    </nav>
+    <button onClick="{{ goRegistro }}" style="margin-top:24px;background:#0f62fe;color:#fff;border:none;border-radius:999px;padding:16px;font-size:16px;font-weight:600;cursor:pointer;font-family:inherit">Regístrate</button>
+  </aside>
+
+  <!-- MAIN COLUMN -->
+  <div style="flex:1;display:flex;flex-direction:column;min-width:0;background:#000">
+    <!-- TOPBAR -->
+    <header style="height:96px;flex:0 0 96px;background:#000;display:flex;align-items:center;justify-content:flex-end;gap:16px;padding:0 32px">
+      <div onClick="{{ openPrefs }}" title="Tus preferencias" style="width:44px;height:44px;border-radius:999px;background:#0f62fe;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:17px;cursor:pointer">S</div>
+      <button onClick="{{ goLogin }}" style="background:#0f62fe;color:#fff;border:none;border-radius:999px;padding:13px 26px;font-size:16px;font-weight:600;cursor:pointer;font-family:inherit">Login Socios</button>
+    </header>
+
+    <!-- CONTENT -->
+    <main style="flex:1;background:#fff;border-top-left-radius:6px;overflow-y:auto;min-height:0">
+
+      <!-- ================= INICIO ================= -->
+      <sc-if value="{{ isInicio }}" hint-placeholder-val="{{ true }}">
+      <section>
+        <div style="position:relative;height:560px;display:flex;align-items:flex-end;overflow:hidden">
+          <div style="position:absolute;inset:0">
+            <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="hero-inicio" shape="rect" fit="cover" src="https://picsum.photos/seed/ibmbuilding/1600/720" placeholder="Foto edificio corporativo IBM" hint-size="100%,100%"></x-import>
+          </div>
+          <div style="position:absolute;inset:0;background:linear-gradient(to top,#fff 4%,rgba(255,255,255,0.78) 26%,rgba(255,255,255,0) 62%);pointer-events:none"></div>
+          <h1 style="position:relative;padding:0 56px 48px;font-size:64px;line-height:1.02;font-weight:800;letter-spacing:-0.03em;max-width:900px;text-wrap:balance;pointer-events:none">¡Bienvenido a la Cooperativa de Empleados IBM Perú!</h1>
+        </div>
+        <div style="padding:8px 56px 64px;max-width:1100px">
+          <p style="font-size:21px;line-height:1.55;color:#52606d;max-width:820px">Nuestra cooperativa, fundada el 18 de julio de 1942, capta los recursos de sus socios para formar un fondo de uso común, ofreciendo ahorro, crédito y beneficios exclusivos a la familia IBM.</p>
+
+          <div style="display:flex;align-items:baseline;justify-content:space-between;margin-top:52px;margin-bottom:20px">
+            <h2 style="font-size:30px;font-weight:600;letter-spacing:-0.01em;font-family:'IBM Plex Serif',Georgia,serif">Beneficios</h2>
+            <span style="font-size:14px;color:#6f6f6f">{{ savedCount }} guardados</span>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:#e0e0e0;border:1px solid #e0e0e0">
+            <sc-for list="{{ beneficios }}" as="b" hint-placeholder-count="4">
+              <div style="background:#fff;display:flex;flex-direction:column" style-hover="background:#f4f4f4">
+                <div style="position:relative;height:210px;overflow:hidden">
+                  <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="{{ b.slotId }}" shape="rect" fit="cover" src="{{ b.photo }}" placeholder="{{ b.title }}" hint-size="100%,100%"></x-import>
+                  <div onClick="{{ b.toggle }}" style="position:absolute;top:0;right:0;width:52px;height:52px;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="{{ b.bmFill }}" stroke="{{ b.bmStroke }}" stroke-width="2" stroke-linejoin="round"><path d="M6 3h12a1 1 0 0 1 1 1v18l-7-4.5L5 22V4a1 1 0 0 1 1-1z"/></svg>
+                  </div>
+                </div>
+                <div style="padding:24px 26px 26px">
+                  <h3 style="font-size:21px;font-weight:600;margin-bottom:8px">{{ b.title }}</h3>
+                  <p style="font-size:15px;line-height:1.55;color:#525252">{{ b.desc }}</p>
+                  <a onClick="{{ b.go }}" style="display:inline-block;margin-top:14px;font-size:15px;font-weight:600;cursor:pointer">Leer más →</a>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px;border-top:1px solid #eceef1;padding-top:40px">
+            <sc-for list="{{ stats }}" as="s" hint-placeholder-count="3">
+              <div>
+                <div style="font-size:44px;font-weight:800;letter-spacing:-0.02em;color:#0f62fe">{{ s.value }}</div>
+                <div style="font-size:15px;color:#52606d;margin-top:4px">{{ s.label }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </section>
+      </sc-if>
+
+      <!-- ================= QUIÉNES SOMOS ================= -->
+      <sc-if value="{{ isQuienes }}" hint-placeholder-val="{{ true }}">
+      <section style="padding:56px">
+        <h1 style="font-size:48px;font-weight:800;letter-spacing:-0.02em;margin-bottom:36px">¿Quiénes Somos?</h1>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:center;margin-bottom:48px">
+          <div style="position:relative;aspect-ratio:4/3;border-radius:16px;overflow:hidden">
+            <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="quienes-foto" shape="rect" fit="cover" src="https://picsum.photos/seed/ibmteam/1000/760" placeholder="Foto oficina / equipo IBM" hint-size="100%,100%"></x-import>
+          </div>
+          <div>
+            <h2 style="font-size:30px;font-weight:700;line-height:1.15;margin-bottom:18px">Cooperativa de Ahorro y Créditos de los Empleados IBM</h2>
+            <p style="font-size:18px;line-height:1.6;color:#52606d">Somos una cooperativa sin fines de lucro fundada el 18 de julio de 1942, dedicada a captar recursos de nuestros socios para formar un fondo de uso común. Realizamos prestaciones y actividades en favor de nuestros asociados respetando los principios cooperativos que nos rigen desde nuestros inicios.</p>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:920px">
+          <sc-for list="{{ docLinks }}" as="d" hint-placeholder-count="6">
+            <button style="border:1px solid #d9dee4;background:#fff;border-radius:12px;padding:22px;font-size:17px;font-weight:600;color:#161616;cursor:pointer;font-family:inherit" style-hover="border:1px solid #0f62fe;background:#edf5ff">{{ d }}</button>
+          </sc-for>
+        </div>
+      </section>
+      </sc-if>
+
+      <!-- ================= PROVEEDORES ================= -->
+      <sc-if value="{{ isProveedores }}" hint-placeholder-val="{{ true }}">
+      <section style="padding:56px">
+        <h1 style="font-size:48px;font-weight:800;letter-spacing:-0.02em;margin-bottom:10px">Proveedores</h1>
+        <p style="font-size:18px;color:#52606d;margin-bottom:28px;max-width:720px">Convenios con empresas peruanas líderes. Presenta tu carnet de socio y accede a descuentos exclusivos.</p>
+
+        <!-- FEATURE BANNERS -->
+        <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:16px">
+          <h2 style="font-size:22px;font-weight:600;font-family:'IBM Plex Serif',Georgia,serif">Destacados de la semana</h2>
+          <span style="font-size:14px;color:#6f6f6f">Válidos con tu carnet de socio</span>
+        </div>
+        <div style="display:grid;grid-auto-flow:column;grid-auto-columns:minmax(360px,1fr);gap:18px;overflow-x:auto;padding-bottom:10px;margin-bottom:44px">
+          <sc-for list="{{ banners }}" as="b" hint-placeholder-count="3">
+            <div style="position:relative;min-height:210px;border-radius:16px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;color:#fff">
+              <div style="position:absolute;inset:0">
+                <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="{{ b.slotId }}" shape="rect" fit="cover" src="{{ b.photo }}" placeholder="{{ b.brand }}" hint-size="100%,100%"></x-import>
+              </div>
+              <div style="position:absolute;inset:0;background:linear-gradient(105deg,rgba(15,98,254,0.92) 0%,rgba(15,98,254,0.35) 55%,rgba(15,98,254,0) 100%);pointer-events:none"></div>
+              <div style="position:relative;padding:26px;pointer-events:none">
+                <div style="display:inline-block;background:#fff;color:#0f62fe;font-size:13px;font-weight:700;padding:5px 12px;border-radius:999px;margin-bottom:12px">{{ b.tag }}</div>
+                <div style="font-size:14px;font-weight:600;opacity:0.9;margin-bottom:4px">{{ b.brand }}</div>
+                <div style="font-size:28px;font-weight:800;letter-spacing:-0.02em;line-height:1.05;text-wrap:balance">{{ b.headline }}</div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px">
+          <sc-for list="{{ proveedores }}" as="p" hint-placeholder-count="8">
+            <div style="border:1px solid #e5e8ec;border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:12px" style-hover="box-shadow:0 8px 26px rgba(15,36,56,0.09)">
+              <div style="display:flex;align-items:center;gap:12px">
+                <div style="width:46px;height:46px;border-radius:10px;overflow:hidden;flex:0 0 46px">
+                  <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="{{ p.slotId }}" shape="rounded" radius="10" fit="contain" placeholder="Logo" hint-size="46px,46px"></x-import>
+                </div>
+                <div>
+                  <div style="font-size:17px;font-weight:700">{{ p.name }}</div>
+                  <div style="font-size:13px;color:#8b95a1">{{ p.cat }}</div>
+                </div>
+              </div>
+              <div style="font-size:14px;color:#52606d;line-height:1.5">{{ p.desc }}</div>
+              <div style="margin-top:auto;align-self:flex-start;background:#edf5ff;color:#0043ce;font-weight:700;font-size:14px;padding:6px 12px;border-radius:999px">{{ p.disc }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </section>
+      </sc-if>
+
+      <!-- ================= PRÉSTAMOS ================= -->
+      <sc-if value="{{ isPrestamos }}" hint-placeholder-val="{{ true }}">
+      <section style="padding:56px">
+        <h1 style="font-size:48px;font-weight:800;letter-spacing:-0.02em;margin-bottom:36px">Préstamos</h1>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:52px">
+          <sc-for list="{{ prestamos }}" as="l" hint-placeholder-count="4">
+            <div style="border:1px solid #e5e8ec;border-radius:16px;overflow:hidden;display:flex;flex-direction:column">
+              <div style="position:relative;height:190px;overflow:hidden">
+                <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="{{ l.slotId }}" shape="rect" fit="cover" src="{{ l.photo }}" placeholder="{{ l.img }}" hint-size="100%,100%"></x-import>
+              </div>
+              <div style="padding:24px;display:flex;flex-direction:column;gap:10px;flex:1">
+                <div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px">
+                  <h3 style="font-size:22px;font-weight:700">{{ l.title }}</h3>
+                  <span style="font-size:13px;font-weight:700;color:#0043ce;white-space:nowrap">desde {{ l.tasa }}</span>
+                </div>
+                <p style="font-size:15px;line-height:1.55;color:#52606d">{{ l.desc }}</p>
+                <a onClick="{{ goSimulador }}" style="margin-top:auto;font-weight:600;cursor:pointer">Simular préstamo →</a>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+
+        <!-- SIMULADOR -->
+        <sc-if value="{{ mostrarSimulador }}" hint-placeholder-val="{{ true }}">
+        <div id="simulador" style="border:1px solid #e5e8ec;border-radius:18px;padding:36px;background:#fafbfc">
+          <h2 style="font-size:28px;font-weight:800;letter-spacing:-0.01em;margin-bottom:6px">Simulador de préstamo</h2>
+          <p style="font-size:15px;color:#52606d;margin-bottom:24px">Descubre cuánto te ahorra la tasa preferencial de socio frente a un banco tradicional.</p>
+
+          <!-- LOAN TYPE CHIPS -->
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:30px">
+            <sc-for list="{{ simTypes }}" as="t" hint-placeholder-count="4">
+              <div onClick="{{ t.pick }}" style="{{ t.style }}">
+                <div style="font-weight:600">{{ t.label }}</div>
+                <div style="font-size:12px;opacity:0.75">{{ t.teaLabel }} socio</div>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1.25fr 1fr;gap:40px;align-items:start">
+            <!-- CONTROLS -->
+            <div style="display:flex;flex-direction:column;gap:28px">
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:15px;font-weight:600;margin-bottom:10px"><span>Monto del préstamo</span><span style="color:#0043ce">{{ montoLabel }}</span></div>
+                <input type="range" min="{{ montoMin }}" max="{{ montoMax }}" step="1000" value="{{ monto }}" onInput="{{ onMonto }}" style="width:100%;accent-color:#0f62fe">
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:15px;font-weight:600;margin-bottom:10px"><span>Plazo</span><span style="color:#0043ce">{{ plazo }} meses</span></div>
+                <input type="range" min="6" max="120" step="6" value="{{ plazo }}" onInput="{{ onPlazo }}" style="width:100%;accent-color:#0f62fe">
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:15px;font-weight:600;margin-bottom:10px"><span>Tu ingreso mensual</span><span style="color:#0043ce">{{ ingresoLabel }}</span></div>
+                <input type="range" min="1500" max="20000" step="500" value="{{ ingreso }}" onInput="{{ onIngreso }}" style="width:100%;accent-color:#0f62fe">
+              </div>
+
+              <!-- AFFORDABILITY -->
+              <div style="border:1px solid #e5e8ec;border-radius:12px;padding:18px;background:#fff">
+                <div style="display:flex;justify-content:space-between;font-size:14px;font-weight:600;margin-bottom:10px"><span>La cuota es el {{ afPct }} de tu ingreso</span><span style="color:{{ afColor }};font-weight:700">{{ afLabel }}</span></div>
+                <div style="height:10px;border-radius:999px;background:#eceef1;overflow:hidden">
+                  <div style="height:100%;width:{{ afWidth }};background:{{ afColor }};border-radius:999px;transition:width .2s"></div>
+                </div>
+                <p style="font-size:12px;color:#8d8d8d;margin-top:10px">Se recomienda que tus deudas no superen el 30% de tu ingreso.</p>
+              </div>
+            </div>
+
+            <!-- RESULT -->
+            <div style="display:flex;flex-direction:column;gap:16px">
+              <div style="background:#161616;color:#fff;border-radius:16px;padding:28px;text-align:center">
+                <div style="font-size:13px;color:#a8a8a8;text-transform:uppercase;letter-spacing:0.05em">Cuota mensual estimada</div>
+                <div style="font-size:44px;font-weight:800;letter-spacing:-0.02em;margin:8px 0">{{ cuota }}</div>
+                <div style="border-top:1px solid rgba(255,255,255,0.15);margin-top:14px;padding-top:14px;display:flex;justify-content:space-between;font-size:14px;color:#c6c6c6"><span>Total a pagar</span><span style="font-weight:700;color:#fff">{{ total }}</span></div>
+                <div style="display:flex;justify-content:space-between;font-size:14px;color:#c6c6c6;margin-top:8px"><span>Intereses</span><span style="font-weight:700;color:#fff">{{ intereses }}</span></div>
+
+                <!-- CAPITAL vs INTERES BAR -->
+                <div style="display:flex;height:8px;border-radius:999px;overflow:hidden;margin-top:16px">
+                  <div style="width:{{ capPct }};background:#4589ff"></div>
+                  <div style="width:{{ intPct }};background:#fa4d56"></div>
+                </div>
+                <div style="display:flex;justify-content:space-between;font-size:11px;color:#a8a8a8;margin-top:7px"><span>● Capital {{ capPct }}</span><span>Intereses {{ intPct }} ●</span></div>
+              </div>
+
+              <!-- SAVINGS HIGHLIGHT -->
+              <div style="background:#defbe6;border:1px solid #a7f0ba;border-radius:16px;padding:22px">
+                <div style="font-size:13px;font-weight:700;color:#0e6027;text-transform:uppercase;letter-spacing:0.04em">Ahorro como socio</div>
+                <div style="font-size:32px;font-weight:800;color:#0e6027;letter-spacing:-0.02em;margin:4px 0">{{ ahorro }}</div>
+                <p style="font-size:13px;color:#0e6027;line-height:1.45">Frente a un banco a {{ bankTeaLabel }}, tu cuota sería {{ cuotaBanco }}/mes. Con tu tasa de socio pagas {{ cuota }}.</p>
+              </div>
+
+              <button style="background:#0f62fe;color:#fff;border:none;border-radius:999px;padding:15px;font-size:16px;font-weight:600;cursor:pointer;font-family:inherit">Solicitar este préstamo</button>
+            </div>
+          </div>
+          <p style="font-size:12px;color:#8b95a1;margin-top:24px">*Cálculo referencial. La tasa y condiciones finales dependen de la evaluación crediticia de cada socio.</p>
+        </div>
+        </sc-if>
+      </section>
+      </sc-if>
+
+      <!-- ================= SERVICIOS ================= -->
+      <sc-if value="{{ isServicios }}" hint-placeholder-val="{{ true }}">
+      <section style="padding:56px">
+        <h1 style="font-size:48px;font-weight:800;letter-spacing:-0.02em;margin-bottom:36px">Servicios</h1>
+        <div style="display:flex;flex-direction:column;gap:22px;max-width:1000px">
+          <sc-for list="{{ servicios }}" as="s" hint-placeholder-count="4">
+            <div style="border:1px solid #e5e8ec;border-radius:16px;overflow:hidden;display:grid;grid-template-columns:340px 1fr">
+              <div style="position:relative;min-height:200px;overflow:hidden">
+                <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="{{ s.slotId }}" shape="rect" fit="cover" src="{{ s.photo }}" placeholder="{{ s.img }}" hint-size="100%,100%"></x-import>
+              </div>
+              <div style="padding:30px;display:flex;flex-direction:column;justify-content:center;gap:10px">
+                <h3 style="font-size:24px;font-weight:700">{{ s.title }}</h3>
+                <p style="font-size:16px;line-height:1.6;color:#52606d">{{ s.desc }}</p>
+                <a style="font-weight:600;cursor:pointer">Conocer más →</a>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </section>
+      </sc-if>
+
+      <!-- ================= ANUNCIOS (feed) ================= -->
+      <sc-if value="{{ isAnuncios }}" hint-placeholder-val="{{ true }}">
+      <section style="padding:40px 0 0">
+        <div style="max-width:680px;margin:0 auto;padding:0 24px">
+          <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:20px">
+            <h1 style="font-size:40px;font-weight:800;letter-spacing:-0.02em">Anuncios</h1>
+            <span style="font-size:14px;color:#6f6f6f">Comunidad IBM Cooperativa</span>
+          </div>
+
+          <!-- COMPOSER -->
+          <div style="border:1px solid #e0e0e0;border-radius:16px;padding:18px;margin-bottom:24px">
+            <div style="display:flex;gap:12px;align-items:flex-start">
+              <div style="width:44px;height:44px;border-radius:999px;background:#0f62fe;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;flex:0 0 44px">S</div>
+              <textarea value="{{ draft }}" onInput="{{ onDraft }}" placeholder="Comparte algo con la comunidad, socio…" style="flex:1;border:none;outline:none;resize:none;font-family:inherit;font-size:16px;line-height:1.5;min-height:52px;padding-top:10px;color:#161616;background:transparent"></textarea>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;border-top:1px solid #f0f0f0;padding-top:12px">
+              <div style="display:flex;gap:6px">
+                <sc-for list="{{ composerTools }}" as="t" hint-placeholder-count="3">
+                  <div style="font-size:14px;color:#525252;padding:7px 12px;border-radius:8px;cursor:pointer" style-hover="background:#f4f4f4">{{ t }}</div>
+                </sc-for>
+              </div>
+              <button onClick="{{ addPost }}" style="background:#0f62fe;color:#fff;border:none;border-radius:999px;padding:11px 26px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit">Publicar</button>
+            </div>
+          </div>
+
+          <!-- FILTER CHIPS -->
+          <div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap">
+            <sc-for list="{{ feedFilters }}" as="c" hint-placeholder-count="4">
+              <div onClick="{{ c.pick }}" style="{{ c.style }}">{{ c.label }}</div>
+            </sc-for>
+          </div>
+
+          <!-- POSTS -->
+          <div style="display:flex;flex-direction:column;gap:18px;padding-bottom:56px">
+            <sc-for list="{{ posts }}" as="p" hint-placeholder-count="3">
+              <div style="border:1px solid #e0e0e0;border-radius:16px;overflow:hidden">
+                <div style="padding:18px 20px 0;display:flex;gap:12px;align-items:center">
+                  <div style="width:44px;height:44px;border-radius:999px;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;flex:0 0 44px;background:{{ p.color }}">{{ p.initials }}</div>
+                  <div style="flex:1">
+                    <div style="font-size:16px;font-weight:600">{{ p.author }}</div>
+                    <div style="font-size:13px;color:#8d8d8d">{{ p.role }} · {{ p.time }}</div>
+                  </div>
+                  <div style="font-size:12px;font-weight:700;color:#0f62fe;background:#edf5ff;padding:5px 11px;border-radius:999px">{{ p.tag }}</div>
+                </div>
+                <div style="padding:14px 20px 16px;font-size:16px;line-height:1.55;color:#262626;white-space:pre-wrap">{{ p.text }}</div>
+                <sc-if value="{{ p.hasImg }}" hint-placeholder-val="{{ true }}">
+                  <div style="height:280px;overflow:hidden;background:#f4f4f4">
+                    <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="{{ p.slotId }}" shape="rect" fit="cover" src="{{ p.img }}" placeholder="Imagen del anuncio" hint-size="100%,100%"></x-import>
+                  </div>
+                </sc-if>
+                <div style="padding:10px 20px;display:flex;justify-content:space-between;font-size:13px;color:#8d8d8d;border-bottom:1px solid #f0f0f0">
+                  <span>{{ p.likesLabel }}</span><span>{{ p.comments }} comentarios</span>
+                </div>
+                <div style="display:flex;padding:4px 10px">
+                  <div onClick="{{ p.like }}" style="{{ p.likeStyle }}">{{ p.likeIcon }} Me gusta</div>
+                  <div style="flex:1;text-align:center;padding:11px;font-size:15px;font-weight:600;color:#525252;cursor:pointer;border-radius:8px" style-hover="background:#f4f4f4">💬 Comentar</div>
+                  <div style="flex:1;text-align:center;padding:11px;font-size:15px;font-weight:600;color:#525252;cursor:pointer;border-radius:8px" style-hover="background:#f4f4f4">↪ Compartir</div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </section>
+      </sc-if>
+
+      <!-- ================= REGISTRO ================= -->
+      <sc-if value="{{ isRegistro }}" hint-placeholder-val="{{ true }}">
+      <section style="padding:56px;display:flex;justify-content:center">
+        <div style="width:100%;max-width:560px">
+          <h1 style="font-size:42px;font-weight:800;letter-spacing:-0.02em;margin-bottom:8px">Regístrate como socio</h1>
+          <p style="font-size:16px;color:#52606d;margin-bottom:32px">Completa tus datos. Un asesor validará tu vínculo laboral con IBM Perú.</p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
+            <sc-for list="{{ regFields }}" as="f" hint-placeholder-count="6">
+              <div style="{{ f.wrap }}">
+                <label style="display:block;font-size:13px;font-weight:600;color:#3b4653;margin-bottom:7px">{{ f.label }}</label>
+                <input type="{{ f.type }}" placeholder="{{ f.ph }}" style="width:100%;border:1px solid #d9dee4;border-radius:10px;padding:13px 14px;font-size:15px;font-family:inherit;outline:none" style-focus="border:1px solid #0f62fe;box-shadow:0 0 0 3px #edf5ff">
+              </div>
+            </sc-for>
+          </div>
+          <label style="display:flex;align-items:flex-start;gap:10px;margin-top:22px;font-size:14px;color:#52606d;cursor:pointer"><input type="checkbox" style="margin-top:3px;accent-color:#0f62fe"><span>Acepto el estatuto y el tratamiento de mis datos personales según la Ley N° 29733.</span></label>
+          <button style="width:100%;margin-top:24px;background:#0f62fe;color:#fff;border:none;border-radius:999px;padding:16px;font-size:16px;font-weight:600;cursor:pointer;font-family:inherit">Enviar solicitud</button>
+          <p style="text-align:center;font-size:14px;color:#52606d;margin-top:18px">¿Ya eres socio? <a onClick="{{ goLogin }}" style="cursor:pointer;font-weight:600">Inicia sesión</a></p>
+        </div>
+      </section>
+      </sc-if>
+
+      <!-- ================= LOGIN ================= -->
+      <sc-if value="{{ isLogin }}" hint-placeholder-val="{{ true }}">
+      <section style="min-height:100%;display:flex;align-items:center;justify-content:center;padding:56px">
+        <div style="width:100%;max-width:420px">
+          <div style="width:56px;height:56px;border-radius:14px;background:#0f62fe;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:24px;margin-bottom:24px">S</div>
+          <h1 style="font-size:34px;font-weight:800;letter-spacing:-0.02em;margin-bottom:6px">Login Socios</h1>
+          <p style="font-size:16px;color:#52606d;margin-bottom:30px">Ingresa con tu documento y contraseña de socio.</p>
+          <label style="display:block;font-size:13px;font-weight:600;color:#3b4653;margin-bottom:7px">DNI o correo</label>
+          <input type="text" placeholder="Ej. 40123456" style="width:100%;border:1px solid #d9dee4;border-radius:10px;padding:14px;font-size:15px;font-family:inherit;outline:none;margin-bottom:18px" style-focus="border:1px solid #0f62fe;box-shadow:0 0 0 3px #edf5ff">
+          <label style="display:block;font-size:13px;font-weight:600;color:#3b4653;margin-bottom:7px">Contraseña</label>
+          <input type="password" placeholder="••••••••" style="width:100%;border:1px solid #d9dee4;border-radius:10px;padding:14px;font-size:15px;font-family:inherit;outline:none;margin-bottom:8px" style-focus="border:1px solid #0f62fe;box-shadow:0 0 0 3px #edf5ff">
+          <div style="text-align:right;margin-bottom:22px"><a style="font-size:14px;cursor:pointer">¿Olvidaste tu contraseña?</a></div>
+          <button style="width:100%;background:#0f62fe;color:#fff;border:none;border-radius:999px;padding:16px;font-size:16px;font-weight:600;cursor:pointer;font-family:inherit">Ingresar</button>
+          <p style="text-align:center;font-size:14px;color:#52606d;margin-top:20px">¿No tienes cuenta? <a onClick="{{ goRegistro }}" style="cursor:pointer;font-weight:600">Regístrate</a></p>
+        </div>
+      </section>
+      </sc-if>
+
+      <footer style="background:#161616;color:#c6c6c6;padding:22px 56px;font-size:13px;text-align:center">2026 © Cooperativa de Ahorro y Créditos de los Empleados IBM Perú</footer>
+
+    </main>
+  </div>
+
+  <!-- ================= MODAL PREFERENCIAS ================= -->
+  <sc-if value="{{ showPrefs }}" hint-placeholder-val="{{ true }}">
+  <div style="position:absolute;inset:0;z-index:50;background:rgba(4,10,20,0.55);display:flex;align-items:center;justify-content:center;padding:32px">
+    <div style="width:100%;max-width:720px;max-height:90%;background:#fff;border-radius:22px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 30px 80px rgba(0,0,0,0.35)">
+      <div style="padding:30px 40px 22px;border-bottom:1px solid #eceef1;display:flex;justify-content:space-between;align-items:flex-start">
+        <div>
+          <h2 style="font-size:30px;font-weight:800;letter-spacing:-0.02em">Tus preferencias</h2>
+          <p style="font-size:16px;color:#8b95a1;margin-top:4px">Cuéntanos sobre ti y qué promociones deseas ver</p>
+        </div>
+        <div onClick="{{ closePrefs }}" style="font-size:26px;line-height:1;color:#8b95a1;cursor:pointer;padding:2px 4px">×</div>
+      </div>
+
+      <div style="padding:28px 40px;overflow-y:auto;flex:1">
+        <h3 style="font-size:20px;font-weight:800;margin-bottom:18px">Datos personales</h3>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
+          <sc-for list="{{ prefFields }}" as="f" hint-placeholder-count="5">
+            <div style="{{ f.wrap }}">
+              <label style="display:block;font-size:14px;color:#8b95a1;margin-bottom:8px">{{ f.label }}</label>
+              <input type="{{ f.type }}" placeholder="{{ f.ph }}" style="width:100%;border:1px solid #d9dee4;border-radius:12px;padding:14px 16px;font-size:16px;font-family:inherit;outline:none" style-focus="border:1px solid #0f62fe;box-shadow:0 0 0 3px #edf5ff">
+            </div>
+          </sc-for>
+        </div>
+
+        <h3 style="font-size:20px;font-weight:800;margin:30px 0 18px">Promociones que deseas ver</h3>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+          <sc-for list="{{ promoCards }}" as="c" hint-placeholder-count="4">
+            <div onClick="{{ c.toggle }}" style="{{ c.cardStyle }}">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px">
+                <div style="width:44px;height:44px;border-radius:12px;background:#f0f2f5;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:#52606d">{{ c.icon }}</div>
+                <div style="{{ c.boxStyle }}">{{ c.check }}</div>
+              </div>
+              <div style="font-size:19px;font-weight:800;margin-bottom:4px">{{ c.title }}</div>
+              <div style="font-size:15px;color:#8b95a1;line-height:1.45">{{ c.desc }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="padding:20px 40px;border-top:1px solid #eceef1;display:flex;justify-content:space-between;align-items:center">
+        <a onClick="{{ closePrefs }}" style="font-size:17px;color:#8b95a1;cursor:pointer">Omitir por ahora</a>
+        <button onClick="{{ savePrefs }}" style="background:#0f62fe;color:#fff;border:none;border-radius:999px;padding:16px 34px;font-size:17px;font-weight:700;cursor:pointer;font-family:inherit">Guardar preferencias</button>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;100%&quot;,&quot;height&quot;:&quot;800px&quot;},&quot;tasaAnual&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:null,&quot;min&quot;:5,&quot;max&quot;:20,&quot;step&quot;:0.5,&quot;unit&quot;:&quot;%&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Simulador&quot;,&quot;label&quot;:&quot;Forzar tasa anual (opcional)&quot;},&quot;montoMax&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:150000,&quot;min&quot;:50000,&quot;max&quot;:300000,&quot;step&quot;:10000,&quot;unit&quot;:&quot;S/&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Simulador&quot;,&quot;label&quot;:&quot;Monto máximo&quot;},&quot;mostrarSimulador&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Simulador&quot;,&quot;label&quot;:&quot;Mostrar simulador&quot;}}">
+class Component extends DCLogic {
+  state = { page: "inicio", monto: 30000, plazo: 24, showPrefs: true, promos: { descuentos: true, prestamos: false, servicios: false, seguros: false }, saved: { ben0: true, ben1: false, ben2: false, ben3: true },
+    simTipo: "hipotecario", ingreso: 6000,
+    draft: "", feed: "todos",
+    posts: [
+      {id:1,author:"Cooperativa IBM",role:"Cuenta oficial",time:"hace 2 h",tag:"Anuncio",color:"#0f62fe",initials:"CI",tab:"cooperativa",text:"📢 ¡Nueva alianza! A partir de este mes, Cineplanet se suma a nuestros convenios con 2x1 todos los martes presentando tu carnet digital de socio. Actívalo desde tu perfil.",hasImg:true,slotId:"post-1",img:"https://picsum.photos/seed/cinema/900/560",likes:48,liked:false,comments:12},
+      {id:2,author:"Junta Directiva",role:"Gobierno cooperativo",time:"ayer",tag:"Evento",color:"#8a3ffc",initials:"JD",tab:"eventos",text:"Los invitamos a la Asamblea General de Socios el sábado 26 de julio, 10:00 a.m. en el auditorio central. Se presentará la memoria anual y el reparto de excedentes 2025.",hasImg:false,slotId:"post-2",img:"",likes:31,liked:true,comments:5},
+      {id:3,author:"Comité de Bienestar",role:"Socios",time:"hace 3 días",tag:"Descuento",color:"#009d9a",initials:"CB",tab:"proveedores",text:"🏷️ Campaña escolar con Ripley: hasta 20% de descuento y 3 cuotas sin intereses en útiles y uniformes. Válida hasta agotar stock para toda la familia IBM.",hasImg:true,slotId:"post-3",img:"https://picsum.photos/seed/school/900/560",likes:64,liked:false,comments:9}
+    ] };
+
+  go(p){ this.setState({ page: p }); const m=this.mainEl; if(m) m.scrollTop=0; }
+  get mainEl(){ return this.host && this.host.querySelector ? this.host.querySelector("main") : document.querySelector("main"); }
+
+  money(n){ return "S/ " + Math.round(n).toLocaleString("es-PE"); }
+
+  renderVals(){
+    const page = this.state.page;
+    const montoMin = 1000, montoMax = this.props.montoMax ?? 150000;
+    const mostrarSimulador = this.props.mostrarSimulador ?? true;
+
+    const loanTypes = [
+      {key:"hipotecario",label:"Hipotecario",tea:8.9,bank:14.5},
+      {key:"vehicular",label:"Vehicular",tea:11.5,bank:18.0},
+      {key:"educativo",label:"Educativo",tea:9.5,bank:16.0},
+      {key:"salud",label:"Salud",tea:10.0,bank:17.0}
+    ];
+    const sel = loanTypes.find(t=>t.key===this.state.simTipo) || loanTypes[0];
+    const tasa = this.props.tasaAnual != null ? this.props.tasaAnual : sel.tea;
+
+    const navItems = [
+      ["Anuncios","anuncios"],["Quiénes Somos","quienes"],["Proveedores","proveedores"],
+      ["Préstamos","prestamos"],["Servicios","servicios"]
+    ];
+    const nav = navItems.map(([label,key]) => ({
+      label, go: () => this.go(key),
+      style: "padding:14px 18px;border-radius:12px;font-size:17px;cursor:pointer;font-weight:"+(page===key?"600":"500")+";color:"+(page===key?"#fff":"#8b95a1")+";background:"+(page===key?"#17181b":"transparent")
+    }));
+
+    const r = tasa/100/12;
+    const n = this.state.plazo;
+    const P = this.state.monto;
+    const pmt = (rate)=> rate===0 ? P/n : (P*rate)/(1-Math.pow(1+rate,-n));
+    const cuotaNum = pmt(r);
+    const totalNum = cuotaNum*n;
+    const cuotaBancoNum = pmt(sel.bank/100/12);
+    const ahorroNum = (cuotaBancoNum - cuotaNum) * n;
+    const capPctN = Math.round((P/totalNum)*100);
+    const ing = this.state.ingreso;
+    const afRatio = cuotaNum/ing;
+    const afColor = afRatio<=0.30 ? "#24a148" : (afRatio<=0.40 ? "#f1c21b" : "#da1e28");
+    const afLabel = afRatio<=0.30 ? "Saludable" : (afRatio<=0.40 ? "Ajustado" : "Elevado");
+
+    return {
+      nav,
+      isInicio: page==="inicio", isQuienes: page==="quienes",
+      isProveedores: page==="proveedores", isPrestamos: page==="prestamos",
+      isServicios: page==="servicios", isRegistro: page==="registro", isLogin: page==="login", isAnuncios: page==="anuncios",
+      goInicio: ()=>this.go("inicio"), goRegistro: ()=>this.go("registro"),
+      goLogin: ()=>this.go("login"),
+      goSimulador: ()=>{ this.go("prestamos"); setTimeout(()=>{ const e=this.mainEl&&this.mainEl.querySelector("#simulador"); if(e&&this.mainEl) this.mainEl.scrollTop=e.offsetTop-20; },60); },
+
+      showPrefs: this.state.showPrefs,
+      openPrefs: ()=>this.setState({showPrefs:true}),
+      closePrefs: ()=>this.setState({showPrefs:false}),
+      savePrefs: ()=>this.setState({showPrefs:false}),
+      prefFields: [
+        {label:"Nombres",type:"text",ph:"Tus nombres",wrap:""},
+        {label:"Apellidos",type:"text",ph:"Tus apellidos",wrap:""},
+        {label:"Correo electrónico",type:"email",ph:"tucorreo@ibm.com",wrap:"grid-column:1/-1"},
+        {label:"Teléfono",type:"tel",ph:"999 999 999",wrap:""},
+        {label:"DNI / CE",type:"text",ph:"12345678",wrap:""}
+      ],
+      promoCards: [
+        {key:"descuentos",icon:"%",title:"Descuentos Corporativos",desc:"Ofertas y promociones especiales"},
+        {key:"prestamos",icon:"S/",title:"Préstamos",desc:"Hipotecario, vehicular, educación y más"},
+        {key:"servicios",icon:"★",title:"Servicios",desc:"Salud, seguros de vida y turismo"},
+        {key:"seguros",icon:"♥",title:"Bienestar",desc:"Eventos, capacitaciones y recreación"}
+      ].map(c=>{
+        const on = !!this.state.promos[c.key];
+        return { ...c, toggle:()=>this.setState(s=>({promos:{...s.promos,[c.key]:!s.promos[c.key]}})),
+          check: on ? "✓" : "",
+          cardStyle: "border:1px solid "+(on?"#0f62fe":"#e5e8ec")+";background:"+(on?"#edf5ff":"#fff")+";border-radius:16px;padding:22px;cursor:pointer;transition:all .12s",
+          boxStyle: "width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:#fff;border:2px solid "+(on?"#0f62fe":"#cfd6dd")+";background:"+(on?"#0f62fe":"transparent")
+        };
+      }),
+
+      pilares: [
+        {icon:"%",title:"Ahorra e invierte",desc:"Tus aportes forman un fondo común que genera rendimientos para toda la familia IBM."},
+        {icon:"S/",title:"Crédito a tasa preferencial",desc:"Préstamos hipotecarios, vehiculares y personales con las mejores tasas para socios."},
+        {icon:"★",title:"Beneficios exclusivos",desc:"Convenios y descuentos con empresas peruanas líderes en retail, salud y más."}
+      ],
+      beneficios: [
+        {key:"ben0",slotId:"ben-0",go:()=>this.go("proveedores"),photo:"https://picsum.photos/seed/ibmshop/800/500",title:"Descuentos Corporativos",desc:"Convenios con empresas peruanas líderes: retail, salud, entretenimiento y más, a precio de socio."},
+        {key:"ben1",slotId:"ben-1",go:()=>this.go("prestamos"),photo:"https://picsum.photos/seed/ibmloan/800/500",title:"Préstamos",desc:"Créditos hipotecario, vehicular, educativo y de salud con tasas preferenciales para la familia IBM."},
+        {key:"ben2",slotId:"ben-2",go:()=>this.go("servicios"),photo:"https://picsum.photos/seed/ibmserv/800/500",title:"Servicios",desc:"Seguro de vida, convenios de salud, turismo y recreación para ti y tu familia."},
+        {key:"ben3",slotId:"ben-3",go:()=>this.go("quienes"),photo:"https://picsum.photos/seed/ibmsave/800/500",title:"Ahorro",desc:"Aporta al fondo común de la Cooperativa y haz crecer tus ahorros con respaldo desde 1942."}
+      ].map(b=>{
+        const on = !!this.state.saved[b.key];
+        return { ...b, toggle:()=>this.setState(s=>({saved:{...s.saved,[b.key]:!s.saved[b.key]}})),
+          bmFill: on?"#0f62fe":"none", bmStroke: on?"#0f62fe":"#8d8d8d" };
+      }),
+      savedCount: Object.values(this.state.saved).filter(Boolean).length,
+
+      banners: [
+        {slotId:"ban-0",brand:"Plaza Vea",tag:"Hasta 10% dcto.",photo:"https://picsum.photos/seed/grocery/700/420",headline:"Martes de socio en supermercados"},
+        {slotId:"ban-1",brand:"Cineplanet",tag:"2x1 los martes",photo:"https://picsum.photos/seed/cine/700/420",headline:"Cine para toda la familia IBM"},
+        {slotId:"ban-2",brand:"Rímac Seguros",tag:"Tarifa corporativa",photo:"https://picsum.photos/seed/health/700/420",headline:"Protege tu salud con precio de socio"},
+        {slotId:"ban-3",brand:"Sodimac",tag:"10% dcto.",photo:"https://picsum.photos/seed/home/700/420",headline:"Renueva tu hogar este invierno"}
+      ],
+
+      draft: this.state.draft,
+      onDraft: (e)=>this.setState({draft:e.target.value}),
+      composerTools: ["📷 Foto","🏷️ Descuento","📅 Evento"],
+      addPost: ()=>{
+        const t=this.state.draft.trim(); if(!t) return;
+        const np={id:Date.now(),author:"Tú",role:"Socio",time:"ahora",tag:"Socio",color:"#161616",initials:"TÚ",tab:"socios",text:t,hasImg:false,slotId:"post-"+Date.now(),img:"",likes:0,liked:false,comments:0};
+        this.setState(s=>({posts:[np,...s.posts],draft:""}));
+      },
+      feedFilters: [["todos","Todos"],["cooperativa","Cooperativa"],["proveedores","Descuentos"],["eventos","Eventos"],["socios","Socios"]].map(([k,label])=>{
+        const on=this.state.feed===k;
+        return {label,pick:()=>this.setState({feed:k}),
+          style:"font-size:14px;font-weight:600;padding:8px 16px;border-radius:999px;cursor:pointer;border:1px solid "+(on?"#0f62fe":"#e0e0e0")+";background:"+(on?"#0f62fe":"#fff")+";color:"+(on?"#fff":"#525252")};
+      }),
+      posts: this.state.posts.filter(p=>this.state.feed==="todos"||p.tab===this.state.feed).map(p=>({
+        ...p,
+        likesLabel: p.likes+" me gusta",
+        likeIcon: p.liked?"👍":"👍",
+        likeStyle:"flex:1;text-align:center;padding:11px;font-size:15px;font-weight:700;cursor:pointer;border-radius:8px;color:"+(p.liked?"#0f62fe":"#525252"),
+        like:()=>this.setState(s=>({posts:s.posts.map(x=>x.id===p.id?{...x,liked:!x.liked,likes:x.likes+(x.liked?-1:1)}:x)}))
+      })),
+
+      stats: [
+        {value:"1942",label:"Fundada el 18 de julio"},
+        {value:"+2,400",label:"Socios activos"},
+        {value:"80+",label:"Años al servicio de la familia IBM"}
+      ],
+      docLinks: ["Historia","Funcionarios","Directiva","Memorias","Estados Financieros","Estatuto"],
+
+      proveedores: [
+        {slotId:"prov-0",name:"Plaza Vea",cat:"Supermercados",desc:"Descuento en compras y días de socio exclusivos.",disc:"Hasta 10% dcto."},
+        {slotId:"prov-1",name:"Inkafarma",cat:"Farmacias",desc:"Precios preferenciales en medicamentos y cuidado personal.",disc:"15% dcto."},
+        {slotId:"prov-2",name:"Cineplanet",cat:"Entretenimiento",desc:"Entradas y combos a precio de socio todo el año.",disc:"2x1 martes"},
+        {slotId:"prov-3",name:"Ripley",cat:"Retail",desc:"Cuotas sin intereses y campañas anticipadas para socios.",disc:"Hasta 20% dcto."},
+        {slotId:"prov-4",name:"Sodimac",cat:"Mejoramiento del hogar",desc:"Descuentos en materiales y servicios de instalación.",disc:"10% dcto."},
+        {slotId:"prov-5",name:"Rímac Seguros",cat:"Seguros",desc:"Pólizas de salud, vida y vehicular a tarifa corporativa.",disc:"Tarifa corporativa"},
+        {slotId:"prov-6",name:"Interbank",cat:"Banca",desc:"Convenio de descuento por planilla y beneficios financieros.",disc:"Sin comisión"},
+        {slotId:"prov-7",name:"Real Plaza",cat:"Centros comerciales",desc:"Estacionamiento y promociones exclusivas para socios.",disc:"Beneficios"}
+      ],
+
+      prestamos: [
+        {slotId:"loan-0",photo:"https://picsum.photos/seed/house2/800/400",title:"Crédito Hipotecario",tasa:"8.9% TEA",img:"Foto casa",desc:"Financiamiento para la casa propia con tasas preferenciales y plazos de hasta 20 años."},
+        {slotId:"loan-1",photo:"https://picsum.photos/seed/car2/800/400",title:"Crédito Vehicular",tasa:"11.5% TEA",img:"Foto auto",desc:"Adquiere tu vehículo nuevo o usado con cuotas cómodas y aprobación rápida."},
+        {slotId:"loan-2",photo:"https://picsum.photos/seed/study2/800/400",title:"Crédito Educativo",tasa:"9.5% TEA",img:"Foto estudiantes",desc:"Financia estudios, posgrados y maestrías tuyas o de tus hijos."},
+        {slotId:"loan-3",photo:"https://picsum.photos/seed/clinic2/800/400",title:"Crédito de Salud",tasa:"10.0% TEA",img:"Foto clínica",desc:"Cobertura de tratamientos, cirugías y emergencias médicas para tu familia."}
+      ],
+
+      servicios: [
+        {slotId:"serv-0",photo:"https://picsum.photos/seed/park2/700/400",title:"Servicios funerarios",img:"Foto parque cementerio",desc:"Cobertura integral y apoyo para los socios y sus familias en los momentos que más se necesita."},
+        {slotId:"serv-1",photo:"https://picsum.photos/seed/family2/700/400",title:"Seguro de vida colectivo",img:"Foto familia",desc:"Protección económica para tus seres queridos incluida en tu membresía de socio."},
+        {slotId:"serv-2",photo:"https://picsum.photos/seed/office2/700/400",title:"Convenios de salud",img:"Foto consultorio",desc:"Atención médica, dental y chequeos preventivos en clínicas afiliadas a la Cooperativa."},
+        {slotId:"serv-3",photo:"https://picsum.photos/seed/travel2/700/400",title:"Turismo y recreación",img:"Foto viaje",desc:"Paquetes de viaje, campamentos y actividades familiares a precio de socio."}
+      ],
+
+      regFields: [
+        {label:"Nombres",type:"text",ph:"Nombres",wrap:""},
+        {label:"Apellidos",type:"text",ph:"Apellidos",wrap:""},
+        {label:"DNI",type:"text",ph:"40123456",wrap:""},
+        {label:"Área en IBM",type:"text",ph:"Ej. Consulting",wrap:""},
+        {label:"Correo electrónico",type:"email",ph:"nombre@ibm.com",wrap:"grid-column:1/-1"},
+        {label:"Celular",type:"tel",ph:"+51 999 999 999",wrap:""},
+        {label:"Contraseña",type:"password",ph:"••••••••",wrap:""}
+      ],
+
+      mostrarSimulador, montoMin, montoMax,
+      monto: this.state.monto, plazo: this.state.plazo,
+      montoLabel: this.money(this.state.monto),
+      tasaLabel: tasa+"%",
+      cuota: this.money(cuotaNum), total: this.money(totalNum), intereses: this.money(totalNum-P),
+      onMonto: (e)=>this.setState({monto:+e.target.value}),
+      onPlazo: (e)=>this.setState({plazo:+e.target.value}),
+
+      simTypes: loanTypes.map(t=>{
+        const on=t.key===this.state.simTipo;
+        return {label:t.label, teaLabel:t.tea+"%", pick:()=>this.setState({simTipo:t.key}),
+          style:"border:1px solid "+(on?"#0f62fe":"#e0e0e0")+";background:"+(on?"#edf5ff":"#fff")+";color:"+(on?"#0043ce":"#161616")+";border-radius:12px;padding:12px 18px;cursor:pointer;line-height:1.25;min-width:120px"};
+      }),
+      ingreso: ing, ingresoLabel: this.money(ing),
+      onIngreso: (e)=>this.setState({ingreso:+e.target.value}),
+      afPct: Math.round(afRatio*100)+"%", afWidth: Math.min(afRatio*100,100)+"%", afColor, afLabel,
+      capPct: capPctN+"%", intPct: (100-capPctN)+"%",
+      cuotaBanco: this.money(cuotaBancoNum), bankTeaLabel: sel.bank+"%",
+      ahorro: this.money(ahorroNum)
+    };
+  }
+}
+</script>
+</body>
+</html>
