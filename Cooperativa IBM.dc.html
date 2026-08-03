@@ -203,40 +203,56 @@
               <div>
                 <div style="display:flex;justify-content:space-between;font-size:15px;font-weight:600;margin-bottom:10px"><span>Monto del préstamo</span><span style="color:#0043ce">{{ montoLabel }}</span></div>
                 <input type="range" min="{{ montoMin }}" max="{{ montoMax }}" step="1000" value="{{ monto }}" onInput="{{ onMonto }}" style="width:100%;accent-color:#0f62fe">
+                <div style="display:flex;justify-content:space-between;font-size:11px;color:#8d8d8d;margin-top:4px"><span>{{ montoMinLabel }}</span><span>{{ montoMaxLabel }}</span></div>
               </div>
               <div>
                 <div style="display:flex;justify-content:space-between;font-size:15px;font-weight:600;margin-bottom:10px"><span>Plazo</span><span style="color:#0043ce">{{ plazo }} meses</span></div>
                 <input type="range" min="6" max="120" step="6" value="{{ plazo }}" onInput="{{ onPlazo }}" style="width:100%;accent-color:#0f62fe">
+                <div style="display:flex;justify-content:space-between;font-size:11px;color:#8d8d8d;margin-top:4px"><span>{{ plazoMinLabel }}</span><span>{{ plazoMaxLabel }}</span></div>
               </div>
               <div>
                 <div style="display:flex;justify-content:space-between;font-size:15px;font-weight:600;margin-bottom:10px"><span>Tu ingreso mensual</span><span style="color:#0043ce">{{ ingresoLabel }}</span></div>
                 <input type="range" min="1500" max="20000" step="500" value="{{ ingreso }}" onInput="{{ onIngreso }}" style="width:100%;accent-color:#0f62fe">
+                <div style="display:flex;justify-content:space-between;font-size:11px;color:#8d8d8d;margin-top:4px"><span>{{ ingresoMinLabel }}</span><span>{{ ingresoMaxLabel }}</span></div>
               </div>
 
               <!-- AFFORDABILITY -->
               <div style="border:1px solid #e5e8ec;border-radius:12px;padding:18px;background:#fff">
-                <div style="display:flex;justify-content:space-between;font-size:14px;font-weight:600;margin-bottom:10px"><span>La cuota es el {{ afPct }} de tu ingreso</span><span style="color:{{ afColor }};font-weight:700">{{ afLabel }}</span></div>
-                <div style="height:10px;border-radius:999px;background:#eceef1;overflow:hidden">
-                  <div style="height:100%;width:{{ afWidth }};background:{{ afColor }};border-radius:999px;transition:width .2s"></div>
+                <div style="display:flex;justify-content:space-between;font-size:14px;font-weight:600;margin-bottom:14px"><span>La cuota es el {{ afPct }} de tu ingreso</span><span style="color:{{ afColor }};font-weight:700">{{ afLabel }}</span></div>
+                <div style="position:relative;height:10px;border-radius:999px;background:linear-gradient(to right,#24a148 0%,#24a148 30%,#f1c21b 30%,#f1c21b 40%,#da1e28 40%,#da1e28 100%)">
+                  <div style="position:absolute;top:50%;left:{{ afWidth }};transform:translate(-50%,-50%);width:16px;height:16px;border-radius:999px;background:#fff;border:3px solid {{ afColor }};box-shadow:0 1px 4px rgba(0,0,0,0.3);transition:left .2s"></div>
                 </div>
-                <p style="font-size:12px;color:#8d8d8d;margin-top:10px">Se recomienda que tus deudas no superen el 30% de tu ingreso.</p>
+                <p style="font-size:12px;color:#8d8d8d;margin-top:14px">Se recomienda que tus deudas no superen el 30% de tu ingreso.</p>
               </div>
             </div>
 
             <!-- RESULT -->
             <div style="display:flex;flex-direction:column;gap:16px">
               <div style="background:#161616;color:#fff;border-radius:16px;padding:28px;text-align:center">
-                <div style="font-size:13px;color:#a8a8a8;text-transform:uppercase;letter-spacing:0.05em">Cuota mensual estimada</div>
-                <div style="font-size:44px;font-weight:800;letter-spacing:-0.02em;margin:8px 0">{{ cuota }}</div>
-                <div style="border-top:1px solid rgba(255,255,255,0.15);margin-top:14px;padding-top:14px;display:flex;justify-content:space-between;font-size:14px;color:#c6c6c6"><span>Total a pagar</span><span style="font-weight:700;color:#fff">{{ total }}</span></div>
-                <div style="display:flex;justify-content:space-between;font-size:14px;color:#c6c6c6;margin-top:8px"><span>Intereses</span><span style="font-weight:700;color:#fff">{{ intereses }}</span></div>
-
-                <!-- CAPITAL vs INTERES BAR -->
-                <div style="display:flex;height:8px;border-radius:999px;overflow:hidden;margin-top:16px">
-                  <div style="width:{{ capPct }};background:#4589ff"></div>
-                  <div style="width:{{ intPct }};background:#fa4d56"></div>
+                <!-- MENSUAL / TOTAL TOGGLE -->
+                <div style="display:flex;background:rgba(255,255,255,0.08);border-radius:999px;padding:4px;margin:0 auto 22px;max-width:200px">
+                  <div onClick="{{ setSimMensual }}" style="{{ simToggleMensualStyle }}">Mensual</div>
+                  <div onClick="{{ setSimTotal }}" style="{{ simToggleTotalStyle }}">Total</div>
                 </div>
-                <div style="display:flex;justify-content:space-between;font-size:11px;color:#a8a8a8;margin-top:7px"><span>● Capital {{ capPct }}</span><span>Intereses {{ intPct }} ●</span></div>
+
+                <!-- DONUT -->
+                <div style="position:relative;width:180px;height:180px;margin:0 auto">
+                  <svg width="180" height="180" viewBox="0 0 150 150">
+                    <circle cx="75" cy="75" r="64" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="14"></circle>
+                    <circle cx="75" cy="75" r="64" fill="none" stroke="#4589ff" stroke-width="14" stroke-linecap="round" stroke-dasharray="{{ ringCapDasharray }}" transform="rotate(-90 75 75)"></circle>
+                    <circle cx="75" cy="75" r="64" fill="none" stroke="#fa4d56" stroke-width="14" stroke-linecap="round" stroke-dasharray="{{ ringIntDasharray }}" stroke-dashoffset="{{ ringIntOffset }}" transform="rotate(-90 75 75)"></circle>
+                  </svg>
+                  <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 20px">
+                    <div style="font-size:11px;color:#a8a8a8;text-transform:uppercase;letter-spacing:0.05em">{{ ringLabel }}</div>
+                    <div style="font-size:25px;font-weight:800;letter-spacing:-0.02em;margin-top:6px;line-height:1.15">{{ ringValue }}</div>
+                  </div>
+                </div>
+
+                <!-- LEGEND -->
+                <div style="display:flex;justify-content:center;gap:26px;margin-top:22px;font-size:13px;flex-wrap:wrap">
+                  <div style="display:flex;align-items:center;gap:7px;color:#c6c6c6"><span style="width:8px;height:8px;border-radius:999px;background:#4589ff;display:inline-block"></span>Capital <span style="color:#fff;font-weight:700">{{ capitalLabel }}</span></div>
+                  <div style="display:flex;align-items:center;gap:7px;color:#c6c6c6"><span style="width:8px;height:8px;border-radius:999px;background:#fa4d56;display:inline-block"></span>Intereses <span style="color:#fff;font-weight:700">{{ intereses }}</span></div>
+                </div>
               </div>
 
               <!-- SAVINGS HIGHLIGHT -->
@@ -452,7 +468,7 @@ class Component extends DCLogic {
   state = { page: "inicio", monto: 30000, plazo: 24, showPrefs: false, promos: { descuentos: true, prestamos: false, servicios: false, seguros: false }, saved: { ben0: true, ben1: false, ben2: false, ben3: true },
     simTipo: "hipotecario", ingreso: 6000,
     draft: "", feed: "todos",
-    login: { user: "", pass: "" }, loginError: "",
+    login: { user: "", pass: "" }, loginError: "", simView: "mensual",
     registro: { nombres: "", apellidos: "", dni: "", area: "", email: "", celular: "", password: "", accept: false }, registroError: "", registroSuccess: false,
     posts: [
       {id:1,author:"Cooperativa IBM",role:"Cuenta oficial",time:"hace 2 h",tag:"Anuncio",color:"#0f62fe",initials:"CI",tab:"cooperativa",text:"📢 ¡Nueva alianza! A partir de este mes, Cineplanet se suma a nuestros convenios con 2x1 todos los martes presentando tu carnet digital de socio. Actívalo desde tu perfil.",hasImg:true,slotId:"post-1",img:"https://picsum.photos/seed/cinema/900/560",likes:48,liked:false,comments:12},
@@ -497,6 +513,11 @@ class Component extends DCLogic {
     const cuotaBancoNum = pmt(sel.bank/100/12);
     const ahorroNum = (cuotaBancoNum - cuotaNum) * n;
     const capPctN = Math.round((P/totalNum)*100);
+    const RING_R = 64, RING_C = 2*Math.PI*RING_R;
+    const capFrac = P/totalNum;
+    const capDash = capFrac*RING_C;
+    const intDash = RING_C-capDash;
+    const simView = this.state.simView === "total" ? "total" : "mensual";
     const ing = this.state.ingreso;
     const afRatio = cuotaNum/ing;
     const afColor = afRatio<=0.30 ? "#24a148" : (afRatio<=0.40 ? "#f1c21b" : "#da1e28");
@@ -647,12 +668,27 @@ class Component extends DCLogic {
       },
 
       mostrarSimulador, montoMin, montoMax,
+      montoMinLabel: this.money(montoMin), montoMaxLabel: this.money(montoMax),
+      plazoMinLabel: "6 meses", plazoMaxLabel: "120 meses",
+      ingresoMinLabel: this.money(1500), ingresoMaxLabel: this.money(20000),
       monto: this.state.monto, plazo: this.state.plazo,
       montoLabel: this.money(this.state.monto),
       tasaLabel: tasa+"%",
       cuota: this.money(cuotaNum), total: this.money(totalNum), intereses: this.money(totalNum-P),
+      capitalLabel: this.money(P),
       onMonto: (e)=>this.setState({monto:+e.target.value}),
       onPlazo: (e)=>this.setState({plazo:+e.target.value}),
+
+      simView,
+      ringValue: simView==="total" ? this.money(totalNum) : this.money(cuotaNum),
+      ringLabel: simView==="total" ? "Total a pagar" : "Cuota mensual",
+      setSimMensual: ()=>this.setState({simView:"mensual"}),
+      setSimTotal: ()=>this.setState({simView:"total"}),
+      simToggleMensualStyle: "flex:1;text-align:center;padding:7px 14px;border-radius:999px;font-size:13px;font-weight:700;cursor:pointer;background:"+(simView==="mensual"?"#fff":"transparent")+";color:"+(simView==="mensual"?"#161616":"#a8a8a8"),
+      simToggleTotalStyle: "flex:1;text-align:center;padding:7px 14px;border-radius:999px;font-size:13px;font-weight:700;cursor:pointer;background:"+(simView==="total"?"#fff":"transparent")+";color:"+(simView==="total"?"#161616":"#a8a8a8"),
+      ringCapDasharray: capDash.toFixed(1)+" "+RING_C.toFixed(1),
+      ringIntDasharray: intDash.toFixed(1)+" "+RING_C.toFixed(1),
+      ringIntOffset: (-capDash).toFixed(1),
 
       simTypes: loanTypes.map(t=>{
         const on=t.key===this.state.simTipo;
