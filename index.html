@@ -179,7 +179,7 @@
               </div>
               <div style="padding:24px;display:flex;flex-direction:column;gap:10px;flex:1">
                 <div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px">
-                  <h3 style="font-size:22px;font-weight:700">{{ l.title }}</h3>
+                  <h3 style="font-size:22px;font-weight:700;display:flex;align-items:center;gap:9px"><span aria-hidden="true">{{ l.icon }}</span>{{ l.title }}</h3>
                   <span style="font-size:13px;font-weight:700;color:#0043ce;white-space:nowrap">desde {{ l.tasa }}</span>
                 </div>
                 <p style="font-size:15px;line-height:1.55;color:#52606d">{{ l.desc }}</p>
@@ -199,7 +199,7 @@
           <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:30px">
             <sc-for list="{{ simTypes }}" as="t" hint-placeholder-count="4">
               <div onClick="{{ t.pick }}" style="{{ t.style }}">
-                <div style="font-weight:600">{{ t.label }}</div>
+                <div style="font-weight:600;display:flex;align-items:center;gap:7px"><span aria-hidden="true">{{ t.icon }}</span>{{ t.label }}</div>
                 <div style="font-size:12px;opacity:0.75">{{ t.teaLabel }} socio</div>
               </div>
             </sc-for>
@@ -504,10 +504,10 @@ class Component extends DCLogic {
     const mostrarSimulador = this.props.mostrarSimulador ?? true;
 
     const loanTypes = [
-      {key:"hipotecario",label:"Hipotecario",tea:8.9,bank:14.5},
-      {key:"vehicular",label:"Vehicular",tea:11.5,bank:18.0},
-      {key:"educativo",label:"Educativo",tea:9.5,bank:16.0},
-      {key:"salud",label:"Salud",tea:10.0,bank:17.0}
+      {key:"hipotecario",label:"Hipotecario",icon:"🏠",tea:8.9,bank:14.5},
+      {key:"vehicular",label:"Vehicular",icon:"🚗",tea:11.5,bank:18.0},
+      {key:"educativo",label:"Educativo",icon:"🎓",tea:9.5,bank:16.0},
+      {key:"salud",label:"Salud",icon:"🩺",tea:10.0,bank:17.0}
     ];
     const sel = loanTypes.find(t=>t.key===this.state.simTipo) || loanTypes[0];
     const tasa = this.props.tasaAnual != null ? this.props.tasaAnual : sel.tea;
@@ -651,10 +651,10 @@ class Component extends DCLogic {
       ],
 
       prestamos: [
-        {slotId:"loan-0",photo:"https://picsum.photos/seed/house2/800/400",title:"Crédito Hipotecario",tasa:"8.9% TEA",img:"Foto casa",desc:"Financiamiento para la casa propia con tasas preferenciales y plazos de hasta 20 años."},
-        {slotId:"loan-1",photo:"https://picsum.photos/seed/car2/800/400",title:"Crédito Vehicular",tasa:"11.5% TEA",img:"Foto auto",desc:"Adquiere tu vehículo nuevo o usado con cuotas cómodas y aprobación rápida."},
-        {slotId:"loan-2",photo:"https://picsum.photos/id/832/800/400",title:"Crédito Educativo",tasa:"9.5% TEA",img:"Foto estudiantes",desc:"Financia estudios, posgrados y maestrías tuyas o de tus hijos."},
-        {slotId:"loan-3",photo:"https://picsum.photos/seed/clinic2/800/400",title:"Crédito de Salud",tasa:"10.0% TEA",img:"Foto clínica",desc:"Cobertura de tratamientos, cirugías y emergencias médicas para tu familia."}
+        {slotId:"loan-0",photo:"https://picsum.photos/seed/house2/800/400",title:"Crédito Hipotecario",icon:"🏠",tasa:"8.9% TEA",img:"Foto casa",desc:"Financiamiento para la casa propia con tasas preferenciales y plazos de hasta 20 años."},
+        {slotId:"loan-1",photo:"https://picsum.photos/seed/car2/800/400",title:"Crédito Vehicular",icon:"🚗",tasa:"11.5% TEA",img:"Foto auto",desc:"Adquiere tu vehículo nuevo o usado con cuotas cómodas y aprobación rápida."},
+        {slotId:"loan-2",photo:"https://picsum.photos/id/832/800/400",title:"Crédito Educativo",icon:"🎓",tasa:"9.5% TEA",img:"Foto estudiantes",desc:"Financia estudios, posgrados y maestrías tuyas o de tus hijos."},
+        {slotId:"loan-3",photo:"https://picsum.photos/seed/clinic2/800/400",title:"Crédito de Salud",icon:"🩺",tasa:"10.0% TEA",img:"Foto clínica",desc:"Cobertura de tratamientos, cirugías y emergencias médicas para tu familia."}
       ],
 
       servicios: [
@@ -718,7 +718,7 @@ class Component extends DCLogic {
 
       simTypes: loanTypes.map(t=>{
         const on=t.key===this.state.simTipo;
-        return {label:t.label, teaLabel:t.tea+"%", pick:()=>this.setState({simTipo:t.key}),
+        return {label:t.label, icon:t.icon, teaLabel:t.tea+"%", pick:()=>this.setState({simTipo:t.key}),
           style:"border:1px solid "+(on?"#0f62fe":"#e0e0e0")+";background:"+(on?"#edf5ff":"#fff")+";color:"+(on?"#0043ce":"#161616")+";border-radius:12px;padding:12px 18px;cursor:pointer;line-height:1.25;min-width:120px"};
       }),
       ingreso: ing, ingresoLabel: this.money(ing),
