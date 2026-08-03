@@ -19,6 +19,14 @@
   a:hover{color:#0043ce}
   ::-webkit-scrollbar{width:10px;height:10px}
   ::-webkit-scrollbar-thumb{background:#d4d9df;border-radius:8px}
+
+  input[type=range].dc-slider{-webkit-appearance:none;appearance:none;width:100%;height:8px;border-radius:999px;outline:none;cursor:pointer;background:transparent}
+  input[type=range].dc-slider::-webkit-slider-runnable-track{height:8px;border-radius:999px}
+  input[type=range].dc-slider::-moz-range-track{height:8px;border-radius:999px;background:#eceef1}
+  input[type=range].dc-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:26px;height:26px;border-radius:999px;background:#0f62fe;border:4px solid #fff;box-shadow:0 1px 4px rgba(15,36,56,0.35);margin-top:-9px;cursor:grab;transition:transform .12s}
+  input[type=range].dc-slider::-webkit-slider-thumb:active{cursor:grabbing;transform:scale(1.12)}
+  input[type=range].dc-slider::-moz-range-thumb{width:26px;height:26px;border-radius:999px;background:#0f62fe;border:4px solid #fff;box-shadow:0 1px 4px rgba(15,36,56,0.35);cursor:grab}
+  input[type=range].dc-slider::-moz-range-progress{height:8px;border-radius:999px;background:#0f62fe}
 </style>
 </helmet>
 <div style="display:flex;height:100vh;width:100%;background:#000;overflow:hidden;font-family:'IBM Plex Sans','Helvetica Neue',Helvetica,Arial,sans-serif">
@@ -201,19 +209,28 @@
             <!-- CONTROLS -->
             <div style="display:flex;flex-direction:column;gap:28px">
               <div>
-                <div style="display:flex;justify-content:space-between;font-size:15px;font-weight:600;margin-bottom:10px"><span>Monto del préstamo</span><span style="color:#0043ce">{{ montoLabel }}</span></div>
-                <input type="range" min="{{ montoMin }}" max="{{ montoMax }}" step="1000" value="{{ monto }}" onInput="{{ onMonto }}" style="width:100%;accent-color:#0f62fe">
-                <div style="display:flex;justify-content:space-between;font-size:11px;color:#8d8d8d;margin-top:4px"><span>{{ montoMinLabel }}</span><span>{{ montoMaxLabel }}</span></div>
+                <div style="font-size:15px;font-weight:600;margin-bottom:6px">Monto del préstamo</div>
+                <div style="position:relative;padding-top:32px">
+                  <div style="position:absolute;top:0;{{ montoTooltipStyle }};transform:translateX(-50%);background:#161616;color:#fff;font-size:13px;font-weight:700;padding:5px 11px;border-radius:8px;white-space:nowrap;pointer-events:none">{{ montoLabel }}</div>
+                  <input type="range" class="dc-slider" min="{{ montoMin }}" max="{{ montoMax }}" step="1000" value="{{ monto }}" onInput="{{ onMonto }}" style="{{ montoTrackStyle }}">
+                </div>
+                <div style="display:flex;justify-content:space-between;font-size:11px;color:#8d8d8d;margin-top:8px"><span>{{ montoMinLabel }}</span><span>{{ montoMaxLabel }}</span></div>
               </div>
               <div>
-                <div style="display:flex;justify-content:space-between;font-size:15px;font-weight:600;margin-bottom:10px"><span>Plazo</span><span style="color:#0043ce">{{ plazo }} meses</span></div>
-                <input type="range" min="6" max="120" step="6" value="{{ plazo }}" onInput="{{ onPlazo }}" style="width:100%;accent-color:#0f62fe">
-                <div style="display:flex;justify-content:space-between;font-size:11px;color:#8d8d8d;margin-top:4px"><span>{{ plazoMinLabel }}</span><span>{{ plazoMaxLabel }}</span></div>
+                <div style="font-size:15px;font-weight:600;margin-bottom:6px">Plazo</div>
+                <div style="position:relative;padding-top:32px">
+                  <div style="position:absolute;top:0;{{ plazoTooltipStyle }};transform:translateX(-50%);background:#161616;color:#fff;font-size:13px;font-weight:700;padding:5px 11px;border-radius:8px;white-space:nowrap;pointer-events:none">{{ plazo }} meses</div>
+                  <input type="range" class="dc-slider" min="6" max="120" step="6" value="{{ plazo }}" onInput="{{ onPlazo }}" style="{{ plazoTrackStyle }}">
+                </div>
+                <div style="display:flex;justify-content:space-between;font-size:11px;color:#8d8d8d;margin-top:8px"><span>{{ plazoMinLabel }}</span><span>{{ plazoMaxLabel }}</span></div>
               </div>
               <div>
-                <div style="display:flex;justify-content:space-between;font-size:15px;font-weight:600;margin-bottom:10px"><span>Tu ingreso mensual</span><span style="color:#0043ce">{{ ingresoLabel }}</span></div>
-                <input type="range" min="1500" max="20000" step="500" value="{{ ingreso }}" onInput="{{ onIngreso }}" style="width:100%;accent-color:#0f62fe">
-                <div style="display:flex;justify-content:space-between;font-size:11px;color:#8d8d8d;margin-top:4px"><span>{{ ingresoMinLabel }}</span><span>{{ ingresoMaxLabel }}</span></div>
+                <div style="font-size:15px;font-weight:600;margin-bottom:6px">Tu ingreso mensual</div>
+                <div style="position:relative;padding-top:32px">
+                  <div style="position:absolute;top:0;{{ ingresoTooltipStyle }};transform:translateX(-50%);background:#161616;color:#fff;font-size:13px;font-weight:700;padding:5px 11px;border-radius:8px;white-space:nowrap;pointer-events:none">{{ ingresoLabel }}</div>
+                  <input type="range" class="dc-slider" min="1500" max="20000" step="500" value="{{ ingreso }}" onInput="{{ onIngreso }}" style="{{ ingresoTrackStyle }}">
+                </div>
+                <div style="display:flex;justify-content:space-between;font-size:11px;color:#8d8d8d;margin-top:8px"><span>{{ ingresoMinLabel }}</span><span>{{ ingresoMaxLabel }}</span></div>
               </div>
 
               <!-- AFFORDABILITY -->
@@ -512,6 +529,9 @@ class Component extends DCLogic {
     const totalNum = cuotaNum*n;
     const cuotaBancoNum = pmt(sel.bank/100/12);
     const ahorroNum = (cuotaBancoNum - cuotaNum) * n;
+    const clampPct = (v,lo,hi)=>Math.max(lo,Math.min(hi,v));
+    const trackBg = (pct)=> "width:100%;background:linear-gradient(to right,#0f62fe 0%,#0f62fe "+pct+"%,#eceef1 "+pct+"%,#eceef1 100%)";
+    const tooltipLeft = (pct)=> "left:"+clampPct(pct,6,94)+"%";
     const capPctN = Math.round((P/totalNum)*100);
     const RING_R = 64, RING_C = 2*Math.PI*RING_R;
     const capFrac = P/totalNum;
@@ -671,6 +691,12 @@ class Component extends DCLogic {
       montoMinLabel: this.money(montoMin), montoMaxLabel: this.money(montoMax),
       plazoMinLabel: "6 meses", plazoMaxLabel: "120 meses",
       ingresoMinLabel: this.money(1500), ingresoMaxLabel: this.money(20000),
+      montoTrackStyle: trackBg(clampPct(((this.state.monto-montoMin)/(montoMax-montoMin))*100,0,100)),
+      montoTooltipStyle: tooltipLeft(((this.state.monto-montoMin)/(montoMax-montoMin))*100),
+      plazoTrackStyle: trackBg(clampPct(((this.state.plazo-6)/(120-6))*100,0,100)),
+      plazoTooltipStyle: tooltipLeft(((this.state.plazo-6)/(120-6))*100),
+      ingresoTrackStyle: trackBg(clampPct(((ing-1500)/(20000-1500))*100,0,100)),
+      ingresoTooltipStyle: tooltipLeft(((ing-1500)/(20000-1500))*100),
       monto: this.state.monto, plazo: this.state.plazo,
       montoLabel: this.money(this.state.monto),
       tasaLabel: tasa+"%",
