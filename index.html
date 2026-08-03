@@ -23,10 +23,10 @@
   input[type=range].dc-slider{-webkit-appearance:none;appearance:none;width:100%;height:8px;border-radius:999px;outline:none;cursor:pointer;background:transparent}
   input[type=range].dc-slider::-webkit-slider-runnable-track{height:8px;border-radius:999px}
   input[type=range].dc-slider::-moz-range-track{height:8px;border-radius:999px;background:#eceef1}
-  input[type=range].dc-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:26px;height:26px;border-radius:999px;background:#0f62fe;border:4px solid #fff;box-shadow:0 1px 4px rgba(15,36,56,0.35);margin-top:-9px;cursor:grab;transition:transform .12s}
+  input[type=range].dc-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:26px;height:26px;border-radius:999px;background:var(--slider-accent,#0f62fe);border:4px solid #fff;box-shadow:0 1px 4px rgba(15,36,56,0.35);margin-top:-9px;cursor:grab;transition:transform .12s}
   input[type=range].dc-slider::-webkit-slider-thumb:active{cursor:grabbing;transform:scale(1.12)}
-  input[type=range].dc-slider::-moz-range-thumb{width:26px;height:26px;border-radius:999px;background:#0f62fe;border:4px solid #fff;box-shadow:0 1px 4px rgba(15,36,56,0.35);cursor:grab}
-  input[type=range].dc-slider::-moz-range-progress{height:8px;border-radius:999px;background:#0f62fe}
+  input[type=range].dc-slider::-moz-range-thumb{width:26px;height:26px;border-radius:999px;background:var(--slider-accent,#0f62fe);border:4px solid #fff;box-shadow:0 1px 4px rgba(15,36,56,0.35);cursor:grab}
+  input[type=range].dc-slider::-moz-range-progress{height:8px;border-radius:999px;background:var(--slider-accent,#0f62fe)}
 </style>
 </helmet>
 <div style="display:flex;height:100vh;width:100%;background:#000;overflow:hidden;font-family:'IBM Plex Sans','Helvetica Neue',Helvetica,Arial,sans-serif">
@@ -280,7 +280,7 @@
                 <div style="position:relative;width:180px;height:180px;margin:0 auto">
                   <svg width="180" height="180" viewBox="0 0 150 150">
                     <circle cx="75" cy="75" r="64" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="14"></circle>
-                    <circle cx="75" cy="75" r="64" fill="none" stroke="#4589ff" stroke-width="14" stroke-linecap="round" stroke-dasharray="{{ ringCapDasharray }}" transform="rotate(-90 75 75)"></circle>
+                    <circle cx="75" cy="75" r="64" fill="none" stroke="{{ prestamoActual.color }}" stroke-width="14" stroke-linecap="round" stroke-dasharray="{{ ringCapDasharray }}" transform="rotate(-90 75 75)"></circle>
                     <circle cx="75" cy="75" r="64" fill="none" stroke="#fa4d56" stroke-width="14" stroke-linecap="round" stroke-dasharray="{{ ringIntDasharray }}" stroke-dashoffset="{{ ringIntOffset }}" transform="rotate(-90 75 75)"></circle>
                   </svg>
                   <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 20px">
@@ -291,7 +291,7 @@
 
                 <!-- LEGEND -->
                 <div style="display:flex;justify-content:center;gap:26px;margin-top:22px;font-size:13px;flex-wrap:wrap">
-                  <div style="display:flex;align-items:center;gap:7px;color:#c6c6c6"><span style="width:8px;height:8px;border-radius:999px;background:#4589ff;display:inline-block"></span>Capital <span style="color:#fff;font-weight:700">{{ capitalLabel }}</span></div>
+                  <div style="display:flex;align-items:center;gap:7px;color:#c6c6c6"><span style="width:8px;height:8px;border-radius:999px;background:{{ prestamoActual.color }};display:inline-block"></span>Capital <span style="color:#fff;font-weight:700">{{ capitalLabel }}</span></div>
                   <div style="display:flex;align-items:center;gap:7px;color:#c6c6c6"><span style="width:8px;height:8px;border-radius:999px;background:#fa4d56;display:inline-block"></span>Intereses <span style="color:#fff;font-weight:700">{{ intereses }}</span></div>
                 </div>
               </div>
@@ -303,7 +303,7 @@
                 <p style="font-size:13px;color:#0e6027;line-height:1.45">Frente a un banco a {{ bankTeaLabel }}, tu cuota sería {{ cuotaBanco }}/mes. Con tu tasa de socio pagas {{ cuota }}.</p>
               </div>
 
-              <button style="background:#0f62fe;color:#fff;border:none;border-radius:999px;padding:15px;font-size:16px;font-weight:600;cursor:pointer;font-family:inherit">Solicitar este préstamo</button>
+              <button style="background:{{ prestamoActual.color }};color:#fff;border:none;border-radius:999px;padding:15px;font-size:16px;font-weight:600;cursor:pointer;font-family:inherit">Solicitar este préstamo</button>
             </div>
           </div>
           <p style="font-size:12px;color:#8b95a1;margin-top:24px">*Cálculo referencial. La tasa y condiciones finales dependen de la evaluación crediticia de cada socio.</p>
@@ -569,7 +569,8 @@ class Component extends DCLogic {
     const cuotaBancoNum = pmt(sel.bank/100/12);
     const ahorroNum = (cuotaBancoNum - cuotaNum) * n;
     const clampPct = (v,lo,hi)=>Math.max(lo,Math.min(hi,v));
-    const trackBg = (pct)=> "width:100%;background:linear-gradient(to right,#0f62fe 0%,#0f62fe "+pct+"%,#eceef1 "+pct+"%,#eceef1 100%)";
+    const simColor = prestamoActualData.color;
+    const trackBg = (pct)=> "--slider-accent:"+simColor+";width:100%;background:linear-gradient(to right,"+simColor+" 0%,"+simColor+" "+pct+"%,#eceef1 "+pct+"%,#eceef1 100%)";
     const tooltipLeft = (pct)=> "left:"+clampPct(pct,6,94)+"%";
     const capPctN = Math.round((P/totalNum)*100);
     const RING_R = 64, RING_C = 2*Math.PI*RING_R;
