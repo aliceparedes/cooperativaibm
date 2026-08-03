@@ -452,7 +452,7 @@
       </section>
       </sc-if>
 
-      <footer style="background:#161616;color:#c6c6c6;padding:22px 56px;font-size:13px;text-align:center">2026 © Cooperativa de Ahorro y Créditos de los Empleados IBM Perú</footer>
+      <footer style="background:#161616;color:#c6c6c6;padding:22px 56px;font-size:13px;text-align:center">2026 © Cooperativa de Ahorro y Créditos de los Empleados IBM Perú · Última actualización: {{ lastUpdated }}</footer>
 
     </main>
   </div>
@@ -585,6 +585,7 @@ class Component extends DCLogic {
 
     return {
       nav,
+      lastUpdated: "3 de agosto de 2026",
       isInicio: page==="inicio", isQuienes: page==="quienes",
       isProveedores: page==="proveedores", isPrestamos: page==="prestamos", isPrestamoDetalle: page==="prestamo-detalle",
       isServicios: page==="servicios", isRegistro: page==="registro", isLogin: page==="login", isAnuncios: page==="anuncios",
