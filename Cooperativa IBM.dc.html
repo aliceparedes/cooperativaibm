@@ -46,8 +46,17 @@
   <div style="flex:1;display:flex;flex-direction:column;min-width:0;background:#000">
     <!-- TOPBAR -->
     <header style="height:96px;flex:0 0 96px;background:#000;display:flex;align-items:center;justify-content:flex-end;gap:16px;padding:0 32px">
-      <div onClick="{{ openPrefs }}" title="Tus preferencias" style="width:44px;height:44px;border-radius:999px;background:#0f62fe;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:17px;cursor:pointer">S</div>
-      <button onClick="{{ goLogin }}" style="background:#0f62fe;color:#fff;border:none;border-radius:999px;padding:13px 26px;font-size:16px;font-weight:600;cursor:pointer;font-family:inherit">Login Socios</button>
+      <sc-if value="{{ isAdmin }}" hint-placeholder-val="{{ false }}">
+        <sc-if value="{{ apiError }}" hint-placeholder-val="{{ false }}">
+          <span style="color:#ff8389;font-size:13px;font-weight:600;max-width:340px">{{ apiError }}</span>
+        </sc-if>
+        <span style="background:#da1e28;color:#fff;font-size:13px;font-weight:700;padding:8px 16px;border-radius:999px;letter-spacing:0.02em">Modo administrador</span>
+        <button onClick="{{ logout }}" style="background:transparent;color:#fff;border:1px solid #4c4c4c;border-radius:999px;padding:12px 24px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit">Cerrar sesión</button>
+      </sc-if>
+      <sc-if value="{{ !isAdmin }}" hint-placeholder-val="{{ true }}">
+        <div onClick="{{ openPrefs }}" title="Tus preferencias" style="width:44px;height:44px;border-radius:999px;background:#0f62fe;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:17px;cursor:pointer">S</div>
+        <button onClick="{{ goLogin }}" style="background:#0f62fe;color:#fff;border:none;border-radius:999px;padding:13px 26px;font-size:16px;font-weight:600;cursor:pointer;font-family:inherit">Login Socios</button>
+      </sc-if>
     </header>
 
     <!-- CONTENT -->
@@ -127,6 +136,20 @@
         <h1 style="font-size:48px;font-weight:800;letter-spacing:-0.02em;margin-bottom:10px">Proveedores</h1>
         <p style="font-size:18px;color:#52606d;margin-bottom:28px;max-width:720px">Convenios con empresas peruanas líderes. Presenta tu carnet de socio y accede a descuentos exclusivos.</p>
 
+        <!-- ADMIN: AGREGAR PROVEEDOR -->
+        <sc-if value="{{ isAdmin }}" hint-placeholder-val="{{ false }}">
+        <div style="border:1px solid #da1e28;background:#fff5f5;border-radius:14px;padding:22px;margin-bottom:36px">
+          <div style="font-size:15px;font-weight:700;color:#da1e28;margin-bottom:14px">Agregar proveedor (admin)</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px;margin-bottom:14px">
+            <input type="text" placeholder="Nombre" value="{{ newProv.name }}" onInput="{{ onNewProvName }}" style="border:1px solid #d9dee4;border-radius:8px;padding:11px 12px;font-size:14px;font-family:inherit;outline:none">
+            <input type="text" placeholder="Categoría" value="{{ newProv.cat }}" onInput="{{ onNewProvCat }}" style="border:1px solid #d9dee4;border-radius:8px;padding:11px 12px;font-size:14px;font-family:inherit;outline:none">
+            <input type="text" placeholder="Descripción" value="{{ newProv.desc }}" onInput="{{ onNewProvDesc }}" style="border:1px solid #d9dee4;border-radius:8px;padding:11px 12px;font-size:14px;font-family:inherit;outline:none">
+            <input type="text" placeholder="Descuento (ej. 10% dcto.)" value="{{ newProv.disc }}" onInput="{{ onNewProvDisc }}" style="border:1px solid #d9dee4;border-radius:8px;padding:11px 12px;font-size:14px;font-family:inherit;outline:none">
+          </div>
+          <button onClick="{{ addProveedor }}" style="background:#da1e28;color:#fff;border:none;border-radius:999px;padding:11px 24px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit">+ Agregar proveedor</button>
+        </div>
+        </sc-if>
+
         <!-- FEATURE BANNERS -->
         <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:16px">
           <h2 style="font-size:22px;font-weight:600;font-family:'IBM Plex Serif',Georgia,serif">Destacados de la semana</h2>
@@ -149,7 +172,10 @@
         </div>
         <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px">
           <sc-for list="{{ proveedores }}" as="p" hint-placeholder-count="8">
-            <div style="border:1px solid #e5e8ec;border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:12px" style-hover="box-shadow:0 8px 26px rgba(15,36,56,0.09)">
+            <div style="border:1px solid #e5e8ec;border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:12px;position:relative" style-hover="box-shadow:0 8px 26px rgba(15,36,56,0.09)">
+              <sc-if value="{{ isAdmin }}" hint-placeholder-val="{{ false }}">
+                <div onClick="{{ p.remove }}" title="Eliminar proveedor" style="position:absolute;top:12px;right:12px;width:26px;height:26px;border-radius:999px;background:#fff0f0;color:#da1e28;display:flex;align-items:center;justify-content:center;font-weight:800;cursor:pointer;font-size:15px">×</div>
+              </sc-if>
               <div style="display:flex;align-items:center;gap:12px">
                 <div style="width:46px;height:46px;border-radius:10px;overflow:hidden;flex:0 0 46px">
                   <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="{{ p.slotId }}" shape="rounded" radius="10" fit="contain" placeholder="Logo" hint-size="46px,46px"></x-import>
@@ -170,9 +196,11 @@
       <!-- ================= PRÉSTAMOS ================= -->
       <sc-if value="{{ isPrestamos }}" hint-placeholder-val="{{ true }}">
       <section style="padding:56px">
-        <h1 style="font-size:48px;font-weight:800;letter-spacing:-0.02em;margin-bottom:36px">Préstamos</h1>
+        <h1 style="font-size:48px;font-weight:800;letter-spacing:-0.02em;margin-bottom:10px">Préstamos</h1>
+        <p style="font-size:14px;color:#8b95a1;margin-bottom:36px">Tasas actualizadas el {{ tasasUpdated }}</p>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:52px">
           <sc-for list="{{ prestamos }}" as="l" hint-placeholder-count="4">
+            <div>
             <div onClick="{{ l.goDetalle }}" style="border:1px solid #e5e8ec;border-radius:16px;overflow:hidden;display:flex;flex-direction:column;cursor:pointer" style-hover="box-shadow:0 8px 26px rgba(15,36,56,0.09)">
               <div style="position:relative;height:190px;overflow:hidden">
                 <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="{{ l.slotId }}" shape="rect" fit="cover" src="{{ l.photo }}" placeholder="{{ l.img }}" hint-size="100%,100%"></x-import>
@@ -193,6 +221,17 @@
                 <p style="font-size:15px;line-height:1.55;color:#52606d">{{ l.desc }}</p>
                 <a onClick="{{ l.goDetalle }}" style="margin-top:auto;font-weight:600;cursor:pointer">Ver detalles y simular →</a>
               </div>
+            </div>
+            <sc-if value="{{ isAdmin }}" hint-placeholder-val="{{ false }}">
+              <div style="margin-top:10px;border:1px solid #da1e28;border-radius:12px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px;background:#fff5f5">
+                <span style="font-size:13px;font-weight:700;color:#da1e28">Editar tasa (admin)</span>
+                <div style="display:flex;align-items:center;gap:8px">
+                  <input type="number" step="0.1" min="0" max="30" value="{{ l.tasaEdit }}" onInput="{{ l.onTasaInput }}" style="width:70px;border:1px solid #d9dee4;border-radius:8px;padding:7px 9px;font-size:14px;font-family:inherit;outline:none">
+                  <span style="font-size:13px;color:#52606d;font-weight:600">% TEA</span>
+                  <button onClick="{{ l.onTasaSave }}" style="background:#da1e28;color:#fff;border:none;border-radius:999px;padding:8px 16px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap">{{ l.tasaSavedLabel }}</button>
+                </div>
+              </div>
+            </sc-if>
             </div>
           </sc-for>
         </div>
@@ -342,11 +381,13 @@
             <span style="font-size:14px;color:#6f6f6f">Comunidad IBM Cooperativa</span>
           </div>
 
-          <!-- COMPOSER -->
-          <div style="border:1px solid #e0e0e0;border-radius:16px;padding:18px;margin-bottom:24px">
+          <!-- COMPOSER (solo administrador) -->
+          <sc-if value="{{ isAdmin }}" hint-placeholder-val="{{ false }}">
+          <div style="border:1px solid #da1e28;background:#fff5f5;border-radius:16px;padding:18px;margin-bottom:24px">
+            <div style="font-size:13px;font-weight:700;color:#da1e28;margin-bottom:10px">Publicar anuncio (admin)</div>
             <div style="display:flex;gap:12px;align-items:flex-start">
-              <div style="width:44px;height:44px;border-radius:999px;background:#0f62fe;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;flex:0 0 44px">S</div>
-              <textarea value="{{ draft }}" onInput="{{ onDraft }}" placeholder="Comparte algo con la comunidad, socio…" style="flex:1;border:none;outline:none;resize:none;font-family:inherit;font-size:16px;line-height:1.5;min-height:52px;padding-top:10px;color:#161616;background:transparent"></textarea>
+              <div style="width:44px;height:44px;border-radius:999px;background:#0f62fe;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;flex:0 0 44px">A</div>
+              <textarea value="{{ draft }}" onInput="{{ onDraft }}" placeholder="Comparte un anuncio con la comunidad…" style="flex:1;border:none;outline:none;resize:none;font-family:inherit;font-size:16px;line-height:1.5;min-height:52px;padding-top:10px;color:#161616;background:transparent"></textarea>
             </div>
             <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;border-top:1px solid #f0f0f0;padding-top:12px">
               <div style="display:flex;gap:6px">
@@ -357,6 +398,7 @@
               <button onClick="{{ addPost }}" style="background:#0f62fe;color:#fff;border:none;border-radius:999px;padding:11px 26px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit">Publicar</button>
             </div>
           </div>
+          </sc-if>
 
           <!-- FILTER CHIPS -->
           <div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap">
@@ -376,6 +418,9 @@
                     <div style="font-size:13px;color:#8d8d8d">{{ p.role }} · {{ p.time }}</div>
                   </div>
                   <div style="font-size:12px;font-weight:700;color:#0f62fe;background:#edf5ff;padding:5px 11px;border-radius:999px">{{ p.tag }}</div>
+                  <sc-if value="{{ isAdmin }}" hint-placeholder-val="{{ false }}">
+                    <div onClick="{{ p.remove }}" title="Eliminar anuncio" style="width:26px;height:26px;border-radius:999px;background:#fff0f0;color:#da1e28;display:flex;align-items:center;justify-content:center;font-weight:800;cursor:pointer;font-size:15px;flex:0 0 26px">×</div>
+                  </sc-if>
                 </div>
                 <div style="padding:14px 20px 16px;font-size:16px;line-height:1.55;color:#262626;white-space:pre-wrap">{{ p.text }}</div>
                 <sc-if value="{{ p.hasImg }}" hint-placeholder-val="{{ true }}">
@@ -436,6 +481,14 @@
       <section style="min-height:100%;display:flex;align-items:center;justify-content:center;padding:56px">
         <div style="width:100%;max-width:420px">
           <div style="width:56px;height:56px;border-radius:14px;background:#0f62fe;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:24px;margin-bottom:24px">S</div>
+
+          <!-- TAB SWITCHER -->
+          <div style="display:flex;background:#f4f4f4;border-radius:999px;padding:4px;margin-bottom:26px;max-width:280px">
+            <div onClick="{{ setLoginTabSocio }}" style="{{ loginTabSocioStyle }}">Socio</div>
+            <div onClick="{{ setLoginTabAdmin }}" style="{{ loginTabAdminStyle }}">Administrador</div>
+          </div>
+
+          <sc-if value="{{ !isLoginTabAdmin }}" hint-placeholder-val="{{ true }}">
           <h1 style="font-size:34px;font-weight:800;letter-spacing:-0.02em;margin-bottom:6px">Login Socios</h1>
           <p style="font-size:16px;color:#52606d;margin-bottom:30px">Ingresa con tu documento y contraseña de socio.</p>
           <label style="display:block;font-size:13px;font-weight:600;color:#3b4653;margin-bottom:7px">DNI o correo</label>
@@ -443,6 +496,17 @@
           <label style="display:block;font-size:13px;font-weight:600;color:#3b4653;margin-bottom:7px">Contraseña</label>
           <input type="password" placeholder="••••••••" value="{{ loginPass }}" onInput="{{ onLoginPass }}" style="width:100%;border:1px solid #d9dee4;border-radius:10px;padding:14px;font-size:15px;font-family:inherit;outline:none;margin-bottom:8px" style-focus="border:1px solid #0f62fe;box-shadow:0 0 0 3px #edf5ff">
           <div style="text-align:right;margin-bottom:22px"><a style="font-size:14px;cursor:pointer">¿Olvidaste tu contraseña?</a></div>
+          </sc-if>
+
+          <sc-if value="{{ isLoginTabAdmin }}" hint-placeholder-val="{{ false }}">
+          <h1 style="font-size:34px;font-weight:800;letter-spacing:-0.02em;margin-bottom:6px">Login Administrador</h1>
+          <p style="font-size:16px;color:#52606d;margin-bottom:30px">Acceso para editar anuncios, proveedores y tasas de interés.</p>
+          <label style="display:block;font-size:13px;font-weight:600;color:#3b4653;margin-bottom:7px">Usuario</label>
+          <input type="text" placeholder="admin" value="{{ adminUser }}" onInput="{{ onAdminUser }}" style="width:100%;border:1px solid #d9dee4;border-radius:10px;padding:14px;font-size:15px;font-family:inherit;outline:none;margin-bottom:18px" style-focus="border:1px solid #0f62fe;box-shadow:0 0 0 3px #edf5ff">
+          <label style="display:block;font-size:13px;font-weight:600;color:#3b4653;margin-bottom:7px">Contraseña</label>
+          <input type="password" placeholder="••••••••" value="{{ adminPass }}" onInput="{{ onAdminPass }}" style="width:100%;border:1px solid #d9dee4;border-radius:10px;padding:14px;font-size:15px;font-family:inherit;outline:none;margin-bottom:22px" style-focus="border:1px solid #0f62fe;box-shadow:0 0 0 3px #edf5ff">
+          </sc-if>
+
           <sc-if value="{{ loginError }}" hint-placeholder-val="{{ false }}">
             <p style="color:#da1e28;font-size:14px;font-weight:600;margin-bottom:18px">{{ loginError }}</p>
           </sc-if>
@@ -510,7 +574,26 @@ class Component extends DCLogic {
     simTipo: "hipotecario", ingreso: 6000,
     draft: "", feed: "todos",
     login: { user: "", pass: "" }, loginError: "", simView: "mensual",
+    loginTab: "socio", adminLogin: { user: "", pass: "" }, auth: { role: null, token: null },
+    // Paste your deployed backend URL here (e.g. the Code Engine app URL from backend/README.md).
+    // Leave empty to keep running in local-only demo mode (admin/cooperativa2026, nothing persists).
+    apiBase: "",
+    apiError: "",
+    lastUpdatedAt: "2026-08-03T00:00:00-05:00",
+    tasas: { hipotecario: 8.9, vehicular: 11.5, educativo: 9.5, salud: 10.0 },
+    tasaSaved: {},
     registro: { nombres: "", apellidos: "", dni: "", area: "", email: "", celular: "", password: "", accept: false }, registroError: "", registroSuccess: false,
+    newProv: { name: "", cat: "", desc: "", disc: "" },
+    proveedores: [
+      {slotId:"prov-0",name:"Plaza Vea",cat:"Supermercados",desc:"Descuento en compras y días de socio exclusivos.",disc:"Hasta 10% dcto."},
+      {slotId:"prov-1",name:"Inkafarma",cat:"Farmacias",desc:"Precios preferenciales en medicamentos y cuidado personal.",disc:"15% dcto."},
+      {slotId:"prov-2",name:"Cineplanet",cat:"Entretenimiento",desc:"Entradas y combos a precio de socio todo el año.",disc:"2x1 martes"},
+      {slotId:"prov-3",name:"Ripley",cat:"Retail",desc:"Cuotas sin intereses y campañas anticipadas para socios.",disc:"Hasta 20% dcto."},
+      {slotId:"prov-4",name:"Sodimac",cat:"Mejoramiento del hogar",desc:"Descuentos en materiales y servicios de instalación.",disc:"10% dcto."},
+      {slotId:"prov-5",name:"Rímac Seguros",cat:"Seguros",desc:"Pólizas de salud, vida y vehicular a tarifa corporativa.",disc:"Tarifa corporativa"},
+      {slotId:"prov-6",name:"Interbank",cat:"Banca",desc:"Convenio de descuento por planilla y beneficios financieros.",disc:"Sin comisión"},
+      {slotId:"prov-7",name:"Real Plaza",cat:"Centros comerciales",desc:"Estacionamiento y promociones exclusivas para socios.",disc:"Beneficios"}
+    ],
     posts: [
       {id:1,author:"Cooperativa IBM",role:"Cuenta oficial",time:"hace 2 h",tag:"Anuncio",color:"#0f62fe",initials:"CI",tab:"cooperativa",text:"📢 ¡Nueva alianza! A partir de este mes, Cineplanet se suma a nuestros convenios con 2x1 todos los martes presentando tu carnet digital de socio. Actívalo desde tu perfil.",hasImg:true,slotId:"post-1",img:"https://picsum.photos/seed/cinema/900/560",likes:48,liked:false,comments:12},
       {id:2,author:"Junta Directiva",role:"Gobierno cooperativo",time:"ayer",tag:"Evento",color:"#8a3ffc",initials:"JD",tab:"eventos",text:"Los invitamos a la Asamblea General de Socios el sábado 26 de julio, 10:00 a.m. en el auditorio central. Se presentará la memoria anual y el reparto de excedentes 2025.",hasImg:false,slotId:"post-2",img:"",likes:31,liked:true,comments:5},
@@ -521,6 +604,55 @@ class Component extends DCLogic {
   get mainEl(){ return this.host && this.host.querySelector ? this.host.querySelector("main") : document.querySelector("main"); }
 
   money(n){ return "S/ " + Math.round(n).toLocaleString("es-PE"); }
+
+  formatUpdated(iso){
+    const d = iso ? new Date(iso) : new Date();
+    return d.toLocaleDateString("es-PE", { day:"numeric", month:"long", year:"numeric" });
+  }
+
+  // ---- Backend integration (see backend/README.md) ----
+  async componentDidMount(){
+    await this.loadContent();
+  }
+
+  async loadContent(){
+    const base = (this.state.apiBase || "").replace(/\/$/, "");
+    if(!base) return;
+    try{
+      const res = await fetch(base + "/api/content");
+      if(!res.ok) throw new Error("bad response");
+      const data = await res.json();
+      this.setState(s => ({
+        tasas: { ...s.tasas, ...(data.tasas||{}) },
+        posts: (data.anuncios||[]).map(a => this.mapAnuncio(a)),
+        proveedores: (data.proveedores||[]).map(p => ({ slotId: "prov-"+p.id, remoteId: p.id, name: p.name, cat: p.cat, desc: p.desc, disc: p.disc })),
+        lastUpdatedAt: data.updatedAt || s.lastUpdatedAt
+      }));
+    }catch(e){
+      this.setState({ apiError: "No se pudo conectar con el backend. Mostrando datos locales." });
+    }
+  }
+
+  mapAnuncio(a){
+    return { id: a.id, remoteId: a.id, author: a.author, role: a.role, time: "", tag: a.tag, color: "#0f62fe", initials: "AD", tab: "cooperativa", text: a.text, hasImg: false, slotId: "post-"+a.id, img: "", likes: 0, liked: false, comments: 0 };
+  }
+
+  async apiFetch(path, options){
+    const base = (this.state.apiBase || "").replace(/\/$/, "");
+    const opts = { ...options, headers: { "Content-Type": "application/json", ...(options && options.headers) } };
+    if(this.state.auth.token) opts.headers.Authorization = "Bearer " + this.state.auth.token;
+    const res = await fetch(base + path, opts);
+    if(res.status === 401 || res.status === 403){
+      this.setState({ auth: { role: null, token: null } });
+      throw new Error("Sesión expirada. Vuelve a iniciar sesión.");
+    }
+    if(!res.ok){
+      const body = await res.json().catch(()=>({}));
+      throw new Error(body.error || "Error del servidor.");
+    }
+    if(res.status === 204) return null;
+    return res.json();
+  }
 
   renderVals(){
     const page = this.state.page;
@@ -534,20 +666,21 @@ class Component extends DCLogic {
       salud:       {color:"#d02670", bg:"#fff0f6"}
     };
 
+    const tasas = this.state.tasas;
     const loanTypes = [
-      {key:"hipotecario",label:"Hipotecario",tea:8.9,bank:14.5},
-      {key:"vehicular",label:"Vehicular",tea:11.5,bank:18.0},
-      {key:"educativo",label:"Educativo",tea:9.5,bank:16.0},
-      {key:"salud",label:"Salud",tea:10.0,bank:17.0}
+      {key:"hipotecario",label:"Hipotecario",tea:tasas.hipotecario,bank:14.5},
+      {key:"vehicular",label:"Vehicular",tea:tasas.vehicular,bank:18.0},
+      {key:"educativo",label:"Educativo",tea:tasas.educativo,bank:16.0},
+      {key:"salud",label:"Salud",tea:tasas.salud,bank:17.0}
     ].map(t=>({...t, ...CREDIT_COLORS[t.key]}));
     const sel = loanTypes.find(t=>t.key===this.state.simTipo) || loanTypes[0];
     const tasa = this.props.tasaAnual != null ? this.props.tasaAnual : sel.tea;
 
     const prestamosData = [
-      {key:"hipotecario",slotId:"loan-0",photo:"https://picsum.photos/seed/house2/800/400",title:"Crédito Hipotecario",tasa:"8.9% TEA",img:"Foto casa",desc:"Financiamiento para la casa propia con tasas preferenciales y plazos de hasta 20 años."},
-      {key:"vehicular",slotId:"loan-1",photo:"https://picsum.photos/seed/car2/800/400",title:"Crédito Vehicular",tasa:"11.5% TEA",img:"Foto auto",desc:"Adquiere tu vehículo nuevo o usado con cuotas cómodas y aprobación rápida."},
-      {key:"educativo",slotId:"loan-2",photo:"https://picsum.photos/id/832/800/400",title:"Crédito Educativo",tasa:"9.5% TEA",img:"Foto estudiantes",desc:"Financia estudios, posgrados y maestrías tuyas o de tus hijos."},
-      {key:"salud",slotId:"loan-3",photo:"https://picsum.photos/seed/clinic2/800/400",title:"Crédito de Salud",tasa:"10.0% TEA",img:"Foto clínica",desc:"Cobertura de tratamientos, cirugías y emergencias médicas para tu familia."}
+      {key:"hipotecario",slotId:"loan-0",photo:"https://picsum.photos/seed/house2/800/400",title:"Crédito Hipotecario",tasa:tasas.hipotecario.toFixed(1)+"% TEA",img:"Foto casa",desc:"Financiamiento para la casa propia con tasas preferenciales y plazos de hasta 20 años."},
+      {key:"vehicular",slotId:"loan-1",photo:"https://picsum.photos/seed/car2/800/400",title:"Crédito Vehicular",tasa:tasas.vehicular.toFixed(1)+"% TEA",img:"Foto auto",desc:"Adquiere tu vehículo nuevo o usado con cuotas cómodas y aprobación rápida."},
+      {key:"educativo",slotId:"loan-2",photo:"https://picsum.photos/id/832/800/400",title:"Crédito Educativo",tasa:tasas.educativo.toFixed(1)+"% TEA",img:"Foto estudiantes",desc:"Financia estudios, posgrados y maestrías tuyas o de tus hijos."},
+      {key:"salud",slotId:"loan-3",photo:"https://picsum.photos/seed/clinic2/800/400",title:"Crédito de Salud",tasa:tasas.salud.toFixed(1)+"% TEA",img:"Foto clínica",desc:"Cobertura de tratamientos, cirugías y emergencias médicas para tu familia."}
     ].map(p=>({...p, ...CREDIT_COLORS[p.key]}));
     const prestamoActualData = prestamosData.find(p=>p.key===this.state.simTipo) || prestamosData[0];
 
@@ -585,18 +718,61 @@ class Component extends DCLogic {
 
     return {
       nav,
-      lastUpdated: "3 de agosto de 2026",
+      lastUpdated: this.formatUpdated(this.state.lastUpdatedAt),
+      tasasUpdated: this.formatUpdated(this.state.lastUpdatedAt),
       isInicio: page==="inicio", isQuienes: page==="quienes",
       isProveedores: page==="proveedores", isPrestamos: page==="prestamos", isPrestamoDetalle: page==="prestamo-detalle",
       isServicios: page==="servicios", isRegistro: page==="registro", isLogin: page==="login", isAnuncios: page==="anuncios",
       goInicio: ()=>this.go("inicio"), goRegistro: ()=>this.go("registro"),
       goLogin: ()=>this.go("login"),
 
+      isAdmin: this.state.auth.role === "admin",
+      logout: ()=>{ this.setState({auth:{role:null, token:null}}); this.go("inicio"); },
+
+      isLoginTabAdmin: this.state.loginTab === "admin",
+      setLoginTabSocio: ()=>this.setState({loginTab:"socio", loginError:""}),
+      setLoginTabAdmin: ()=>this.setState({loginTab:"admin", loginError:""}),
+      loginTabSocioStyle: "flex:1;text-align:center;padding:9px 14px;border-radius:999px;font-size:14px;font-weight:700;cursor:pointer;background:"+(this.state.loginTab==="socio"?"#fff":"transparent")+";color:"+(this.state.loginTab==="socio"?"#161616":"#8b95a1")+";box-shadow:"+(this.state.loginTab==="socio"?"0 1px 4px rgba(15,36,56,0.12)":"none"),
+      loginTabAdminStyle: "flex:1;text-align:center;padding:9px 14px;border-radius:999px;font-size:14px;font-weight:700;cursor:pointer;background:"+(this.state.loginTab==="admin"?"#fff":"transparent")+";color:"+(this.state.loginTab==="admin"?"#161616":"#8b95a1")+";box-shadow:"+(this.state.loginTab==="admin"?"0 1px 4px rgba(15,36,56,0.12)":"none"),
+
       loginUser: this.state.login.user, loginPass: this.state.login.pass,
       onLoginUser: (e)=>this.setState(s=>({login:{...s.login,user:e.target.value}})),
       onLoginPass: (e)=>this.setState(s=>({login:{...s.login,pass:e.target.value}})),
+      adminUser: this.state.adminLogin.user, adminPass: this.state.adminLogin.pass,
+      onAdminUser: (e)=>this.setState(s=>({adminLogin:{...s.adminLogin,user:e.target.value}})),
+      onAdminPass: (e)=>this.setState(s=>({adminLogin:{...s.adminLogin,pass:e.target.value}})),
       loginError: this.state.loginError,
-      loginSubmit: ()=>{
+      loginSubmit: async ()=>{
+        if(this.state.loginTab==="admin"){
+          const a = this.state.adminLogin;
+          if(!a.user.trim()||!a.pass.trim()){ this.setState({loginError:"Ingresa el usuario y la contraseña de administrador."}); return; }
+
+          const base = (this.state.apiBase || "").replace(/\/$/, "");
+          if(base){
+            try{
+              const res = await fetch(base + "/api/auth/login", {
+                method: "POST", headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ user: a.user.trim(), pass: a.pass })
+              });
+              const body = await res.json().catch(()=>({}));
+              if(!res.ok){ this.setState({loginError: body.error || "Usuario o contraseña de administrador incorrectos."}); return; }
+              this.setState({loginError:"", auth:{role:"admin", token: body.token}});
+              await this.loadContent();
+              this.go("anuncios");
+            }catch(e){
+              this.setState({loginError:"No se pudo conectar con el backend. Revisa apiBase en el estado del componente."});
+            }
+            return;
+          }
+
+          if(a.user.trim()==="admin" && a.pass==="cooperativa2026"){
+            this.setState({loginError:"", auth:{role:"admin", token:null}});
+            this.go("anuncios");
+            return;
+          }
+          this.setState({loginError:"Usuario o contraseña de administrador incorrectos. (Modo demo local: admin / cooperativa2026)"});
+          return;
+        }
         const l = this.state.login;
         if(!l.user.trim()||!l.pass.trim()){ this.setState({loginError:"Ingresa tu DNI o correo y tu contraseña."}); return; }
         this.setState({loginError:"Prototipo: este formulario aún no está conectado al sistema real de socios."});
@@ -654,10 +830,17 @@ class Component extends DCLogic {
       draft: this.state.draft,
       onDraft: (e)=>this.setState({draft:e.target.value}),
       composerTools: ["📷 Foto","🏷️ Descuento","📅 Evento"],
-      addPost: ()=>{
+      addPost: async ()=>{
         const t=this.state.draft.trim(); if(!t) return;
-        const np={id:Date.now(),author:"Tú",role:"Socio",time:"ahora",tag:"Socio",color:"#161616",initials:"TÚ",tab:"socios",text:t,hasImg:false,slotId:"post-"+Date.now(),img:"",likes:0,liked:false,comments:0};
-        this.setState(s=>({posts:[np,...s.posts],draft:""}));
+        if(this.state.apiBase){
+          try{
+            const created = await this.apiFetch("/api/anuncios", { method:"POST", body: JSON.stringify({ text: t }) });
+            this.setState(s=>({posts:[this.mapAnuncio(created),...s.posts], draft:"", apiError:"", lastUpdatedAt:new Date().toISOString()}));
+          }catch(e){ this.setState({apiError: e.message}); }
+          return;
+        }
+        const np={id:Date.now(),author:"Cooperativa IBM",role:"Administrador",time:"ahora",tag:"Anuncio",color:"#0f62fe",initials:"AD",tab:"cooperativa",text:t,hasImg:false,slotId:"post-"+Date.now(),img:"",likes:0,liked:false,comments:0};
+        this.setState(s=>({posts:[np,...s.posts],draft:"",lastUpdatedAt:new Date().toISOString()}));
       },
       feedFilters: [["todos","Todos"],["cooperativa","Cooperativa"],["proveedores","Descuentos"],["eventos","Eventos"],["socios","Socios"]].map(([k,label])=>{
         const on=this.state.feed===k;
@@ -669,7 +852,14 @@ class Component extends DCLogic {
         likesLabel: p.likes+" me gusta",
         likeIcon: p.liked?"👍":"👍",
         likeStyle:"flex:1;text-align:center;padding:11px;font-size:15px;font-weight:700;cursor:pointer;border-radius:8px;color:"+(p.liked?"#0f62fe":"#525252"),
-        like:()=>this.setState(s=>({posts:s.posts.map(x=>x.id===p.id?{...x,liked:!x.liked,likes:x.likes+(x.liked?-1:1)}:x)}))
+        like:()=>this.setState(s=>({posts:s.posts.map(x=>x.id===p.id?{...x,liked:!x.liked,likes:x.likes+(x.liked?-1:1)}:x)})),
+        remove: async ()=>{
+          if(this.state.apiBase){
+            try{ await this.apiFetch("/api/anuncios/"+(p.remoteId||p.id), { method:"DELETE" }); }
+            catch(e){ this.setState({apiError: e.message}); return; }
+          }
+          this.setState(s=>({posts:s.posts.filter(x=>x.id!==p.id), lastUpdatedAt:new Date().toISOString()}));
+        }
       })),
 
       stats: [
@@ -679,20 +869,51 @@ class Component extends DCLogic {
       ],
       docLinks: ["Historia","Funcionarios","Directiva","Memorias","Estados Financieros","Estatuto"],
 
-      proveedores: [
-        {slotId:"prov-0",name:"Plaza Vea",cat:"Supermercados",desc:"Descuento en compras y días de socio exclusivos.",disc:"Hasta 10% dcto."},
-        {slotId:"prov-1",name:"Inkafarma",cat:"Farmacias",desc:"Precios preferenciales en medicamentos y cuidado personal.",disc:"15% dcto."},
-        {slotId:"prov-2",name:"Cineplanet",cat:"Entretenimiento",desc:"Entradas y combos a precio de socio todo el año.",disc:"2x1 martes"},
-        {slotId:"prov-3",name:"Ripley",cat:"Retail",desc:"Cuotas sin intereses y campañas anticipadas para socios.",disc:"Hasta 20% dcto."},
-        {slotId:"prov-4",name:"Sodimac",cat:"Mejoramiento del hogar",desc:"Descuentos en materiales y servicios de instalación.",disc:"10% dcto."},
-        {slotId:"prov-5",name:"Rímac Seguros",cat:"Seguros",desc:"Pólizas de salud, vida y vehicular a tarifa corporativa.",disc:"Tarifa corporativa"},
-        {slotId:"prov-6",name:"Interbank",cat:"Banca",desc:"Convenio de descuento por planilla y beneficios financieros.",disc:"Sin comisión"},
-        {slotId:"prov-7",name:"Real Plaza",cat:"Centros comerciales",desc:"Estacionamiento y promociones exclusivas para socios.",disc:"Beneficios"}
-      ],
+      newProv: this.state.newProv,
+      onNewProvName: (e)=>this.setState(s=>({newProv:{...s.newProv,name:e.target.value}})),
+      onNewProvCat: (e)=>this.setState(s=>({newProv:{...s.newProv,cat:e.target.value}})),
+      onNewProvDesc: (e)=>this.setState(s=>({newProv:{...s.newProv,desc:e.target.value}})),
+      onNewProvDisc: (e)=>this.setState(s=>({newProv:{...s.newProv,disc:e.target.value}})),
+      addProveedor: async ()=>{
+        const np = this.state.newProv;
+        if(!np.name.trim()) return;
+        if(this.state.apiBase){
+          try{
+            const created = await this.apiFetch("/api/proveedores", { method:"POST", body: JSON.stringify(np) });
+            const entry = {slotId:"prov-"+created.id, remoteId:created.id, name:created.name, cat:created.cat, desc:created.desc, disc:created.disc};
+            this.setState(s=>({proveedores:[...s.proveedores, entry], newProv:{name:"",cat:"",desc:"",disc:""}, apiError:"", lastUpdatedAt:new Date().toISOString()}));
+          }catch(e){ this.setState({apiError: e.message}); }
+          return;
+        }
+        const entry = {slotId:"prov-"+Date.now(), name:np.name.trim(), cat:np.cat.trim()||"General", desc:np.desc.trim(), disc:np.disc.trim()||"Beneficios"};
+        this.setState(s=>({proveedores:[...s.proveedores, entry], newProv:{name:"",cat:"",desc:"",disc:""}, lastUpdatedAt:new Date().toISOString()}));
+      },
+      proveedores: this.state.proveedores.map(p=>({...p, remove: async ()=>{
+        if(this.state.apiBase){
+          try{ await this.apiFetch("/api/proveedores/"+(p.remoteId||p.slotId), { method:"DELETE" }); }
+          catch(e){ this.setState({apiError: e.message}); return; }
+        }
+        this.setState(s=>({proveedores:s.proveedores.filter(x=>x.slotId!==p.slotId), lastUpdatedAt:new Date().toISOString()}));
+      }})),
+
+      apiError: this.state.apiError,
 
       prestamos: prestamosData.map(p=>({...p, goDetalle:()=>{
         this.setState({simTipo:p.key, page:"prestamo-detalle"});
         const m=this.mainEl; if(m) m.scrollTop=0;
+      }, tasaEdit: tasas[p.key], onTasaInput:(e)=>{
+        const v = parseFloat(e.target.value); if(isNaN(v)) return;
+        this.setState(s=>({tasas:{...s.tasas,[p.key]:v}, tasaSaved:{...s.tasaSaved,[p.key]:false}}));
+      }, tasaSavedLabel: this.state.tasaSaved && this.state.tasaSaved[p.key] ? "Guardado ✓" : "Guardar",
+      onTasaSave: async ()=>{
+        if(this.state.apiBase){
+          try{
+            await this.apiFetch("/api/tasas", { method:"PUT", body: JSON.stringify({ [p.key]: this.state.tasas[p.key] }) });
+            this.setState(s=>({apiError:"", lastUpdatedAt:new Date().toISOString(), tasaSaved:{...s.tasaSaved,[p.key]:true}}));
+          }catch(e){ this.setState({apiError: e.message}); }
+          return;
+        }
+        this.setState(s=>({lastUpdatedAt:new Date().toISOString(), tasaSaved:{...s.tasaSaved,[p.key]:true}}));
       }})),
       prestamoActual: {...prestamoActualData, tasaLabel: prestamoActualData.tasa},
       goPrestamos: ()=>this.go("prestamos"),
