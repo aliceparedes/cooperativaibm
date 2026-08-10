@@ -2,7 +2,7 @@ const fs = require("fs");
 const path = require("path");
 
 const DEFAULT_DATA = {
-  tasas: { hipotecario: 8.9, vehicular: 11.5, educativo: 9.5, salud: 10.0 },
+  tasas: { "sola-firma": 13, consumo: 13, "largo-plazo": 12, automotriz: 8.0, hipotecario: 8, garantia: 11, academico: 8.75 },
   anuncios: [
     {
       id: "seed-1",
@@ -14,8 +14,8 @@ const DEFAULT_DATA = {
     }
   ],
   proveedores: [
-    { id: "seed-1", name: "Plaza Vea", cat: "Supermercados", desc: "Descuento en compras y días de socio exclusivos.", disc: "Hasta 10% dcto." },
-    { id: "seed-2", name: "Inkafarma", cat: "Farmacias", desc: "Precios preferenciales en medicamentos y cuidado personal.", disc: "15% dcto." }
+    { id: "seed-1", name: "Rímac Seguros", cat: "Seguro de Autos", desc: "Mejor tarifa del mercado, descuento de la prima en 18 meses sin recargo de intereses.", disc: "Tarifa corporativa" },
+    { id: "seed-2", name: "Oncosalud", cat: "Salud", desc: "Convenio corporativo para socios y familiares directos.", disc: "18% dcto." }
   ],
   updatedAt: new Date().toISOString()
 };

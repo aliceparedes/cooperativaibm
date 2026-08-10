@@ -33,7 +33,7 @@
 
   <!-- SIDEBAR -->
   <aside style="width:280px;flex:0 0 280px;background:#000;display:flex;flex-direction:column;padding:28px 24px;color:#fff">
-    <div onClick="{{ goInicio }}" style="font-size:20px;font-weight:700;letter-spacing:-0.02em;cursor:pointer;line-height:1.2;margin-bottom:44px">IBM Cooperativa<br>de Empleados</div>
+    <div onClick="{{ goInicio }}" style="font-size:20px;font-weight:700;letter-spacing:-0.02em;cursor:pointer;line-height:1.2;margin-bottom:44px">Cooperativa<br>IBM · Kyndryl · Bluetab</div>
     <nav style="display:flex;flex-direction:column;gap:6px;flex:1">
       <sc-for list="{{ nav }}" as="item" hint-placeholder-count="5">
         <div onClick="{{ item.go }}" style="{{ item.style }}">{{ item.label }}</div>
@@ -70,10 +70,10 @@
             <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="hero-inicio" shape="rect" fit="cover" src="https://picsum.photos/id/1048/1600/720" placeholder="Foto edificio corporativo IBM" hint-size="100%,100%"></x-import>
           </div>
           <div style="position:absolute;inset:0;background:linear-gradient(to top,#fff 4%,rgba(255,255,255,0.78) 26%,rgba(255,255,255,0) 62%);pointer-events:none"></div>
-          <h1 style="position:relative;padding:0 56px 48px;font-size:64px;line-height:1.02;font-weight:800;letter-spacing:-0.03em;max-width:900px;text-wrap:balance;pointer-events:none">¡Bienvenido a la Cooperativa de Empleados IBM Perú!</h1>
+          <h1 style="position:relative;padding:0 56px 48px;font-size:64px;line-height:1.02;font-weight:800;letter-spacing:-0.03em;max-width:900px;text-wrap:balance;pointer-events:none">¡Bienvenido a la Cooperativa de los Empleados de IBM, Kyndryl y Bluetab!</h1>
         </div>
         <div style="padding:8px 56px 64px;max-width:1100px">
-          <p style="font-size:21px;line-height:1.55;color:#52606d;max-width:820px">Nuestra cooperativa, fundada el 18 de julio de 1942, capta los recursos de sus socios para formar un fondo de uso común, ofreciendo ahorro, crédito y beneficios exclusivos a la familia IBM.</p>
+          <p style="font-size:21px;line-height:1.55;color:#52606d;max-width:820px">Nuestra cooperativa, fundada el 18 de julio de 1942, capta los recursos de sus socios para formar un fondo de uso común, ofreciendo ahorro, crédito y beneficios exclusivos a la familia IBM, Kyndryl y Bluetab.</p>
 
           <div style="display:flex;align-items:baseline;justify-content:space-between;margin-top:52px;margin-bottom:20px">
             <h2 style="font-size:30px;font-weight:600;letter-spacing:-0.01em;font-family:'IBM Plex Serif',Georgia,serif">Beneficios</h2>
@@ -118,13 +118,74 @@
             <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="quienes-foto" shape="rect" fit="cover" src="https://picsum.photos/id/832/1000/760" placeholder="Foto oficina / equipo IBM" hint-size="100%,100%"></x-import>
           </div>
           <div>
-            <h2 style="font-size:30px;font-weight:700;line-height:1.15;margin-bottom:18px">Cooperativa de Ahorro y Créditos de los Empleados IBM</h2>
-            <p style="font-size:18px;line-height:1.6;color:#52606d">Somos una cooperativa sin fines de lucro fundada el 18 de julio de 1942, dedicada a captar recursos de nuestros socios para formar un fondo de uso común. Realizamos prestaciones y actividades en favor de nuestros asociados respetando los principios cooperativos que nos rigen desde nuestros inicios.</p>
+            <h2 style="font-size:30px;font-weight:700;line-height:1.15;margin-bottom:18px">Cooperativa de Ahorro y Crédito de los Empleados de IBM, Kyndryl y Bluetab</h2>
+            <p style="font-size:18px;line-height:1.6;color:#52606d">Somos una cooperativa sin fines de lucro que capta los recursos de nuestros socios para formar un fondo de uso común, otorga financiamiento con tasas competitivas y brinda servicios con tarifas especiales a través de convenios corporativos, respetando los principios cooperativos que nos rigen desde nuestros inicios. Estamos inscritos en el Registro Nacional de Cooperativas de Ahorro y Crédito y somos supervisados por la Superintendencia de Banca y Seguros (SBS).</p>
           </div>
         </div>
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:920px">
+
+        <h2 style="font-size:26px;font-weight:700;margin-bottom:24px">Nuestra historia</h2>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:52px">
+          <sc-for list="{{ historia }}" as="h" hint-placeholder-count="4">
+            <div style="border-top:4px solid #0f62fe;padding-top:14px">
+              <div style="font-size:14px;font-weight:700;color:#0f62fe;margin-bottom:8px">{{ h.date }}</div>
+              <p style="font-size:14px;line-height:1.5;color:#52606d">{{ h.text }}</p>
+            </div>
+          </sc-for>
+        </div>
+
+        <h2 style="font-size:26px;font-weight:700;margin-bottom:18px">Documentos</h2>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:920px;margin-bottom:52px">
           <sc-for list="{{ docLinks }}" as="d" hint-placeholder-count="6">
             <button style="border:1px solid #d9dee4;background:#fff;border-radius:12px;padding:22px;font-size:17px;font-weight:600;color:#161616;cursor:pointer;font-family:inherit" style-hover="border:1px solid #0f62fe;background:#edf5ff">{{ d }}</button>
+          </sc-for>
+        </div>
+
+        <h2 style="font-size:26px;font-weight:700;margin-bottom:18px">Contactos</h2>
+        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:24px;max-width:920px">
+          <sc-for list="{{ contactos }}" as="c" hint-placeholder-count="4">
+            <div style="border:1px solid #e5e8ec;border-radius:14px;padding:20px">
+              <div style="font-size:17px;font-weight:700;margin-bottom:6px">{{ c.name }}</div>
+              <a href="{{ c.mailto }}" style="font-size:14px;font-weight:600;display:block;margin-bottom:8px">{{ c.email }}</a>
+              <div style="font-size:14px;color:#52606d;line-height:1.5">{{ c.roles }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </section>
+      </sc-if>
+
+      <!-- ================= AHORRO ================= -->
+      <sc-if value="{{ isAhorro }}" hint-placeholder-val="{{ false }}">
+      <section style="padding:56px">
+        <h1 style="font-size:48px;font-weight:800;letter-spacing:-0.02em;margin-bottom:10px">Ahorro</h1>
+        <p style="font-size:18px;color:#52606d;margin-bottom:36px;max-width:720px">La captación de ahorros por parte de la Cooperativa tiene 2 fuentes. No cobramos comisiones ni gastos administrativos.</p>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:48px">
+          <div style="border:1px solid #e5e8ec;border-radius:16px;padding:28px">
+            <h3 style="font-size:22px;font-weight:700;margin-bottom:14px">Ahorro Simple</h3>
+            <ul style="font-size:15px;color:#52606d;line-height:1.8;padding-left:18px">
+              <li>Ahorro mensual que se descuenta por planilla</li>
+              <li>Monto mínimo S/50</li>
+              <li>Es de libre disponibilidad</li>
+            </ul>
+          </div>
+          <div style="border:1px solid #e5e8ec;border-radius:16px;padding:28px">
+            <h3 style="font-size:22px;font-weight:700;margin-bottom:14px">Depósitos a Plazo Fijo</h3>
+            <ul style="font-size:15px;color:#52606d;line-height:1.8;padding-left:18px">
+              <li>Plazos de 90, 180, 360 y 720 días</li>
+              <li>Monto mínimo para abrir depósitos: S/3,000 ó $1,000</li>
+            </ul>
+          </div>
+        </div>
+
+        <h2 style="font-size:26px;font-weight:700;margin-bottom:18px">Tasas de interés que ofrece la Cooperativa</h2>
+        <div style="border:1px solid #e5e8ec;border-radius:14px;overflow:hidden;max-width:640px">
+          <div style="display:grid;grid-template-columns:2fr 1fr 1fr;background:#0f62fe;color:#fff;font-size:14px;font-weight:700;padding:14px 20px">
+            <div>Plazo</div><div>Soles</div><div>Dólares</div>
+          </div>
+          <sc-for list="{{ ahorroTasas }}" as="t" hint-placeholder-count="5">
+            <div style="display:grid;grid-template-columns:2fr 1fr 1fr;padding:14px 20px;font-size:15px;border-top:1px solid #eceef1" style-hover="background:#f4f8fc">
+              <div style="font-weight:600">{{ t.plazo }}</div><div>{{ t.soles }}</div><div>{{ t.dolares }}</div>
+            </div>
           </sc-for>
         </div>
       </section>
@@ -209,10 +270,10 @@
                 <div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px">
                   <h3 style="font-size:22px;font-weight:700;display:flex;align-items:center;gap:11px">
                     <span style="width:34px;height:34px;border-radius:10px;background:{{ l.bg }};color:{{ l.color }};display:flex;align-items:center;justify-content:center;flex:0 0 34px">
-                    <sc-if value="{{ l.key === 'hipotecario' }}" hint-placeholder-val="{{ true }}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></sc-if>
-                    <sc-if value="{{ l.key === 'vehicular' }}" hint-placeholder-val="{{ false }}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg></sc-if>
-                    <sc-if value="{{ l.key === 'educativo' }}" hint-placeholder-val="{{ false }}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></svg></sc-if>
-                    <sc-if value="{{ l.key === 'salud' }}" hint-placeholder-val="{{ false }}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 2v2"/><path d="M5 2v2"/><path d="M5 3H4a2 2 0 0 0-2 2v4a6 6 0 0 0 12 0V5a2 2 0 0 0-2-2h-1"/><path d="M8 15a6 6 0 0 0 12 0v-3"/><circle cx="20" cy="10" r="2"/></svg></sc-if>
+                    <sc-if value="{{ l.icon === 'house' }}" hint-placeholder-val="{{ true }}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></sc-if>
+                    <sc-if value="{{ l.icon === 'car' }}" hint-placeholder-val="{{ false }}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg></sc-if>
+                    <sc-if value="{{ l.icon === 'cap' }}" hint-placeholder-val="{{ false }}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></svg></sc-if>
+                    <sc-if value="{{ l.icon === 'cash' }}" hint-placeholder-val="{{ false }}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg></sc-if>
                     </span>
                     {{ l.title }}
                   </h3>
@@ -235,6 +296,7 @@
             </div>
           </sc-for>
         </div>
+        <p style="font-size:13px;color:#8b95a1;max-width:720px">Consideraciones adicionales: los préstamos están sujetos a evaluación crediticia. Se considera una tasa de 0.5% anual adicional por Seguro de Desgravamen.</p>
       </section>
       </sc-if>
 
@@ -250,10 +312,10 @@
           <div>
             <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px">
               <span style="width:52px;height:52px;border-radius:14px;background:{{ prestamoActual.bg }};color:{{ prestamoActual.color }};display:flex;align-items:center;justify-content:center;flex:0 0 52px">
-              <sc-if value="{{ prestamoActual.key === 'hipotecario' }}" hint-placeholder-val="{{ true }}"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></sc-if>
-              <sc-if value="{{ prestamoActual.key === 'vehicular' }}" hint-placeholder-val="{{ false }}"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg></sc-if>
-              <sc-if value="{{ prestamoActual.key === 'educativo' }}" hint-placeholder-val="{{ false }}"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></svg></sc-if>
-              <sc-if value="{{ prestamoActual.key === 'salud' }}" hint-placeholder-val="{{ false }}"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 2v2"/><path d="M5 2v2"/><path d="M5 3H4a2 2 0 0 0-2 2v4a6 6 0 0 0 12 0V5a2 2 0 0 0-2-2h-1"/><path d="M8 15a6 6 0 0 0 12 0v-3"/><circle cx="20" cy="10" r="2"/></svg></sc-if>
+              <sc-if value="{{ prestamoActual.icon === 'house' }}" hint-placeholder-val="{{ true }}"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></sc-if>
+              <sc-if value="{{ prestamoActual.icon === 'car' }}" hint-placeholder-val="{{ false }}"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg></sc-if>
+              <sc-if value="{{ prestamoActual.icon === 'cap' }}" hint-placeholder-val="{{ false }}"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></svg></sc-if>
+              <sc-if value="{{ prestamoActual.icon === 'cash' }}" hint-placeholder-val="{{ false }}"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg></sc-if>
               </span>
               <h1 style="font-size:36px;font-weight:800;letter-spacing:-0.02em;color:#161616">{{ prestamoActual.title }}</h1>
             </div>
@@ -275,7 +337,7 @@
                 <div style="font-size:15px;font-weight:600;margin-bottom:6px">Monto del préstamo</div>
                 <div style="position:relative;padding-top:32px">
                   <div style="position:absolute;top:0;{{ montoTooltipStyle }};transform:translateX(-50%);background:#161616;color:#fff;font-size:13px;font-weight:700;padding:5px 11px;border-radius:8px;white-space:nowrap;pointer-events:none">{{ montoLabel }}</div>
-                  <input type="range" class="dc-slider" min="{{ montoMin }}" max="{{ montoMax }}" step="1000" value="{{ monto }}" onInput="{{ onMonto }}" style="{{ montoTrackStyle }}">
+                  <input type="range" class="dc-slider" min="{{ montoMin }}" max="{{ montoMax }}" step="{{ montoStep }}" value="{{ monto }}" onInput="{{ onMonto }}" style="{{ montoTrackStyle }}">
                 </div>
                 <div style="display:flex;justify-content:space-between;font-size:11px;color:#8d8d8d;margin-top:8px"><span>{{ montoMinLabel }}</span><span>{{ montoMaxLabel }}</span></div>
               </div>
@@ -283,7 +345,7 @@
                 <div style="font-size:15px;font-weight:600;margin-bottom:6px">Plazo</div>
                 <div style="position:relative;padding-top:32px">
                   <div style="position:absolute;top:0;{{ plazoTooltipStyle }};transform:translateX(-50%);background:#161616;color:#fff;font-size:13px;font-weight:700;padding:5px 11px;border-radius:8px;white-space:nowrap;pointer-events:none">{{ plazo }} meses</div>
-                  <input type="range" class="dc-slider" min="6" max="120" step="6" value="{{ plazo }}" onInput="{{ onPlazo }}" style="{{ plazoTrackStyle }}">
+                  <input type="range" class="dc-slider" min="{{ plazoMin }}" max="{{ plazoMax }}" step="{{ plazoStep }}" value="{{ plazo }}" onInput="{{ onPlazo }}" style="{{ plazoTrackStyle }}">
                 </div>
                 <div style="display:flex;justify-content:space-between;font-size:11px;color:#8d8d8d;margin-top:8px"><span>{{ plazoMinLabel }}</span><span>{{ plazoMaxLabel }}</span></div>
               </div>
@@ -451,12 +513,21 @@
           <div style="text-align:center;padding:40px 0">
             <div style="width:64px;height:64px;border-radius:999px;background:#defbe6;color:#0e6027;display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:800;margin:0 auto 20px">✓</div>
             <h1 style="font-size:32px;font-weight:800;letter-spacing:-0.02em;margin-bottom:10px">¡Solicitud enviada!</h1>
-            <p style="font-size:16px;color:#52606d">Gracias, {{ registroNombre }}. Un asesor de la Cooperativa validará tu vínculo laboral con IBM Perú y te contactará por correo en los próximos días.</p>
+            <p style="font-size:16px;color:#52606d">Gracias, {{ registroNombre }}. Un asesor de la Cooperativa validará tu vínculo laboral con IBM, Kyndryl o Bluetab y te contactará por correo en los próximos días.</p>
           </div>
         </sc-if>
         <sc-if value="{{ !registroSuccess }}" hint-placeholder-val="{{ true }}">
           <h1 style="font-size:42px;font-weight:800;letter-spacing:-0.02em;margin-bottom:8px">Regístrate como socio</h1>
-          <p style="font-size:16px;color:#52606d;margin-bottom:32px">Completa tus datos. Un asesor validará tu vínculo laboral con IBM Perú.</p>
+          <p style="font-size:16px;color:#52606d;margin-bottom:24px">Completa tus datos. Un asesor validará tu vínculo laboral con IBM, Kyndryl o Bluetab.</p>
+          <div style="background:#f4f8fc;border-radius:14px;padding:20px 22px;margin-bottom:28px">
+            <div style="font-size:14px;font-weight:700;margin-bottom:10px">Requisitos de inscripción</div>
+            <ul style="font-size:14px;color:#52606d;line-height:1.7;padding-left:18px">
+              <li>Ser empleado de IBM, Kyndryl o Bluetab.</li>
+              <li>Suscribir 1,600 acciones de S/1.00 cada una (descontable en 10 cuotas).</li>
+              <li>Ahorrar mensualmente un monto desde S/50.00.</li>
+              <li>Aportar US$5.00 mensuales al Fondo de Sepelio.</li>
+            </ul>
+          </div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
             <sc-for list="{{ regFields }}" as="f" hint-placeholder-count="6">
               <div style="{{ f.wrap }}">
@@ -516,7 +587,7 @@
       </section>
       </sc-if>
 
-      <footer style="background:#161616;color:#c6c6c6;padding:22px 56px;font-size:13px;text-align:center">2026 © Cooperativa de Ahorro y Créditos de los Empleados IBM Perú · Última actualización: {{ lastUpdated }}</footer>
+      <footer style="background:#161616;color:#c6c6c6;padding:22px 56px;font-size:13px;text-align:center">2026 © Cooperativa de Ahorro y Crédito de los Empleados de IBM, Kyndryl y Bluetab · Supervisada por la SBS · Última actualización: {{ lastUpdated }}</footer>
 
     </main>
   </div>
@@ -568,9 +639,9 @@
   </sc-if>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;100%&quot;,&quot;height&quot;:&quot;800px&quot;},&quot;tasaAnual&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:null,&quot;min&quot;:5,&quot;max&quot;:20,&quot;step&quot;:0.5,&quot;unit&quot;:&quot;%&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Simulador&quot;,&quot;label&quot;:&quot;Forzar tasa anual (opcional)&quot;},&quot;montoMax&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:150000,&quot;min&quot;:50000,&quot;max&quot;:300000,&quot;step&quot;:10000,&quot;unit&quot;:&quot;S/&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Simulador&quot;,&quot;label&quot;:&quot;Monto máximo&quot;},&quot;mostrarSimulador&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Simulador&quot;,&quot;label&quot;:&quot;Mostrar simulador&quot;}}">
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;100%&quot;,&quot;height&quot;:&quot;800px&quot;},&quot;mostrarSimulador&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Simulador&quot;,&quot;label&quot;:&quot;Mostrar simulador&quot;}}">
 class Component extends DCLogic {
-  state = { page: "inicio", monto: 30000, plazo: 24, showPrefs: false, promos: { descuentos: true, prestamos: false, servicios: false, seguros: false }, saved: { ben0: true, ben1: false, ben2: false, ben3: true },
+  state = { page: "inicio", monto: 300000, plazo: 180, showPrefs: false, promos: { descuentos: true, prestamos: false, servicios: false, seguros: false }, saved: { ben0: true, ben1: false, ben2: false, ben3: true },
     simTipo: "hipotecario", ingreso: 6000,
     draft: "", feed: "todos",
     login: { user: "", pass: "" }, loginError: "", simView: "mensual",
@@ -580,24 +651,27 @@ class Component extends DCLogic {
     apiBase: "",
     apiError: "",
     lastUpdatedAt: "2026-08-03T00:00:00-05:00",
-    tasas: { hipotecario: 8.9, vehicular: 11.5, educativo: 9.5, salud: 10.0 },
+    tasas: { "sola-firma": 13, consumo: 13, "largo-plazo": 12, automotriz: 8.0, hipotecario: 8, garantia: 11, academico: 8.75 },
     tasaSaved: {},
     registro: { nombres: "", apellidos: "", dni: "", area: "", email: "", celular: "", password: "", accept: false }, registroError: "", registroSuccess: false,
     newProv: { name: "", cat: "", desc: "", disc: "" },
     proveedores: [
-      {slotId:"prov-0",name:"Plaza Vea",cat:"Supermercados",desc:"Descuento en compras y días de socio exclusivos.",disc:"Hasta 10% dcto."},
-      {slotId:"prov-1",name:"Inkafarma",cat:"Farmacias",desc:"Precios preferenciales en medicamentos y cuidado personal.",disc:"15% dcto."},
-      {slotId:"prov-2",name:"Cineplanet",cat:"Entretenimiento",desc:"Entradas y combos a precio de socio todo el año.",disc:"2x1 martes"},
-      {slotId:"prov-3",name:"Ripley",cat:"Retail",desc:"Cuotas sin intereses y campañas anticipadas para socios.",disc:"Hasta 20% dcto."},
-      {slotId:"prov-4",name:"Sodimac",cat:"Mejoramiento del hogar",desc:"Descuentos en materiales y servicios de instalación.",disc:"10% dcto."},
-      {slotId:"prov-5",name:"Rímac Seguros",cat:"Seguros",desc:"Pólizas de salud, vida y vehicular a tarifa corporativa.",disc:"Tarifa corporativa"},
-      {slotId:"prov-6",name:"Interbank",cat:"Banca",desc:"Convenio de descuento por planilla y beneficios financieros.",disc:"Sin comisión"},
-      {slotId:"prov-7",name:"Real Plaza",cat:"Centros comerciales",desc:"Estacionamiento y promociones exclusivas para socios.",disc:"Beneficios"}
+      {slotId:"prov-0",name:"Rímac Seguros",cat:"Seguro de Autos",desc:"Mejor tarifa del mercado para tu auto, con descuento de la prima en 18 meses sin recargo de intereses y descuento por planilla.",disc:"Tarifa corporativa"},
+      {slotId:"prov-1",name:"Oncosalud",cat:"Salud",desc:"Convenio corporativo para socios y familiares directos.",disc:"18% dcto."},
+      {slotId:"prov-2",name:"Movistar",cat:"Telefonía celular",desc:"Contrato corporativo con promociones especiales en planes tarifarios y descuentos en equipos. La línea pasa a ser corporativa y el plan se descuenta por planilla.",disc:"Plan corporativo"},
+      {slotId:"prov-3",name:"Assist Card",cat:"Seguro de viaje",desc:"Somos agentes autorizados para emitir Seguros de Viaje de Assist Card con descuento.",disc:"Descuento socio"},
+      {slotId:"prov-4",name:"Jardines de la Paz",cat:"Servicio funerario",desc:"Operador funerario afiliado al Fondo de Sepelio de la Cooperativa.",disc:"Cobertura Fondo de Sepelio"},
+      {slotId:"prov-5",name:"Campo Fe",cat:"Servicio funerario",desc:"Operador funerario afiliado al Fondo de Sepelio de la Cooperativa.",disc:"Cobertura Fondo de Sepelio"},
+      {slotId:"prov-6",name:"Samsung",cat:"Tecnología",desc:"Descuentos corporativos para socios de la Cooperativa.",disc:"Descuento corporativo"},
+      {slotId:"prov-7",name:"Smart Fit",cat:"Salud y bienestar",desc:"Descuentos corporativos para socios de la Cooperativa.",disc:"Descuento corporativo"},
+      {slotId:"prov-8",name:"Perufarma",cat:"Farmacias",desc:"Descuentos corporativos para socios de la Cooperativa.",disc:"Descuento corporativo"},
+      {slotId:"prov-9",name:"Vitapoint",cat:"Salud y bienestar",desc:"Descuentos corporativos para socios de la Cooperativa.",disc:"Descuento corporativo"},
+      {slotId:"prov-10",name:"Almendariz",cat:"Otros proveedores",desc:"Descuentos corporativos para socios de la Cooperativa.",disc:"Descuento corporativo"}
     ],
     posts: [
-      {id:1,author:"Cooperativa IBM",role:"Cuenta oficial",time:"hace 2 h",tag:"Anuncio",color:"#0f62fe",initials:"CI",tab:"cooperativa",text:"📢 ¡Nueva alianza! A partir de este mes, Cineplanet se suma a nuestros convenios con 2x1 todos los martes presentando tu carnet digital de socio. Actívalo desde tu perfil.",hasImg:true,slotId:"post-1",img:"https://picsum.photos/seed/cinema/900/560",likes:48,liked:false,comments:12},
-      {id:2,author:"Junta Directiva",role:"Gobierno cooperativo",time:"ayer",tag:"Evento",color:"#8a3ffc",initials:"JD",tab:"eventos",text:"Los invitamos a la Asamblea General de Socios el sábado 26 de julio, 10:00 a.m. en el auditorio central. Se presentará la memoria anual y el reparto de excedentes 2025.",hasImg:false,slotId:"post-2",img:"",likes:31,liked:true,comments:5},
-      {id:3,author:"Comité de Bienestar",role:"Socios",time:"hace 3 días",tag:"Descuento",color:"#009d9a",initials:"CB",tab:"proveedores",text:"🏷️ Campaña escolar con Ripley: hasta 20% de descuento y 3 cuotas sin intereses en útiles y uniformes. Válida hasta agotar stock para toda la familia IBM.",hasImg:true,slotId:"post-3",img:"https://picsum.photos/seed/school/900/560",likes:64,liked:false,comments:9}
+      {id:1,author:"Cooperativa IBM",role:"Cuenta oficial",time:"hace 2 h",tag:"Anuncio",color:"#0f62fe",initials:"CI",tab:"cooperativa",text:"📢 Recuerda que puedes solicitar tus préstamos, tu Seguro de Autos con Rímac o inscribirte en el Fondo de Sepelio escribiendo a cualquiera de nuestras contactos en la sección Quiénes Somos.",hasImg:false,slotId:"post-1",img:"",likes:48,liked:false,comments:12},
+      {id:2,author:"Junta Directiva",role:"Gobierno cooperativo",time:"ayer",tag:"Evento",color:"#8a3ffc",initials:"JD",tab:"eventos",text:"Los invitamos a la Asamblea General de Socios. Se presentará la memoria anual y el reparto de excedentes.",hasImg:false,slotId:"post-2",img:"",likes:31,liked:true,comments:5},
+      {id:3,author:"Comité de Bienestar",role:"Socios",time:"hace 3 días",tag:"Convenio",color:"#009d9a",initials:"CB",tab:"proveedores",text:"🏷️ Recuerda que Oncosalud ofrece 18% de descuento sobre la tarifa de mercado para socios y familiares directos.",hasImg:false,slotId:"post-3",img:"",likes:64,liked:false,comments:9}
     ] };
 
   go(p){ this.setState({ page: p }); const m=this.mainEl; if(m) m.scrollTop=0; }
@@ -656,36 +730,56 @@ class Component extends DCLogic {
 
   renderVals(){
     const page = this.state.page;
-    const montoMin = 1000, montoMax = this.props.montoMax ?? 150000;
     const mostrarSimulador = this.props.mostrarSimulador ?? true;
 
     const CREDIT_COLORS = {
-      hipotecario: {color:"#0f62fe", bg:"#edf5ff"},
-      vehicular:   {color:"#8a3ffc", bg:"#f6f2ff"},
-      educativo:   {color:"#009d9a", bg:"#d9fbfb"},
-      salud:       {color:"#d02670", bg:"#fff0f6"}
+      "sola-firma": {color:"#d02670", bg:"#fff0f6", icon:"cash"},
+      consumo:      {color:"#ff832b", bg:"#fff1e6", icon:"cash"},
+      "largo-plazo":{color:"#24a148", bg:"#defbe6", icon:"cash"},
+      automotriz:   {color:"#8a3ffc", bg:"#f6f2ff", icon:"car"},
+      hipotecario:  {color:"#0f62fe", bg:"#edf5ff", icon:"house"},
+      garantia:     {color:"#002d9c", bg:"#e5f0ff", icon:"house"},
+      academico:    {color:"#009d9a", bg:"#d9fbfb", icon:"cap"}
+    };
+    const LOAN_LIMITS = {
+      "sola-firma": {montoMin:500, montoMax:3000, montoStep:100, plazoMin:3, plazoMax:6, plazoStep:1, bank:22, defMonto:1500, defPlazo:6},
+      consumo:      {montoMin:1000, montoMax:10000, montoStep:500, plazoMin:3, plazoMax:12, plazoStep:1, bank:24, defMonto:5000, defPlazo:12},
+      "largo-plazo":{montoMin:2000, montoMax:60000, montoStep:1000, plazoMin:6, plazoMax:48, plazoStep:6, bank:20, defMonto:20000, defPlazo:36},
+      automotriz:   {montoMin:5000, montoMax:150000, montoStep:5000, plazoMin:6, plazoMax:60, plazoStep:6, bank:15, defMonto:50000, defPlazo:48},
+      hipotecario:  {montoMin:20000, montoMax:900000, montoStep:10000, plazoMin:12, plazoMax:216, plazoStep:12, bank:13, defMonto:300000, defPlazo:180},
+      garantia:     {montoMin:20000, montoMax:900000, montoStep:10000, plazoMin:12, plazoMax:216, plazoStep:12, bank:16, defMonto:300000, defPlazo:180},
+      academico:    {montoMin:2000, montoMax:50000, montoStep:1000, plazoMin:6, plazoMax:48, plazoStep:6, bank:15, defMonto:15000, defPlazo:36}
     };
 
     const tasas = this.state.tasas;
     const loanTypes = [
-      {key:"hipotecario",label:"Hipotecario",tea:tasas.hipotecario,bank:14.5},
-      {key:"vehicular",label:"Vehicular",tea:tasas.vehicular,bank:18.0},
-      {key:"educativo",label:"Educativo",tea:tasas.educativo,bank:16.0},
-      {key:"salud",label:"Salud",tea:tasas.salud,bank:17.0}
-    ].map(t=>({...t, ...CREDIT_COLORS[t.key]}));
+      {key:"sola-firma",label:"Sola Firma",tea:tasas["sola-firma"]},
+      {key:"consumo",label:"Consumo",tea:tasas.consumo},
+      {key:"largo-plazo",label:"Largo Plazo",tea:tasas["largo-plazo"]},
+      {key:"automotriz",label:"Automotriz",tea:tasas.automotriz},
+      {key:"hipotecario",label:"Hipotecario",tea:tasas.hipotecario},
+      {key:"garantia",label:"Garantía Hipotecaria",tea:tasas.garantia},
+      {key:"academico",label:"Académico",tea:tasas.academico}
+    ].map(t=>({...t, ...CREDIT_COLORS[t.key], bank:LOAN_LIMITS[t.key].bank}));
     const sel = loanTypes.find(t=>t.key===this.state.simTipo) || loanTypes[0];
-    const tasa = this.props.tasaAnual != null ? this.props.tasaAnual : sel.tea;
+    const selLimits = LOAN_LIMITS[sel.key];
+    const tasa = sel.tea;
+    const montoMin = selLimits.montoMin, montoMax = selLimits.montoMax, montoStep = selLimits.montoStep;
+    const plazoMin = selLimits.plazoMin, plazoMax = selLimits.plazoMax, plazoStep = selLimits.plazoStep;
 
     const prestamosData = [
-      {key:"hipotecario",slotId:"loan-0",photo:"https://picsum.photos/seed/house2/800/400",title:"Crédito Hipotecario",tasa:tasas.hipotecario.toFixed(1)+"% TEA",img:"Foto casa",desc:"Financiamiento para la casa propia con tasas preferenciales y plazos de hasta 20 años."},
-      {key:"vehicular",slotId:"loan-1",photo:"https://picsum.photos/seed/car2/800/400",title:"Crédito Vehicular",tasa:tasas.vehicular.toFixed(1)+"% TEA",img:"Foto auto",desc:"Adquiere tu vehículo nuevo o usado con cuotas cómodas y aprobación rápida."},
-      {key:"educativo",slotId:"loan-2",photo:"https://picsum.photos/id/832/800/400",title:"Crédito Educativo",tasa:tasas.educativo.toFixed(1)+"% TEA",img:"Foto estudiantes",desc:"Financia estudios, posgrados y maestrías tuyas o de tus hijos."},
-      {key:"salud",slotId:"loan-3",photo:"https://picsum.photos/seed/clinic2/800/400",title:"Crédito de Salud",tasa:tasas.salud.toFixed(1)+"% TEA",img:"Foto clínica",desc:"Cobertura de tratamientos, cirugías y emergencias médicas para tu familia."}
+      {key:"sola-firma",slotId:"loan-0",photo:"https://picsum.photos/seed/wallet1/800/400",title:"Sola Firma",tasa:tasas["sola-firma"].toFixed(1)+"% TEA",img:"Préstamo sola firma",desc:"Hasta S/3,000 a pagar en 6 meses. Aprobación rápida, sin garantías adicionales."},
+      {key:"consumo",slotId:"loan-1",photo:"https://picsum.photos/seed/wallet2/800/400",title:"Consumo",tasa:tasas.consumo.toFixed(1)+"% TEA",img:"Préstamo de consumo",desc:"Hasta S/10,000 a pagar en 12 meses. Requiere mínimo 6 meses como socio."},
+      {key:"largo-plazo",slotId:"loan-2",photo:"https://picsum.photos/seed/wallet3/800/400",title:"Largo Plazo",tasa:tasas["largo-plazo"].toFixed(1)+"% TEA",img:"Préstamo a largo plazo",desc:"Hasta S/60,000 a pagar en 48 meses. Requiere mínimo 6 meses como socio."},
+      {key:"automotriz",slotId:"loan-3",photo:"https://picsum.photos/seed/car2/800/400",title:"Crédito Automotriz",tasa:tasas.automotriz.toFixed(1)+"% TEA",img:"Foto auto",desc:"Hasta el 80% del valor del auto, monto máximo equivalente a US$40,000, a pagar en 60 meses. Requiere mínimo 6 meses como socio."},
+      {key:"hipotecario",slotId:"loan-4",photo:"https://picsum.photos/seed/house2/800/400",title:"Crédito Hipotecario",tasa:tasas.hipotecario.toFixed(1)+"% TEA",img:"Foto casa",desc:"Hasta el 80% del valor del inmueble, monto máximo S/900,000, a pagar en hasta 216 meses (18 años). Requiere 12 meses como socio."},
+      {key:"garantia",slotId:"loan-5",photo:"https://picsum.photos/seed/house3/800/400",title:"Garantía Hipotecaria",tasa:tasas.garantia.toFixed(1)+"% TEA",img:"Garantía hipotecaria",desc:"Hasta S/900,000, a pagar en hasta 216 meses (18 años). Requiere 12 meses como socio."},
+      {key:"academico",slotId:"loan-6",photo:"https://picsum.photos/id/832/800/400",title:"Crédito Académico",tasa:tasas.academico.toFixed(1)+"% TEA",img:"Foto estudiantes",desc:"Hasta S/50,000 a pagar en 48 meses. Requiere mínimo 6 meses como socio."}
     ].map(p=>({...p, ...CREDIT_COLORS[p.key]}));
     const prestamoActualData = prestamosData.find(p=>p.key===this.state.simTipo) || prestamosData[0];
 
     const navItems = [
-      ["Anuncios","anuncios"],["Quiénes Somos","quienes"],["Proveedores","proveedores"],
+      ["Anuncios","anuncios"],["Quiénes Somos","quienes"],["Ahorro","ahorro"],["Proveedores","proveedores"],
       ["Préstamos","prestamos"],["Servicios","servicios"]
     ];
     const nav = navItems.map(([label,key]) => ({
@@ -720,7 +814,7 @@ class Component extends DCLogic {
       nav,
       lastUpdated: this.formatUpdated(this.state.lastUpdatedAt),
       tasasUpdated: this.formatUpdated(this.state.lastUpdatedAt),
-      isInicio: page==="inicio", isQuienes: page==="quienes",
+      isInicio: page==="inicio", isQuienes: page==="quienes", isAhorro: page==="ahorro",
       isProveedores: page==="proveedores", isPrestamos: page==="prestamos", isPrestamoDetalle: page==="prestamo-detalle",
       isServicios: page==="servicios", isRegistro: page==="registro", isLogin: page==="login", isAnuncios: page==="anuncios",
       goInicio: ()=>this.go("inicio"), goRegistro: ()=>this.go("registro"),
@@ -790,9 +884,9 @@ class Component extends DCLogic {
         {label:"DNI / CE",type:"text",ph:"12345678",wrap:""}
       ],
       promoCards: [
-        {key:"descuentos",icon:"%",title:"Descuentos Corporativos",desc:"Ofertas y promociones especiales"},
-        {key:"prestamos",icon:"S/",title:"Préstamos",desc:"Hipotecario, vehicular, educación y más"},
-        {key:"servicios",icon:"★",title:"Servicios",desc:"Salud, seguros de vida y turismo"},
+        {key:"descuentos",icon:"%",title:"Convenios Corporativos",desc:"Ofertas y promociones especiales"},
+        {key:"prestamos",icon:"S/",title:"Préstamos",desc:"Hipotecario, automotriz, académico y más"},
+        {key:"servicios",icon:"★",title:"Servicios",desc:"Seguro de autos, Fondo de Sepelio y salud"},
         {key:"seguros",icon:"♥",title:"Bienestar",desc:"Eventos, capacitaciones y recreación"}
       ].map(c=>{
         const on = !!this.state.promos[c.key];
@@ -804,15 +898,15 @@ class Component extends DCLogic {
       }),
 
       pilares: [
-        {icon:"%",title:"Ahorra e invierte",desc:"Tus aportes forman un fondo común que genera rendimientos para toda la familia IBM."},
-        {icon:"S/",title:"Crédito a tasa preferencial",desc:"Préstamos hipotecarios, vehiculares y personales con las mejores tasas para socios."},
-        {icon:"★",title:"Beneficios exclusivos",desc:"Convenios y descuentos con empresas peruanas líderes en retail, salud y más."}
+        {icon:"%",title:"Ahorra e invierte",desc:"Ahorro simple desde S/50 mensuales o depósitos a plazo fijo, con intereses en soles y dólares."},
+        {icon:"S/",title:"Crédito a tasa preferencial",desc:"Sola Firma, Consumo, Largo Plazo, Automotriz, Hipotecario, Garantía Hipotecaria y Académico, sin comisiones ni gastos administrativos."},
+        {icon:"★",title:"Convenios corporativos",desc:"Seguro de Autos, Fondo de Sepelio, Oncosalud, telefonía y otros proveedores a tarifa especial."}
       ],
       beneficios: [
-        {key:"ben0",slotId:"ben-0",go:()=>this.go("proveedores"),photo:"https://picsum.photos/seed/ibmshop/800/500",title:"Descuentos Corporativos",desc:"Convenios con empresas peruanas líderes: retail, salud, entretenimiento y más, a precio de socio."},
-        {key:"ben1",slotId:"ben-1",go:()=>this.go("prestamos"),photo:"https://picsum.photos/id/500/800/500",title:"Préstamos",desc:"Créditos hipotecario, vehicular, educativo y de salud con tasas preferenciales para la familia IBM."},
-        {key:"ben2",slotId:"ben-2",go:()=>this.go("servicios"),photo:"https://picsum.photos/seed/ibmserv/800/500",title:"Servicios",desc:"Seguro de vida, convenios de salud, turismo y recreación para ti y tu familia."},
-        {key:"ben3",slotId:"ben-3",go:()=>this.go("quienes"),photo:"https://picsum.photos/seed/ibmsave/800/500",title:"Ahorro",desc:"Aporta al fondo común de la Cooperativa y haz crecer tus ahorros con respaldo desde 1942."}
+        {key:"ben0",slotId:"ben-0",go:()=>this.go("proveedores"),photo:"https://picsum.photos/seed/ibmshop/800/500",title:"Convenios Corporativos",desc:"Seguro de Autos con Rímac, Oncosalud, telefonía Movistar, Assist Card y otros proveedores a precio de socio."},
+        {key:"ben1",slotId:"ben-1",go:()=>this.go("prestamos"),photo:"https://picsum.photos/id/500/800/500",title:"Préstamos",desc:"Sola Firma, Consumo, Largo Plazo, Automotriz, Hipotecario, Garantía Hipotecaria y Académico con tasas preferenciales."},
+        {key:"ben2",slotId:"ben-2",go:()=>this.go("servicios"),photo:"https://picsum.photos/seed/ibmserv/800/500",title:"Servicios",desc:"Fondo de Sepelio, Seguro de Autos y convenios de salud para ti y tu familia."},
+        {key:"ben3",slotId:"ben-3",go:()=>this.go("ahorro"),photo:"https://picsum.photos/seed/ibmsave/800/500",title:"Ahorro",desc:"Ahorro simple desde S/50 mensuales o depósitos a plazo fijo, con intereses en soles y dólares."}
       ].map(b=>{
         const on = !!this.state.saved[b.key];
         return { ...b, toggle:()=>this.setState(s=>({saved:{...s.saved,[b.key]:!s.saved[b.key]}})),
@@ -821,10 +915,9 @@ class Component extends DCLogic {
       savedCount: Object.values(this.state.saved).filter(Boolean).length,
 
       banners: [
-        {slotId:"ban-0",brand:"Plaza Vea",tag:"Hasta 10% dcto.",photo:"https://picsum.photos/id/1080/700/420",headline:"Martes de socio en supermercados"},
-        {slotId:"ban-1",brand:"Cineplanet",tag:"2x1 los martes",photo:"https://picsum.photos/seed/cine/700/420",headline:"Cine para toda la familia IBM"},
-        {slotId:"ban-2",brand:"Rímac Seguros",tag:"Tarifa corporativa",photo:"https://picsum.photos/seed/health/700/420",headline:"Protege tu salud con precio de socio"},
-        {slotId:"ban-3",brand:"Sodimac",tag:"10% dcto.",photo:"https://picsum.photos/seed/home/700/420",headline:"Renueva tu hogar este invierno"}
+        {slotId:"ban-0",brand:"Rímac Seguros",tag:"Tarifa corporativa",photo:"https://picsum.photos/seed/health/700/420",headline:"La mejor tarifa del mercado para tu auto"},
+        {slotId:"ban-1",brand:"Oncosalud",tag:"18% dcto.",photo:"https://picsum.photos/seed/oncosalud/700/420",headline:"Convenio corporativo para ti y tu familia"},
+        {slotId:"ban-2",brand:"Movistar",tag:"Plan corporativo",photo:"https://picsum.photos/seed/telefonia/700/420",headline:"Descuentos en planes y equipos"}
       ],
 
       draft: this.state.draft,
@@ -864,10 +957,29 @@ class Component extends DCLogic {
 
       stats: [
         {value:"1942",label:"Fundada el 18 de julio"},
-        {value:"+2,400",label:"Socios activos"},
-        {value:"80+",label:"Años al servicio de la familia IBM"}
+        {value:"3",label:"Empresas: IBM, Kyndryl y Bluetab"},
+        {value:"84",label:"Años al servicio de nuestros socios"}
       ],
       docLinks: ["Historia","Funcionarios","Directiva","Memorias","Estados Financieros","Estatuto"],
+      ahorroTasas: [
+        {plazo:"Ahorro",soles:"2.00%",dolares:"0.25%"},
+        {plazo:"90 días",soles:"4.00%",dolares:"0.75%"},
+        {plazo:"180 días",soles:"4.50%",dolares:"1.50%"},
+        {plazo:"360 días",soles:"5.25%",dolares:"2.00%"},
+        {plazo:"720 días",soles:"5.50%",dolares:"2.50%"}
+      ],
+      historia: [
+        {date:"18 jul. 1942",text:"Fundada como \"Asociación de Empleados\"."},
+        {date:"12 dic. 1963",text:"Reconocida oficialmente como \"Cooperativa de Servicios Múltiples\"."},
+        {date:"4 ene. 1995",text:"Registrada como \"Cooperativa de Ahorro y Crédito de los Empleados de IBM\"."},
+        {date:"7 feb. 2019",text:"Inscrita en el Registro Nacional de Cooperativas de Ahorro y Crédito, supervisada por la SBS."}
+      ],
+      contactos: [
+        {name:"Diana Huanay",email:"dhuanay@pe.ibm.com",mailto:"mailto:dhuanay@pe.ibm.com",roles:"Préstamos Hipotecarios y Vehiculares · Inscripción en Seguro de Autos · Liquidación de Fondo de Sepelio · 999 436 902"},
+        {name:"Janet Ríos",email:"jrios@pe.ibm.com",mailto:"mailto:jrios@pe.ibm.com",roles:"Préstamos Consumo y Largo Plazo · Inscripción en Telefonía y Oncosalud"},
+        {name:"Eliana Barreda",email:"ebarreda@pe.ibm.com",mailto:"mailto:ebarreda@pe.ibm.com",roles:"Inscripción de nuevos socios · Préstamos a Sola Firma"},
+        {name:"Lucía Torres",email:"lucia.torres.polo@ibm.com",mailto:"mailto:lucia.torres.polo@ibm.com",roles:"Contacto general"}
+      ],
 
       newProv: this.state.newProv,
       onNewProvName: (e)=>this.setState(s=>({newProv:{...s.newProv,name:e.target.value}})),
@@ -899,7 +1011,8 @@ class Component extends DCLogic {
       apiError: this.state.apiError,
 
       prestamos: prestamosData.map(p=>({...p, goDetalle:()=>{
-        this.setState({simTipo:p.key, page:"prestamo-detalle"});
+        const lim = LOAN_LIMITS[p.key];
+        this.setState({simTipo:p.key, monto:lim.defMonto, plazo:lim.defPlazo, page:"prestamo-detalle"});
         const m=this.mainEl; if(m) m.scrollTop=0;
       }, tasaEdit: tasas[p.key], onTasaInput:(e)=>{
         const v = parseFloat(e.target.value); if(isNaN(v)) return;
@@ -919,17 +1032,17 @@ class Component extends DCLogic {
       goPrestamos: ()=>this.go("prestamos"),
 
       servicios: [
-        {slotId:"serv-0",photo:"https://picsum.photos/seed/park2/700/400",title:"Servicios funerarios",img:"Foto parque cementerio",desc:"Cobertura integral y apoyo para los socios y sus familias en los momentos que más se necesita."},
-        {slotId:"serv-1",photo:"https://picsum.photos/seed/family2/700/400",title:"Seguro de vida colectivo",img:"Foto familia",desc:"Protección económica para tus seres queridos incluida en tu membresía de socio."},
-        {slotId:"serv-2",photo:"https://picsum.photos/seed/office2/700/400",title:"Convenios de salud",img:"Foto consultorio",desc:"Atención médica, dental y chequeos preventivos en clínicas afiliadas a la Cooperativa."},
-        {slotId:"serv-3",photo:"https://picsum.photos/seed/travel2/700/400",title:"Turismo y recreación",img:"Foto viaje",desc:"Paquetes de viaje, campamentos y actividades familiares a precio de socio."}
+        {slotId:"serv-0",photo:"https://picsum.photos/seed/carins2/700/400",title:"Seguro de Autos",img:"Foto auto",desc:"Convenio con Rímac que garantiza la mejor tarifa del mercado. Descuento de la prima en 18 meses sin recargo de intereses, con descuento por planilla."},
+        {slotId:"serv-1",photo:"https://picsum.photos/seed/park2/700/400",title:"Fondo de Sepelio",img:"Foto parque cementerio",desc:"Cubre los gastos de sepelio del socio, cónyuge, hijos menores de 25 años y padres. Aporte de $5 mensuales (no reembolsable) y cobertura hasta $3,000 con Jardines de la Paz y Campo Fe."},
+        {slotId:"serv-2",photo:"https://picsum.photos/seed/office2/700/400",title:"Oncosalud",img:"Foto consultorio",desc:"Convenio corporativo para socios y familiares directos, con 18% de descuento sobre la tarifa de mercado."},
+        {slotId:"serv-3",photo:"https://picsum.photos/seed/phone2/700/400",title:"Telefonía y Assist Card",img:"Foto telefonía",desc:"Contrato corporativo con Movistar (promociones en planes y equipos, descuento por planilla) y venta de Seguros de Viaje Assist Card con descuento."}
       ],
 
       regFields: [
         {key:"nombres",label:"Nombres",type:"text",ph:"Nombres",wrap:""},
         {key:"apellidos",label:"Apellidos",type:"text",ph:"Apellidos",wrap:""},
         {key:"dni",label:"DNI",type:"text",ph:"40123456",wrap:""},
-        {key:"area",label:"Área en IBM",type:"text",ph:"Ej. Consulting",wrap:""},
+        {key:"area",label:"Empresa",type:"text",ph:"IBM, Kyndryl o Bluetab",wrap:""},
         {key:"email",label:"Correo electrónico",type:"email",ph:"nombre@ibm.com",wrap:"grid-column:1/-1"},
         {key:"celular",label:"Celular",type:"tel",ph:"+51 999 999 999",wrap:""},
         {key:"password",label:"Contraseña",type:"password",ph:"••••••••",wrap:""}
@@ -948,14 +1061,14 @@ class Component extends DCLogic {
         this.setState({registroError:"", registroSuccess:true});
       },
 
-      mostrarSimulador, montoMin, montoMax,
+      mostrarSimulador, montoMin, montoMax, montoStep, plazoMin, plazoMax, plazoStep,
       montoMinLabel: this.money(montoMin), montoMaxLabel: this.money(montoMax),
-      plazoMinLabel: "6 meses", plazoMaxLabel: "120 meses",
+      plazoMinLabel: plazoMin+" meses", plazoMaxLabel: plazoMax+" meses",
       ingresoMinLabel: this.money(1500), ingresoMaxLabel: this.money(20000),
       montoTrackStyle: trackBg(clampPct(((this.state.monto-montoMin)/(montoMax-montoMin))*100,0,100)),
       montoTooltipStyle: tooltipLeft(((this.state.monto-montoMin)/(montoMax-montoMin))*100),
-      plazoTrackStyle: trackBg(clampPct(((this.state.plazo-6)/(120-6))*100,0,100)),
-      plazoTooltipStyle: tooltipLeft(((this.state.plazo-6)/(120-6))*100),
+      plazoTrackStyle: trackBg(clampPct(((this.state.plazo-plazoMin)/(plazoMax-plazoMin))*100,0,100)),
+      plazoTooltipStyle: tooltipLeft(((this.state.plazo-plazoMin)/(plazoMax-plazoMin))*100),
       ingresoTrackStyle: trackBg(clampPct(((ing-1500)/(20000-1500))*100,0,100)),
       ingresoTooltipStyle: tooltipLeft(((ing-1500)/(20000-1500))*100),
       monto: this.state.monto, plazo: this.state.plazo,

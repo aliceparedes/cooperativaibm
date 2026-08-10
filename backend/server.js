@@ -56,7 +56,7 @@ app.delete("/api/proveedores/:id", requireAdmin, async (req, res) => {
 });
 
 app.put("/api/tasas", requireAdmin, async (req, res) => {
-  const allowed = ["hipotecario", "vehicular", "educativo", "salud"];
+  const allowed = ["sola-firma", "consumo", "largo-plazo", "automotriz", "hipotecario", "garantia", "academico"];
   const patch = {};
   for (const k of allowed) {
     const v = req.body && req.body[k];
