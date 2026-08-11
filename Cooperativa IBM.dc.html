@@ -11,14 +11,14 @@
 <helmet>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:wght@600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:"IBM Plex Sans","Helvetica Neue",Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;color:#161616}
+  body{font-family:"IBM Plex Sans","Helvetica Neue",Helvetica,Arial,sans-serif;font-optical-sizing:auto;font-style:normal;font-variation-settings:"wdth" 100;-webkit-font-smoothing:antialiased;color:#161616}
   a{color:#0f62fe;text-decoration:none}
   a:hover{color:#0043ce}
   ::-webkit-scrollbar{width:10px;height:10px}
-  ::-webkit-scrollbar-thumb{background:#d4d9df;border-radius:8px}
+  ::-webkit-scrollbar-thumb{background:#d4d9df;border-radius:0}
 
   input[type=range].dc-slider{-webkit-appearance:none;appearance:none;width:100%;height:8px;border-radius:999px;outline:none;cursor:pointer;background:transparent}
   input[type=range].dc-slider::-webkit-slider-runnable-track{height:8px;border-radius:999px}
@@ -29,17 +29,22 @@
   input[type=range].dc-slider::-moz-range-progress{height:8px;border-radius:999px;background:var(--slider-accent,#0f62fe)}
 </style>
 </helmet>
-<div style="display:flex;height:100vh;width:100%;background:#000;overflow:hidden;font-family:'IBM Plex Sans','Helvetica Neue',Helvetica,Arial,sans-serif">
+<div style="display:flex;height:100vh;width:100%;background:#000;overflow:hidden;font-family:'IBM Plex Sans','Helvetica Neue',Helvetica,Arial,sans-serif;font-optical-sizing:auto;font-style:normal;font-variation-settings:'wdth' 100">
 
   <!-- SIDEBAR -->
   <aside style="width:280px;flex:0 0 280px;background:#000;display:flex;flex-direction:column;padding:28px 24px;color:#fff">
-    <div onClick="{{ goInicio }}" style="font-size:20px;font-weight:700;letter-spacing:-0.02em;cursor:pointer;line-height:1.2;margin-bottom:44px">Cooperativa<br>IBM · Kyndryl · Bluetab</div>
+    <div onClick="{{ goInicio }}" style="font-size:20px;font-weight:700;letter-spacing:-0.02em;cursor:pointer;line-height:1.2;margin-bottom:44px">Cooperativa</div>
     <nav style="display:flex;flex-direction:column;gap:6px;flex:1">
       <sc-for list="{{ nav }}" as="item" hint-placeholder-count="5">
         <div onClick="{{ item.go }}" style="{{ item.style }}">{{ item.label }}</div>
       </sc-for>
     </nav>
-    <button onClick="{{ goRegistro }}" style="margin-top:24px;background:#0f62fe;color:#fff;border:none;border-radius:999px;padding:16px;font-size:16px;font-weight:600;cursor:pointer;font-family:inherit">Regístrate</button>
+    <sc-if value="{{ !isAdmin }}" hint-placeholder-val="{{ true }}">
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:24px">
+        <button onClick="{{ goRegistro }}" style="background:#0f62fe;color:#fff;border:none;border-radius:0;padding:16px;font-size:16px;font-weight:600;cursor:pointer;font-family:inherit">¡Vuélvete socio!</button>
+        <button onClick="{{ goLogin }}" style="background:transparent;color:#fff;border:1px solid #fff;border-radius:0;padding:16px;font-size:16px;font-weight:600;cursor:pointer;font-family:inherit">Iniciar como socio</button>
+      </div>
+    </sc-if>
   </aside>
 
   <!-- MAIN COLUMN -->
@@ -50,48 +55,68 @@
         <sc-if value="{{ apiError }}" hint-placeholder-val="{{ false }}">
           <span style="color:#ff8389;font-size:13px;font-weight:600;max-width:340px">{{ apiError }}</span>
         </sc-if>
-        <span style="background:#da1e28;color:#fff;font-size:13px;font-weight:700;padding:8px 16px;border-radius:999px;letter-spacing:0.02em">Modo administrador</span>
-        <button onClick="{{ logout }}" style="background:transparent;color:#fff;border:1px solid #4c4c4c;border-radius:999px;padding:12px 24px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit">Cerrar sesión</button>
+        <span style="background:#da1e28;color:#fff;font-size:13px;font-weight:700;padding:8px 16px;border-radius:0;letter-spacing:0.02em">Modo administrador</span>
+        <button onClick="{{ logout }}" style="background:transparent;color:#fff;border:1px solid #4c4c4c;border-radius:0;padding:12px 24px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit">Cerrar sesión</button>
       </sc-if>
       <sc-if value="{{ !isAdmin }}" hint-placeholder-val="{{ true }}">
-        <div onClick="{{ openPrefs }}" title="Tus preferencias" style="width:44px;height:44px;border-radius:999px;background:#0f62fe;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:17px;cursor:pointer">S</div>
-        <button onClick="{{ goLogin }}" style="background:#0f62fe;color:#fff;border:none;border-radius:999px;padding:13px 26px;font-size:16px;font-weight:600;cursor:pointer;font-family:inherit">Login Socios</button>
+        <div style="position:relative">
+          <div onClick="{{ toggleProfile }}" title="Tu perfil" style="display:flex;align-items:center;gap:9px;background:#17181b;color:#fff;border-radius:0;padding:6px 16px 6px 6px;cursor:pointer">
+            <div style="width:30px;height:30px;border-radius:0;background:#0f62fe;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex:0 0 30px">S</div>
+            <span style="font-weight:600;font-size:14px">Mi perfil</span>
+          </div>
+          <sc-if value="{{ showProfile }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;top:56px;right:0;width:280px;background:#fff;border-radius:0;box-shadow:0 16px 40px rgba(0,0,0,0.25);overflow:hidden;z-index:60;color:#161616">
+              <div style="padding:20px;display:flex;gap:12px;align-items:center;border-bottom:1px solid #eceef1">
+                <div style="width:48px;height:48px;border-radius:0;background:#0f62fe;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;flex:0 0 48px">S</div>
+                <div>
+                  <div style="font-size:16px;font-weight:700">Sofía Ramírez</div>
+                  <div style="font-size:13px;color:#8b95a1">Socia N.º 1842</div>
+                </div>
+              </div>
+              <div style="padding:16px 20px;display:flex;flex-direction:column;gap:10px;font-size:13px;color:#52606d;border-bottom:1px solid #eceef1">
+                <div style="display:flex;align-items:center;gap:9px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg> sofia.ramirez@pe.ibm.com</div>
+                <div style="display:flex;align-items:center;gap:9px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg> +51 987 654 321</div>
+                <div style="display:flex;align-items:center;gap:9px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg> Socia desde marzo 2019</div>
+              </div>
+              <div style="display:flex;flex-direction:column">
+                <a onClick="{{ openPrefsFromProfile }}" style="padding:14px 20px;font-size:14px;font-weight:600;cursor:pointer;color:#161616" style-hover="background:#f4f8fc">Editar preferencias</a>
+                <a onClick="{{ closeProfile }}" style="padding:14px 20px;font-size:14px;font-weight:600;cursor:pointer;color:#8b95a1" style-hover="background:#f4f8fc">Cerrar</a>
+              </div>
+            </div>
+          </sc-if>
+        </div>
       </sc-if>
     </header>
 
     <!-- CONTENT -->
-    <main style="flex:1;background:#fff;border-top-left-radius:6px;overflow-y:auto;min-height:0">
+    <main style="flex:1;background:#fff;border-top-left-radius:0;overflow-y:auto;min-height:0">
 
       <!-- ================= INICIO ================= -->
       <sc-if value="{{ isInicio }}" hint-placeholder-val="{{ true }}">
       <section>
         <div style="position:relative;height:560px;display:flex;align-items:flex-end;overflow:hidden">
           <div style="position:absolute;inset:0">
-            <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="hero-inicio" shape="rect" fit="cover" src="https://picsum.photos/id/1048/1600/720" placeholder="Foto edificio corporativo IBM" hint-size="100%,100%"></x-import>
+            <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="hero-inicio" shape="rect" fit="cover" src="./uploads/ibm-office-lima.jpeg" placeholder="Foto edificio corporativo" hint-size="100%,100%"></x-import>
           </div>
           <div style="position:absolute;inset:0;background:linear-gradient(to top,#fff 4%,rgba(255,255,255,0.78) 26%,rgba(255,255,255,0) 62%);pointer-events:none"></div>
-          <h1 style="position:relative;padding:0 56px 48px;font-size:64px;line-height:1.02;font-weight:800;letter-spacing:-0.03em;max-width:900px;text-wrap:balance;pointer-events:none">¡Bienvenido a la Cooperativa de los Empleados de IBM, Kyndryl y Bluetab!</h1>
+          <h1 style="position:relative;padding:0 56px 48px;font-size:64px;line-height:1.02;font-weight:800;letter-spacing:-0.03em;max-width:900px;text-wrap:balance;pointer-events:none">¡Bienvenido a la Cooperativa de Empleados!</h1>
         </div>
         <div style="padding:8px 56px 64px;max-width:1100px">
-          <p style="font-size:21px;line-height:1.55;color:#52606d;max-width:820px">Nuestra cooperativa, fundada el 18 de julio de 1942, capta los recursos de sus socios para formar un fondo de uso común, ofreciendo ahorro, crédito y beneficios exclusivos a la familia IBM, Kyndryl y Bluetab.</p>
+          <p style="font-size:21px;line-height:1.55;color:#52606d;max-width:820px">Nuestra cooperativa, fundada el 18 de julio de 1942, capta los recursos de sus socios para formar un fondo de uso común, ofreciendo ahorro, crédito y beneficios exclusivos a nuestra familia cooperativista.</p>
 
-          <div style="display:flex;align-items:baseline;justify-content:space-between;margin-top:52px;margin-bottom:20px">
-            <h2 style="font-size:30px;font-weight:600;letter-spacing:-0.01em;font-family:'IBM Plex Serif',Georgia,serif">Beneficios</h2>
-            <span style="font-size:14px;color:#6f6f6f">{{ savedCount }} guardados</span>
+          <div style="margin-top:52px;margin-bottom:20px">
+            <h2 style="font-size:30px;font-weight:600;letter-spacing:-0.01em">Beneficios</h2>
           </div>
           <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:#e0e0e0;border:1px solid #e0e0e0">
             <sc-for list="{{ beneficios }}" as="b" hint-placeholder-count="4">
               <div style="background:#fff;display:flex;flex-direction:column" style-hover="background:#f4f4f4">
                 <div style="position:relative;height:210px;overflow:hidden">
                   <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="{{ b.slotId }}" shape="rect" fit="cover" src="{{ b.photo }}" placeholder="{{ b.title }}" hint-size="100%,100%"></x-import>
-                  <div onClick="{{ b.toggle }}" style="position:absolute;top:0;right:0;width:52px;height:52px;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="{{ b.bmFill }}" stroke="{{ b.bmStroke }}" stroke-width="2" stroke-linejoin="round"><path d="M6 3h12a1 1 0 0 1 1 1v18l-7-4.5L5 22V4a1 1 0 0 1 1-1z"/></svg>
-                  </div>
                 </div>
                 <div style="padding:24px 26px 26px">
                   <h3 style="font-size:21px;font-weight:600;margin-bottom:8px">{{ b.title }}</h3>
                   <p style="font-size:15px;line-height:1.55;color:#525252">{{ b.desc }}</p>
-                  <a onClick="{{ b.go }}" style="display:inline-block;margin-top:14px;font-size:15px;font-weight:600;cursor:pointer">Leer más →</a>
+                  <a onClick="{{ b.go }}" style="display:inline-flex;align-items:center;gap:5px;margin-top:14px;font-size:15px;font-weight:600;cursor:pointer">Leer más <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
                 </div>
               </div>
             </sc-for>
@@ -114,13 +139,24 @@
       <section style="padding:56px">
         <h1 style="font-size:48px;font-weight:800;letter-spacing:-0.02em;margin-bottom:36px">¿Quiénes Somos?</h1>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:center;margin-bottom:48px">
-          <div style="position:relative;aspect-ratio:4/3;border-radius:16px;overflow:hidden">
-            <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="quienes-foto" shape="rect" fit="cover" src="https://picsum.photos/id/832/1000/760" placeholder="Foto oficina / equipo IBM" hint-size="100%,100%"></x-import>
+          <div style="position:relative;aspect-ratio:4/3;border-radius:0;overflow:hidden">
+            <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="quienes-foto" shape="rect" fit="cover" src="./uploads/familia-socios.jpg" placeholder="Foto oficina / equipo" hint-size="100%,100%"></x-import>
           </div>
           <div>
-            <h2 style="font-size:30px;font-weight:700;line-height:1.15;margin-bottom:18px">Cooperativa de Ahorro y Crédito de los Empleados de IBM, Kyndryl y Bluetab</h2>
+            <h2 style="font-size:30px;font-weight:700;line-height:1.15;margin-bottom:18px">Cooperativa de Ahorro y Crédito de Empleados</h2>
             <p style="font-size:18px;line-height:1.6;color:#52606d">Somos una cooperativa sin fines de lucro que capta los recursos de nuestros socios para formar un fondo de uso común, otorga financiamiento con tasas competitivas y brinda servicios con tarifas especiales a través de convenios corporativos, respetando los principios cooperativos que nos rigen desde nuestros inicios. Estamos inscritos en el Registro Nacional de Cooperativas de Ahorro y Crédito y somos supervisados por la Superintendencia de Banca y Seguros (SBS).</p>
           </div>
+        </div>
+
+        <h2 style="font-size:26px;font-weight:700;margin-bottom:18px">Contactos</h2>
+        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:24px;max-width:920px;margin-bottom:52px">
+          <sc-for list="{{ contactos }}" as="c" hint-placeholder-count="4">
+            <div style="border:1px solid #e5e8ec;border-radius:0;padding:20px">
+              <div style="font-size:17px;font-weight:700;margin-bottom:6px">{{ c.name }}</div>
+              <a href="{{ c.mailto }}" style="font-size:14px;font-weight:600;display:block;margin-bottom:8px">{{ c.email }}</a>
+              <div style="font-size:14px;color:#52606d;line-height:1.5">{{ c.roles }}</div>
+            </div>
+          </sc-for>
         </div>
 
         <h2 style="font-size:26px;font-weight:700;margin-bottom:24px">Nuestra historia</h2>
@@ -134,20 +170,9 @@
         </div>
 
         <h2 style="font-size:26px;font-weight:700;margin-bottom:18px">Documentos</h2>
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:920px;margin-bottom:52px">
-          <sc-for list="{{ docLinks }}" as="d" hint-placeholder-count="6">
-            <button style="border:1px solid #d9dee4;background:#fff;border-radius:12px;padding:22px;font-size:17px;font-weight:600;color:#161616;cursor:pointer;font-family:inherit" style-hover="border:1px solid #0f62fe;background:#edf5ff">{{ d }}</button>
-          </sc-for>
-        </div>
-
-        <h2 style="font-size:26px;font-weight:700;margin-bottom:18px">Contactos</h2>
-        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:24px;max-width:920px">
-          <sc-for list="{{ contactos }}" as="c" hint-placeholder-count="4">
-            <div style="border:1px solid #e5e8ec;border-radius:14px;padding:20px">
-              <div style="font-size:17px;font-weight:700;margin-bottom:6px">{{ c.name }}</div>
-              <a href="{{ c.mailto }}" style="font-size:14px;font-weight:600;display:block;margin-bottom:8px">{{ c.email }}</a>
-              <div style="font-size:14px;color:#52606d;line-height:1.5">{{ c.roles }}</div>
-            </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:920px">
+          <sc-for list="{{ docLinks }}" as="d" hint-placeholder-count="3">
+            <button style="border:1px solid #d9dee4;background:#fff;border-radius:0;padding:22px;font-size:17px;font-weight:600;color:#161616;cursor:pointer;font-family:inherit" style-hover="border:1px solid #0f62fe;background:#edf5ff">{{ d }}</button>
           </sc-for>
         </div>
       </section>
@@ -160,7 +185,7 @@
         <p style="font-size:18px;color:#52606d;margin-bottom:36px;max-width:720px">La captación de ahorros por parte de la Cooperativa tiene 2 fuentes. No cobramos comisiones ni gastos administrativos.</p>
 
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:48px">
-          <div style="border:1px solid #e5e8ec;border-radius:16px;padding:28px">
+          <div style="border:1px solid #e5e8ec;border-radius:0;padding:28px">
             <h3 style="font-size:22px;font-weight:700;margin-bottom:14px">Ahorro Simple</h3>
             <ul style="font-size:15px;color:#52606d;line-height:1.8;padding-left:18px">
               <li>Ahorro mensual que se descuenta por planilla</li>
@@ -168,7 +193,7 @@
               <li>Es de libre disponibilidad</li>
             </ul>
           </div>
-          <div style="border:1px solid #e5e8ec;border-radius:16px;padding:28px">
+          <div style="border:1px solid #e5e8ec;border-radius:0;padding:28px">
             <h3 style="font-size:22px;font-weight:700;margin-bottom:14px">Depósitos a Plazo Fijo</h3>
             <ul style="font-size:15px;color:#52606d;line-height:1.8;padding-left:18px">
               <li>Plazos de 90, 180, 360 y 720 días</li>
@@ -178,7 +203,7 @@
         </div>
 
         <h2 style="font-size:26px;font-weight:700;margin-bottom:18px">Tasas de interés que ofrece la Cooperativa</h2>
-        <div style="border:1px solid #e5e8ec;border-radius:14px;overflow:hidden;max-width:640px">
+        <div style="border:1px solid #e5e8ec;border-radius:0;overflow:hidden;max-width:640px">
           <div style="display:grid;grid-template-columns:2fr 1fr 1fr;background:#0f62fe;color:#fff;font-size:14px;font-weight:700;padding:14px 20px">
             <div>Plazo</div><div>Soles</div><div>Dólares</div>
           </div>
@@ -199,32 +224,32 @@
 
         <!-- ADMIN: AGREGAR PROVEEDOR -->
         <sc-if value="{{ isAdmin }}" hint-placeholder-val="{{ false }}">
-        <div style="border:1px solid #da1e28;background:#fff5f5;border-radius:14px;padding:22px;margin-bottom:36px">
+        <div style="border:1px solid #da1e28;background:#fff5f5;border-radius:0;padding:22px;margin-bottom:36px">
           <div style="font-size:15px;font-weight:700;color:#da1e28;margin-bottom:14px">Agregar proveedor (admin)</div>
           <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px;margin-bottom:14px">
-            <input type="text" placeholder="Nombre" value="{{ newProv.name }}" onInput="{{ onNewProvName }}" style="border:1px solid #d9dee4;border-radius:8px;padding:11px 12px;font-size:14px;font-family:inherit;outline:none">
-            <input type="text" placeholder="Categoría" value="{{ newProv.cat }}" onInput="{{ onNewProvCat }}" style="border:1px solid #d9dee4;border-radius:8px;padding:11px 12px;font-size:14px;font-family:inherit;outline:none">
-            <input type="text" placeholder="Descripción" value="{{ newProv.desc }}" onInput="{{ onNewProvDesc }}" style="border:1px solid #d9dee4;border-radius:8px;padding:11px 12px;font-size:14px;font-family:inherit;outline:none">
-            <input type="text" placeholder="Descuento (ej. 10% dcto.)" value="{{ newProv.disc }}" onInput="{{ onNewProvDisc }}" style="border:1px solid #d9dee4;border-radius:8px;padding:11px 12px;font-size:14px;font-family:inherit;outline:none">
+            <input type="text" placeholder="Nombre" value="{{ newProv.name }}" onInput="{{ onNewProvName }}" style="border:1px solid #d9dee4;border-radius:0;padding:11px 12px;font-size:14px;font-family:inherit;outline:none">
+            <input type="text" placeholder="Categoría" value="{{ newProv.cat }}" onInput="{{ onNewProvCat }}" style="border:1px solid #d9dee4;border-radius:0;padding:11px 12px;font-size:14px;font-family:inherit;outline:none">
+            <input type="text" placeholder="Descripción" value="{{ newProv.desc }}" onInput="{{ onNewProvDesc }}" style="border:1px solid #d9dee4;border-radius:0;padding:11px 12px;font-size:14px;font-family:inherit;outline:none">
+            <input type="text" placeholder="Descuento (ej. 10% dcto.)" value="{{ newProv.disc }}" onInput="{{ onNewProvDisc }}" style="border:1px solid #d9dee4;border-radius:0;padding:11px 12px;font-size:14px;font-family:inherit;outline:none">
           </div>
-          <button onClick="{{ addProveedor }}" style="background:#da1e28;color:#fff;border:none;border-radius:999px;padding:11px 24px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit">+ Agregar proveedor</button>
+          <button onClick="{{ addProveedor }}" style="background:#da1e28;color:#fff;border:none;border-radius:0;padding:11px 24px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit">+ Agregar proveedor</button>
         </div>
         </sc-if>
 
         <!-- FEATURE BANNERS -->
         <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:16px">
-          <h2 style="font-size:22px;font-weight:600;font-family:'IBM Plex Serif',Georgia,serif">Destacados de la semana</h2>
+          <h2 style="font-size:22px;font-weight:600">Destacados de la semana</h2>
           <span style="font-size:14px;color:#6f6f6f">Válidos con tu carnet de socio</span>
         </div>
         <div style="display:grid;grid-auto-flow:column;grid-auto-columns:minmax(360px,1fr);gap:18px;overflow-x:auto;padding-bottom:10px;margin-bottom:44px">
           <sc-for list="{{ banners }}" as="b" hint-placeholder-count="3">
-            <div style="position:relative;min-height:210px;border-radius:16px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;color:#fff">
+            <div style="position:relative;min-height:210px;border-radius:0;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;color:#fff">
               <div style="position:absolute;inset:0">
                 <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="{{ b.slotId }}" shape="rect" fit="cover" src="{{ b.photo }}" placeholder="{{ b.brand }}" hint-size="100%,100%"></x-import>
               </div>
               <div style="position:absolute;inset:0;background:linear-gradient(105deg,rgba(15,98,254,0.92) 0%,rgba(15,98,254,0.35) 55%,rgba(15,98,254,0) 100%);pointer-events:none"></div>
               <div style="position:relative;padding:26px;pointer-events:none">
-                <div style="display:inline-block;background:#fff;color:#0f62fe;font-size:13px;font-weight:700;padding:5px 12px;border-radius:999px;margin-bottom:12px">{{ b.tag }}</div>
+                <div style="display:inline-block;background:#fff;color:#0f62fe;font-size:13px;font-weight:700;padding:5px 12px;border-radius:0;margin-bottom:12px">{{ b.tag }}</div>
                 <div style="font-size:14px;font-weight:600;opacity:0.9;margin-bottom:4px">{{ b.brand }}</div>
                 <div style="font-size:28px;font-weight:800;letter-spacing:-0.02em;line-height:1.05;text-wrap:balance">{{ b.headline }}</div>
               </div>
@@ -232,13 +257,39 @@
           </sc-for>
         </div>
         <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px">
+          <div onClick="{{ goBebidas }}" style="border:1px solid #e5e8ec;border-radius:0;padding:22px;display:flex;flex-direction:column;gap:12px;cursor:pointer" style-hover="box-shadow:0 8px 26px rgba(15,36,56,0.09)">
+            <div style="display:flex;align-items:center;gap:12px">
+              <div style="width:46px;height:46px;border-radius:0;background:#edf5ff;color:#0f62fe;display:flex;align-items:center;justify-content:center;flex:0 0 46px">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M7 10h10"/><path d="M12 15v7"/><path d="M12 15a5 5 0 0 0 5-5V3H7v7a5 5 0 0 0 5 5Z"/></svg>
+              </div>
+              <div>
+                <div style="font-size:17px;font-weight:700">Bebidas</div>
+                <div style="font-size:13px;color:#8b95a1">Licores y bebidas</div>
+              </div>
+            </div>
+            <div style="font-size:14px;color:#52606d;line-height:1.5">Lista de precios de nuestro proveedor de licores para socios: whisky, vinos, piscos, ron y más.</div>
+            <div style="margin-top:auto;align-self:flex-start;display:flex;align-items:center;gap:5px;background:#edf5ff;color:#0043ce;font-weight:700;font-size:14px;padding:6px 12px;border-radius:0">Ver precios <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
+          </div>
+          <div onClick="{{ goSmartFit }}" style="border:1px solid #e5e8ec;border-radius:0;padding:22px;display:flex;flex-direction:column;gap:12px;cursor:pointer" style-hover="box-shadow:0 8px 26px rgba(15,36,56,0.09)">
+            <div style="display:flex;align-items:center;gap:12px">
+              <div style="width:46px;height:46px;border-radius:0;background:#edf5ff;color:#0f62fe;display:flex;align-items:center;justify-content:center;flex:0 0 46px">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.4 14.4 9.6 9.6"/><path d="M18.657 21.485a2 2 0 1 1-2.829-2.828l-1.767 1.768a2 2 0 1 1-2.829-2.829l6.364-6.364a2 2 0 1 1 2.829 2.829l-1.768 1.767a2 2 0 1 1 2.828 2.829z"/><path d="m21.5 21.5-1.4-1.4"/><path d="M3.9 3.9 2.5 2.5"/><path d="M6.404 12.768a2 2 0 1 1-2.829-2.829l1.768-1.767a2 2 0 1 1-2.828-2.829l2.828-2.828a2 2 0 1 1 2.829 2.828l1.767-1.768a2 2 0 1 1 2.829 2.829z"/></svg>
+              </div>
+              <div>
+                <div style="font-size:17px;font-weight:700">Smart Fit</div>
+                <div style="font-size:13px;color:#8b95a1">Gimnasio</div>
+              </div>
+            </div>
+            <div style="font-size:14px;color:#52606d;line-height:1.5">Plan Black Corporativo, exclusivo para colaboradores de la Cooperativa.</div>
+            <div style="margin-top:auto;align-self:flex-start;display:flex;align-items:center;gap:5px;background:#edf5ff;color:#0043ce;font-weight:700;font-size:14px;padding:6px 12px;border-radius:0">Ver beneficios <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
+          </div>
           <sc-for list="{{ proveedores }}" as="p" hint-placeholder-count="8">
-            <div style="border:1px solid #e5e8ec;border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:12px;position:relative" style-hover="box-shadow:0 8px 26px rgba(15,36,56,0.09)">
+            <div style="border:1px solid #e5e8ec;border-radius:0;padding:22px;display:flex;flex-direction:column;gap:12px;position:relative" style-hover="box-shadow:0 8px 26px rgba(15,36,56,0.09)">
               <sc-if value="{{ isAdmin }}" hint-placeholder-val="{{ false }}">
-                <div onClick="{{ p.remove }}" title="Eliminar proveedor" style="position:absolute;top:12px;right:12px;width:26px;height:26px;border-radius:999px;background:#fff0f0;color:#da1e28;display:flex;align-items:center;justify-content:center;font-weight:800;cursor:pointer;font-size:15px">×</div>
+                <div onClick="{{ p.remove }}" title="Eliminar proveedor" style="position:absolute;top:12px;right:12px;width:26px;height:26px;border-radius:0;background:#fff0f0;color:#da1e28;display:flex;align-items:center;justify-content:center;font-weight:800;cursor:pointer;font-size:15px">×</div>
               </sc-if>
               <div style="display:flex;align-items:center;gap:12px">
-                <div style="width:46px;height:46px;border-radius:10px;overflow:hidden;flex:0 0 46px">
+                <div style="width:46px;height:46px;border-radius:0;overflow:hidden;flex:0 0 46px">
                   <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="{{ p.slotId }}" shape="rounded" radius="10" fit="contain" placeholder="Logo" hint-size="46px,46px"></x-import>
                 </div>
                 <div>
@@ -247,10 +298,52 @@
                 </div>
               </div>
               <div style="font-size:14px;color:#52606d;line-height:1.5">{{ p.desc }}</div>
-              <div style="margin-top:auto;align-self:flex-start;background:#edf5ff;color:#0043ce;font-weight:700;font-size:14px;padding:6px 12px;border-radius:999px">{{ p.disc }}</div>
+              <div style="margin-top:auto;align-self:flex-start;background:#edf5ff;color:#0043ce;font-weight:700;font-size:14px;padding:6px 12px;border-radius:0">{{ p.disc }}</div>
             </div>
           </sc-for>
         </div>
+      </section>
+      </sc-if>
+
+      <!-- ================= BEBIDAS ================= -->
+      <sc-if value="{{ isBebidas }}" hint-placeholder-val="{{ false }}">
+      <section style="padding:56px">
+        <a onClick="{{ goProveedores }}" style="display:inline-flex;align-items:center;gap:6px;font-weight:600;cursor:pointer;margin-bottom:28px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg> Volver a Proveedores</a>
+        <h1 style="font-size:48px;font-weight:800;letter-spacing:-0.02em;margin-bottom:10px">Bebidas</h1>
+        <p style="font-size:18px;color:#52606d;margin-bottom:36px;max-width:720px">Lista de precios de nuestro proveedor de licores y bebidas para socios.</p>
+        <div style="border:1px solid #e5e8ec;border-radius:0;overflow:hidden">
+          <div style="display:grid;grid-template-columns:1.3fr 3fr 1fr 1fr 1fr;background:#0f62fe;color:#fff;font-size:14px;font-weight:700;padding:14px 20px">
+            <div>Categoría</div><div>Marca</div><div>Medida</div><div>Cantidad</div><div>Precio</div>
+          </div>
+          <sc-for list="{{ bebidas }}" as="b" hint-placeholder-count="37">
+            <div style="display:grid;grid-template-columns:1.3fr 3fr 1fr 1fr 1fr;padding:12px 20px;font-size:14px;border-top:1px solid #eceef1;align-items:center" style-hover="background:#f4f8fc">
+              <div style="font-weight:600">{{ b.cat }}</div><div>{{ b.marca }}</div><div>{{ b.medida }}</div><div>{{ b.cant }}</div><div style="font-weight:600">S/ {{ b.precio }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </section>
+      </sc-if>
+
+      <!-- ================= SMART FIT ================= -->
+      <sc-if value="{{ isSmartFit }}" hint-placeholder-val="{{ false }}">
+      <section style="padding:56px">
+        <a onClick="{{ goProveedores }}" style="display:inline-flex;align-items:center;gap:6px;font-weight:600;cursor:pointer;margin-bottom:28px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg> Volver a Proveedores</a>
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:10px">
+          <div style="width:56px;height:56px;border-radius:0;background:#edf5ff;color:#0f62fe;display:flex;align-items:center;justify-content:center;flex:0 0 56px">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.4 14.4 9.6 9.6"/><path d="M18.657 21.485a2 2 0 1 1-2.829-2.828l-1.767 1.768a2 2 0 1 1-2.829-2.829l6.364-6.364a2 2 0 1 1 2.829 2.829l-1.768 1.767a2 2 0 1 1 2.828 2.829z"/><path d="m21.5 21.5-1.4-1.4"/><path d="M3.9 3.9 2.5 2.5"/><path d="M6.404 12.768a2 2 0 1 1-2.829-2.829l1.768-1.767a2 2 0 1 1-2.828-2.829l2.828-2.828a2 2 0 1 1 2.829 2.828l1.767-1.768a2 2 0 1 1 2.829 2.829z"/></svg>
+          </div>
+          <h1 style="font-size:48px;font-weight:800;letter-spacing:-0.02em">Smart Fit</h1>
+        </div>
+        <p style="font-size:18px;color:#52606d;margin-bottom:36px;max-width:720px">Plan Black Corporativo, exclusivo para colaboradores de la Cooperativa que no cuenten con un plan activo dentro de Smart Fit.</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:920px;margin-bottom:36px">
+          <sc-for list="{{ smartFitBenefits }}" as="s" hint-placeholder-count="8">
+            <div style="display:flex;align-items:flex-start;gap:12px;border:1px solid #e5e8ec;border-radius:0;padding:16px">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0f62fe" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 20px;margin-top:2px"><path d="M20 6 9 17l-5-5"/></svg>
+              <span style="font-size:15px;color:#262626;line-height:1.4">{{ s }}</span>
+            </div>
+          </sc-for>
+        </div>
+        <div style="background:#edf5ff;color:#0043ce;font-weight:700;font-size:14px;padding:6px 12px;border-radius:0;display:inline-block">Plan Black Corporativo</div>
       </section>
       </sc-if>
 
@@ -262,14 +355,14 @@
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:52px">
           <sc-for list="{{ prestamos }}" as="l" hint-placeholder-count="4">
             <div>
-            <div onClick="{{ l.goDetalle }}" style="border:1px solid #e5e8ec;border-radius:16px;overflow:hidden;display:flex;flex-direction:column;cursor:pointer" style-hover="box-shadow:0 8px 26px rgba(15,36,56,0.09)">
+            <div onClick="{{ l.goDetalle }}" style="border:1px solid #e5e8ec;border-radius:0;overflow:hidden;display:flex;flex-direction:column;cursor:pointer" style-hover="box-shadow:0 8px 26px rgba(15,36,56,0.09)">
               <div style="position:relative;height:190px;overflow:hidden">
                 <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="{{ l.slotId }}" shape="rect" fit="cover" src="{{ l.photo }}" placeholder="{{ l.img }}" hint-size="100%,100%"></x-import>
               </div>
               <div style="padding:24px;display:flex;flex-direction:column;gap:10px;flex:1">
                 <div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px">
                   <h3 style="font-size:22px;font-weight:700;display:flex;align-items:center;gap:11px">
-                    <span style="width:34px;height:34px;border-radius:10px;background:{{ l.bg }};color:{{ l.color }};display:flex;align-items:center;justify-content:center;flex:0 0 34px">
+                    <span style="width:34px;height:34px;border-radius:0;background:{{ l.bg }};color:{{ l.color }};display:flex;align-items:center;justify-content:center;flex:0 0 34px">
                     <sc-if value="{{ l.icon === 'house' }}" hint-placeholder-val="{{ true }}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></sc-if>
                     <sc-if value="{{ l.icon === 'car' }}" hint-placeholder-val="{{ false }}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg></sc-if>
                     <sc-if value="{{ l.icon === 'cap' }}" hint-placeholder-val="{{ false }}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></svg></sc-if>
@@ -280,22 +373,56 @@
                   <span style="font-size:13px;font-weight:700;color:{{ l.color }};white-space:nowrap">desde {{ l.tasa }}</span>
                 </div>
                 <p style="font-size:15px;line-height:1.55;color:#52606d">{{ l.desc }}</p>
-                <a onClick="{{ l.goDetalle }}" style="margin-top:auto;font-weight:600;cursor:pointer">Ver detalles y simular →</a>
+                <a onClick="{{ l.goDetalle }}" style="margin-top:auto;display:inline-flex;align-items:center;gap:5px;font-weight:600;cursor:pointer">Ver detalles y simular <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
               </div>
             </div>
             <sc-if value="{{ isAdmin }}" hint-placeholder-val="{{ false }}">
-              <div style="margin-top:10px;border:1px solid #da1e28;border-radius:12px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px;background:#fff5f5">
+              <div style="margin-top:10px;border:1px solid #da1e28;border-radius:0;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px;background:#fff5f5">
                 <span style="font-size:13px;font-weight:700;color:#da1e28">Editar tasa (admin)</span>
                 <div style="display:flex;align-items:center;gap:8px">
-                  <input type="number" step="0.1" min="0" max="30" value="{{ l.tasaEdit }}" onInput="{{ l.onTasaInput }}" style="width:70px;border:1px solid #d9dee4;border-radius:8px;padding:7px 9px;font-size:14px;font-family:inherit;outline:none">
+                  <input type="number" step="0.1" min="0" max="30" value="{{ l.tasaEdit }}" onInput="{{ l.onTasaInput }}" style="width:70px;border:1px solid #d9dee4;border-radius:0;padding:7px 9px;font-size:14px;font-family:inherit;outline:none">
                   <span style="font-size:13px;color:#52606d;font-weight:600">% TEA</span>
-                  <button onClick="{{ l.onTasaSave }}" style="background:#da1e28;color:#fff;border:none;border-radius:999px;padding:8px 16px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap">{{ l.tasaSavedLabel }}</button>
+                  <button onClick="{{ l.onTasaSave }}" style="display:inline-flex;align-items:center;gap:5px;background:#da1e28;color:#fff;border:none;border-radius:0;padding:8px 16px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap">
+                    <sc-if value="{{ l.tasaIsSaved }}" hint-placeholder-val="{{ false }}"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></sc-if>
+                    {{ l.tasaSavedLabel }}
+                  </button>
                 </div>
               </div>
             </sc-if>
             </div>
           </sc-for>
         </div>
+        <h2 style="font-size:26px;font-weight:700;margin-bottom:6px">Tabla completa de tasas</h2>
+        <p style="font-size:14px;color:#8b95a1;margin-bottom:24px">Tasa Efectiva Anual (TEA) · Vigente desde {{ tasasVigencia }}</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:20px">
+          <div>
+            <h3 style="font-size:17px;font-weight:700;margin-bottom:12px">Soles</h3>
+            <div style="border:1px solid #e5e8ec;border-radius:0;overflow:hidden">
+              <div style="display:grid;grid-template-columns:2fr 1fr 1fr;background:#0f62fe;color:#fff;font-size:13px;font-weight:700;padding:12px 16px">
+                <div>Concepto</div><div>TEA</div><div>TEA sin desgr.</div>
+              </div>
+              <sc-for list="{{ tasasSoles }}" as="t" hint-placeholder-count="12">
+                <div style="display:grid;grid-template-columns:2fr 1fr 1fr;padding:11px 16px;font-size:14px;border-top:1px solid #eceef1" style-hover="background:#f4f8fc">
+                  <div style="font-weight:600">{{ t.concepto }}</div><div>{{ t.tea }}</div><div>{{ t.teaSin }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          <div>
+            <h3 style="font-size:17px;font-weight:700;margin-bottom:12px">Dólares</h3>
+            <div style="border:1px solid #e5e8ec;border-radius:0;overflow:hidden">
+              <div style="display:grid;grid-template-columns:2fr 1fr 1fr;background:#0f62fe;color:#fff;font-size:13px;font-weight:700;padding:12px 16px">
+                <div>Concepto</div><div>TEA</div><div>TEA sin desgr.</div>
+              </div>
+              <sc-for list="{{ tasasDolares }}" as="t" hint-placeholder-count="7">
+                <div style="display:grid;grid-template-columns:2fr 1fr 1fr;padding:11px 16px;font-size:14px;border-top:1px solid #eceef1" style-hover="background:#f4f8fc">
+                  <div style="font-weight:600">{{ t.concepto }}</div><div>{{ t.tea }}</div><div>{{ t.teaSin }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+
         <p style="font-size:13px;color:#8b95a1;max-width:720px">Consideraciones adicionales: los préstamos están sujetos a evaluación crediticia. Se considera una tasa de 0.5% anual adicional por Seguro de Desgravamen.</p>
       </section>
       </sc-if>
@@ -303,15 +430,15 @@
       <!-- ================= PRÉSTAMO DETALLE (info + simulador de un solo crédito) ================= -->
       <sc-if value="{{ isPrestamoDetalle }}" hint-placeholder-val="{{ false }}">
       <section style="padding:56px">
-        <a onClick="{{ goPrestamos }}" style="display:inline-flex;align-items:center;gap:6px;font-weight:600;cursor:pointer;margin-bottom:28px">← Volver a Préstamos</a>
+        <a onClick="{{ goPrestamos }}" style="display:inline-flex;align-items:center;gap:6px;font-weight:600;cursor:pointer;margin-bottom:28px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg> Volver a Préstamos</a>
 
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:center;margin-bottom:48px">
-          <div style="position:relative;aspect-ratio:16/10;border-radius:16px;overflow:hidden">
+          <div style="position:relative;aspect-ratio:16/10;border-radius:0;overflow:hidden">
             <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="{{ prestamoActual.slotId }}" shape="rect" fit="cover" src="{{ prestamoActual.photo }}" placeholder="{{ prestamoActual.img }}" hint-size="100%,100%"></x-import>
           </div>
           <div>
             <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px">
-              <span style="width:52px;height:52px;border-radius:14px;background:{{ prestamoActual.bg }};color:{{ prestamoActual.color }};display:flex;align-items:center;justify-content:center;flex:0 0 52px">
+              <span style="width:52px;height:52px;border-radius:0;background:{{ prestamoActual.bg }};color:{{ prestamoActual.color }};display:flex;align-items:center;justify-content:center;flex:0 0 52px">
               <sc-if value="{{ prestamoActual.icon === 'house' }}" hint-placeholder-val="{{ true }}"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></sc-if>
               <sc-if value="{{ prestamoActual.icon === 'car' }}" hint-placeholder-val="{{ false }}"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg></sc-if>
               <sc-if value="{{ prestamoActual.icon === 'cap' }}" hint-placeholder-val="{{ false }}"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></svg></sc-if>
@@ -320,13 +447,13 @@
               <h1 style="font-size:36px;font-weight:800;letter-spacing:-0.02em;color:#161616">{{ prestamoActual.title }}</h1>
             </div>
             <p style="font-size:17px;line-height:1.6;color:#52606d;margin-bottom:16px">{{ prestamoActual.desc }}</p>
-            <span style="display:inline-block;font-size:14px;font-weight:700;color:{{ prestamoActual.color }};background:{{ prestamoActual.bg }};padding:7px 14px;border-radius:999px">desde {{ prestamoActual.tasaLabel }}</span>
+            <span style="display:inline-block;font-size:14px;font-weight:700;color:{{ prestamoActual.color }};background:{{ prestamoActual.bg }};padding:7px 14px;border-radius:0">desde {{ prestamoActual.tasaLabel }}</span>
           </div>
         </div>
 
         <!-- SIMULADOR -->
         <sc-if value="{{ mostrarSimulador }}" hint-placeholder-val="{{ true }}">
-        <div id="simulador" style="border:1px solid #e5e8ec;border-radius:18px;padding:36px;background:#fafbfc">
+        <div id="simulador" style="border:1px solid #e5e8ec;border-radius:0;padding:36px;background:#fafbfc">
           <h2 style="font-size:28px;font-weight:800;letter-spacing:-0.01em;margin-bottom:6px">Simulador de préstamo</h2>
           <p style="font-size:15px;color:#52606d;margin-bottom:30px">Descubre cuánto te ahorra la tasa preferencial de socio frente a un banco tradicional.</p>
 
@@ -336,7 +463,7 @@
               <div>
                 <div style="font-size:15px;font-weight:600;margin-bottom:6px">Monto del préstamo</div>
                 <div style="position:relative;padding-top:32px">
-                  <div style="position:absolute;top:0;{{ montoTooltipStyle }};transform:translateX(-50%);background:#161616;color:#fff;font-size:13px;font-weight:700;padding:5px 11px;border-radius:8px;white-space:nowrap;pointer-events:none">{{ montoLabel }}</div>
+                  <div style="position:absolute;top:0;{{ montoTooltipStyle }};transform:translateX(-50%);background:#161616;color:#fff;font-size:13px;font-weight:700;padding:5px 11px;border-radius:0;white-space:nowrap;pointer-events:none">{{ montoLabel }}</div>
                   <input type="range" class="dc-slider" min="{{ montoMin }}" max="{{ montoMax }}" step="{{ montoStep }}" value="{{ monto }}" onInput="{{ onMonto }}" style="{{ montoTrackStyle }}">
                 </div>
                 <div style="display:flex;justify-content:space-between;font-size:11px;color:#8d8d8d;margin-top:8px"><span>{{ montoMinLabel }}</span><span>{{ montoMaxLabel }}</span></div>
@@ -344,7 +471,7 @@
               <div>
                 <div style="font-size:15px;font-weight:600;margin-bottom:6px">Plazo</div>
                 <div style="position:relative;padding-top:32px">
-                  <div style="position:absolute;top:0;{{ plazoTooltipStyle }};transform:translateX(-50%);background:#161616;color:#fff;font-size:13px;font-weight:700;padding:5px 11px;border-radius:8px;white-space:nowrap;pointer-events:none">{{ plazo }} meses</div>
+                  <div style="position:absolute;top:0;{{ plazoTooltipStyle }};transform:translateX(-50%);background:#161616;color:#fff;font-size:13px;font-weight:700;padding:5px 11px;border-radius:0;white-space:nowrap;pointer-events:none">{{ plazo }} meses</div>
                   <input type="range" class="dc-slider" min="{{ plazoMin }}" max="{{ plazoMax }}" step="{{ plazoStep }}" value="{{ plazo }}" onInput="{{ onPlazo }}" style="{{ plazoTrackStyle }}">
                 </div>
                 <div style="display:flex;justify-content:space-between;font-size:11px;color:#8d8d8d;margin-top:8px"><span>{{ plazoMinLabel }}</span><span>{{ plazoMaxLabel }}</span></div>
@@ -352,17 +479,17 @@
               <div>
                 <div style="font-size:15px;font-weight:600;margin-bottom:6px">Tu ingreso mensual</div>
                 <div style="position:relative;padding-top:32px">
-                  <div style="position:absolute;top:0;{{ ingresoTooltipStyle }};transform:translateX(-50%);background:#161616;color:#fff;font-size:13px;font-weight:700;padding:5px 11px;border-radius:8px;white-space:nowrap;pointer-events:none">{{ ingresoLabel }}</div>
+                  <div style="position:absolute;top:0;{{ ingresoTooltipStyle }};transform:translateX(-50%);background:#161616;color:#fff;font-size:13px;font-weight:700;padding:5px 11px;border-radius:0;white-space:nowrap;pointer-events:none">{{ ingresoLabel }}</div>
                   <input type="range" class="dc-slider" min="1500" max="20000" step="500" value="{{ ingreso }}" onInput="{{ onIngreso }}" style="{{ ingresoTrackStyle }}">
                 </div>
                 <div style="display:flex;justify-content:space-between;font-size:11px;color:#8d8d8d;margin-top:8px"><span>{{ ingresoMinLabel }}</span><span>{{ ingresoMaxLabel }}</span></div>
               </div>
 
               <!-- AFFORDABILITY -->
-              <div style="border:1px solid #e5e8ec;border-radius:12px;padding:18px;background:#fff">
+              <div style="border:1px solid #e5e8ec;border-radius:0;padding:18px;background:#fff">
                 <div style="display:flex;justify-content:space-between;font-size:14px;font-weight:600;margin-bottom:14px"><span>La cuota es el {{ afPct }} de tu ingreso</span><span style="color:{{ afColor }};font-weight:700">{{ afLabel }}</span></div>
-                <div style="position:relative;height:10px;border-radius:999px;background:linear-gradient(to right,#24a148 0%,#24a148 30%,#f1c21b 30%,#f1c21b 40%,#da1e28 40%,#da1e28 100%)">
-                  <div style="position:absolute;top:50%;left:{{ afWidth }};transform:translate(-50%,-50%);width:16px;height:16px;border-radius:999px;background:#fff;border:3px solid {{ afColor }};box-shadow:0 1px 4px rgba(0,0,0,0.3);transition:left .2s"></div>
+                <div style="position:relative;height:10px;border-radius:0;background:linear-gradient(to right,#24a148 0%,#24a148 30%,#f1c21b 30%,#f1c21b 40%,#da1e28 40%,#da1e28 100%)">
+                  <div style="position:absolute;top:50%;left:{{ afWidth }};transform:translate(-50%,-50%);width:16px;height:16px;border-radius:0;background:#fff;border:3px solid {{ afColor }};box-shadow:0 1px 4px rgba(0,0,0,0.3);transition:left .2s"></div>
                 </div>
                 <p style="font-size:12px;color:#8d8d8d;margin-top:14px">Se recomienda que tus deudas no superen el 30% de tu ingreso.</p>
               </div>
@@ -370,9 +497,9 @@
 
             <!-- RESULT -->
             <div style="display:flex;flex-direction:column;gap:16px">
-              <div style="background:#161616;color:#fff;border-radius:16px;padding:28px;text-align:center">
+              <div style="background:#161616;color:#fff;border-radius:0;padding:28px;text-align:center">
                 <!-- MENSUAL / TOTAL TOGGLE -->
-                <div style="display:flex;background:rgba(255,255,255,0.08);border-radius:999px;padding:4px;margin:0 auto 22px;max-width:200px">
+                <div style="display:flex;background:rgba(255,255,255,0.08);border-radius:0;padding:4px;margin:0 auto 22px;max-width:200px">
                   <div onClick="{{ setSimMensual }}" style="{{ simToggleMensualStyle }}">Mensual</div>
                   <div onClick="{{ setSimTotal }}" style="{{ simToggleTotalStyle }}">Total</div>
                 </div>
@@ -392,19 +519,19 @@
 
                 <!-- LEGEND -->
                 <div style="display:flex;justify-content:center;gap:26px;margin-top:22px;font-size:13px;flex-wrap:wrap">
-                  <div style="display:flex;align-items:center;gap:7px;color:#c6c6c6"><span style="width:8px;height:8px;border-radius:999px;background:{{ prestamoActual.color }};display:inline-block"></span>Capital <span style="color:#fff;font-weight:700">{{ capitalLabel }}</span></div>
-                  <div style="display:flex;align-items:center;gap:7px;color:#c6c6c6"><span style="width:8px;height:8px;border-radius:999px;background:#fa4d56;display:inline-block"></span>Intereses <span style="color:#fff;font-weight:700">{{ intereses }}</span></div>
+                  <div style="display:flex;align-items:center;gap:7px;color:#c6c6c6"><span style="width:8px;height:8px;border-radius:0;background:{{ prestamoActual.color }};display:inline-block"></span>Capital <span style="color:#fff;font-weight:700">{{ capitalLabel }}</span></div>
+                  <div style="display:flex;align-items:center;gap:7px;color:#c6c6c6"><span style="width:8px;height:8px;border-radius:0;background:#fa4d56;display:inline-block"></span>Intereses <span style="color:#fff;font-weight:700">{{ intereses }}</span></div>
                 </div>
               </div>
 
               <!-- SAVINGS HIGHLIGHT -->
-              <div style="background:#defbe6;border:1px solid #a7f0ba;border-radius:16px;padding:22px">
+              <div style="background:#defbe6;border:1px solid #a7f0ba;border-radius:0;padding:22px">
                 <div style="font-size:13px;font-weight:700;color:#0e6027;text-transform:uppercase;letter-spacing:0.04em">Ahorro como socio</div>
                 <div style="font-size:32px;font-weight:800;color:#0e6027;letter-spacing:-0.02em;margin:4px 0">{{ ahorro }}</div>
                 <p style="font-size:13px;color:#0e6027;line-height:1.45">Frente a un banco a {{ bankTeaLabel }}, tu cuota sería {{ cuotaBanco }}/mes. Con tu tasa de socio pagas {{ cuota }}.</p>
               </div>
 
-              <button style="background:{{ prestamoActual.color }};color:#fff;border:none;border-radius:999px;padding:15px;font-size:16px;font-weight:600;cursor:pointer;font-family:inherit">Solicitar este préstamo</button>
+              <button style="background:{{ prestamoActual.color }};color:#fff;border:none;border-radius:0;padding:15px;font-size:16px;font-weight:600;cursor:pointer;font-family:inherit">Solicitar este préstamo</button>
             </div>
           </div>
           <p style="font-size:12px;color:#8b95a1;margin-top:24px">*Cálculo referencial. La tasa y condiciones finales dependen de la evaluación crediticia de cada socio.</p>
@@ -419,14 +546,14 @@
         <h1 style="font-size:48px;font-weight:800;letter-spacing:-0.02em;margin-bottom:36px">Servicios</h1>
         <div style="display:flex;flex-direction:column;gap:22px;max-width:1000px">
           <sc-for list="{{ servicios }}" as="s" hint-placeholder-count="4">
-            <div style="border:1px solid #e5e8ec;border-radius:16px;overflow:hidden;display:grid;grid-template-columns:340px 1fr">
+            <div style="border:1px solid #e5e8ec;border-radius:0;overflow:hidden;display:grid;grid-template-columns:340px 1fr">
               <div style="position:relative;min-height:200px;overflow:hidden">
                 <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="{{ s.slotId }}" shape="rect" fit="cover" src="{{ s.photo }}" placeholder="{{ s.img }}" hint-size="100%,100%"></x-import>
               </div>
               <div style="padding:30px;display:flex;flex-direction:column;justify-content:center;gap:10px">
                 <h3 style="font-size:24px;font-weight:700">{{ s.title }}</h3>
                 <p style="font-size:16px;line-height:1.6;color:#52606d">{{ s.desc }}</p>
-                <a style="font-weight:600;cursor:pointer">Conocer más →</a>
+                <a style="display:inline-flex;align-items:center;gap:5px;font-weight:600;cursor:pointer">Conocer más <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
               </div>
             </div>
           </sc-for>
@@ -440,24 +567,24 @@
         <div style="max-width:680px;margin:0 auto;padding:0 24px">
           <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:20px">
             <h1 style="font-size:40px;font-weight:800;letter-spacing:-0.02em">Anuncios</h1>
-            <span style="font-size:14px;color:#6f6f6f">Comunidad IBM Cooperativa</span>
+            <span style="font-size:14px;color:#6f6f6f">Comunidad Cooperativa</span>
           </div>
 
           <!-- COMPOSER (solo administrador) -->
           <sc-if value="{{ isAdmin }}" hint-placeholder-val="{{ false }}">
-          <div style="border:1px solid #da1e28;background:#fff5f5;border-radius:16px;padding:18px;margin-bottom:24px">
+          <div style="border:1px solid #da1e28;background:#fff5f5;border-radius:0;padding:18px;margin-bottom:24px">
             <div style="font-size:13px;font-weight:700;color:#da1e28;margin-bottom:10px">Publicar anuncio (admin)</div>
             <div style="display:flex;gap:12px;align-items:flex-start">
-              <div style="width:44px;height:44px;border-radius:999px;background:#0f62fe;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;flex:0 0 44px">A</div>
+              <div style="width:44px;height:44px;border-radius:0;background:#0f62fe;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;flex:0 0 44px">A</div>
               <textarea value="{{ draft }}" onInput="{{ onDraft }}" placeholder="Comparte un anuncio con la comunidad…" style="flex:1;border:none;outline:none;resize:none;font-family:inherit;font-size:16px;line-height:1.5;min-height:52px;padding-top:10px;color:#161616;background:transparent"></textarea>
             </div>
             <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;border-top:1px solid #f0f0f0;padding-top:12px">
               <div style="display:flex;gap:6px">
-                <sc-for list="{{ composerTools }}" as="t" hint-placeholder-count="3">
-                  <div style="font-size:14px;color:#525252;padding:7px 12px;border-radius:8px;cursor:pointer" style-hover="background:#f4f4f4">{{ t }}</div>
-                </sc-for>
+                <div style="display:flex;align-items:center;gap:6px;font-size:14px;color:#525252;padding:7px 12px;border-radius:0;cursor:pointer" style-hover="background:#f4f4f4"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg> Foto</div>
+                <div style="display:flex;align-items:center;gap:6px;font-size:14px;color:#525252;padding:7px 12px;border-radius:0;cursor:pointer" style-hover="background:#f4f4f4"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg> Descuento</div>
+                <div style="display:flex;align-items:center;gap:6px;font-size:14px;color:#525252;padding:7px 12px;border-radius:0;cursor:pointer" style-hover="background:#f4f4f4"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg> Evento</div>
               </div>
-              <button onClick="{{ addPost }}" style="background:#0f62fe;color:#fff;border:none;border-radius:999px;padding:11px 26px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit">Publicar</button>
+              <button onClick="{{ addPost }}" style="background:#0f62fe;color:#fff;border:none;border-radius:0;padding:11px 26px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit">Publicar</button>
             </div>
           </div>
           </sc-if>
@@ -472,16 +599,16 @@
           <!-- POSTS -->
           <div style="display:flex;flex-direction:column;gap:18px;padding-bottom:56px">
             <sc-for list="{{ posts }}" as="p" hint-placeholder-count="3">
-              <div style="border:1px solid #e0e0e0;border-radius:16px;overflow:hidden">
+              <div style="border:1px solid #e0e0e0;border-radius:0;overflow:hidden">
                 <div style="padding:18px 20px 0;display:flex;gap:12px;align-items:center">
-                  <div style="width:44px;height:44px;border-radius:999px;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;flex:0 0 44px;background:{{ p.color }}">{{ p.initials }}</div>
+                  <div style="width:44px;height:44px;border-radius:0;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;flex:0 0 44px;background:{{ p.color }}">{{ p.initials }}</div>
                   <div style="flex:1">
                     <div style="font-size:16px;font-weight:600">{{ p.author }}</div>
                     <div style="font-size:13px;color:#8d8d8d">{{ p.role }} · {{ p.time }}</div>
                   </div>
-                  <div style="font-size:12px;font-weight:700;color:#0f62fe;background:#edf5ff;padding:5px 11px;border-radius:999px">{{ p.tag }}</div>
+                  <div style="font-size:12px;font-weight:700;color:#0f62fe;background:#edf5ff;padding:5px 11px;border-radius:0">{{ p.tag }}</div>
                   <sc-if value="{{ isAdmin }}" hint-placeholder-val="{{ false }}">
-                    <div onClick="{{ p.remove }}" title="Eliminar anuncio" style="width:26px;height:26px;border-radius:999px;background:#fff0f0;color:#da1e28;display:flex;align-items:center;justify-content:center;font-weight:800;cursor:pointer;font-size:15px;flex:0 0 26px">×</div>
+                    <div onClick="{{ p.remove }}" title="Eliminar anuncio" style="width:26px;height:26px;border-radius:0;background:#fff0f0;color:#da1e28;display:flex;align-items:center;justify-content:center;font-weight:800;cursor:pointer;font-size:15px;flex:0 0 26px">×</div>
                   </sc-if>
                 </div>
                 <div style="padding:14px 20px 16px;font-size:16px;line-height:1.55;color:#262626;white-space:pre-wrap">{{ p.text }}</div>
@@ -490,13 +617,15 @@
                     <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="{{ p.slotId }}" shape="rect" fit="cover" src="{{ p.img }}" placeholder="Imagen del anuncio" hint-size="100%,100%"></x-import>
                   </div>
                 </sc-if>
-                <div style="padding:10px 20px;display:flex;justify-content:space-between;font-size:13px;color:#8d8d8d;border-bottom:1px solid #f0f0f0">
-                  <span>{{ p.likesLabel }}</span><span>{{ p.comments }} comentarios</span>
+                <div style="padding:10px 20px;font-size:13px;color:#8d8d8d;border-bottom:1px solid #f0f0f0">
+                  <span>{{ p.likesLabel }}</span>
                 </div>
                 <div style="display:flex;padding:4px 10px">
-                  <div onClick="{{ p.like }}" style="{{ p.likeStyle }}">{{ p.likeIcon }} Me gusta</div>
-                  <div style="flex:1;text-align:center;padding:11px;font-size:15px;font-weight:600;color:#525252;cursor:pointer;border-radius:8px" style-hover="background:#f4f4f4">💬 Comentar</div>
-                  <div style="flex:1;text-align:center;padding:11px;font-size:15px;font-weight:600;color:#525252;cursor:pointer;border-radius:8px" style-hover="background:#f4f4f4">↪ Compartir</div>
+                  <div onClick="{{ p.like }}" style="{{ p.likeStyle }}">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="{{ p.likeFill }}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 10v12"/><path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2h0a3.13 3.13 0 0 1 3 3.88Z"/></svg>
+                    Me gusta
+                  </div>
+                  <div style="flex:1;display:flex;align-items:center;justify-content:center;gap:7px;padding:11px;font-size:15px;font-weight:600;color:#525252;cursor:pointer;border-radius:0" style-hover="background:#f4f4f4"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.59 13.51 6.83 3.98"/><path d="m15.41 6.51-6.82 3.98"/></svg> Compartir</div>
                 </div>
               </div>
             </sc-for>
@@ -511,18 +640,18 @@
         <div style="width:100%;max-width:560px">
         <sc-if value="{{ registroSuccess }}" hint-placeholder-val="{{ false }}">
           <div style="text-align:center;padding:40px 0">
-            <div style="width:64px;height:64px;border-radius:999px;background:#defbe6;color:#0e6027;display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:800;margin:0 auto 20px">✓</div>
+            <div style="width:64px;height:64px;border-radius:0;background:#defbe6;color:#0e6027;display:flex;align-items:center;justify-content:center;margin:0 auto 20px"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
             <h1 style="font-size:32px;font-weight:800;letter-spacing:-0.02em;margin-bottom:10px">¡Solicitud enviada!</h1>
-            <p style="font-size:16px;color:#52606d">Gracias, {{ registroNombre }}. Un asesor de la Cooperativa validará tu vínculo laboral con IBM, Kyndryl o Bluetab y te contactará por correo en los próximos días.</p>
+            <p style="font-size:16px;color:#52606d">Gracias, {{ registroNombre }}. Un asesor de la Cooperativa validará tu vínculo laboral y te contactará por correo en los próximos días.</p>
           </div>
         </sc-if>
         <sc-if value="{{ !registroSuccess }}" hint-placeholder-val="{{ true }}">
           <h1 style="font-size:42px;font-weight:800;letter-spacing:-0.02em;margin-bottom:8px">Regístrate como socio</h1>
-          <p style="font-size:16px;color:#52606d;margin-bottom:24px">Completa tus datos. Un asesor validará tu vínculo laboral con IBM, Kyndryl o Bluetab.</p>
-          <div style="background:#f4f8fc;border-radius:14px;padding:20px 22px;margin-bottom:28px">
+          <p style="font-size:16px;color:#52606d;margin-bottom:24px">Completa tus datos. Un asesor validará tu vínculo laboral.</p>
+          <div style="background:#f4f8fc;border-radius:0;padding:20px 22px;margin-bottom:28px">
             <div style="font-size:14px;font-weight:700;margin-bottom:10px">Requisitos de inscripción</div>
             <ul style="font-size:14px;color:#52606d;line-height:1.7;padding-left:18px">
-              <li>Ser empleado de IBM, Kyndryl o Bluetab.</li>
+              <li>Ser empleado activo de la empresa afiliada.</li>
               <li>Suscribir 1,600 acciones de S/1.00 cada una (descontable en 10 cuotas).</li>
               <li>Ahorrar mensualmente un monto desde S/50.00.</li>
               <li>Aportar US$5.00 mensuales al Fondo de Sepelio.</li>
@@ -532,7 +661,7 @@
             <sc-for list="{{ regFields }}" as="f" hint-placeholder-count="6">
               <div style="{{ f.wrap }}">
                 <label style="display:block;font-size:13px;font-weight:600;color:#3b4653;margin-bottom:7px">{{ f.label }}</label>
-                <input type="{{ f.type }}" placeholder="{{ f.ph }}" value="{{ f.value }}" onInput="{{ f.onInput }}" style="width:100%;border:1px solid #d9dee4;border-radius:10px;padding:13px 14px;font-size:15px;font-family:inherit;outline:none" style-focus="border:1px solid #0f62fe;box-shadow:0 0 0 3px #edf5ff">
+                <input type="{{ f.type }}" placeholder="{{ f.ph }}" value="{{ f.value }}" onInput="{{ f.onInput }}" style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:13px 14px;font-size:15px;font-family:inherit;outline:none" style-focus="border:1px solid #0f62fe;box-shadow:0 0 0 3px #edf5ff">
               </div>
             </sc-for>
           </div>
@@ -540,7 +669,7 @@
           <sc-if value="{{ registroError }}" hint-placeholder-val="{{ false }}">
             <p style="color:#da1e28;font-size:14px;font-weight:600;margin-top:16px">{{ registroError }}</p>
           </sc-if>
-          <button onClick="{{ registroSubmit }}" style="width:100%;margin-top:24px;background:#0f62fe;color:#fff;border:none;border-radius:999px;padding:16px;font-size:16px;font-weight:600;cursor:pointer;font-family:inherit">Enviar solicitud</button>
+          <button onClick="{{ registroSubmit }}" style="width:100%;margin-top:24px;background:#0f62fe;color:#fff;border:none;border-radius:0;padding:16px;font-size:16px;font-weight:600;cursor:pointer;font-family:inherit">Enviar solicitud</button>
           <p style="text-align:center;font-size:14px;color:#52606d;margin-top:18px">¿Ya eres socio? <a onClick="{{ goLogin }}" style="cursor:pointer;font-weight:600">Inicia sesión</a></p>
         </sc-if>
         </div>
@@ -551,10 +680,10 @@
       <sc-if value="{{ isLogin }}" hint-placeholder-val="{{ true }}">
       <section style="min-height:100%;display:flex;align-items:center;justify-content:center;padding:56px">
         <div style="width:100%;max-width:420px">
-          <div style="width:56px;height:56px;border-radius:14px;background:#0f62fe;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:24px;margin-bottom:24px">S</div>
+          <div style="width:56px;height:56px;border-radius:0;background:#0f62fe;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:24px;margin-bottom:24px">S</div>
 
           <!-- TAB SWITCHER -->
-          <div style="display:flex;background:#f4f4f4;border-radius:999px;padding:4px;margin-bottom:26px;max-width:280px">
+          <div style="display:flex;background:#f4f4f4;border-radius:0;padding:4px;margin-bottom:26px;max-width:280px">
             <div onClick="{{ setLoginTabSocio }}" style="{{ loginTabSocioStyle }}">Socio</div>
             <div onClick="{{ setLoginTabAdmin }}" style="{{ loginTabAdminStyle }}">Administrador</div>
           </div>
@@ -563,9 +692,9 @@
           <h1 style="font-size:34px;font-weight:800;letter-spacing:-0.02em;margin-bottom:6px">Login Socios</h1>
           <p style="font-size:16px;color:#52606d;margin-bottom:30px">Ingresa con tu documento y contraseña de socio.</p>
           <label style="display:block;font-size:13px;font-weight:600;color:#3b4653;margin-bottom:7px">DNI o correo</label>
-          <input type="text" placeholder="Ej. 40123456" value="{{ loginUser }}" onInput="{{ onLoginUser }}" style="width:100%;border:1px solid #d9dee4;border-radius:10px;padding:14px;font-size:15px;font-family:inherit;outline:none;margin-bottom:18px" style-focus="border:1px solid #0f62fe;box-shadow:0 0 0 3px #edf5ff">
+          <input type="text" placeholder="Ej. 40123456" value="{{ loginUser }}" onInput="{{ onLoginUser }}" style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:14px;font-size:15px;font-family:inherit;outline:none;margin-bottom:18px" style-focus="border:1px solid #0f62fe;box-shadow:0 0 0 3px #edf5ff">
           <label style="display:block;font-size:13px;font-weight:600;color:#3b4653;margin-bottom:7px">Contraseña</label>
-          <input type="password" placeholder="••••••••" value="{{ loginPass }}" onInput="{{ onLoginPass }}" style="width:100%;border:1px solid #d9dee4;border-radius:10px;padding:14px;font-size:15px;font-family:inherit;outline:none;margin-bottom:8px" style-focus="border:1px solid #0f62fe;box-shadow:0 0 0 3px #edf5ff">
+          <input type="password" placeholder="••••••••" value="{{ loginPass }}" onInput="{{ onLoginPass }}" style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:14px;font-size:15px;font-family:inherit;outline:none;margin-bottom:8px" style-focus="border:1px solid #0f62fe;box-shadow:0 0 0 3px #edf5ff">
           <div style="text-align:right;margin-bottom:22px"><a style="font-size:14px;cursor:pointer">¿Olvidaste tu contraseña?</a></div>
           </sc-if>
 
@@ -573,21 +702,21 @@
           <h1 style="font-size:34px;font-weight:800;letter-spacing:-0.02em;margin-bottom:6px">Login Administrador</h1>
           <p style="font-size:16px;color:#52606d;margin-bottom:30px">Acceso para editar anuncios, proveedores y tasas de interés.</p>
           <label style="display:block;font-size:13px;font-weight:600;color:#3b4653;margin-bottom:7px">Usuario</label>
-          <input type="text" placeholder="admin" value="{{ adminUser }}" onInput="{{ onAdminUser }}" style="width:100%;border:1px solid #d9dee4;border-radius:10px;padding:14px;font-size:15px;font-family:inherit;outline:none;margin-bottom:18px" style-focus="border:1px solid #0f62fe;box-shadow:0 0 0 3px #edf5ff">
+          <input type="text" placeholder="admin" value="{{ adminUser }}" onInput="{{ onAdminUser }}" style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:14px;font-size:15px;font-family:inherit;outline:none;margin-bottom:18px" style-focus="border:1px solid #0f62fe;box-shadow:0 0 0 3px #edf5ff">
           <label style="display:block;font-size:13px;font-weight:600;color:#3b4653;margin-bottom:7px">Contraseña</label>
-          <input type="password" placeholder="••••••••" value="{{ adminPass }}" onInput="{{ onAdminPass }}" style="width:100%;border:1px solid #d9dee4;border-radius:10px;padding:14px;font-size:15px;font-family:inherit;outline:none;margin-bottom:22px" style-focus="border:1px solid #0f62fe;box-shadow:0 0 0 3px #edf5ff">
+          <input type="password" placeholder="••••••••" value="{{ adminPass }}" onInput="{{ onAdminPass }}" style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:14px;font-size:15px;font-family:inherit;outline:none;margin-bottom:22px" style-focus="border:1px solid #0f62fe;box-shadow:0 0 0 3px #edf5ff">
           </sc-if>
 
           <sc-if value="{{ loginError }}" hint-placeholder-val="{{ false }}">
             <p style="color:#da1e28;font-size:14px;font-weight:600;margin-bottom:18px">{{ loginError }}</p>
           </sc-if>
-          <button onClick="{{ loginSubmit }}" style="width:100%;background:#0f62fe;color:#fff;border:none;border-radius:999px;padding:16px;font-size:16px;font-weight:600;cursor:pointer;font-family:inherit">Ingresar</button>
+          <button onClick="{{ loginSubmit }}" style="width:100%;background:#0f62fe;color:#fff;border:none;border-radius:0;padding:16px;font-size:16px;font-weight:600;cursor:pointer;font-family:inherit">Ingresar</button>
           <p style="text-align:center;font-size:14px;color:#52606d;margin-top:20px">¿No tienes cuenta? <a onClick="{{ goRegistro }}" style="cursor:pointer;font-weight:600">Regístrate</a></p>
         </div>
       </section>
       </sc-if>
 
-      <footer style="background:#161616;color:#c6c6c6;padding:22px 56px;font-size:13px;text-align:center">2026 © Cooperativa de Ahorro y Crédito de los Empleados de IBM, Kyndryl y Bluetab · Supervisada por la SBS · Última actualización: {{ lastUpdated }}</footer>
+      <footer style="background:#161616;color:#c6c6c6;padding:22px 56px;font-size:13px;text-align:center">2026 © Cooperativa de Ahorro y Crédito de Empleados · Supervisada por la SBS · Última actualización: {{ lastUpdated }}</footer>
 
     </main>
   </div>
@@ -595,7 +724,7 @@
   <!-- ================= MODAL PREFERENCIAS ================= -->
   <sc-if value="{{ showPrefs }}" hint-placeholder-val="{{ true }}">
   <div style="position:absolute;inset:0;z-index:50;background:rgba(4,10,20,0.55);display:flex;align-items:center;justify-content:center;padding:32px">
-    <div style="width:100%;max-width:720px;max-height:90%;background:#fff;border-radius:22px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 30px 80px rgba(0,0,0,0.35)">
+    <div style="width:100%;max-width:720px;max-height:90%;background:#fff;border-radius:0;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 30px 80px rgba(0,0,0,0.35)">
       <div style="padding:30px 40px 22px;border-bottom:1px solid #eceef1;display:flex;justify-content:space-between;align-items:flex-start">
         <div>
           <h2 style="font-size:30px;font-weight:800;letter-spacing:-0.02em">Tus preferencias</h2>
@@ -610,7 +739,7 @@
           <sc-for list="{{ prefFields }}" as="f" hint-placeholder-count="5">
             <div style="{{ f.wrap }}">
               <label style="display:block;font-size:14px;color:#8b95a1;margin-bottom:8px">{{ f.label }}</label>
-              <input type="{{ f.type }}" placeholder="{{ f.ph }}" style="width:100%;border:1px solid #d9dee4;border-radius:12px;padding:14px 16px;font-size:16px;font-family:inherit;outline:none" style-focus="border:1px solid #0f62fe;box-shadow:0 0 0 3px #edf5ff">
+              <input type="{{ f.type }}" placeholder="{{ f.ph }}" style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:14px 16px;font-size:16px;font-family:inherit;outline:none" style-focus="border:1px solid #0f62fe;box-shadow:0 0 0 3px #edf5ff">
             </div>
           </sc-for>
         </div>
@@ -620,8 +749,13 @@
           <sc-for list="{{ promoCards }}" as="c" hint-placeholder-count="4">
             <div onClick="{{ c.toggle }}" style="{{ c.cardStyle }}">
               <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px">
-                <div style="width:44px;height:44px;border-radius:12px;background:#f0f2f5;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:#52606d">{{ c.icon }}</div>
-                <div style="{{ c.boxStyle }}">{{ c.check }}</div>
+                <div style="width:44px;height:44px;border-radius:0;background:#f0f2f5;display:flex;align-items:center;justify-content:center;color:#52606d">
+                  <sc-if value="{{ c.key === 'descuentos' }}" hint-placeholder-val="{{ true }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" x2="5" y1="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg></sc-if>
+                  <sc-if value="{{ c.key === 'prestamos' }}" hint-placeholder-val="{{ false }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg></sc-if>
+                  <sc-if value="{{ c.key === 'servicios' }}" hint-placeholder-val="{{ false }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg></sc-if>
+                  <sc-if value="{{ c.key === 'seguros' }}" hint-placeholder-val="{{ false }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg></sc-if>
+                </div>
+                <div style="{{ c.boxStyle }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="opacity:{{ c.checkOpacity }}"><path d="M20 6 9 17l-5-5"/></svg></div>
               </div>
               <div style="font-size:19px;font-weight:800;margin-bottom:4px">{{ c.title }}</div>
               <div style="font-size:15px;color:#8b95a1;line-height:1.45">{{ c.desc }}</div>
@@ -632,7 +766,7 @@
 
       <div style="padding:20px 40px;border-top:1px solid #eceef1;display:flex;justify-content:space-between;align-items:center">
         <a onClick="{{ closePrefs }}" style="font-size:17px;color:#8b95a1;cursor:pointer">Omitir por ahora</a>
-        <button onClick="{{ savePrefs }}" style="background:#0f62fe;color:#fff;border:none;border-radius:999px;padding:16px 34px;font-size:17px;font-weight:700;cursor:pointer;font-family:inherit">Guardar preferencias</button>
+        <button onClick="{{ savePrefs }}" style="background:#0f62fe;color:#fff;border:none;border-radius:0;padding:16px 34px;font-size:17px;font-weight:700;cursor:pointer;font-family:inherit">Guardar preferencias</button>
       </div>
     </div>
   </div>
@@ -641,7 +775,7 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;100%&quot;,&quot;height&quot;:&quot;800px&quot;},&quot;mostrarSimulador&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Simulador&quot;,&quot;label&quot;:&quot;Mostrar simulador&quot;}}">
 class Component extends DCLogic {
-  state = { page: "inicio", monto: 300000, plazo: 180, showPrefs: false, promos: { descuentos: true, prestamos: false, servicios: false, seguros: false }, saved: { ben0: true, ben1: false, ben2: false, ben3: true },
+  state = { page: "inicio", monto: 300000, plazo: 180, showPrefs: false, showProfile: false, promos: { descuentos: true, prestamos: false, servicios: false, seguros: false },
     simTipo: "hipotecario", ingreso: 6000,
     draft: "", feed: "todos",
     login: { user: "", pass: "" }, loginError: "", simView: "mensual",
@@ -663,15 +797,14 @@ class Component extends DCLogic {
       {slotId:"prov-4",name:"Jardines de la Paz",cat:"Servicio funerario",desc:"Operador funerario afiliado al Fondo de Sepelio de la Cooperativa.",disc:"Cobertura Fondo de Sepelio"},
       {slotId:"prov-5",name:"Campo Fe",cat:"Servicio funerario",desc:"Operador funerario afiliado al Fondo de Sepelio de la Cooperativa.",disc:"Cobertura Fondo de Sepelio"},
       {slotId:"prov-6",name:"Samsung",cat:"Tecnología",desc:"Descuentos corporativos para socios de la Cooperativa.",disc:"Descuento corporativo"},
-      {slotId:"prov-7",name:"Smart Fit",cat:"Salud y bienestar",desc:"Descuentos corporativos para socios de la Cooperativa.",disc:"Descuento corporativo"},
       {slotId:"prov-8",name:"Perufarma",cat:"Farmacias",desc:"Descuentos corporativos para socios de la Cooperativa.",disc:"Descuento corporativo"},
       {slotId:"prov-9",name:"Vitapoint",cat:"Salud y bienestar",desc:"Descuentos corporativos para socios de la Cooperativa.",disc:"Descuento corporativo"},
       {slotId:"prov-10",name:"Almendariz",cat:"Otros proveedores",desc:"Descuentos corporativos para socios de la Cooperativa.",disc:"Descuento corporativo"}
     ],
     posts: [
-      {id:1,author:"Cooperativa IBM",role:"Cuenta oficial",time:"hace 2 h",tag:"Anuncio",color:"#0f62fe",initials:"CI",tab:"cooperativa",text:"📢 Recuerda que puedes solicitar tus préstamos, tu Seguro de Autos con Rímac o inscribirte en el Fondo de Sepelio escribiendo a cualquiera de nuestras contactos en la sección Quiénes Somos.",hasImg:false,slotId:"post-1",img:"",likes:48,liked:false,comments:12},
-      {id:2,author:"Junta Directiva",role:"Gobierno cooperativo",time:"ayer",tag:"Evento",color:"#8a3ffc",initials:"JD",tab:"eventos",text:"Los invitamos a la Asamblea General de Socios. Se presentará la memoria anual y el reparto de excedentes.",hasImg:false,slotId:"post-2",img:"",likes:31,liked:true,comments:5},
-      {id:3,author:"Comité de Bienestar",role:"Socios",time:"hace 3 días",tag:"Convenio",color:"#009d9a",initials:"CB",tab:"proveedores",text:"🏷️ Recuerda que Oncosalud ofrece 18% de descuento sobre la tarifa de mercado para socios y familiares directos.",hasImg:false,slotId:"post-3",img:"",likes:64,liked:false,comments:9}
+      {id:1,author:"Cooperativa",role:"Cuenta oficial",time:"hace 2 h",tag:"Anuncio",color:"#0f62fe",initials:"CI",tab:"cooperativa",text:"📢 Recuerda que puedes solicitar tus préstamos, tu Seguro de Autos con Rímac o inscribirte en el Fondo de Sepelio escribiendo a cualquiera de nuestras contactos en la sección Quiénes Somos.",hasImg:false,slotId:"post-1",img:"",likes:48,liked:false},
+      {id:2,author:"Junta Directiva",role:"Gobierno cooperativo",time:"ayer",tag:"Evento",color:"#8a3ffc",initials:"JD",tab:"eventos",text:"Los invitamos a la Asamblea General de Socios. Se presentará la memoria anual y el reparto de excedentes.",hasImg:false,slotId:"post-2",img:"",likes:31,liked:true},
+      {id:3,author:"Comité de Bienestar",role:"Socios",time:"hace 3 días",tag:"Convenio",color:"#009d9a",initials:"CB",tab:"proveedores",text:"🏷️ Recuerda que Oncosalud ofrece 18% de descuento sobre la tarifa de mercado para socios y familiares directos.",hasImg:false,slotId:"post-3",img:"",likes:64,liked:false}
     ] };
 
   go(p){ this.setState({ page: p }); const m=this.mainEl; if(m) m.scrollTop=0; }
@@ -708,7 +841,7 @@ class Component extends DCLogic {
   }
 
   mapAnuncio(a){
-    return { id: a.id, remoteId: a.id, author: a.author, role: a.role, time: "", tag: a.tag, color: "#0f62fe", initials: "AD", tab: "cooperativa", text: a.text, hasImg: false, slotId: "post-"+a.id, img: "", likes: 0, liked: false, comments: 0 };
+    return { id: a.id, remoteId: a.id, author: a.author, role: a.role, time: "", tag: a.tag, color: "#0f62fe", initials: "AD", tab: "cooperativa", text: a.text, hasImg: false, slotId: "post-"+a.id, img: "", likes: 0, liked: false };
   }
 
   async apiFetch(path, options){
@@ -784,7 +917,7 @@ class Component extends DCLogic {
     ];
     const nav = navItems.map(([label,key]) => ({
       label, go: () => this.go(key),
-      style: "padding:14px 18px;border-radius:12px;font-size:17px;cursor:pointer;font-weight:"+(page===key?"600":"500")+";color:"+(page===key?"#fff":"#8b95a1")+";background:"+(page===key?"#17181b":"transparent")
+      style: "padding:14px 18px;border-radius:0;font-size:17px;cursor:pointer;font-weight:"+(page===key?"600":"500")+";color:"+(page===key?"#fff":"#8b95a1")+";background:"+(page===key?"#17181b":"transparent")
     }));
 
     const r = tasa/100/12;
@@ -817,6 +950,8 @@ class Component extends DCLogic {
       isInicio: page==="inicio", isQuienes: page==="quienes", isAhorro: page==="ahorro",
       isProveedores: page==="proveedores", isPrestamos: page==="prestamos", isPrestamoDetalle: page==="prestamo-detalle",
       isServicios: page==="servicios", isRegistro: page==="registro", isLogin: page==="login", isAnuncios: page==="anuncios",
+      isBebidas: page==="bebidas",
+      isSmartFit: page==="smartfit",
       goInicio: ()=>this.go("inicio"), goRegistro: ()=>this.go("registro"),
       goLogin: ()=>this.go("login"),
 
@@ -826,8 +961,8 @@ class Component extends DCLogic {
       isLoginTabAdmin: this.state.loginTab === "admin",
       setLoginTabSocio: ()=>this.setState({loginTab:"socio", loginError:""}),
       setLoginTabAdmin: ()=>this.setState({loginTab:"admin", loginError:""}),
-      loginTabSocioStyle: "flex:1;text-align:center;padding:9px 14px;border-radius:999px;font-size:14px;font-weight:700;cursor:pointer;background:"+(this.state.loginTab==="socio"?"#fff":"transparent")+";color:"+(this.state.loginTab==="socio"?"#161616":"#8b95a1")+";box-shadow:"+(this.state.loginTab==="socio"?"0 1px 4px rgba(15,36,56,0.12)":"none"),
-      loginTabAdminStyle: "flex:1;text-align:center;padding:9px 14px;border-radius:999px;font-size:14px;font-weight:700;cursor:pointer;background:"+(this.state.loginTab==="admin"?"#fff":"transparent")+";color:"+(this.state.loginTab==="admin"?"#161616":"#8b95a1")+";box-shadow:"+(this.state.loginTab==="admin"?"0 1px 4px rgba(15,36,56,0.12)":"none"),
+      loginTabSocioStyle: "flex:1;text-align:center;padding:9px 14px;border-radius:0;font-size:14px;font-weight:700;cursor:pointer;background:"+(this.state.loginTab==="socio"?"#fff":"transparent")+";color:"+(this.state.loginTab==="socio"?"#161616":"#8b95a1")+";box-shadow:"+(this.state.loginTab==="socio"?"0 1px 4px rgba(15,36,56,0.12)":"none"),
+      loginTabAdminStyle: "flex:1;text-align:center;padding:9px 14px;border-radius:0;font-size:14px;font-weight:700;cursor:pointer;background:"+(this.state.loginTab==="admin"?"#fff":"transparent")+";color:"+(this.state.loginTab==="admin"?"#161616":"#8b95a1")+";box-shadow:"+(this.state.loginTab==="admin"?"0 1px 4px rgba(15,36,56,0.12)":"none"),
 
       loginUser: this.state.login.user, loginPass: this.state.login.pass,
       onLoginUser: (e)=>this.setState(s=>({login:{...s.login,user:e.target.value}})),
@@ -875,6 +1010,10 @@ class Component extends DCLogic {
       showPrefs: this.state.showPrefs,
       openPrefs: ()=>this.setState({showPrefs:true}),
       closePrefs: ()=>this.setState({showPrefs:false}),
+      showProfile: this.state.showProfile,
+      toggleProfile: ()=>this.setState(s=>({showProfile:!s.showProfile})),
+      closeProfile: ()=>this.setState({showProfile:false}),
+      openPrefsFromProfile: ()=>this.setState({showProfile:false, showPrefs:true}),
       savePrefs: ()=>this.setState({showPrefs:false}),
       prefFields: [
         {label:"Nombres",type:"text",ph:"Tus nombres",wrap:""},
@@ -884,16 +1023,16 @@ class Component extends DCLogic {
         {label:"DNI / CE",type:"text",ph:"12345678",wrap:""}
       ],
       promoCards: [
-        {key:"descuentos",icon:"%",title:"Convenios Corporativos",desc:"Ofertas y promociones especiales"},
-        {key:"prestamos",icon:"S/",title:"Préstamos",desc:"Hipotecario, automotriz, académico y más"},
-        {key:"servicios",icon:"★",title:"Servicios",desc:"Seguro de autos, Fondo de Sepelio y salud"},
-        {key:"seguros",icon:"♥",title:"Bienestar",desc:"Eventos, capacitaciones y recreación"}
+        {key:"descuentos",title:"Convenios Corporativos",desc:"Ofertas y promociones especiales"},
+        {key:"prestamos",title:"Préstamos",desc:"Hipotecario, automotriz, académico y más"},
+        {key:"servicios",title:"Servicios",desc:"Seguro de autos, Fondo de Sepelio y salud"},
+        {key:"seguros",title:"Bienestar",desc:"Eventos, capacitaciones y recreación"}
       ].map(c=>{
         const on = !!this.state.promos[c.key];
         return { ...c, toggle:()=>this.setState(s=>({promos:{...s.promos,[c.key]:!s.promos[c.key]}})),
-          check: on ? "✓" : "",
-          cardStyle: "border:1px solid "+(on?"#0f62fe":"#e5e8ec")+";background:"+(on?"#edf5ff":"#fff")+";border-radius:16px;padding:22px;cursor:pointer;transition:all .12s",
-          boxStyle: "width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:#fff;border:2px solid "+(on?"#0f62fe":"#cfd6dd")+";background:"+(on?"#0f62fe":"transparent")
+          checkOpacity: on ? 1 : 0,
+          cardStyle: "border:1px solid "+(on?"#0f62fe":"#e5e8ec")+";background:"+(on?"#edf5ff":"#fff")+";border-radius:0;padding:22px;cursor:pointer;transition:all .12s",
+          boxStyle: "width:26px;height:26px;border-radius:0;display:flex;align-items:center;justify-content:center;color:#fff;border:2px solid "+(on?"#0f62fe":"#cfd6dd")+";background:"+(on?"#0f62fe":"transparent")
         };
       }),
 
@@ -907,12 +1046,7 @@ class Component extends DCLogic {
         {key:"ben1",slotId:"ben-1",go:()=>this.go("prestamos"),photo:"https://picsum.photos/id/500/800/500",title:"Préstamos",desc:"Sola Firma, Consumo, Largo Plazo, Automotriz, Hipotecario, Garantía Hipotecaria y Académico con tasas preferenciales."},
         {key:"ben2",slotId:"ben-2",go:()=>this.go("servicios"),photo:"https://picsum.photos/seed/ibmserv/800/500",title:"Servicios",desc:"Fondo de Sepelio, Seguro de Autos y convenios de salud para ti y tu familia."},
         {key:"ben3",slotId:"ben-3",go:()=>this.go("ahorro"),photo:"https://picsum.photos/seed/ibmsave/800/500",title:"Ahorro",desc:"Ahorro simple desde S/50 mensuales o depósitos a plazo fijo, con intereses en soles y dólares."}
-      ].map(b=>{
-        const on = !!this.state.saved[b.key];
-        return { ...b, toggle:()=>this.setState(s=>({saved:{...s.saved,[b.key]:!s.saved[b.key]}})),
-          bmFill: on?"#0f62fe":"none", bmStroke: on?"#0f62fe":"#8d8d8d" };
-      }),
-      savedCount: Object.values(this.state.saved).filter(Boolean).length,
+      ],
 
       banners: [
         {slotId:"ban-0",brand:"Rímac Seguros",tag:"Tarifa corporativa",photo:"https://picsum.photos/seed/health/700/420",headline:"La mejor tarifa del mercado para tu auto"},
@@ -922,7 +1056,6 @@ class Component extends DCLogic {
 
       draft: this.state.draft,
       onDraft: (e)=>this.setState({draft:e.target.value}),
-      composerTools: ["📷 Foto","🏷️ Descuento","📅 Evento"],
       addPost: async ()=>{
         const t=this.state.draft.trim(); if(!t) return;
         if(this.state.apiBase){
@@ -932,19 +1065,19 @@ class Component extends DCLogic {
           }catch(e){ this.setState({apiError: e.message}); }
           return;
         }
-        const np={id:Date.now(),author:"Cooperativa IBM",role:"Administrador",time:"ahora",tag:"Anuncio",color:"#0f62fe",initials:"AD",tab:"cooperativa",text:t,hasImg:false,slotId:"post-"+Date.now(),img:"",likes:0,liked:false,comments:0};
+        const np={id:Date.now(),author:"Cooperativa",role:"Administrador",time:"ahora",tag:"Anuncio",color:"#0f62fe",initials:"AD",tab:"cooperativa",text:t,hasImg:false,slotId:"post-"+Date.now(),img:"",likes:0,liked:false};
         this.setState(s=>({posts:[np,...s.posts],draft:"",lastUpdatedAt:new Date().toISOString()}));
       },
       feedFilters: [["todos","Todos"],["cooperativa","Cooperativa"],["proveedores","Descuentos"],["eventos","Eventos"],["socios","Socios"]].map(([k,label])=>{
         const on=this.state.feed===k;
         return {label,pick:()=>this.setState({feed:k}),
-          style:"font-size:14px;font-weight:600;padding:8px 16px;border-radius:999px;cursor:pointer;border:1px solid "+(on?"#0f62fe":"#e0e0e0")+";background:"+(on?"#0f62fe":"#fff")+";color:"+(on?"#fff":"#525252")};
+          style:"font-size:14px;font-weight:600;padding:8px 16px;border-radius:0;cursor:pointer;border:1px solid "+(on?"#0f62fe":"#e0e0e0")+";background:"+(on?"#0f62fe":"#fff")+";color:"+(on?"#fff":"#525252")};
       }),
       posts: this.state.posts.filter(p=>this.state.feed==="todos"||p.tab===this.state.feed).map(p=>({
         ...p,
         likesLabel: p.likes+" me gusta",
-        likeIcon: p.liked?"👍":"👍",
-        likeStyle:"flex:1;text-align:center;padding:11px;font-size:15px;font-weight:700;cursor:pointer;border-radius:8px;color:"+(p.liked?"#0f62fe":"#525252"),
+        likeFill: p.liked?"currentColor":"none",
+        likeStyle:"flex:1;display:flex;align-items:center;justify-content:center;gap:7px;padding:11px;font-size:15px;font-weight:700;cursor:pointer;border-radius:0;color:"+(p.liked?"#0f62fe":"#525252"),
         like:()=>this.setState(s=>({posts:s.posts.map(x=>x.id===p.id?{...x,liked:!x.liked,likes:x.likes+(x.liked?-1:1)}:x)})),
         remove: async ()=>{
           if(this.state.apiBase){
@@ -957,16 +1090,89 @@ class Component extends DCLogic {
 
       stats: [
         {value:"1942",label:"Fundada el 18 de julio"},
-        {value:"3",label:"Empresas: IBM, Kyndryl y Bluetab"},
+        {value:"3",label:"Empresas afiliadas"},
         {value:"84",label:"Años al servicio de nuestros socios"}
       ],
-      docLinks: ["Historia","Funcionarios","Directiva","Memorias","Estados Financieros","Estatuto"],
+      docLinks: ["Estatuto","Memorias","Directiva"],
       ahorroTasas: [
         {plazo:"Ahorro",soles:"2.00%",dolares:"0.25%"},
         {plazo:"90 días",soles:"4.00%",dolares:"0.75%"},
         {plazo:"180 días",soles:"4.50%",dolares:"1.50%"},
         {plazo:"360 días",soles:"5.25%",dolares:"2.00%"},
         {plazo:"720 días",soles:"5.50%",dolares:"2.50%"}
+      ],
+      tasasVigencia: "setiembre 2025",
+      tasasSoles: [
+        {concepto:"Crédito a Sola Firma",tea:"13.00%",teaSin:"15.00%"},
+        {concepto:"Crédito de Consumo",tea:"13.00%",teaSin:"15.00%"},
+        {concepto:"Crédito Escolar",tea:"9.00%",teaSin:"11.00%"},
+        {concepto:"Crédito Salud (Oncosalud)",tea:"6.00%",teaSin:"8.00%"},
+        {concepto:"Crédito Largo Plazo",tea:"12.00%",teaSin:"14.00%"},
+        {concepto:"Crédito Largo Plazo compra de deuda",tea:"10.00%",teaSin:"12.00%"},
+        {concepto:"Crédito Académico",tea:"8.75%",teaSin:"11.00%"},
+        {concepto:"Crédito Automóvil",tea:"8.00%",teaSin:"10.00%"},
+        {concepto:"Crédito Hipotecario",tea:"8.00%",teaSin:"n/a"},
+        {concepto:"Crédito Garantía Hipotecaria",tea:"11.00%",teaSin:"n/a"},
+        {concepto:"Crédito Traslado Hipotecario",tea:"7.00%",teaSin:"n/a"},
+        {concepto:"Seguro de Desgravamen",tea:"0.50%",teaSin:"0.00%"}
+      ],
+      tasasDolares: [
+        {concepto:"Crédito de Consumo",tea:"11.00%",teaSin:"13.00%"},
+        {concepto:"Crédito Largo Plazo",tea:"9.00%",teaSin:"11.00%"},
+        {concepto:"Crédito Académico",tea:"6.00%",teaSin:"8.00%"},
+        {concepto:"Crédito Automóvil",tea:"7.50%",teaSin:"10.00%"},
+        {concepto:"Crédito Hipotecario",tea:"5.50%",teaSin:"n/a"},
+        {concepto:"Crédito Garantía Hipotecaria",tea:"7.00%",teaSin:"n/a"},
+        {concepto:"Seguro de Desgravamen",tea:"0.50%",teaSin:"0.00%"}
+      ],
+      bebidas: [
+        {cat:"WHISKY",marca:"JOHNNIE WALKER GOLD RESERVE",medida:"X 750",cant:4,precio:"195.00"},
+        {cat:"WHISKY",marca:"CHIVAS REGAL 12 AÑOS",medida:"X 700",cant:4,precio:"67.00"},
+        {cat:"ASTI",marca:"CANTI ASTI LIBERTY",medida:"X 750",cant:4,precio:"37.00"},
+        {cat:"ASTI",marca:"RICCADONNA ASTI",medida:"X 750",cant:6,precio:"49.00"},
+        {cat:"ASTI",marca:"CASTILLO PERELADA STARS BRUT",medida:"X 750",cant:4,precio:"46.00"},
+        {cat:"RON",marca:"CARTAVIO SOLERA 12 AÑOS",medida:"X 750",cant:6,precio:"76.00"},
+        {cat:"RON",marca:"EL ABUELO AÑEJO",medida:"1LT",cant:4,precio:"39.00"},
+        {cat:"RON",marca:"BARCELO GRAN AÑEJO",medida:"1LT",cant:4,precio:"48.00"},
+        {cat:"RON",marca:"DIPLOMATICO MANTUANO EXTRA AÑEJO",medida:"X 750",cant:4,precio:"97.00"},
+        {cat:"OTROS",marca:"BAILEYS",medida:"X 700",cant:4,precio:"67.00"},
+        {cat:"OTROS",marca:"DUETO 2SPRITZ",medida:"X 750",cant:6,precio:"25.00"},
+        {cat:"OTROS",marca:"LICOR APEROL",medida:"X 750",cant:6,precio:"48.00"},
+        {cat:"VODKA",marca:"14 INKAS",medida:"X 750",cant:1,precio:"78.00"},
+        {cat:"VODKA",marca:"ABSOLUT",medida:"X 700",cant:4,precio:"38.00"},
+        {cat:"GIN",marca:"BEEFEATER",medida:"X 700",cant:3,precio:"52.50"},
+        {cat:"GIN",marca:"BOMBAY SAPHIRE",medida:"X 700",cant:3,precio:"74.00"},
+        {cat:"PISCOS",marca:"TACAMA DEMONIO DE LOS ANDES ACHOLADO",medida:"2LT",cant:4,precio:"58.00"},
+        {cat:"PISCOS",marca:"PORTON MOSTO VERDE ACHOLADO",medida:"X 750",cant:6,precio:"70.00"},
+        {cat:"PISCOS",marca:"LA CARAVEDO QUEBRANTA",medida:"X 750",cant:4,precio:"29.00"},
+        {cat:"PISCOS",marca:"HUAMANI QUEBRANTA",medida:"X 750",cant:6,precio:"61.00"},
+        {cat:"PISCOS",marca:"CUATRO GALLOS PURO QUEBRANTA",medida:"X 750",cant:4,precio:"35.00"},
+        {cat:"VINO",marca:"GRAN SOMBRERO MALBEC",medida:"X 750",cant:6,precio:"73.00"},
+        {cat:"VINO",marca:"CATENA MALBEC",medida:"X 750",cant:6,precio:"72.00"},
+        {cat:"VINO",marca:"EL ENEMIGO MALBEC",medida:"X 750",cant:6,precio:"88.00"},
+        {cat:"VINO",marca:"ESCORIHUELA GASCON MALBEC",medida:"X 750",cant:6,precio:"45.00"},
+        {cat:"VINO",marca:"LAS MORAS MALBEC",medida:"X 750",cant:6,precio:"25.00"},
+        {cat:"VINO",marca:"NIETO SENETIENER MALBEC",medida:"X 750",cant:6,precio:"39.00"},
+        {cat:"VINO",marca:"INTIPALKA MALBEC",medida:"X 750",cant:6,precio:"24.00"},
+        {cat:"VINO",marca:"LAS MORAS SOUVIGNON BLANC",medida:"X 750",cant:6,precio:"25.00"},
+        {cat:"VINO",marca:"LAN BLANCO VIURA",medida:"X 750",cant:6,precio:"39.00"},
+        {cat:"COCKTAIL DE VINO",marca:"NIETO SENETINER CAMILA CLAREA : SEMILLON Y CHENIN",medida:"X 750",cant:3,precio:"44.00"},
+        {cat:"COCKTAIL DE VINO",marca:"NIETO SENETINER CAMILA ROSE : SIRAH Y BONARDA",medida:"X 750",cant:3,precio:"44.00"},
+        {cat:"COCKTAIL DE VINO",marca:"NIETO SENETINER CAMILA SANGRIA : MALBEC Y BONARDA",medida:"X 750",cant:3,precio:"44.00"},
+        {cat:"COCKTAIL DE VINO",marca:"NIETO SENETINER CAMILA SPRITZ : PINOT NOIR Y MALBEC",medida:"X 750",cant:3,precio:"44.00"},
+        {cat:"TEQUILA",marca:"KICK THE RULES MANGO",medida:"X 700",cant:2,precio:"64.00"},
+        {cat:"TEQUILA",marca:"KICK THE RULES PINEAPPLE",medida:"X 700",cant:2,precio:"64.00"},
+        {cat:"TEQUILA",marca:"KICK THE RULES STRAWBERRY",medida:"X 700",cant:2,precio:"64.00"}
+      ],
+      smartFitBenefits: [
+        "Exoneración del pago de matrícula (ahorra S/99.90)",
+        "Exoneración del pago por mantenimiento anual (ahorra S/99.90)",
+        "Sin retención de 12 meses (ahorro de hasta S/362.67 por penalidad)",
+        "Acceso a todas las áreas del gimnasio",
+        "Acceso a los sillones de masajes",
+        "5 pases diarios por mes para tus invitados",
+        "Entrena en +1500 sedes a nivel nacional y Latam",
+        "Extensión del beneficio a familiares del colaborador"
       ],
       historia: [
         {date:"18 jul. 1942",text:"Fundada como \"Asociación de Empleados\"."},
@@ -1017,7 +1223,8 @@ class Component extends DCLogic {
       }, tasaEdit: tasas[p.key], onTasaInput:(e)=>{
         const v = parseFloat(e.target.value); if(isNaN(v)) return;
         this.setState(s=>({tasas:{...s.tasas,[p.key]:v}, tasaSaved:{...s.tasaSaved,[p.key]:false}}));
-      }, tasaSavedLabel: this.state.tasaSaved && this.state.tasaSaved[p.key] ? "Guardado ✓" : "Guardar",
+      }, tasaIsSaved: !!(this.state.tasaSaved && this.state.tasaSaved[p.key]),
+      tasaSavedLabel: this.state.tasaSaved && this.state.tasaSaved[p.key] ? "Guardado" : "Guardar",
       onTasaSave: async ()=>{
         if(this.state.apiBase){
           try{
@@ -1030,6 +1237,9 @@ class Component extends DCLogic {
       }})),
       prestamoActual: {...prestamoActualData, tasaLabel: prestamoActualData.tasa},
       goPrestamos: ()=>this.go("prestamos"),
+      goProveedores: ()=>this.go("proveedores"),
+      goBebidas: ()=>this.go("bebidas"),
+      goSmartFit: ()=>this.go("smartfit"),
 
       servicios: [
         {slotId:"serv-0",photo:"https://picsum.photos/seed/carins2/700/400",title:"Seguro de Autos",img:"Foto auto",desc:"Convenio con Rímac que garantiza la mejor tarifa del mercado. Descuento de la prima en 18 meses sin recargo de intereses, con descuento por planilla."},
@@ -1042,7 +1252,7 @@ class Component extends DCLogic {
         {key:"nombres",label:"Nombres",type:"text",ph:"Nombres",wrap:""},
         {key:"apellidos",label:"Apellidos",type:"text",ph:"Apellidos",wrap:""},
         {key:"dni",label:"DNI",type:"text",ph:"40123456",wrap:""},
-        {key:"area",label:"Empresa",type:"text",ph:"IBM, Kyndryl o Bluetab",wrap:""},
+        {key:"area",label:"Empresa",type:"text",ph:"Nombre de la empresa",wrap:""},
         {key:"email",label:"Correo electrónico",type:"email",ph:"nombre@ibm.com",wrap:"grid-column:1/-1"},
         {key:"celular",label:"Celular",type:"tel",ph:"+51 999 999 999",wrap:""},
         {key:"password",label:"Contraseña",type:"password",ph:"••••••••",wrap:""}
@@ -1084,8 +1294,8 @@ class Component extends DCLogic {
       ringLabel: simView==="total" ? "Total a pagar" : "Cuota mensual",
       setSimMensual: ()=>this.setState({simView:"mensual"}),
       setSimTotal: ()=>this.setState({simView:"total"}),
-      simToggleMensualStyle: "flex:1;text-align:center;padding:7px 14px;border-radius:999px;font-size:13px;font-weight:700;cursor:pointer;background:"+(simView==="mensual"?"#fff":"transparent")+";color:"+(simView==="mensual"?"#161616":"#a8a8a8"),
-      simToggleTotalStyle: "flex:1;text-align:center;padding:7px 14px;border-radius:999px;font-size:13px;font-weight:700;cursor:pointer;background:"+(simView==="total"?"#fff":"transparent")+";color:"+(simView==="total"?"#161616":"#a8a8a8"),
+      simToggleMensualStyle: "flex:1;text-align:center;padding:7px 14px;border-radius:0;font-size:13px;font-weight:700;cursor:pointer;background:"+(simView==="mensual"?"#fff":"transparent")+";color:"+(simView==="mensual"?"#161616":"#a8a8a8"),
+      simToggleTotalStyle: "flex:1;text-align:center;padding:7px 14px;border-radius:0;font-size:13px;font-weight:700;cursor:pointer;background:"+(simView==="total"?"#fff":"transparent")+";color:"+(simView==="total"?"#161616":"#a8a8a8"),
       ringCapDasharray: capDash.toFixed(1)+" "+RING_C.toFixed(1),
       ringIntDasharray: intDash.toFixed(1)+" "+RING_C.toFixed(1),
       ringIntOffset: (-capDash).toFixed(1),
@@ -1093,7 +1303,7 @@ class Component extends DCLogic {
       simTypes: loanTypes.map(t=>{
         const on=t.key===this.state.simTipo;
         return {key:t.key, label:t.label, teaLabel:t.tea+"%", pick:()=>this.setState({simTipo:t.key}),
-          style:"border:1px solid "+(on?t.color:"#e0e0e0")+";background:"+(on?t.bg:"#fff")+";color:"+(on?t.color:"#161616")+";border-radius:12px;padding:12px 18px;cursor:pointer;line-height:1.25;min-width:120px"};
+          style:"border:1px solid "+(on?t.color:"#e0e0e0")+";background:"+(on?t.bg:"#fff")+";color:"+(on?t.color:"#161616")+";border-radius:0;padding:12px 18px;cursor:pointer;line-height:1.25;min-width:120px"};
       }),
       ingreso: ing, ingresoLabel: this.money(ing),
       onIngreso: (e)=>this.setState({ingreso:+e.target.value}),
