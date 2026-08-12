@@ -15,18 +15,10 @@
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
   body{font-family:"IBM Plex Sans","Helvetica Neue",Helvetica,Arial,sans-serif;font-optical-sizing:auto;font-style:normal;font-variation-settings:"wdth" 100;-webkit-font-smoothing:antialiased;color:#161616}
-  a{color:#0f62fe;text-decoration:none}
+  a{color:#0043ce;text-decoration:none}
   a:hover{color:#0043ce}
   ::-webkit-scrollbar{width:10px;height:10px}
   ::-webkit-scrollbar-thumb{background:#d4d9df;border-radius:0}
-
-  input[type=range].dc-slider{-webkit-appearance:none;appearance:none;width:100%;height:8px;border-radius:999px;outline:none;cursor:pointer;background:transparent}
-  input[type=range].dc-slider::-webkit-slider-runnable-track{height:8px;border-radius:999px}
-  input[type=range].dc-slider::-moz-range-track{height:8px;border-radius:999px;background:#eceef1}
-  input[type=range].dc-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:26px;height:26px;border-radius:999px;background:var(--slider-accent,#0f62fe);border:4px solid #fff;box-shadow:0 1px 4px rgba(15,36,56,0.35);margin-top:-9px;cursor:grab;transition:transform .12s}
-  input[type=range].dc-slider::-webkit-slider-thumb:active{cursor:grabbing;transform:scale(1.12)}
-  input[type=range].dc-slider::-moz-range-thumb{width:26px;height:26px;border-radius:999px;background:var(--slider-accent,#0f62fe);border:4px solid #fff;box-shadow:0 1px 4px rgba(15,36,56,0.35);cursor:grab}
-  input[type=range].dc-slider::-moz-range-progress{height:8px;border-radius:999px;background:var(--slider-accent,#0f62fe)}
 </style>
 </helmet>
 <div style="display:flex;height:100vh;width:100%;background:#000;overflow:hidden;font-family:'IBM Plex Sans','Helvetica Neue',Helvetica,Arial,sans-serif;font-optical-sizing:auto;font-style:normal;font-variation-settings:'wdth' 100">
@@ -41,7 +33,7 @@
     </nav>
     <sc-if value="{{ !isAdmin }}" hint-placeholder-val="{{ true }}">
       <div style="display:flex;flex-direction:column;gap:10px;margin-top:24px">
-        <button onClick="{{ goRegistro }}" style="background:#0f62fe;color:#fff;border:none;border-radius:0;padding:16px;font-size:16px;font-weight:600;cursor:pointer;font-family:inherit">¡Vuélvete socio!</button>
+        <button onClick="{{ goRegistro }}" style="background:#0043ce;color:#fff;border:none;border-radius:0;padding:16px;font-size:16px;font-weight:600;cursor:pointer;font-family:inherit">¡Vuélvete socio!</button>
         <button onClick="{{ goLogin }}" style="background:transparent;color:#fff;border:1px solid #fff;border-radius:0;padding:16px;font-size:16px;font-weight:600;cursor:pointer;font-family:inherit">Iniciar como socio</button>
       </div>
     </sc-if>
@@ -61,13 +53,13 @@
       <sc-if value="{{ !isAdmin }}" hint-placeholder-val="{{ true }}">
         <div style="position:relative">
           <div onClick="{{ toggleProfile }}" title="Tu perfil" style="display:flex;align-items:center;gap:9px;background:#17181b;color:#fff;border-radius:0;padding:6px 16px 6px 6px;cursor:pointer">
-            <div style="width:30px;height:30px;border-radius:0;background:#0f62fe;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex:0 0 30px">S</div>
+            <div style="width:30px;height:30px;border-radius:0;background:#0043ce;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex:0 0 30px">S</div>
             <span style="font-weight:600;font-size:14px">Mi perfil</span>
           </div>
           <sc-if value="{{ showProfile }}" hint-placeholder-val="{{ false }}">
             <div style="position:absolute;top:56px;right:0;width:280px;background:#fff;border-radius:0;box-shadow:0 16px 40px rgba(0,0,0,0.25);overflow:hidden;z-index:60;color:#161616">
               <div style="padding:20px;display:flex;gap:12px;align-items:center;border-bottom:1px solid #eceef1">
-                <div style="width:48px;height:48px;border-radius:0;background:#0f62fe;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;flex:0 0 48px">S</div>
+                <div style="width:48px;height:48px;border-radius:0;background:#0043ce;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;flex:0 0 48px">S</div>
                 <div>
                   <div style="font-size:16px;font-weight:700">Sofía Ramírez</div>
                   <div style="font-size:13px;color:#8b95a1">Socia N.º 1842</div>
@@ -125,7 +117,7 @@
           <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px;border-top:1px solid #eceef1;padding-top:40px">
             <sc-for list="{{ stats }}" as="s" hint-placeholder-count="3">
               <div>
-                <div style="font-size:44px;font-weight:800;letter-spacing:-0.02em;color:#0f62fe">{{ s.value }}</div>
+                <div style="font-size:44px;font-weight:800;letter-spacing:-0.02em;color:#0043ce">{{ s.value }}</div>
                 <div style="font-size:15px;color:#52606d;margin-top:4px">{{ s.label }}</div>
               </div>
             </sc-for>
@@ -162,8 +154,8 @@
         <h2 style="font-size:26px;font-weight:700;margin-bottom:24px">Nuestra historia</h2>
         <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:52px">
           <sc-for list="{{ historia }}" as="h" hint-placeholder-count="4">
-            <div style="border-top:4px solid #0f62fe;padding-top:14px">
-              <div style="font-size:14px;font-weight:700;color:#0f62fe;margin-bottom:8px">{{ h.date }}</div>
+            <div style="border-top:4px solid #0043ce;padding-top:14px">
+              <div style="font-size:14px;font-weight:700;color:#0043ce;margin-bottom:8px">{{ h.date }}</div>
               <p style="font-size:14px;line-height:1.5;color:#52606d">{{ h.text }}</p>
             </div>
           </sc-for>
@@ -172,7 +164,7 @@
         <h2 style="font-size:26px;font-weight:700;margin-bottom:18px">Documentos</h2>
         <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:920px">
           <sc-for list="{{ docLinks }}" as="d" hint-placeholder-count="3">
-            <button style="border:1px solid #d9dee4;background:#fff;border-radius:0;padding:22px;font-size:17px;font-weight:600;color:#161616;cursor:pointer;font-family:inherit" style-hover="border:1px solid #0f62fe;background:#edf5ff">{{ d }}</button>
+            <button style="border:1px solid #d9dee4;background:#fff;border-radius:0;padding:22px;font-size:17px;font-weight:600;color:#161616;cursor:pointer;font-family:inherit" style-hover="border:1px solid #0043ce;background:#edf5ff">{{ d }}</button>
           </sc-for>
         </div>
       </section>
@@ -204,7 +196,7 @@
 
         <h2 style="font-size:26px;font-weight:700;margin-bottom:18px">Tasas de interés que ofrece la Cooperativa</h2>
         <div style="border:1px solid #e5e8ec;border-radius:0;overflow:hidden;max-width:640px">
-          <div style="display:grid;grid-template-columns:2fr 1fr 1fr;background:#0f62fe;color:#fff;font-size:14px;font-weight:700;padding:14px 20px">
+          <div style="display:grid;grid-template-columns:2fr 1fr 1fr;background:#0043ce;color:#fff;font-size:14px;font-weight:700;padding:14px 20px">
             <div>Plazo</div><div>Soles</div><div>Dólares</div>
           </div>
           <sc-for list="{{ ahorroTasas }}" as="t" hint-placeholder-count="5">
@@ -239,17 +231,17 @@
         <!-- FEATURE BANNERS -->
         <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:16px">
           <h2 style="font-size:22px;font-weight:600">Destacados de la semana</h2>
-          <span style="font-size:14px;color:#6f6f6f">Válidos con tu carnet de socio</span>
+          <span style="font-size:14px;color:#6f6f6f">Válidos con tu registro de socio</span>
         </div>
         <div style="display:grid;grid-auto-flow:column;grid-auto-columns:minmax(360px,1fr);gap:18px;overflow-x:auto;padding-bottom:10px;margin-bottom:44px">
-          <sc-for list="{{ banners }}" as="b" hint-placeholder-count="3">
-            <div style="position:relative;min-height:210px;border-radius:0;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;color:#fff">
+          <sc-for list="{{ banners }}" as="b" hint-placeholder-count="4">
+            <div onClick="{{ b.go }}" style="position:relative;min-height:210px;border-radius:0;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;color:#fff;cursor:pointer">
               <div style="position:absolute;inset:0">
                 <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="{{ b.slotId }}" shape="rect" fit="cover" src="{{ b.photo }}" placeholder="{{ b.brand }}" hint-size="100%,100%"></x-import>
               </div>
               <div style="position:absolute;inset:0;background:linear-gradient(105deg,rgba(15,98,254,0.92) 0%,rgba(15,98,254,0.35) 55%,rgba(15,98,254,0) 100%);pointer-events:none"></div>
               <div style="position:relative;padding:26px;pointer-events:none">
-                <div style="display:inline-block;background:#fff;color:#0f62fe;font-size:13px;font-weight:700;padding:5px 12px;border-radius:0;margin-bottom:12px">{{ b.tag }}</div>
+                <div style="display:inline-block;background:#fff;color:#0043ce;font-size:13px;font-weight:700;padding:5px 12px;border-radius:0;margin-bottom:12px">{{ b.tag }}</div>
                 <div style="font-size:14px;font-weight:600;opacity:0.9;margin-bottom:4px">{{ b.brand }}</div>
                 <div style="font-size:28px;font-weight:800;letter-spacing:-0.02em;line-height:1.05;text-wrap:balance">{{ b.headline }}</div>
               </div>
@@ -259,7 +251,7 @@
         <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px">
           <div onClick="{{ goBebidas }}" style="border:1px solid #e5e8ec;border-radius:0;padding:22px;display:flex;flex-direction:column;gap:12px;cursor:pointer" style-hover="box-shadow:0 8px 26px rgba(15,36,56,0.09)">
             <div style="display:flex;align-items:center;gap:12px">
-              <div style="width:46px;height:46px;border-radius:0;background:#edf5ff;color:#0f62fe;display:flex;align-items:center;justify-content:center;flex:0 0 46px">
+              <div style="width:46px;height:46px;border-radius:0;background:#edf5ff;color:#0043ce;display:flex;align-items:center;justify-content:center;flex:0 0 46px">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M7 10h10"/><path d="M12 15v7"/><path d="M12 15a5 5 0 0 0 5-5V3H7v7a5 5 0 0 0 5 5Z"/></svg>
               </div>
               <div>
@@ -270,9 +262,48 @@
             <div style="font-size:14px;color:#52606d;line-height:1.5">Lista de precios de nuestro proveedor de licores para socios: whisky, vinos, piscos, ron y más.</div>
             <div style="margin-top:auto;align-self:flex-start;display:flex;align-items:center;gap:5px;background:#edf5ff;color:#0043ce;font-weight:700;font-size:14px;padding:6px 12px;border-radius:0">Ver precios <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
           </div>
+          <div onClick="{{ goRimac }}" style="border:1px solid #e5e8ec;border-radius:0;padding:22px;display:flex;flex-direction:column;gap:12px;cursor:pointer" style-hover="box-shadow:0 8px 26px rgba(15,36,56,0.09)">
+            <div style="display:flex;align-items:center;gap:12px">
+              <div style="width:46px;height:46px;border-radius:0;background:#edf5ff;color:#0043ce;display:flex;align-items:center;justify-content:center;flex:0 0 46px">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg>
+              </div>
+              <div>
+                <div style="font-size:17px;font-weight:700">Rímac Seguros</div>
+                <div style="font-size:13px;color:#8b95a1">Seguro de Autos</div>
+              </div>
+            </div>
+            <div style="font-size:14px;color:#52606d;line-height:1.5">Programa de seguro vehicular corporativo para socios de la Cooperativa.</div>
+            <div style="margin-top:auto;align-self:flex-start;display:flex;align-items:center;gap:5px;background:#edf5ff;color:#0043ce;font-weight:700;font-size:14px;padding:6px 12px;border-radius:0">Ver coberturas <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
+          </div>
+          <div onClick="{{ goMovistar }}" style="border:1px solid #e5e8ec;border-radius:0;padding:22px;display:flex;flex-direction:column;gap:12px;cursor:pointer" style-hover="box-shadow:0 8px 26px rgba(15,36,56,0.09)">
+            <div style="display:flex;align-items:center;gap:12px">
+              <div style="width:46px;height:46px;border-radius:0;background:#edf5ff;color:#0043ce;display:flex;align-items:center;justify-content:center;flex:0 0 46px">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
+              </div>
+              <div>
+                <div style="font-size:17px;font-weight:700">Movistar</div>
+                <div style="font-size:13px;color:#8b95a1">Telefonía celular</div>
+              </div>
+            </div>
+            <div style="font-size:14px;color:#52606d;line-height:1.5">Contrato corporativo con planes de datos, LDI y descuentos en equipos. La línea pasa a ser corporativa y se descuenta por planilla.</div>
+            <div style="margin-top:auto;align-self:flex-start;display:flex;align-items:center;gap:5px;background:#edf5ff;color:#0043ce;font-weight:700;font-size:14px;padding:6px 12px;border-radius:0">Ver planes <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
+          </div>
+          <div onClick="{{ goPerufarma }}" style="border:1px solid #e5e8ec;border-radius:0;padding:22px;display:flex;flex-direction:column;gap:12px;cursor:pointer" style-hover="box-shadow:0 8px 26px rgba(15,36,56,0.09)">
+            <div style="display:flex;align-items:center;gap:12px">
+              <div style="width:46px;height:46px;border-radius:0;background:#edf5ff;color:#0043ce;display:flex;align-items:center;justify-content:center;flex:0 0 46px">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/></svg>
+              </div>
+              <div>
+                <div style="font-size:17px;font-weight:700">Perufarma</div>
+                <div style="font-size:13px;color:#8b95a1">Farmacias</div>
+              </div>
+            </div>
+            <div style="font-size:14px;color:#52606d;line-height:1.5">Catálogo corporativo con precios preferenciales en dermocosmética, cuidado personal y más.</div>
+            <div style="margin-top:auto;align-self:flex-start;display:flex;align-items:center;gap:5px;background:#edf5ff;color:#0043ce;font-weight:700;font-size:14px;padding:6px 12px;border-radius:0">Ver catálogo <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
+          </div>
           <div onClick="{{ goSmartFit }}" style="border:1px solid #e5e8ec;border-radius:0;padding:22px;display:flex;flex-direction:column;gap:12px;cursor:pointer" style-hover="box-shadow:0 8px 26px rgba(15,36,56,0.09)">
             <div style="display:flex;align-items:center;gap:12px">
-              <div style="width:46px;height:46px;border-radius:0;background:#edf5ff;color:#0f62fe;display:flex;align-items:center;justify-content:center;flex:0 0 46px">
+              <div style="width:46px;height:46px;border-radius:0;background:#edf5ff;color:#0043ce;display:flex;align-items:center;justify-content:center;flex:0 0 46px">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.4 14.4 9.6 9.6"/><path d="M18.657 21.485a2 2 0 1 1-2.829-2.828l-1.767 1.768a2 2 0 1 1-2.829-2.829l6.364-6.364a2 2 0 1 1 2.829 2.829l-1.768 1.767a2 2 0 1 1 2.828 2.829z"/><path d="m21.5 21.5-1.4-1.4"/><path d="M3.9 3.9 2.5 2.5"/><path d="M6.404 12.768a2 2 0 1 1-2.829-2.829l1.768-1.767a2 2 0 1 1-2.828-2.829l2.828-2.828a2 2 0 1 1 2.829 2.828l1.767-1.768a2 2 0 1 1 2.829 2.829z"/></svg>
               </div>
               <div>
@@ -282,6 +313,19 @@
             </div>
             <div style="font-size:14px;color:#52606d;line-height:1.5">Plan Black Corporativo, exclusivo para colaboradores de la Cooperativa.</div>
             <div style="margin-top:auto;align-self:flex-start;display:flex;align-items:center;gap:5px;background:#edf5ff;color:#0043ce;font-weight:700;font-size:14px;padding:6px 12px;border-radius:0">Ver beneficios <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
+          </div>
+          <div onClick="{{ goOncosalud }}" style="border:1px solid #e5e8ec;border-radius:0;padding:22px;display:flex;flex-direction:column;gap:12px;cursor:pointer" style-hover="box-shadow:0 8px 26px rgba(15,36,56,0.09)">
+            <div style="display:flex;align-items:center;gap:12px">
+              <div style="width:46px;height:46px;border-radius:0;background:#edf5ff;color:#0043ce;display:flex;align-items:center;justify-content:center;flex:0 0 46px">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 2v2"/><path d="M5 2v2"/><path d="M5 3H4a2 2 0 0 0-2 2v4a6 6 0 0 0 12 0V5a2 2 0 0 0-2-2h-1"/><path d="M8 15a6 6 0 0 0 12 0v-3"/><circle cx="20" cy="10" r="2"/></svg>
+              </div>
+              <div>
+                <div style="font-size:17px;font-weight:700">Oncosalud</div>
+                <div style="font-size:13px;color:#8b95a1">Salud</div>
+              </div>
+            </div>
+            <div style="font-size:14px;color:#52606d;line-height:1.5">Convenio corporativo para socios y familiares directos.</div>
+            <div style="margin-top:auto;align-self:flex-start;display:flex;align-items:center;gap:5px;background:#edf5ff;color:#0043ce;font-weight:700;font-size:14px;padding:6px 12px;border-radius:0">Ver planes <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
           </div>
           <sc-for list="{{ proveedores }}" as="p" hint-placeholder-count="8">
             <div style="border:1px solid #e5e8ec;border-radius:0;padding:22px;display:flex;flex-direction:column;gap:12px;position:relative" style-hover="box-shadow:0 8px 26px rgba(15,36,56,0.09)">
@@ -312,7 +356,7 @@
         <h1 style="font-size:48px;font-weight:800;letter-spacing:-0.02em;margin-bottom:10px">Bebidas</h1>
         <p style="font-size:18px;color:#52606d;margin-bottom:36px;max-width:720px">Lista de precios de nuestro proveedor de licores y bebidas para socios.</p>
         <div style="border:1px solid #e5e8ec;border-radius:0;overflow:hidden">
-          <div style="display:grid;grid-template-columns:1.3fr 3fr 1fr 1fr 1fr;background:#0f62fe;color:#fff;font-size:14px;font-weight:700;padding:14px 20px">
+          <div style="display:grid;grid-template-columns:1.3fr 3fr 1fr 1fr 1fr;background:#0043ce;color:#fff;font-size:14px;font-weight:700;padding:14px 20px">
             <div>Categoría</div><div>Marca</div><div>Medida</div><div>Cantidad</div><div>Precio</div>
           </div>
           <sc-for list="{{ bebidas }}" as="b" hint-placeholder-count="37">
@@ -329,7 +373,7 @@
       <section style="padding:56px">
         <a onClick="{{ goProveedores }}" style="display:inline-flex;align-items:center;gap:6px;font-weight:600;cursor:pointer;margin-bottom:28px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg> Volver a Proveedores</a>
         <div style="display:flex;align-items:center;gap:16px;margin-bottom:10px">
-          <div style="width:56px;height:56px;border-radius:0;background:#edf5ff;color:#0f62fe;display:flex;align-items:center;justify-content:center;flex:0 0 56px">
+          <div style="width:56px;height:56px;border-radius:0;background:#edf5ff;color:#0043ce;display:flex;align-items:center;justify-content:center;flex:0 0 56px">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.4 14.4 9.6 9.6"/><path d="M18.657 21.485a2 2 0 1 1-2.829-2.828l-1.767 1.768a2 2 0 1 1-2.829-2.829l6.364-6.364a2 2 0 1 1 2.829 2.829l-1.768 1.767a2 2 0 1 1 2.828 2.829z"/><path d="m21.5 21.5-1.4-1.4"/><path d="M3.9 3.9 2.5 2.5"/><path d="M6.404 12.768a2 2 0 1 1-2.829-2.829l1.768-1.767a2 2 0 1 1-2.828-2.829l2.828-2.828a2 2 0 1 1 2.829 2.828l1.767-1.768a2 2 0 1 1 2.829 2.829z"/></svg>
           </div>
           <h1 style="font-size:48px;font-weight:800;letter-spacing:-0.02em">Smart Fit</h1>
@@ -338,12 +382,210 @@
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:920px;margin-bottom:36px">
           <sc-for list="{{ smartFitBenefits }}" as="s" hint-placeholder-count="8">
             <div style="display:flex;align-items:flex-start;gap:12px;border:1px solid #e5e8ec;border-radius:0;padding:16px">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0f62fe" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 20px;margin-top:2px"><path d="M20 6 9 17l-5-5"/></svg>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0043ce" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 20px;margin-top:2px"><path d="M20 6 9 17l-5-5"/></svg>
               <span style="font-size:15px;color:#262626;line-height:1.4">{{ s }}</span>
             </div>
           </sc-for>
         </div>
         <div style="background:#edf5ff;color:#0043ce;font-weight:700;font-size:14px;padding:6px 12px;border-radius:0;display:inline-block">Plan Black Corporativo</div>
+      </section>
+      </sc-if>
+
+      <!-- ================= ONCOSALUD ================= -->
+      <sc-if value="{{ isOncosalud }}" hint-placeholder-val="{{ false }}">
+      <section style="padding:56px">
+        <a onClick="{{ goProveedores }}" style="display:inline-flex;align-items:center;gap:6px;font-weight:600;cursor:pointer;margin-bottom:28px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg> Volver a Proveedores</a>
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:10px">
+          <div style="width:56px;height:56px;border-radius:0;background:#edf5ff;color:#0043ce;display:flex;align-items:center;justify-content:center;flex:0 0 56px">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 2v2"/><path d="M5 2v2"/><path d="M5 3H4a2 2 0 0 0-2 2v4a6 6 0 0 0 12 0V5a2 2 0 0 0-2-2h-1"/><path d="M8 15a6 6 0 0 0 12 0v-3"/><circle cx="20" cy="10" r="2"/></svg>
+          </div>
+          <h1 style="font-size:48px;font-weight:800;letter-spacing:-0.02em">Oncosalud</h1>
+        </div>
+        <p style="font-size:18px;color:#52606d;margin-bottom:36px;max-width:720px">Convenio corporativo para socios y familiares directos, con 18% de descuento sobre la tarifa de mercado. Dos planes disponibles:</p>
+        <div style="border:1px solid #e5e8ec;border-radius:0;overflow:hidden;max-width:720px;margin-bottom:36px">
+          <div style="display:grid;grid-template-columns:1.4fr 1fr 1fr;background:#0043ce;color:#fff;font-size:14px;font-weight:700;padding:14px 20px">
+            <div>Concepto</div><div>Oncoclásico Pro</div><div>Oncoplus</div>
+          </div>
+          <sc-for list="{{ oncosaludPlanes }}" as="o" hint-placeholder-count="4">
+            <div style="display:grid;grid-template-columns:1.4fr 1fr 1fr;padding:14px 20px;font-size:14px;border-top:1px solid #eceef1;align-items:center" style-hover="background:#f4f8fc">
+              <div style="font-weight:600">{{ o.concepto }}</div><div>{{ o.clasico }}</div><div>{{ o.plus }}</div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="background:#edf5ff;color:#0043ce;font-weight:700;font-size:14px;padding:6px 12px;border-radius:0;display:inline-block">18% dcto.</div>
+      </section>
+      </sc-if>
+
+      <!-- ================= RÍMAC SEGUROS ================= -->
+      <sc-if value="{{ isRimac }}" hint-placeholder-val="{{ false }}">
+      <section style="padding:56px">
+        <a onClick="{{ goProveedores }}" style="display:inline-flex;align-items:center;gap:6px;font-weight:600;cursor:pointer;margin-bottom:28px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg> Volver a Proveedores</a>
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:10px">
+          <div style="width:56px;height:56px;border-radius:0;background:#edf5ff;color:#0043ce;display:flex;align-items:center;justify-content:center;flex:0 0 56px">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg>
+          </div>
+          <h1 style="font-size:48px;font-weight:800;letter-spacing:-0.02em">Rímac Seguros</h1>
+        </div>
+        <p style="font-size:18px;color:#52606d;margin-bottom:8px;max-width:820px">Programa de Seguro Vehicular de Uso Particular para socios de la Cooperativa de Ahorro y Crédito de los Empleados de IBM del Perú, con MN & Asociados Corredores de Seguros.</p>
+        <p style="font-size:14px;color:#8b95a1;margin-bottom:36px">Vigencia: 31/12/2023 al 30/06/2025 (18 meses)</p>
+
+        <h2 style="font-size:26px;font-weight:700;margin-bottom:18px">Coberturas principales</h2>
+        <div style="border:1px solid #e5e8ec;border-radius:0;overflow:hidden;max-width:820px;margin-bottom:36px">
+          <div style="display:grid;grid-template-columns:2fr 1fr;background:#0043ce;color:#fff;font-size:14px;font-weight:700;padding:14px 20px">
+            <div>Cobertura</div><div>Suma</div>
+          </div>
+          <sc-for list="{{ rimacCoberturas }}" as="r" hint-placeholder-count="11">
+            <div style="display:grid;grid-template-columns:2fr 1fr;padding:12px 20px;font-size:14px;border-top:1px solid #eceef1;align-items:center" style-hover="background:#f4f8fc">
+              <div style="font-weight:600">{{ r.concepto }}</div><div>{{ r.suma }}</div>
+            </div>
+          </sc-for>
+        </div>
+
+        <h2 style="font-size:26px;font-weight:700;margin-bottom:18px">Beneficios adicionales</h2>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:920px;margin-bottom:36px">
+          <sc-for list="{{ rimacBeneficios }}" as="b" hint-placeholder-count="10">
+            <div style="border:1px solid #e5e8ec;border-radius:0;padding:16px">
+              <div style="font-size:14px;font-weight:700;margin-bottom:4px">{{ b.title }}</div>
+              <div style="font-size:13px;color:#52606d;line-height:1.4">{{ b.desc }}</div>
+            </div>
+          </sc-for>
+        </div>
+
+        <h2 style="font-size:26px;font-weight:700;margin-bottom:18px">Deducibles</h2>
+        <div style="border:1px solid #e5e8ec;border-radius:0;overflow:hidden;max-width:820px;margin-bottom:36px">
+          <div style="display:grid;grid-template-columns:1.4fr 1fr;background:#0043ce;color:#fff;font-size:14px;font-weight:700;padding:14px 20px">
+            <div>Concepto</div><div>Deducible</div>
+          </div>
+          <sc-for list="{{ rimacDeducibles }}" as="d" hint-placeholder-count="7">
+            <div style="display:grid;grid-template-columns:1.4fr 1fr;padding:12px 20px;font-size:14px;border-top:1px solid #eceef1;align-items:center" style-hover="background:#f4f8fc">
+              <div style="font-weight:600">{{ d.concepto }}</div><div>{{ d.valor }}</div>
+            </div>
+          </sc-for>
+        </div>
+        <p style="font-size:13px;color:#8b95a1;max-width:820px;margin-bottom:20px">Los vehículos con suma asegurada mayor a US$60,000, o de mediano riesgo y alta gama, requieren GPS obligatorio según la clasificación de la póliza. Consulta con MN & Asociados si tu vehículo está incluido.</p>
+        <div style="background:#edf5ff;color:#0043ce;font-weight:700;font-size:14px;padding:6px 12px;border-radius:0;display:inline-block">Tarifa corporativa</div>
+      </section>
+      </sc-if>
+
+      <!-- ================= MOVISTAR ================= -->
+      <sc-if value="{{ isMovistar }}" hint-placeholder-val="{{ false }}">
+      <section style="padding:56px">
+        <a onClick="{{ goProveedores }}" style="display:inline-flex;align-items:center;gap:6px;font-weight:600;cursor:pointer;margin-bottom:28px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg> Volver a Proveedores</a>
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:10px">
+          <div style="width:56px;height:56px;border-radius:0;background:#edf5ff;color:#0043ce;display:flex;align-items:center;justify-content:center;flex:0 0 56px">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
+          </div>
+          <h1 style="font-size:48px;font-weight:800;letter-spacing:-0.02em">Movistar</h1>
+        </div>
+        <p style="font-size:18px;color:#52606d;margin-bottom:36px;max-width:820px">Contrato corporativo Mi Movistar Empresas. Todos los planes incluyen llamadas y SMS ilimitados, WhatsApp Internacional Full Ilimitado y Business Pack.</p>
+
+        <h2 style="font-size:26px;font-weight:700;margin-bottom:18px">Planes tarifarios</h2>
+        <div style="border:1px solid #e5e8ec;border-radius:0;overflow:hidden;max-width:820px;margin-bottom:12px">
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;background:#0043ce;color:#fff;font-size:14px;font-weight:700;padding:14px 20px">
+            <div>Cargo fijo mensual</div><div>GB</div><div>LDI</div>
+          </div>
+          <sc-for list="{{ movistarPlanes }}" as="m" hint-placeholder-count="10">
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;padding:12px 20px;font-size:14px;border-top:1px solid #eceef1;align-items:center" style-hover="background:#f4f8fc">
+              <div style="font-weight:600">{{ m.precio }}</div><div>{{ m.gb }}</div><div>{{ m.ldi }}</div>
+            </div>
+          </sc-for>
+        </div>
+        <p style="font-size:13px;color:#8b95a1;max-width:820px;margin-bottom:36px">LDI: 300 minutos de larga distancia internacional a 16 países (Chile, México, Argentina, Venezuela, Brasil, Colombia, Puerto Rico, Ecuador, Costa Rica, República Dominicana, España, Italia, Francia, Reino Unido, Alemania, China).</p>
+
+        <h2 style="font-size:26px;font-weight:700;margin-bottom:18px">Paquetes recurrentes LDI</h2>
+        <div style="border:1px solid #e5e8ec;border-radius:0;overflow:hidden;max-width:640px;margin-bottom:36px">
+          <div style="display:grid;grid-template-columns:2fr 1fr 1fr;background:#0043ce;color:#fff;font-size:14px;font-weight:700;padding:14px 20px">
+            <div>Paquete</div><div>Minutos</div><div>Precio</div>
+          </div>
+          <sc-for list="{{ movistarLdiPaquetes }}" as="l" hint-placeholder-count="6">
+            <div style="display:grid;grid-template-columns:2fr 1fr 1fr;padding:12px 20px;font-size:14px;border-top:1px solid #eceef1;align-items:center" style-hover="background:#f4f8fc">
+              <div style="font-weight:600">{{ l.nombre }}</div><div>{{ l.minutos }}</div><div>{{ l.precio }}</div>
+            </div>
+          </sc-for>
+        </div>
+        <p style="font-size:13px;color:#8b95a1;max-width:820px;margin-bottom:20px">Equipos disponibles al contado o con 18 meses de permanencia, con precios preferenciales para colectivos empresariales. Consulta el catálogo vigente con tu asesor Movistar.</p>
+        <div style="background:#edf5ff;color:#0043ce;font-weight:700;font-size:14px;padding:6px 12px;border-radius:0;display:inline-block">Plan corporativo</div>
+      </section>
+      </sc-if>
+
+      <!-- ================= FONDO DE SEPELIO ================= -->
+      <sc-if value="{{ isFondoSepelio }}" hint-placeholder-val="{{ false }}">
+      <section style="padding:56px">
+        <a onClick="{{ goServicios }}" style="display:inline-flex;align-items:center;gap:6px;font-weight:600;cursor:pointer;margin-bottom:28px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg> Volver a Servicios</a>
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:10px">
+          <div style="width:56px;height:56px;border-radius:0;background:#edf5ff;color:#0043ce;display:flex;align-items:center;justify-content:center;flex:0 0 56px">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.35 8.95a1 1 0 0 1-.6-.01C8.5 20.5 5 18 5 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C15.51 3.79 18 5 20 5a1 1 0 0 1 1 1z"/></svg>
+          </div>
+          <h1 style="font-size:48px;font-weight:800;letter-spacing:-0.02em">Fondo de Sepelio</h1>
+        </div>
+        <p style="font-size:18px;color:#52606d;margin-bottom:8px;max-width:820px">Fondo de Previsión Social: cubre la atención del servicio de sepelio ante el fallecimiento del socio, su cónyuge, sus hijos menores de 25 años o sus padres. La inscripción es obligatoria para todos los socios.</p>
+        <p style="font-size:14px;color:#8b95a1;margin-bottom:36px">Reglamento del Fondo de Previsión Social · Vigente desde 2022</p>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:820px;margin-bottom:36px">
+          <div style="border:1px solid #e5e8ec;border-radius:0;padding:20px">
+            <div style="font-size:28px;font-weight:800;color:#0043ce;margin-bottom:4px">US$ 3,000</div>
+            <div style="font-size:14px;color:#52606d">Cobertura máxima, o su equivalente en soles, por cada persona cubierta.</div>
+          </div>
+          <div style="border:1px solid #e5e8ec;border-radius:0;padding:20px">
+            <div style="font-size:28px;font-weight:800;color:#0043ce;margin-bottom:4px">US$ 5.00 / mes</div>
+            <div style="font-size:14px;color:#52606d">Aporte obligatorio por asignación única. Exonerados los socios mayores de 60 años.</div>
+          </div>
+        </div>
+
+        <h2 style="font-size:26px;font-weight:700;margin-bottom:6px">¿Qué cubre?</h2>
+        <p style="font-size:14px;color:#52606d;margin-bottom:18px;max-width:820px">Servicio funerario (velatorio, ataúd, capilla ardiente) y sepultura en nicho o tumba, o cremación.</p>
+
+        <h2 style="font-size:26px;font-weight:700;margin-bottom:18px">Formas de uso</h2>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:820px;margin-bottom:36px">
+          <div style="border:1px solid #e5e8ec;border-radius:0;padding:20px">
+            <div style="font-size:16px;font-weight:700;margin-bottom:8px">1. Servicios Integrales de Sepelio</div>
+            <p style="font-size:14px;color:#52606d;line-height:1.5">Atención inmediata a través de los operadores funerarios afiliados: Jardines de la Paz y Campo Fe. La Cooperativa paga directamente al proveedor dentro de las 72 horas de presentada la factura.</p>
+          </div>
+          <div style="border:1px solid #e5e8ec;border-radius:0;padding:20px">
+            <div style="font-size:16px;font-weight:700;margin-bottom:8px">2. Reembolso de gastos</div>
+            <p style="font-size:14px;color:#52606d;line-height:1.5">Para sepelios contratados de forma independiente fuera de Lima (provincias), comunicados a la Cooperativa el mismo día de la ocurrencia.</p>
+          </div>
+        </div>
+
+        <h2 style="font-size:26px;font-weight:700;margin-bottom:18px">Documentación necesaria</h2>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:820px;margin-bottom:36px">
+          <sc-for list="{{ sepelioDocumentos }}" as="doc" hint-placeholder-count="5">
+            <div style="display:flex;align-items:flex-start;gap:12px;border:1px solid #e5e8ec;border-radius:0;padding:16px">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0043ce" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 20px;margin-top:2px"><path d="M20 6 9 17l-5-5"/></svg>
+              <span style="font-size:15px;color:#262626;line-height:1.4">{{ doc }}</span>
+            </div>
+          </sc-for>
+        </div>
+
+        <p style="font-size:13px;color:#8b95a1;max-width:820px;margin-bottom:20px">Si transcurren 3 meses desde el fallecimiento sin reclamar la asignación única, el socio pierde el derecho a este beneficio. El monto a pagar se reduce según los beneficios que otorguen otros seguros que cubran al beneficiario.</p>
+        <div style="background:#edf5ff;color:#0043ce;font-weight:700;font-size:14px;padding:6px 12px;border-radius:0;display:inline-block">Inscripción obligatoria</div>
+      </section>
+      </sc-if>
+
+      <!-- ================= PERUFARMA ================= -->
+      <sc-if value="{{ isPerufarma }}" hint-placeholder-val="{{ false }}">
+      <section style="padding:56px">
+        <a onClick="{{ goProveedores }}" style="display:inline-flex;align-items:center;gap:6px;font-weight:600;cursor:pointer;margin-bottom:28px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg> Volver a Proveedores</a>
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:10px">
+          <div style="width:56px;height:56px;border-radius:0;background:#edf5ff;color:#0043ce;display:flex;align-items:center;justify-content:center;flex:0 0 56px">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/></svg>
+          </div>
+          <h1 style="font-size:48px;font-weight:800;letter-spacing:-0.02em">Perufarma</h1>
+        </div>
+        <p style="font-size:18px;color:#52606d;margin-bottom:36px;max-width:820px">Portafolio corporativo con precios preferenciales frente al precio regular de farmacia, en cientos de productos organizados por categoría. El catálogo y las promociones se actualizan periódicamente.</p>
+
+        <h2 style="font-size:26px;font-weight:700;margin-bottom:18px">Categorías incluidas</h2>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:920px;margin-bottom:36px">
+          <sc-for list="{{ perufarmaCategorias }}" as="c" hint-placeholder-count="4">
+            <div style="border:1px solid #e5e8ec;border-radius:0;padding:20px">
+              <div style="font-size:16px;font-weight:700;margin-bottom:6px">{{ c.title }}</div>
+              <div style="font-size:14px;color:#52606d;line-height:1.4">{{ c.desc }}</div>
+            </div>
+          </sc-for>
+        </div>
+
+        <p style="font-size:13px;color:#8b95a1;max-width:820px;margin-bottom:20px">Precios, marcas y stock disponible varían según campaña vigente. Solicita el catálogo actualizado con tu asesor de la Cooperativa o directamente en los puntos de venta Perufarma.</p>
+        <div style="background:#edf5ff;color:#0043ce;font-weight:700;font-size:14px;padding:6px 12px;border-radius:0;display:inline-block">Precio corporativo</div>
       </section>
       </sc-if>
 
@@ -367,6 +609,10 @@
                     <sc-if value="{{ l.icon === 'car' }}" hint-placeholder-val="{{ false }}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg></sc-if>
                     <sc-if value="{{ l.icon === 'cap' }}" hint-placeholder-val="{{ false }}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></svg></sc-if>
                     <sc-if value="{{ l.icon === 'cash' }}" hint-placeholder-val="{{ false }}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg></sc-if>
+                    <sc-if value="{{ l.icon === 'zap' }}" hint-placeholder-val="{{ false }}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></sc-if>
+                    <sc-if value="{{ l.icon === 'cart' }}" hint-placeholder-val="{{ false }}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg></sc-if>
+                    <sc-if value="{{ l.icon === 'calendar' }}" hint-placeholder-val="{{ false }}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg></sc-if>
+                    <sc-if value="{{ l.icon === 'key' }}" hint-placeholder-val="{{ false }}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15.5 7.5 2.3 2.3a1 1 0 0 0 1.4 0l2.1-2.1a1 1 0 0 0 0-1.4L19 4a1 1 0 0 0-1.4 0L15.5 6.1"/><path d="m21 2-9.6 9.6"/><circle cx="7.5" cy="15.5" r="5.5"/></svg></sc-if>
                     </span>
                     {{ l.title }}
                   </h3>
@@ -398,7 +644,7 @@
           <div>
             <h3 style="font-size:17px;font-weight:700;margin-bottom:12px">Soles</h3>
             <div style="border:1px solid #e5e8ec;border-radius:0;overflow:hidden">
-              <div style="display:grid;grid-template-columns:2fr 1fr 1fr;background:#0f62fe;color:#fff;font-size:13px;font-weight:700;padding:12px 16px">
+              <div style="display:grid;grid-template-columns:2fr 1fr 1fr;background:#0043ce;color:#fff;font-size:13px;font-weight:700;padding:12px 16px">
                 <div>Concepto</div><div>TEA</div><div>TEA sin desgr.</div>
               </div>
               <sc-for list="{{ tasasSoles }}" as="t" hint-placeholder-count="12">
@@ -411,7 +657,7 @@
           <div>
             <h3 style="font-size:17px;font-weight:700;margin-bottom:12px">Dólares</h3>
             <div style="border:1px solid #e5e8ec;border-radius:0;overflow:hidden">
-              <div style="display:grid;grid-template-columns:2fr 1fr 1fr;background:#0f62fe;color:#fff;font-size:13px;font-weight:700;padding:12px 16px">
+              <div style="display:grid;grid-template-columns:2fr 1fr 1fr;background:#0043ce;color:#fff;font-size:13px;font-weight:700;padding:12px 16px">
                 <div>Concepto</div><div>TEA</div><div>TEA sin desgr.</div>
               </div>
               <sc-for list="{{ tasasDolares }}" as="t" hint-placeholder-count="7">
@@ -443,6 +689,10 @@
               <sc-if value="{{ prestamoActual.icon === 'car' }}" hint-placeholder-val="{{ false }}"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg></sc-if>
               <sc-if value="{{ prestamoActual.icon === 'cap' }}" hint-placeholder-val="{{ false }}"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></svg></sc-if>
               <sc-if value="{{ prestamoActual.icon === 'cash' }}" hint-placeholder-val="{{ false }}"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg></sc-if>
+              <sc-if value="{{ prestamoActual.icon === 'zap' }}" hint-placeholder-val="{{ false }}"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></sc-if>
+              <sc-if value="{{ prestamoActual.icon === 'cart' }}" hint-placeholder-val="{{ false }}"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg></sc-if>
+              <sc-if value="{{ prestamoActual.icon === 'calendar' }}" hint-placeholder-val="{{ false }}"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg></sc-if>
+              <sc-if value="{{ prestamoActual.icon === 'key' }}" hint-placeholder-val="{{ false }}"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15.5 7.5 2.3 2.3a1 1 0 0 0 1.4 0l2.1-2.1a1 1 0 0 0 0-1.4L19 4a1 1 0 0 0-1.4 0L15.5 6.1"/><path d="m21 2-9.6 9.6"/><circle cx="7.5" cy="15.5" r="5.5"/></svg></sc-if>
               </span>
               <h1 style="font-size:36px;font-weight:800;letter-spacing:-0.02em;color:#161616">{{ prestamoActual.title }}</h1>
             </div>
@@ -461,28 +711,25 @@
             <!-- CONTROLS -->
             <div style="display:flex;flex-direction:column;gap:28px">
               <div>
-                <div style="font-size:15px;font-weight:600;margin-bottom:6px">Monto del préstamo</div>
-                <div style="position:relative;padding-top:32px">
-                  <div style="position:absolute;top:0;{{ montoTooltipStyle }};transform:translateX(-50%);background:#161616;color:#fff;font-size:13px;font-weight:700;padding:5px 11px;border-radius:0;white-space:nowrap;pointer-events:none">{{ montoLabel }}</div>
-                  <input type="range" class="dc-slider" min="{{ montoMin }}" max="{{ montoMax }}" step="{{ montoStep }}" value="{{ monto }}" onInput="{{ onMonto }}" style="{{ montoTrackStyle }}">
+                <label style="display:block;font-size:15px;font-weight:600;margin-bottom:6px">Monto del préstamo (soles)</label>
+                <div style="display:flex;align-items:center;border:1px solid #d9dee4;border-radius:0" style-focus-within="border:1px solid #0043ce;box-shadow:0 0 0 3px #edf5ff">
+                  <span style="padding:14px 0 14px 14px;font-size:16px;font-weight:700;color:#8b95a1">S/</span>
+                  <input type="number" min="{{ montoMin }}" max="{{ montoMax }}" step="{{ montoStep }}" value="{{ monto }}" onInput="{{ onMonto }}" style="flex:1;width:100%;min-width:0;border:none;outline:none;padding:14px 14px 14px 6px;font-size:16px;font-weight:700;font-family:inherit;color:#161616;background:transparent">
                 </div>
-                <div style="display:flex;justify-content:space-between;font-size:11px;color:#8d8d8d;margin-top:8px"><span>{{ montoMinLabel }}</span><span>{{ montoMaxLabel }}</span></div>
+                <div style="font-size:12px;color:#8d8d8d;margin-top:8px">Ingresa un monto entre {{ montoMinLabel }} y {{ montoMaxLabel }}</div>
               </div>
               <div>
-                <div style="font-size:15px;font-weight:600;margin-bottom:6px">Plazo</div>
-                <div style="position:relative;padding-top:32px">
-                  <div style="position:absolute;top:0;{{ plazoTooltipStyle }};transform:translateX(-50%);background:#161616;color:#fff;font-size:13px;font-weight:700;padding:5px 11px;border-radius:0;white-space:nowrap;pointer-events:none">{{ plazo }} meses</div>
-                  <input type="range" class="dc-slider" min="{{ plazoMin }}" max="{{ plazoMax }}" step="{{ plazoStep }}" value="{{ plazo }}" onInput="{{ onPlazo }}" style="{{ plazoTrackStyle }}">
-                </div>
-                <div style="display:flex;justify-content:space-between;font-size:11px;color:#8d8d8d;margin-top:8px"><span>{{ plazoMinLabel }}</span><span>{{ plazoMaxLabel }}</span></div>
+                <label style="display:block;font-size:15px;font-weight:600;margin-bottom:6px">Plazo (meses)</label>
+                <input type="number" min="{{ plazoMin }}" max="{{ plazoMax }}" step="{{ plazoStep }}" value="{{ plazo }}" onInput="{{ onPlazo }}" style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:14px;font-size:16px;font-weight:700;font-family:inherit;outline:none;color:#161616" style-focus="border:1px solid #0043ce;box-shadow:0 0 0 3px #edf5ff">
+                <div style="font-size:12px;color:#8d8d8d;margin-top:8px">Ingresa un plazo entre {{ plazoMinLabel }} y {{ plazoMaxLabel }}</div>
               </div>
               <div>
-                <div style="font-size:15px;font-weight:600;margin-bottom:6px">Tu ingreso mensual</div>
-                <div style="position:relative;padding-top:32px">
-                  <div style="position:absolute;top:0;{{ ingresoTooltipStyle }};transform:translateX(-50%);background:#161616;color:#fff;font-size:13px;font-weight:700;padding:5px 11px;border-radius:0;white-space:nowrap;pointer-events:none">{{ ingresoLabel }}</div>
-                  <input type="range" class="dc-slider" min="1500" max="20000" step="500" value="{{ ingreso }}" onInput="{{ onIngreso }}" style="{{ ingresoTrackStyle }}">
+                <label style="display:block;font-size:15px;font-weight:600;margin-bottom:6px">Tu ingreso mensual (soles)</label>
+                <div style="display:flex;align-items:center;border:1px solid #d9dee4;border-radius:0" style-focus-within="border:1px solid #0043ce;box-shadow:0 0 0 3px #edf5ff">
+                  <span style="padding:14px 0 14px 14px;font-size:16px;font-weight:700;color:#8b95a1">S/</span>
+                  <input type="number" min="1500" max="20000" step="500" value="{{ ingreso }}" onInput="{{ onIngreso }}" style="flex:1;width:100%;min-width:0;border:none;outline:none;padding:14px 14px 14px 6px;font-size:16px;font-weight:700;font-family:inherit;color:#161616;background:transparent">
                 </div>
-                <div style="display:flex;justify-content:space-between;font-size:11px;color:#8d8d8d;margin-top:8px"><span>{{ ingresoMinLabel }}</span><span>{{ ingresoMaxLabel }}</span></div>
+                <div style="font-size:12px;color:#8d8d8d;margin-top:8px">Ingresa un monto entre {{ ingresoMinLabel }} y {{ ingresoMaxLabel }}</div>
               </div>
 
               <!-- AFFORDABILITY -->
@@ -497,38 +744,83 @@
 
             <!-- RESULT -->
             <div style="display:flex;flex-direction:column;gap:16px">
-              <div style="background:#161616;color:#fff;border-radius:0;padding:28px;text-align:center">
+              <div style="background:#fff;border:1px solid #e5e8ec;border-radius:0;padding:28px;text-align:center">
                 <!-- MENSUAL / TOTAL TOGGLE -->
-                <div style="display:flex;background:rgba(255,255,255,0.08);border-radius:0;padding:4px;margin:0 auto 22px;max-width:200px">
+                <div style="display:flex;background:#f4f4f4;border-radius:0;padding:4px;margin:0 auto 22px;max-width:200px">
                   <div onClick="{{ setSimMensual }}" style="{{ simToggleMensualStyle }}">Mensual</div>
                   <div onClick="{{ setSimTotal }}" style="{{ simToggleTotalStyle }}">Total</div>
                 </div>
 
                 <!-- DONUT -->
+                <p style="font-size:13px;color:#52606d;margin-bottom:16px">Así se compone el total de tu préstamo:</p>
                 <div style="position:relative;width:180px;height:180px;margin:0 auto">
                   <svg width="180" height="180" viewBox="0 0 150 150">
-                    <circle cx="75" cy="75" r="64" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="14"></circle>
+                    <circle cx="75" cy="75" r="64" fill="none" stroke="#eceef1" stroke-width="14"></circle>
                     <circle cx="75" cy="75" r="64" fill="none" stroke="{{ prestamoActual.color }}" stroke-width="14" stroke-linecap="round" stroke-dasharray="{{ ringCapDasharray }}" transform="rotate(-90 75 75)"></circle>
                     <circle cx="75" cy="75" r="64" fill="none" stroke="#fa4d56" stroke-width="14" stroke-linecap="round" stroke-dasharray="{{ ringIntDasharray }}" stroke-dashoffset="{{ ringIntOffset }}" transform="rotate(-90 75 75)"></circle>
                   </svg>
                   <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 20px">
-                    <div style="font-size:11px;color:#a8a8a8;text-transform:uppercase;letter-spacing:0.05em">{{ ringLabel }}</div>
-                    <div style="font-size:25px;font-weight:800;letter-spacing:-0.02em;margin-top:6px;line-height:1.15">{{ ringValue }}</div>
+                    <div style="font-size:11px;color:#8b95a1;text-transform:uppercase;letter-spacing:0.05em">{{ ringLabel }}</div>
+                    <div style="font-size:25px;font-weight:800;letter-spacing:-0.02em;margin-top:6px;line-height:1.15;color:#161616">{{ ringValue }}</div>
                   </div>
                 </div>
 
                 <!-- LEGEND -->
-                <div style="display:flex;justify-content:center;gap:26px;margin-top:22px;font-size:13px;flex-wrap:wrap">
-                  <div style="display:flex;align-items:center;gap:7px;color:#c6c6c6"><span style="width:8px;height:8px;border-radius:0;background:{{ prestamoActual.color }};display:inline-block"></span>Capital <span style="color:#fff;font-weight:700">{{ capitalLabel }}</span></div>
-                  <div style="display:flex;align-items:center;gap:7px;color:#c6c6c6"><span style="width:8px;height:8px;border-radius:0;background:#fa4d56;display:inline-block"></span>Intereses <span style="color:#fff;font-weight:700">{{ intereses }}</span></div>
+                <div style="display:flex;flex-direction:column;gap:10px;margin-top:22px;text-align:left">
+                  <div style="display:flex;align-items:center;gap:12px;padding:12px;border:1px solid #e5e8ec">
+                    <span style="width:14px;height:14px;border-radius:0;background:{{ prestamoActual.color }};flex:0 0 14px"></span>
+                    <div style="flex:1;font-size:14px;font-weight:700;color:#161616">Capital <span style="font-weight:400;color:#8b95a1">— lo que te prestamos</span></div>
+                    <div style="text-align:right">
+                      <div style="font-size:15px;font-weight:800;color:#161616">{{ capitalLabel }}</div>
+                      <div style="font-size:12px;color:#8b95a1">{{ capPct }} del total</div>
+                    </div>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:12px;padding:12px;border:1px solid #e5e8ec">
+                    <span style="width:14px;height:14px;border-radius:0;background:#fa4d56;flex:0 0 14px"></span>
+                    <div style="flex:1;font-size:14px;font-weight:700;color:#161616">Intereses <span style="font-weight:400;color:#8b95a1">— el costo del préstamo</span></div>
+                    <div style="text-align:right">
+                      <div style="font-size:15px;font-weight:800;color:#161616">{{ intereses }}</div>
+                      <div style="font-size:12px;color:#8b95a1">{{ intPct }} del total</div>
+                    </div>
+                  </div>
                 </div>
               </div>
 
               <!-- SAVINGS HIGHLIGHT -->
               <div style="background:#defbe6;border:1px solid #a7f0ba;border-radius:0;padding:22px">
-                <div style="font-size:13px;font-weight:700;color:#0e6027;text-transform:uppercase;letter-spacing:0.04em">Ahorro como socio</div>
-                <div style="font-size:32px;font-weight:800;color:#0e6027;letter-spacing:-0.02em;margin:4px 0">{{ ahorro }}</div>
-                <p style="font-size:13px;color:#0e6027;line-height:1.45">Frente a un banco a {{ bankTeaLabel }}, tu cuota sería {{ cuotaBanco }}/mes. Con tu tasa de socio pagas {{ cuota }}.</p>
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0e6027" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="22" x2="21" y2="22"/><line x1="6" y1="18" x2="6" y2="11"/><line x1="10" y1="18" x2="10" y2="11"/><line x1="14" y1="18" x2="14" y2="11"/><line x1="18" y1="18" x2="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg>
+                  <div style="font-size:13px;font-weight:700;color:#0e6027;text-transform:uppercase;letter-spacing:0.04em">Compara con un banco tradicional (tasa {{ bankTeaLabel }})</div>
+                </div>
+
+                <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;margin-bottom:14px">
+                  <div style="text-align:center">
+                    <div style="font-size:11px;color:#52606d;margin-bottom:6px">Cuota mensual en banco</div>
+                    <div style="font-size:20px;font-weight:800;color:#8d8d8d;text-decoration:line-through;text-decoration-color:#da1e28;text-decoration-thickness:2px">{{ cuotaBanco }}</div>
+                  </div>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0e6027" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                  <div style="text-align:center">
+                    <div style="font-size:11px;color:#0e6027;margin-bottom:6px">Tu cuota de socio</div>
+                    <div style="font-size:20px;font-weight:800;color:#0e6027">{{ cuota }}</div>
+                  </div>
+                </div>
+
+                <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;padding-top:14px;border-top:1px solid #a7f0ba;margin-bottom:16px">
+                  <div style="text-align:center">
+                    <div style="font-size:11px;color:#52606d;margin-bottom:6px">Total pagado en banco</div>
+                    <div style="font-size:20px;font-weight:800;color:#8d8d8d;text-decoration:line-through;text-decoration-color:#da1e28;text-decoration-thickness:2px">{{ totalBanco }}</div>
+                  </div>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0e6027" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                  <div style="text-align:center">
+                    <div style="font-size:11px;color:#0e6027;margin-bottom:6px">Total pagado como socio</div>
+                    <div style="font-size:20px;font-weight:800;color:#0e6027">{{ total }}</div>
+                  </div>
+                </div>
+
+                <div style="text-align:center;border-top:1px solid #a7f0ba;padding-top:16px">
+                  <div style="font-size:13px;color:#0e6027;font-weight:600">Ahorras en total, durante los {{ plazo }} meses de tu préstamo</div>
+                  <div style="font-size:32px;font-weight:800;color:#0e6027;letter-spacing:-0.02em">{{ ahorro }}</div>
+                </div>
               </div>
 
               <button style="background:{{ prestamoActual.color }};color:#fff;border:none;border-radius:0;padding:15px;font-size:16px;font-weight:600;cursor:pointer;font-family:inherit">Solicitar este préstamo</button>
@@ -553,7 +845,7 @@
               <div style="padding:30px;display:flex;flex-direction:column;justify-content:center;gap:10px">
                 <h3 style="font-size:24px;font-weight:700">{{ s.title }}</h3>
                 <p style="font-size:16px;line-height:1.6;color:#52606d">{{ s.desc }}</p>
-                <a style="display:inline-flex;align-items:center;gap:5px;font-weight:600;cursor:pointer">Conocer más <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+                <a onClick="{{ s.goDetalle }}" style="display:inline-flex;align-items:center;gap:5px;font-weight:600;cursor:pointer">Conocer más <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
               </div>
             </div>
           </sc-for>
@@ -575,7 +867,7 @@
           <div style="border:1px solid #da1e28;background:#fff5f5;border-radius:0;padding:18px;margin-bottom:24px">
             <div style="font-size:13px;font-weight:700;color:#da1e28;margin-bottom:10px">Publicar anuncio (admin)</div>
             <div style="display:flex;gap:12px;align-items:flex-start">
-              <div style="width:44px;height:44px;border-radius:0;background:#0f62fe;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;flex:0 0 44px">A</div>
+              <div style="width:44px;height:44px;border-radius:0;background:#0043ce;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;flex:0 0 44px">A</div>
               <textarea value="{{ draft }}" onInput="{{ onDraft }}" placeholder="Comparte un anuncio con la comunidad…" style="flex:1;border:none;outline:none;resize:none;font-family:inherit;font-size:16px;line-height:1.5;min-height:52px;padding-top:10px;color:#161616;background:transparent"></textarea>
             </div>
             <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;border-top:1px solid #f0f0f0;padding-top:12px">
@@ -584,7 +876,7 @@
                 <div style="display:flex;align-items:center;gap:6px;font-size:14px;color:#525252;padding:7px 12px;border-radius:0;cursor:pointer" style-hover="background:#f4f4f4"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg> Descuento</div>
                 <div style="display:flex;align-items:center;gap:6px;font-size:14px;color:#525252;padding:7px 12px;border-radius:0;cursor:pointer" style-hover="background:#f4f4f4"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg> Evento</div>
               </div>
-              <button onClick="{{ addPost }}" style="background:#0f62fe;color:#fff;border:none;border-radius:0;padding:11px 26px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit">Publicar</button>
+              <button onClick="{{ addPost }}" style="background:#0043ce;color:#fff;border:none;border-radius:0;padding:11px 26px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit">Publicar</button>
             </div>
           </div>
           </sc-if>
@@ -606,7 +898,7 @@
                     <div style="font-size:16px;font-weight:600">{{ p.author }}</div>
                     <div style="font-size:13px;color:#8d8d8d">{{ p.role }} · {{ p.time }}</div>
                   </div>
-                  <div style="font-size:12px;font-weight:700;color:#0f62fe;background:#edf5ff;padding:5px 11px;border-radius:0">{{ p.tag }}</div>
+                  <div style="font-size:12px;font-weight:700;color:#0043ce;background:#edf5ff;padding:5px 11px;border-radius:0">{{ p.tag }}</div>
                   <sc-if value="{{ isAdmin }}" hint-placeholder-val="{{ false }}">
                     <div onClick="{{ p.remove }}" title="Eliminar anuncio" style="width:26px;height:26px;border-radius:0;background:#fff0f0;color:#da1e28;display:flex;align-items:center;justify-content:center;font-weight:800;cursor:pointer;font-size:15px;flex:0 0 26px">×</div>
                   </sc-if>
@@ -661,15 +953,15 @@
             <sc-for list="{{ regFields }}" as="f" hint-placeholder-count="6">
               <div style="{{ f.wrap }}">
                 <label style="display:block;font-size:13px;font-weight:600;color:#3b4653;margin-bottom:7px">{{ f.label }}</label>
-                <input type="{{ f.type }}" placeholder="{{ f.ph }}" value="{{ f.value }}" onInput="{{ f.onInput }}" style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:13px 14px;font-size:15px;font-family:inherit;outline:none" style-focus="border:1px solid #0f62fe;box-shadow:0 0 0 3px #edf5ff">
+                <input type="{{ f.type }}" placeholder="{{ f.ph }}" value="{{ f.value }}" onInput="{{ f.onInput }}" style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:13px 14px;font-size:15px;font-family:inherit;outline:none" style-focus="border:1px solid #0043ce;box-shadow:0 0 0 3px #edf5ff">
               </div>
             </sc-for>
           </div>
-          <label style="display:flex;align-items:flex-start;gap:10px;margin-top:22px;font-size:14px;color:#52606d;cursor:pointer"><input type="checkbox" checked="{{ registroAccept }}" onClick="{{ toggleRegAccept }}" style="margin-top:3px;accent-color:#0f62fe"><span>Acepto el estatuto y el tratamiento de mis datos personales según la Ley N° 29733.</span></label>
+          <label style="display:flex;align-items:flex-start;gap:10px;margin-top:22px;font-size:14px;color:#52606d;cursor:pointer"><input type="checkbox" checked="{{ registroAccept }}" onClick="{{ toggleRegAccept }}" style="margin-top:3px;accent-color:#0043ce"><span>Acepto el estatuto y el tratamiento de mis datos personales según la Ley N° 29733.</span></label>
           <sc-if value="{{ registroError }}" hint-placeholder-val="{{ false }}">
             <p style="color:#da1e28;font-size:14px;font-weight:600;margin-top:16px">{{ registroError }}</p>
           </sc-if>
-          <button onClick="{{ registroSubmit }}" style="width:100%;margin-top:24px;background:#0f62fe;color:#fff;border:none;border-radius:0;padding:16px;font-size:16px;font-weight:600;cursor:pointer;font-family:inherit">Enviar solicitud</button>
+          <button onClick="{{ registroSubmit }}" style="width:100%;margin-top:24px;background:#0043ce;color:#fff;border:none;border-radius:0;padding:16px;font-size:16px;font-weight:600;cursor:pointer;font-family:inherit">Enviar solicitud</button>
           <p style="text-align:center;font-size:14px;color:#52606d;margin-top:18px">¿Ya eres socio? <a onClick="{{ goLogin }}" style="cursor:pointer;font-weight:600">Inicia sesión</a></p>
         </sc-if>
         </div>
@@ -680,7 +972,7 @@
       <sc-if value="{{ isLogin }}" hint-placeholder-val="{{ true }}">
       <section style="min-height:100%;display:flex;align-items:center;justify-content:center;padding:56px">
         <div style="width:100%;max-width:420px">
-          <div style="width:56px;height:56px;border-radius:0;background:#0f62fe;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:24px;margin-bottom:24px">S</div>
+          <div style="width:56px;height:56px;border-radius:0;background:#0043ce;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:24px;margin-bottom:24px">S</div>
 
           <!-- TAB SWITCHER -->
           <div style="display:flex;background:#f4f4f4;border-radius:0;padding:4px;margin-bottom:26px;max-width:280px">
@@ -690,11 +982,11 @@
 
           <sc-if value="{{ !isLoginTabAdmin }}" hint-placeholder-val="{{ true }}">
           <h1 style="font-size:34px;font-weight:800;letter-spacing:-0.02em;margin-bottom:6px">Login Socios</h1>
-          <p style="font-size:16px;color:#52606d;margin-bottom:30px">Ingresa con tu documento y contraseña de socio.</p>
-          <label style="display:block;font-size:13px;font-weight:600;color:#3b4653;margin-bottom:7px">DNI o correo</label>
-          <input type="text" placeholder="Ej. 40123456" value="{{ loginUser }}" onInput="{{ onLoginUser }}" style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:14px;font-size:15px;font-family:inherit;outline:none;margin-bottom:18px" style-focus="border:1px solid #0f62fe;box-shadow:0 0 0 3px #edf5ff">
+          <p style="font-size:16px;color:#52606d;margin-bottom:30px">Ingresa con tu IBMid y contraseña de socio.</p>
+          <label style="display:block;font-size:13px;font-weight:600;color:#3b4653;margin-bottom:7px">IBMid</label>
+          <input type="email" placeholder="tu.nombre@ibm.com" value="{{ loginUser }}" onInput="{{ onLoginUser }}" style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:14px;font-size:15px;font-family:inherit;outline:none;margin-bottom:18px" style-focus="border:1px solid #0043ce;box-shadow:0 0 0 3px #edf5ff">
           <label style="display:block;font-size:13px;font-weight:600;color:#3b4653;margin-bottom:7px">Contraseña</label>
-          <input type="password" placeholder="••••••••" value="{{ loginPass }}" onInput="{{ onLoginPass }}" style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:14px;font-size:15px;font-family:inherit;outline:none;margin-bottom:8px" style-focus="border:1px solid #0f62fe;box-shadow:0 0 0 3px #edf5ff">
+          <input type="password" placeholder="••••••••" value="{{ loginPass }}" onInput="{{ onLoginPass }}" style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:14px;font-size:15px;font-family:inherit;outline:none;margin-bottom:8px" style-focus="border:1px solid #0043ce;box-shadow:0 0 0 3px #edf5ff">
           <div style="text-align:right;margin-bottom:22px"><a style="font-size:14px;cursor:pointer">¿Olvidaste tu contraseña?</a></div>
           </sc-if>
 
@@ -702,15 +994,15 @@
           <h1 style="font-size:34px;font-weight:800;letter-spacing:-0.02em;margin-bottom:6px">Login Administrador</h1>
           <p style="font-size:16px;color:#52606d;margin-bottom:30px">Acceso para editar anuncios, proveedores y tasas de interés.</p>
           <label style="display:block;font-size:13px;font-weight:600;color:#3b4653;margin-bottom:7px">Usuario</label>
-          <input type="text" placeholder="admin" value="{{ adminUser }}" onInput="{{ onAdminUser }}" style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:14px;font-size:15px;font-family:inherit;outline:none;margin-bottom:18px" style-focus="border:1px solid #0f62fe;box-shadow:0 0 0 3px #edf5ff">
+          <input type="text" placeholder="admin" value="{{ adminUser }}" onInput="{{ onAdminUser }}" style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:14px;font-size:15px;font-family:inherit;outline:none;margin-bottom:18px" style-focus="border:1px solid #0043ce;box-shadow:0 0 0 3px #edf5ff">
           <label style="display:block;font-size:13px;font-weight:600;color:#3b4653;margin-bottom:7px">Contraseña</label>
-          <input type="password" placeholder="••••••••" value="{{ adminPass }}" onInput="{{ onAdminPass }}" style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:14px;font-size:15px;font-family:inherit;outline:none;margin-bottom:22px" style-focus="border:1px solid #0f62fe;box-shadow:0 0 0 3px #edf5ff">
+          <input type="password" placeholder="••••••••" value="{{ adminPass }}" onInput="{{ onAdminPass }}" style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:14px;font-size:15px;font-family:inherit;outline:none;margin-bottom:22px" style-focus="border:1px solid #0043ce;box-shadow:0 0 0 3px #edf5ff">
           </sc-if>
 
           <sc-if value="{{ loginError }}" hint-placeholder-val="{{ false }}">
             <p style="color:#da1e28;font-size:14px;font-weight:600;margin-bottom:18px">{{ loginError }}</p>
           </sc-if>
-          <button onClick="{{ loginSubmit }}" style="width:100%;background:#0f62fe;color:#fff;border:none;border-radius:0;padding:16px;font-size:16px;font-weight:600;cursor:pointer;font-family:inherit">Ingresar</button>
+          <button onClick="{{ loginSubmit }}" style="width:100%;background:#0043ce;color:#fff;border:none;border-radius:0;padding:16px;font-size:16px;font-weight:600;cursor:pointer;font-family:inherit">Ingresar</button>
           <p style="text-align:center;font-size:14px;color:#52606d;margin-top:20px">¿No tienes cuenta? <a onClick="{{ goRegistro }}" style="cursor:pointer;font-weight:600">Regístrate</a></p>
         </div>
       </section>
@@ -739,7 +1031,7 @@
           <sc-for list="{{ prefFields }}" as="f" hint-placeholder-count="5">
             <div style="{{ f.wrap }}">
               <label style="display:block;font-size:14px;color:#8b95a1;margin-bottom:8px">{{ f.label }}</label>
-              <input type="{{ f.type }}" placeholder="{{ f.ph }}" style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:14px 16px;font-size:16px;font-family:inherit;outline:none" style-focus="border:1px solid #0f62fe;box-shadow:0 0 0 3px #edf5ff">
+              <input type="{{ f.type }}" placeholder="{{ f.ph }}" style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:14px 16px;font-size:16px;font-family:inherit;outline:none" style-focus="border:1px solid #0043ce;box-shadow:0 0 0 3px #edf5ff">
             </div>
           </sc-for>
         </div>
@@ -766,7 +1058,7 @@
 
       <div style="padding:20px 40px;border-top:1px solid #eceef1;display:flex;justify-content:space-between;align-items:center">
         <a onClick="{{ closePrefs }}" style="font-size:17px;color:#8b95a1;cursor:pointer">Omitir por ahora</a>
-        <button onClick="{{ savePrefs }}" style="background:#0f62fe;color:#fff;border:none;border-radius:0;padding:16px 34px;font-size:17px;font-weight:700;cursor:pointer;font-family:inherit">Guardar preferencias</button>
+        <button onClick="{{ savePrefs }}" style="background:#0043ce;color:#fff;border:none;border-radius:0;padding:16px 34px;font-size:17px;font-weight:700;cursor:pointer;font-family:inherit">Guardar preferencias</button>
       </div>
     </div>
   </div>
@@ -789,20 +1081,9 @@ class Component extends DCLogic {
     tasaSaved: {},
     registro: { nombres: "", apellidos: "", dni: "", area: "", email: "", celular: "", password: "", accept: false }, registroError: "", registroSuccess: false,
     newProv: { name: "", cat: "", desc: "", disc: "" },
-    proveedores: [
-      {slotId:"prov-0",name:"Rímac Seguros",cat:"Seguro de Autos",desc:"Mejor tarifa del mercado para tu auto, con descuento de la prima en 18 meses sin recargo de intereses y descuento por planilla.",disc:"Tarifa corporativa"},
-      {slotId:"prov-1",name:"Oncosalud",cat:"Salud",desc:"Convenio corporativo para socios y familiares directos.",disc:"18% dcto."},
-      {slotId:"prov-2",name:"Movistar",cat:"Telefonía celular",desc:"Contrato corporativo con promociones especiales en planes tarifarios y descuentos en equipos. La línea pasa a ser corporativa y el plan se descuenta por planilla.",disc:"Plan corporativo"},
-      {slotId:"prov-3",name:"Assist Card",cat:"Seguro de viaje",desc:"Somos agentes autorizados para emitir Seguros de Viaje de Assist Card con descuento.",disc:"Descuento socio"},
-      {slotId:"prov-4",name:"Jardines de la Paz",cat:"Servicio funerario",desc:"Operador funerario afiliado al Fondo de Sepelio de la Cooperativa.",disc:"Cobertura Fondo de Sepelio"},
-      {slotId:"prov-5",name:"Campo Fe",cat:"Servicio funerario",desc:"Operador funerario afiliado al Fondo de Sepelio de la Cooperativa.",disc:"Cobertura Fondo de Sepelio"},
-      {slotId:"prov-6",name:"Samsung",cat:"Tecnología",desc:"Descuentos corporativos para socios de la Cooperativa.",disc:"Descuento corporativo"},
-      {slotId:"prov-8",name:"Perufarma",cat:"Farmacias",desc:"Descuentos corporativos para socios de la Cooperativa.",disc:"Descuento corporativo"},
-      {slotId:"prov-9",name:"Vitapoint",cat:"Salud y bienestar",desc:"Descuentos corporativos para socios de la Cooperativa.",disc:"Descuento corporativo"},
-      {slotId:"prov-10",name:"Almendariz",cat:"Otros proveedores",desc:"Descuentos corporativos para socios de la Cooperativa.",disc:"Descuento corporativo"}
-    ],
+    proveedores: [],
     posts: [
-      {id:1,author:"Cooperativa",role:"Cuenta oficial",time:"hace 2 h",tag:"Anuncio",color:"#0f62fe",initials:"CI",tab:"cooperativa",text:"📢 Recuerda que puedes solicitar tus préstamos, tu Seguro de Autos con Rímac o inscribirte en el Fondo de Sepelio escribiendo a cualquiera de nuestras contactos en la sección Quiénes Somos.",hasImg:false,slotId:"post-1",img:"",likes:48,liked:false},
+      {id:1,author:"Cooperativa",role:"Cuenta oficial",time:"hace 2 h",tag:"Anuncio",color:"#0043ce",initials:"CI",tab:"cooperativa",text:"📢 Recuerda que puedes solicitar tus préstamos, tu Seguro de Autos con Rímac o inscribirte en el Fondo de Sepelio escribiendo a cualquiera de nuestras contactos en la sección Quiénes Somos.",hasImg:false,slotId:"post-1",img:"",likes:48,liked:false},
       {id:2,author:"Junta Directiva",role:"Gobierno cooperativo",time:"ayer",tag:"Evento",color:"#8a3ffc",initials:"JD",tab:"eventos",text:"Los invitamos a la Asamblea General de Socios. Se presentará la memoria anual y el reparto de excedentes.",hasImg:false,slotId:"post-2",img:"",likes:31,liked:true},
       {id:3,author:"Comité de Bienestar",role:"Socios",time:"hace 3 días",tag:"Convenio",color:"#009d9a",initials:"CB",tab:"proveedores",text:"🏷️ Recuerda que Oncosalud ofrece 18% de descuento sobre la tarifa de mercado para socios y familiares directos.",hasImg:false,slotId:"post-3",img:"",likes:64,liked:false}
     ] };
@@ -841,7 +1122,7 @@ class Component extends DCLogic {
   }
 
   mapAnuncio(a){
-    return { id: a.id, remoteId: a.id, author: a.author, role: a.role, time: "", tag: a.tag, color: "#0f62fe", initials: "AD", tab: "cooperativa", text: a.text, hasImg: false, slotId: "post-"+a.id, img: "", likes: 0, liked: false };
+    return { id: a.id, remoteId: a.id, author: a.author, role: a.role, time: "", tag: a.tag, color: "#0043ce", initials: "AD", tab: "cooperativa", text: a.text, hasImg: false, slotId: "post-"+a.id, img: "", likes: 0, liked: false };
   }
 
   async apiFetch(path, options){
@@ -866,12 +1147,12 @@ class Component extends DCLogic {
     const mostrarSimulador = this.props.mostrarSimulador ?? true;
 
     const CREDIT_COLORS = {
-      "sola-firma": {color:"#d02670", bg:"#fff0f6", icon:"cash"},
-      consumo:      {color:"#ff832b", bg:"#fff1e6", icon:"cash"},
-      "largo-plazo":{color:"#24a148", bg:"#defbe6", icon:"cash"},
+      "sola-firma": {color:"#d02670", bg:"#fff0f6", icon:"zap"},
+      consumo:      {color:"#ff832b", bg:"#fff1e6", icon:"cart"},
+      "largo-plazo":{color:"#24a148", bg:"#defbe6", icon:"calendar"},
       automotriz:   {color:"#8a3ffc", bg:"#f6f2ff", icon:"car"},
-      hipotecario:  {color:"#0f62fe", bg:"#edf5ff", icon:"house"},
-      garantia:     {color:"#002d9c", bg:"#e5f0ff", icon:"house"},
+      hipotecario:  {color:"#0043ce", bg:"#edf5ff", icon:"house"},
+      garantia:     {color:"#001d6c", bg:"#e5f0ff", icon:"key"},
       academico:    {color:"#009d9a", bg:"#d9fbfb", icon:"cap"}
     };
     const LOAN_LIMITS = {
@@ -886,7 +1167,7 @@ class Component extends DCLogic {
 
     const tasas = this.state.tasas;
     const loanTypes = [
-      {key:"sola-firma",label:"Sola Firma",tea:tasas["sola-firma"]},
+      {key:"sola-firma",label:"Préstamos Inmediatos",tea:tasas["sola-firma"]},
       {key:"consumo",label:"Consumo",tea:tasas.consumo},
       {key:"largo-plazo",label:"Largo Plazo",tea:tasas["largo-plazo"]},
       {key:"automotriz",label:"Automotriz",tea:tasas.automotriz},
@@ -901,7 +1182,7 @@ class Component extends DCLogic {
     const plazoMin = selLimits.plazoMin, plazoMax = selLimits.plazoMax, plazoStep = selLimits.plazoStep;
 
     const prestamosData = [
-      {key:"sola-firma",slotId:"loan-0",photo:"https://picsum.photos/seed/wallet1/800/400",title:"Sola Firma",tasa:tasas["sola-firma"].toFixed(1)+"% TEA",img:"Préstamo sola firma",desc:"Hasta S/3,000 a pagar en 6 meses. Aprobación rápida, sin garantías adicionales."},
+      {key:"sola-firma",slotId:"loan-0",photo:"https://picsum.photos/seed/wallet1/800/400",title:"Préstamos Inmediatos",tasa:tasas["sola-firma"].toFixed(1)+"% TEA",img:"Préstamos Inmediatos",desc:"Hasta S/3,000 a pagar en 6 meses. Aprobación rápida, sin garantías adicionales."},
       {key:"consumo",slotId:"loan-1",photo:"https://picsum.photos/seed/wallet2/800/400",title:"Consumo",tasa:tasas.consumo.toFixed(1)+"% TEA",img:"Préstamo de consumo",desc:"Hasta S/10,000 a pagar en 12 meses. Requiere mínimo 6 meses como socio."},
       {key:"largo-plazo",slotId:"loan-2",photo:"https://picsum.photos/seed/wallet3/800/400",title:"Largo Plazo",tasa:tasas["largo-plazo"].toFixed(1)+"% TEA",img:"Préstamo a largo plazo",desc:"Hasta S/60,000 a pagar en 48 meses. Requiere mínimo 6 meses como socio."},
       {key:"automotriz",slotId:"loan-3",photo:"https://picsum.photos/seed/car2/800/400",title:"Crédito Automotriz",tasa:tasas.automotriz.toFixed(1)+"% TEA",img:"Foto auto",desc:"Hasta el 80% del valor del auto, monto máximo equivalente a US$40,000, a pagar en 60 meses. Requiere mínimo 6 meses como socio."},
@@ -927,11 +1208,8 @@ class Component extends DCLogic {
     const cuotaNum = pmt(r);
     const totalNum = cuotaNum*n;
     const cuotaBancoNum = pmt(sel.bank/100/12);
+    const totalBancoNum = cuotaBancoNum*n;
     const ahorroNum = (cuotaBancoNum - cuotaNum) * n;
-    const clampPct = (v,lo,hi)=>Math.max(lo,Math.min(hi,v));
-    const simColor = prestamoActualData.color;
-    const trackBg = (pct)=> "--slider-accent:"+simColor+";width:100%;background:linear-gradient(to right,"+simColor+" 0%,"+simColor+" "+pct+"%,#eceef1 "+pct+"%,#eceef1 100%)";
-    const tooltipLeft = (pct)=> "left:"+clampPct(pct,6,94)+"%";
     const capPctN = Math.round((P/totalNum)*100);
     const RING_R = 64, RING_C = 2*Math.PI*RING_R;
     const capFrac = P/totalNum;
@@ -950,8 +1228,13 @@ class Component extends DCLogic {
       isInicio: page==="inicio", isQuienes: page==="quienes", isAhorro: page==="ahorro",
       isProveedores: page==="proveedores", isPrestamos: page==="prestamos", isPrestamoDetalle: page==="prestamo-detalle",
       isServicios: page==="servicios", isRegistro: page==="registro", isLogin: page==="login", isAnuncios: page==="anuncios",
+      isFondoSepelio: page==="fondo-sepelio",
+      isPerufarma: page==="perufarma",
       isBebidas: page==="bebidas",
       isSmartFit: page==="smartfit",
+      isOncosalud: page==="oncosalud",
+      isRimac: page==="rimac",
+      isMovistar: page==="movistar",
       goInicio: ()=>this.go("inicio"), goRegistro: ()=>this.go("registro"),
       goLogin: ()=>this.go("login"),
 
@@ -1031,27 +1314,28 @@ class Component extends DCLogic {
         const on = !!this.state.promos[c.key];
         return { ...c, toggle:()=>this.setState(s=>({promos:{...s.promos,[c.key]:!s.promos[c.key]}})),
           checkOpacity: on ? 1 : 0,
-          cardStyle: "border:1px solid "+(on?"#0f62fe":"#e5e8ec")+";background:"+(on?"#edf5ff":"#fff")+";border-radius:0;padding:22px;cursor:pointer;transition:all .12s",
-          boxStyle: "width:26px;height:26px;border-radius:0;display:flex;align-items:center;justify-content:center;color:#fff;border:2px solid "+(on?"#0f62fe":"#cfd6dd")+";background:"+(on?"#0f62fe":"transparent")
+          cardStyle: "border:1px solid "+(on?"#0043ce":"#e5e8ec")+";background:"+(on?"#edf5ff":"#fff")+";border-radius:0;padding:22px;cursor:pointer;transition:all .12s",
+          boxStyle: "width:26px;height:26px;border-radius:0;display:flex;align-items:center;justify-content:center;color:#fff;border:2px solid "+(on?"#0043ce":"#cfd6dd")+";background:"+(on?"#0043ce":"transparent")
         };
       }),
 
       pilares: [
         {icon:"%",title:"Ahorra e invierte",desc:"Ahorro simple desde S/50 mensuales o depósitos a plazo fijo, con intereses en soles y dólares."},
-        {icon:"S/",title:"Crédito a tasa preferencial",desc:"Sola Firma, Consumo, Largo Plazo, Automotriz, Hipotecario, Garantía Hipotecaria y Académico, sin comisiones ni gastos administrativos."},
+        {icon:"S/",title:"Crédito a tasa preferencial",desc:"Préstamos Inmediatos, Consumo, Largo Plazo, Automotriz, Hipotecario, Garantía Hipotecaria y Académico, sin comisiones ni gastos administrativos."},
         {icon:"★",title:"Convenios corporativos",desc:"Seguro de Autos, Fondo de Sepelio, Oncosalud, telefonía y otros proveedores a tarifa especial."}
       ],
       beneficios: [
         {key:"ben0",slotId:"ben-0",go:()=>this.go("proveedores"),photo:"https://picsum.photos/seed/ibmshop/800/500",title:"Convenios Corporativos",desc:"Seguro de Autos con Rímac, Oncosalud, telefonía Movistar, Assist Card y otros proveedores a precio de socio."},
-        {key:"ben1",slotId:"ben-1",go:()=>this.go("prestamos"),photo:"https://picsum.photos/id/500/800/500",title:"Préstamos",desc:"Sola Firma, Consumo, Largo Plazo, Automotriz, Hipotecario, Garantía Hipotecaria y Académico con tasas preferenciales."},
+        {key:"ben1",slotId:"ben-1",go:()=>this.go("prestamos"),photo:"https://picsum.photos/id/500/800/500",title:"Préstamos",desc:"Préstamos Inmediatos, Consumo, Largo Plazo, Automotriz, Hipotecario, Garantía Hipotecaria y Académico con tasas preferenciales."},
         {key:"ben2",slotId:"ben-2",go:()=>this.go("servicios"),photo:"https://picsum.photos/seed/ibmserv/800/500",title:"Servicios",desc:"Fondo de Sepelio, Seguro de Autos y convenios de salud para ti y tu familia."},
         {key:"ben3",slotId:"ben-3",go:()=>this.go("ahorro"),photo:"https://picsum.photos/seed/ibmsave/800/500",title:"Ahorro",desc:"Ahorro simple desde S/50 mensuales o depósitos a plazo fijo, con intereses en soles y dólares."}
       ],
 
       banners: [
-        {slotId:"ban-0",brand:"Rímac Seguros",tag:"Tarifa corporativa",photo:"https://picsum.photos/seed/health/700/420",headline:"La mejor tarifa del mercado para tu auto"},
-        {slotId:"ban-1",brand:"Oncosalud",tag:"18% dcto.",photo:"https://picsum.photos/seed/oncosalud/700/420",headline:"Convenio corporativo para ti y tu familia"},
-        {slotId:"ban-2",brand:"Movistar",tag:"Plan corporativo",photo:"https://picsum.photos/seed/telefonia/700/420",headline:"Descuentos en planes y equipos"}
+        {slotId:"ban-0",brand:"Smart Fit",tag:"Plan Black Corporativo",photo:"./uploads/smartfit-gym.jpg",headline:"Planes Smart Fit",go:()=>this.go("smartfit")},
+        {slotId:"ban-1",brand:"Rímac Seguros",tag:"Tarifa corporativa",photo:"./uploads/rimac-auto.jpg",headline:"Seguros Vehiculares",go:()=>this.go("rimac")},
+        {slotId:"ban-2",brand:"Oncosalud",tag:"18% dcto.",photo:"./uploads/oncosalud-doctora.png",headline:"Seguro Oncológico",go:()=>this.go("oncosalud")},
+        {slotId:"ban-3",brand:"Bebidas",tag:"Precio de socio",photo:"./uploads/bebidas-licores.jpg",headline:"Licores y Bebidas",go:()=>this.go("bebidas")}
       ],
 
       draft: this.state.draft,
@@ -1065,19 +1349,19 @@ class Component extends DCLogic {
           }catch(e){ this.setState({apiError: e.message}); }
           return;
         }
-        const np={id:Date.now(),author:"Cooperativa",role:"Administrador",time:"ahora",tag:"Anuncio",color:"#0f62fe",initials:"AD",tab:"cooperativa",text:t,hasImg:false,slotId:"post-"+Date.now(),img:"",likes:0,liked:false};
+        const np={id:Date.now(),author:"Cooperativa",role:"Administrador",time:"ahora",tag:"Anuncio",color:"#0043ce",initials:"AD",tab:"cooperativa",text:t,hasImg:false,slotId:"post-"+Date.now(),img:"",likes:0,liked:false};
         this.setState(s=>({posts:[np,...s.posts],draft:"",lastUpdatedAt:new Date().toISOString()}));
       },
       feedFilters: [["todos","Todos"],["cooperativa","Cooperativa"],["proveedores","Descuentos"],["eventos","Eventos"],["socios","Socios"]].map(([k,label])=>{
         const on=this.state.feed===k;
         return {label,pick:()=>this.setState({feed:k}),
-          style:"font-size:14px;font-weight:600;padding:8px 16px;border-radius:0;cursor:pointer;border:1px solid "+(on?"#0f62fe":"#e0e0e0")+";background:"+(on?"#0f62fe":"#fff")+";color:"+(on?"#fff":"#525252")};
+          style:"font-size:14px;font-weight:600;padding:8px 16px;border-radius:0;cursor:pointer;border:1px solid "+(on?"#0043ce":"#e0e0e0")+";background:"+(on?"#0043ce":"#fff")+";color:"+(on?"#fff":"#525252")};
       }),
       posts: this.state.posts.filter(p=>this.state.feed==="todos"||p.tab===this.state.feed).map(p=>({
         ...p,
         likesLabel: p.likes+" me gusta",
         likeFill: p.liked?"currentColor":"none",
-        likeStyle:"flex:1;display:flex;align-items:center;justify-content:center;gap:7px;padding:11px;font-size:15px;font-weight:700;cursor:pointer;border-radius:0;color:"+(p.liked?"#0f62fe":"#525252"),
+        likeStyle:"flex:1;display:flex;align-items:center;justify-content:center;gap:7px;padding:11px;font-size:15px;font-weight:700;cursor:pointer;border-radius:0;color:"+(p.liked?"#0043ce":"#525252"),
         like:()=>this.setState(s=>({posts:s.posts.map(x=>x.id===p.id?{...x,liked:!x.liked,likes:x.likes+(x.liked?-1:1)}:x)})),
         remove: async ()=>{
           if(this.state.apiBase){
@@ -1103,7 +1387,7 @@ class Component extends DCLogic {
       ],
       tasasVigencia: "setiembre 2025",
       tasasSoles: [
-        {concepto:"Crédito a Sola Firma",tea:"13.00%",teaSin:"15.00%"},
+        {concepto:"Préstamos Inmediatos",tea:"13.00%",teaSin:"15.00%"},
         {concepto:"Crédito de Consumo",tea:"13.00%",teaSin:"15.00%"},
         {concepto:"Crédito Escolar",tea:"9.00%",teaSin:"11.00%"},
         {concepto:"Crédito Salud (Oncosalud)",tea:"6.00%",teaSin:"8.00%"},
@@ -1174,6 +1458,79 @@ class Component extends DCLogic {
         "Entrena en +1500 sedes a nivel nacional y Latam",
         "Extensión del beneficio a familiares del colaborador"
       ],
+      oncosaludPlanes: [
+        {concepto:"Cobertura",clasico:"Desde 70%",plus:"100%"},
+        {concepto:"Copagos",clasico:"Con copagos",plus:"Sin copagos"},
+        {concepto:"Deducibles",clasico:"Con deducibles",plus:"Sin deducibles"},
+        {concepto:"Chequeos",clasico:"Cada dos años",plus:"Anuales"}
+      ],
+      rimacCoberturas: [
+        {concepto:"Daño Propio",suma:"Suma Asegurada"},
+        {concepto:"Riesgos de la Naturaleza (todos)",suma:"Suma Asegurada"},
+        {concepto:"Riesgos Políticos",suma:"Suma Asegurada"},
+        {concepto:"Responsabilidad Civil frente a Terceros",suma:"US$ 350,000"},
+        {concepto:"Responsabilidad Civil Global en exceso",suma:"US$ 500,000"},
+        {concepto:"Responsabilidad Civil frente a Ocupantes",suma:"US$ 120,000 por ocupante"},
+        {concepto:"Accidentes Personales: Muerte e Invalidez Permanente",suma:"US$ 40,000 por ocupante"},
+        {concepto:"Accidentes Personales: Gastos de Curación",suma:"Hasta US$ 10,000 por ocupante"},
+        {concepto:"Accidentes Personales: Gastos de Sepelio",suma:"US$ 4,000 por ocupante"},
+        {concepto:"Accesorios musicales (máximo)",suma:"US$ 3,500"},
+        {concepto:"Responsabilidad Civil por Ausencia de Control",suma:"US$ 150,000"}
+      ],
+      rimacBeneficios: [
+        {title:"Vehículo de reemplazo",desc:"Para cualquier tipo de evento, sin límite, 30 días por vigencia."},
+        {title:"Chofer de reemplazo",desc:"7 asistencias durante la vigencia de la póliza."},
+        {title:"Asesoría 24h por accidentes de tránsito",desc:"Procuración, grúa y ambulancia — Aló Rímac 411-1111."},
+        {title:"Auxilio mecánico",desc:"Sin límite durante la vigencia, máximo 3 atenciones por mes."},
+        {title:"Reembolso de grúa y ambulancia",desc:"Hasta US$ 2,500 cada uno, donde no haya cobertura de Rímac."},
+        {title:"Búsqueda y rescate",desc:"Hasta US$ 10,000 para vehículos de uso particular."},
+        {title:"Defensa Jurídico Penal",desc:"Hasta US$ 10,000, incluye servicio de procuraduría."},
+        {title:"Descuentos en grifos",desc:"Repsol: Premium S/1.00/gl, Regular S/0.5/gl, Diesel E+ S/0.4/gl, Autogas 3%."},
+        {title:"Descuento en baterías Etna",desc:"20% de descuento."},
+        {title:"Ampliación a vehículos adicionales",desc:"Motocicleta, scooter y bicicleta: daño propio US$1,000, RC US$2,000."}
+      ],
+      rimacDeducibles: [
+        {concepto:"Talleres Multimarca",valor:"10% del siniestro, mín. US$150 + IGV"},
+        {concepto:"Talleres Concesionario (1er evento)",valor:"10% del siniestro, mín. US$150 + IGV"},
+        {concepto:"Talleres Concesionario (siguientes)",valor:"15% del siniestro, mín. US$150 + IGV"},
+        {concepto:"Mediano Riesgo y Alta Gama",valor:"15% del siniestro, mín. US$150 + IGV"},
+        {concepto:"Pérdida total y Robo total",valor:"Sin deducible (salvo Ausencia de Control)"},
+        {concepto:"Responsabilidad Civil",valor:"10% del siniestro, mín. US$150 + IGV"},
+        {concepto:"Ausencia de Control",valor:"20% del siniestro, mín. US$200 + IGV"}
+      ],
+      movistarPlanes: [
+        {precio:"S/ 30.00",gb:"6GB",ldi:"—"},
+        {precio:"S/ 35.90",gb:"8GB",ldi:"—"},
+        {precio:"S/ 45.90",gb:"12GB",ldi:"—"},
+        {precio:"S/ 55.90",gb:"14GB alta velocidad",ldi:"300 min"},
+        {precio:"S/ 69.90",gb:"26GB alta velocidad",ldi:"300 min"},
+        {precio:"S/ 85.90",gb:"30GB alta velocidad",ldi:"300 min"},
+        {precio:"S/ 109.90",gb:"35GB alta velocidad",ldi:"300 min"},
+        {precio:"S/ 129.90",gb:"40GB alta velocidad",ldi:"300 min"},
+        {precio:"S/ 149.90",gb:"45GB alta velocidad",ldi:"300 min"},
+        {precio:"S/ 199.90",gb:"60GB alta velocidad",ldi:"300 min"}
+      ],
+      movistarLdiPaquetes: [
+        {nombre:"Paquete Móvil LDI S/10",minutos:"25",precio:"S/ 10.00"},
+        {nombre:"Paquete Móvil LDI S/20",minutos:"60",precio:"S/ 20.00"},
+        {nombre:"Paquete Móvil LDI S/30",minutos:"100",precio:"S/ 30.00"},
+        {nombre:"Paquete Móvil LDI S/50",minutos:"250",precio:"S/ 50.00"},
+        {nombre:"Paquete Móvil LDI S/70",minutos:"500",precio:"S/ 70.00"},
+        {nombre:"Paquete Móvil LDI S/100",minutos:"1,000",precio:"S/ 100.00"}
+      ],
+      sepelioDocumentos: [
+        "Declaración Jurada (Anexo A) actualizada",
+        "Si usas Servicios Integrales: documentación que solicite el operador funerario",
+        "Si usas Reembolso: boletas originales a nombre del socio",
+        "Copia del DNI del socio",
+        "Copia del Certificado de Defunción emitido por Reniec"
+      ],
+      perufarmaCategorias: [
+        {title:"Dermocosmética",desc:"Protectores solares y cuidado facial, ej. Eucerin, Nivea Sun."},
+        {title:"Cuidado personal e higiene",desc:"Desodorantes, jabones y afeitado, ej. Dove, Rexona, Grisi, Millefiori."},
+        {title:"Suplementos y bienestar",desc:"Suplementos efervescentes y productos de bienestar, ej. Magnesol."},
+        {title:"Cuidado capilar y otros",desc:"Coloración y otras categorías del portafolio, ej. Issue Professional."}
+      ],
       historia: [
         {date:"18 jul. 1942",text:"Fundada como \"Asociación de Empleados\"."},
         {date:"12 dic. 1963",text:"Reconocida oficialmente como \"Cooperativa de Servicios Múltiples\"."},
@@ -1183,7 +1540,7 @@ class Component extends DCLogic {
       contactos: [
         {name:"Diana Huanay",email:"dhuanay@pe.ibm.com",mailto:"mailto:dhuanay@pe.ibm.com",roles:"Préstamos Hipotecarios y Vehiculares · Inscripción en Seguro de Autos · Liquidación de Fondo de Sepelio · 999 436 902"},
         {name:"Janet Ríos",email:"jrios@pe.ibm.com",mailto:"mailto:jrios@pe.ibm.com",roles:"Préstamos Consumo y Largo Plazo · Inscripción en Telefonía y Oncosalud"},
-        {name:"Eliana Barreda",email:"ebarreda@pe.ibm.com",mailto:"mailto:ebarreda@pe.ibm.com",roles:"Inscripción de nuevos socios · Préstamos a Sola Firma"},
+        {name:"Eliana Barreda",email:"ebarreda@pe.ibm.com",mailto:"mailto:ebarreda@pe.ibm.com",roles:"Inscripción de nuevos socios · Préstamos Inmediatos"},
         {name:"Lucía Torres",email:"lucia.torres.polo@ibm.com",mailto:"mailto:lucia.torres.polo@ibm.com",roles:"Contacto general"}
       ],
 
@@ -1240,10 +1597,15 @@ class Component extends DCLogic {
       goProveedores: ()=>this.go("proveedores"),
       goBebidas: ()=>this.go("bebidas"),
       goSmartFit: ()=>this.go("smartfit"),
+      goOncosalud: ()=>this.go("oncosalud"),
+      goRimac: ()=>this.go("rimac"),
+      goMovistar: ()=>this.go("movistar"),
+      goServicios: ()=>this.go("servicios"),
+      goPerufarma: ()=>this.go("perufarma"),
 
       servicios: [
         {slotId:"serv-0",photo:"https://picsum.photos/seed/carins2/700/400",title:"Seguro de Autos",img:"Foto auto",desc:"Convenio con Rímac que garantiza la mejor tarifa del mercado. Descuento de la prima en 18 meses sin recargo de intereses, con descuento por planilla."},
-        {slotId:"serv-1",photo:"https://picsum.photos/seed/park2/700/400",title:"Fondo de Sepelio",img:"Foto parque cementerio",desc:"Cubre los gastos de sepelio del socio, cónyuge, hijos menores de 25 años y padres. Aporte de $5 mensuales (no reembolsable) y cobertura hasta $3,000 con Jardines de la Paz y Campo Fe."},
+        {slotId:"serv-1",photo:"https://picsum.photos/seed/park2/700/400",title:"Fondo de Sepelio",img:"Foto parque cementerio",desc:"Cubre los gastos de sepelio del socio, cónyuge, hijos menores de 25 años y padres. Aporte de $5 mensuales (no reembolsable) y cobertura hasta $3,000 con Jardines de la Paz y Campo Fe.",goDetalle:()=>this.go("fondo-sepelio")},
         {slotId:"serv-2",photo:"https://picsum.photos/seed/office2/700/400",title:"Oncosalud",img:"Foto consultorio",desc:"Convenio corporativo para socios y familiares directos, con 18% de descuento sobre la tarifa de mercado."},
         {slotId:"serv-3",photo:"https://picsum.photos/seed/phone2/700/400",title:"Telefonía y Assist Card",img:"Foto telefonía",desc:"Contrato corporativo con Movistar (promociones en planes y equipos, descuento por planilla) y venta de Seguros de Viaje Assist Card con descuento."}
       ],
@@ -1275,14 +1637,7 @@ class Component extends DCLogic {
       montoMinLabel: this.money(montoMin), montoMaxLabel: this.money(montoMax),
       plazoMinLabel: plazoMin+" meses", plazoMaxLabel: plazoMax+" meses",
       ingresoMinLabel: this.money(1500), ingresoMaxLabel: this.money(20000),
-      montoTrackStyle: trackBg(clampPct(((this.state.monto-montoMin)/(montoMax-montoMin))*100,0,100)),
-      montoTooltipStyle: tooltipLeft(((this.state.monto-montoMin)/(montoMax-montoMin))*100),
-      plazoTrackStyle: trackBg(clampPct(((this.state.plazo-plazoMin)/(plazoMax-plazoMin))*100,0,100)),
-      plazoTooltipStyle: tooltipLeft(((this.state.plazo-plazoMin)/(plazoMax-plazoMin))*100),
-      ingresoTrackStyle: trackBg(clampPct(((ing-1500)/(20000-1500))*100,0,100)),
-      ingresoTooltipStyle: tooltipLeft(((ing-1500)/(20000-1500))*100),
       monto: this.state.monto, plazo: this.state.plazo,
-      montoLabel: this.money(this.state.monto),
       tasaLabel: tasa+"%",
       cuota: this.money(cuotaNum), total: this.money(totalNum), intereses: this.money(totalNum-P),
       capitalLabel: this.money(P),
@@ -1294,8 +1649,8 @@ class Component extends DCLogic {
       ringLabel: simView==="total" ? "Total a pagar" : "Cuota mensual",
       setSimMensual: ()=>this.setState({simView:"mensual"}),
       setSimTotal: ()=>this.setState({simView:"total"}),
-      simToggleMensualStyle: "flex:1;text-align:center;padding:7px 14px;border-radius:0;font-size:13px;font-weight:700;cursor:pointer;background:"+(simView==="mensual"?"#fff":"transparent")+";color:"+(simView==="mensual"?"#161616":"#a8a8a8"),
-      simToggleTotalStyle: "flex:1;text-align:center;padding:7px 14px;border-radius:0;font-size:13px;font-weight:700;cursor:pointer;background:"+(simView==="total"?"#fff":"transparent")+";color:"+(simView==="total"?"#161616":"#a8a8a8"),
+      simToggleMensualStyle: "flex:1;text-align:center;padding:7px 14px;border-radius:0;font-size:13px;font-weight:700;cursor:pointer;background:"+(simView==="mensual"?"#fff":"transparent")+";box-shadow:"+(simView==="mensual"?"0 1px 4px rgba(15,36,56,0.12)":"none")+";color:"+(simView==="mensual"?"#161616":"#8b95a1"),
+      simToggleTotalStyle: "flex:1;text-align:center;padding:7px 14px;border-radius:0;font-size:13px;font-weight:700;cursor:pointer;background:"+(simView==="total"?"#fff":"transparent")+";box-shadow:"+(simView==="total"?"0 1px 4px rgba(15,36,56,0.12)":"none")+";color:"+(simView==="total"?"#161616":"#8b95a1"),
       ringCapDasharray: capDash.toFixed(1)+" "+RING_C.toFixed(1),
       ringIntDasharray: intDash.toFixed(1)+" "+RING_C.toFixed(1),
       ringIntOffset: (-capDash).toFixed(1),
@@ -1305,11 +1660,11 @@ class Component extends DCLogic {
         return {key:t.key, label:t.label, teaLabel:t.tea+"%", pick:()=>this.setState({simTipo:t.key}),
           style:"border:1px solid "+(on?t.color:"#e0e0e0")+";background:"+(on?t.bg:"#fff")+";color:"+(on?t.color:"#161616")+";border-radius:0;padding:12px 18px;cursor:pointer;line-height:1.25;min-width:120px"};
       }),
-      ingreso: ing, ingresoLabel: this.money(ing),
+      ingreso: ing,
       onIngreso: (e)=>this.setState({ingreso:+e.target.value}),
       afPct: Math.round(afRatio*100)+"%", afWidth: Math.min(afRatio*100,100)+"%", afColor, afLabel,
       capPct: capPctN+"%", intPct: (100-capPctN)+"%",
-      cuotaBanco: this.money(cuotaBancoNum), bankTeaLabel: sel.bank+"%",
+      cuotaBanco: this.money(cuotaBancoNum), totalBanco: this.money(totalBancoNum), bankTeaLabel: sel.bank+"%",
       ahorro: this.money(ahorroNum)
     };
   }
