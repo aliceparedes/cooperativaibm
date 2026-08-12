@@ -106,20 +106,132 @@ app.put("/api/socios/:docume", async (req, res) => {
   if (docume.trim() === "") errors.unshift({ key: "DOCUME", field: "DOCUME", msg: "DOCUME es obligatorio (clave del socio)." });
   if (errors.length) return res.status(422).json({ error: "Hay campos con errores.", report: [{ row: 1, docume, errors }] });
 
-  const saved = await store.saveSocio(next);
-  res.json({ ok: true, socio: saved });
+  // Persist the updated profile
+  await store.saveSocio(next);
+
+  // Create pending changes for each modified field
+  const changes = [];
+  for (const [field, value] of Object.entries(patch)) {
+    if (field !== "DOCUME" && value !== (existing ? existing[field] : undefined)) {
+      const change = await store.addChange({
+        docume,
+        field,
+        value,
+        previousValue: existing ? existing[field] : null
+      });
+      changes.push(change);
+    }
+  }
+
+  res.json({ ok: true, socio: next, pendingChanges: changes.length });
 });
 
-// genera el TXT delimitado con todos los socios (admin)
+// genera el TXT delimitado con cambios pendientes (admin)
 app.post("/api/socios/txt", requireAdmin, async (req, res) => {
-  const socios = await store.listSocios();
-  if (!socios.length) return res.status(400).json({ error: "No hay socios." });
-  const result = txt.build(socios);
+  const pendingChanges = await store.getPendingChanges();
+  if (!pendingChanges.length) {
+    return res.status(400).json({ error: "No hay cambios pendientes." });
+  }
+
+  // Consolidate changes by socio (last value wins per field)
+  const changesBySocio = {};
+  for (const change of pendingChanges) {
+    if (!changesBySocio[change.docume]) {
+      changesBySocio[change.docume] = { DOCUME: change.docume };
+    }
+    // Last value wins for the same field
+    changesBySocio[change.docume][change.field] = change.value;
+  }
+
+  // Build rows from consolidated changes
+  const rows = Object.values(changesBySocio);
+  const result = txt.build(rows);
+  
   if (result.hasErrors) {
     return res.status(422).json({ error: "Hay filas con errores.", report: result.report });
   }
-  res.json({ ok: true, txt: result.txt, bytes: Buffer.byteLength(result.txt, "utf8") });
+
+  // Create batch
+  const timestamp = new Date().toISOString().replace(/[-:]/g, "").split(".")[0];
+  const batchId = `BATCH-${timestamp}`;
+  const filename = `socios_delta_${timestamp}.txt`;
+  
+  const batch = await store.createBatch({
+    id: batchId,
+    filename,
+    recordCount: rows.length,
+    status: "EXPORTED",
+    createdBy: req.user?.username || "admin"
+  });
+
+  // Mark all pending changes as EXPORTED and associate with batch
+  for (const change of pendingChanges) {
+    await store.updateChangeStatus(change.id, "EXPORTED", batch.id);
+  }
+
+  res.json({
+    ok: true,
+    batch: {
+      id: batch.id,
+      filename: batch.filename,
+      recordCount: batch.recordCount,
+      createdAt: batch.createdAt
+    },
+    txt: result.txt,
+    bytes: Buffer.byteLength(result.txt, "utf8")
+  });
 });
+// admin: ver cambios pendientes
+app.get("/api/admin/pending-changes", requireAdmin, async (req, res) => {
+  const pendingChanges = await store.getPendingChanges();
+  
+  // Group by socio for easier display
+  const changesBySocio = {};
+  for (const change of pendingChanges) {
+    if (!changesBySocio[change.docume]) {
+      changesBySocio[change.docume] = {
+        docume: change.docume,
+        changes: []
+      };
+    }
+    changesBySocio[change.docume].changes.push({
+      id: change.id,
+      field: change.field,
+      value: change.value,
+      previousValue: change.previousValue,
+      createdAt: change.createdAt
+    });
+  }
+
+  const summary = {
+    totalSocios: Object.keys(changesBySocio).length,
+    totalChanges: pendingChanges.length,
+    socios: Object.values(changesBySocio)
+  };
+
+  res.json(summary);
+});
+
+// admin: ver historial de batches
+app.get("/api/admin/batches", requireAdmin, async (req, res) => {
+  const batches = await store.listBatches();
+  // Sort by creation date, newest first
+  batches.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  res.json({ batches });
+});
+
+// admin: obtener un batch específico
+app.get("/api/admin/batches/:id", requireAdmin, async (req, res) => {
+  const batch = await store.getBatch(req.params.id);
+  if (!batch) return res.status(404).json({ error: "Batch no encontrado." });
+  
+  // Get all changes associated with this batch
+  const allChanges = await store.listChanges();
+  const batchChanges = allChanges.filter((c) => c.batchId === batch.id);
+  
+  res.json({ batch, changes: batchChanges });
+});
+
 
 const port = process.env.PORT || 8080;
 app.listen(port, () => console.log(`Cooperativa IBM backend listening on port ${port}`));

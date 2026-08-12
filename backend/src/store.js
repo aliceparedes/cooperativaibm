@@ -3,6 +3,8 @@ const path = require("path");
 
 const DEFAULT_DATA = {
   tasas: { hipotecario: 8.9, vehicular: 11.5, educativo: 9.5, salud: 10.0 },
+  changes: [],
+  batches: [],
   anuncios: [
     {
       id: "seed-1",
@@ -129,6 +131,62 @@ function makeFileStore() {
       data.updatedAt = new Date().toISOString();
       write(data);
       return next;
+    },
+    async listChanges() {
+      const data = read();
+      return data.changes || [];
+    },
+    async getPendingChanges() {
+      const data = read();
+      return (data.changes || []).filter((c) => c.status === "PENDING");
+    },
+    async addChange(change) {
+      const data = read();
+      const newChange = {
+        id: newId(),
+        ...change,
+        status: change.status || "PENDING",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      };
+      data.changes = data.changes || [];
+      data.changes.push(newChange);
+      data.updatedAt = new Date().toISOString();
+      write(data);
+      return newChange;
+    },
+    async updateChangeStatus(changeId, status, batchId = null) {
+      const data = read();
+      const change = (data.changes || []).find((c) => c.id === changeId);
+      if (change) {
+        change.status = status;
+        change.updatedAt = new Date().toISOString();
+        if (batchId) change.batchId = batchId;
+        data.updatedAt = new Date().toISOString();
+        write(data);
+      }
+      return change;
+    },
+    async listBatches() {
+      const data = read();
+      return data.batches || [];
+    },
+    async getBatch(batchId) {
+      const data = read();
+      return (data.batches || []).find((b) => b.id === batchId) || null;
+    },
+    async createBatch(batch) {
+      const data = read();
+      const newBatch = {
+        id: newId(),
+        ...batch,
+        createdAt: new Date().toISOString()
+      };
+      data.batches = data.batches || [];
+      data.batches.push(newBatch);
+      data.updatedAt = new Date().toISOString();
+      write(data);
+      return newBatch;
     }
   };
 }
@@ -236,6 +294,62 @@ function makeCloudantStore() {
       doc.updatedAt = new Date().toISOString();
       await saveDoc(doc);
       return next;
+    },
+    async listChanges() {
+      const doc = await getDoc();
+      return doc.changes || [];
+    },
+    async getPendingChanges() {
+      const doc = await getDoc();
+      return (doc.changes || []).filter((c) => c.status === "PENDING");
+    },
+    async addChange(change) {
+      const doc = await getDoc();
+      const newChange = {
+        id: newId(),
+        ...change,
+        status: change.status || "PENDING",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      };
+      doc.changes = doc.changes || [];
+      doc.changes.push(newChange);
+      doc.updatedAt = new Date().toISOString();
+      await saveDoc(doc);
+      return newChange;
+    },
+    async updateChangeStatus(changeId, status, batchId = null) {
+      const doc = await getDoc();
+      const change = (doc.changes || []).find((c) => c.id === changeId);
+      if (change) {
+        change.status = status;
+        change.updatedAt = new Date().toISOString();
+        if (batchId) change.batchId = batchId;
+        doc.updatedAt = new Date().toISOString();
+        await saveDoc(doc);
+      }
+      return change;
+    },
+    async listBatches() {
+      const doc = await getDoc();
+      return doc.batches || [];
+    },
+    async getBatch(batchId) {
+      const doc = await getDoc();
+      return (doc.batches || []).find((b) => b.id === batchId) || null;
+    },
+    async createBatch(batch) {
+      const doc = await getDoc();
+      const newBatch = {
+        id: newId(),
+        ...batch,
+        createdAt: new Date().toISOString()
+      };
+      doc.batches = doc.batches || [];
+      doc.batches.push(newBatch);
+      doc.updatedAt = new Date().toISOString();
+      await saveDoc(doc);
+      return newBatch;
     }
   };
 }

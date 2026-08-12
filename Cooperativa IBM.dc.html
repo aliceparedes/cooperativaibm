@@ -447,15 +447,92 @@
       <section style="padding:56px;max-width:1120px">
         <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:24px;margin-bottom:28px">
           <div>
-            <h1 style="font-size:40px;font-weight:800;letter-spacing:-0.02em;margin-bottom:8px">Exportar socios al S400</h1>
-            <p style="font-size:16px;color:#52606d;line-height:1.55;max-width:740px">Genera el TXT delimitado por punto y coma con los 21 campos confirmados para la carga de Jose. Campos vacios salen como separadores consecutivos y significan no tocar.</p>
+            <h1 style="font-size:40px;font-weight:800;letter-spacing:-0.02em;margin-bottom:8px">Gestión de Cambios Pendientes</h1>
+            <p style="font-size:16px;color:#52606d;line-height:1.55;max-width:740px">Los socios pueden actualizar su información personal. Los cambios quedan pendientes hasta que generes un batch TXT para cargar al S400.</p>
           </div>
-          <button onClick="{{ descargarTxtTodos }}" style="background:#0f62fe;color:#fff;border:none;border-radius:999px;padding:14px 28px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap">Descargar TXT</button>
         </div>
 
         <sc-if value="{{ socioMsg }}" hint-placeholder-val="{{ false }}">
           <div style="border:1px solid #d9dee4;background:#f8fafc;color:#3b4653;border-radius:10px;padding:12px 14px;font-size:13px;margin-bottom:20px;line-height:1.45">{{ socioMsg }}</div>
         </sc-if>
+
+        <!-- PENDING CHANGES SUMMARY -->
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px">
+          <div style="border:1px solid #e5e8ec;border-radius:12px;padding:20px;background:#fff">
+            <div style="font-size:13px;font-weight:700;color:#6f6f6f;text-transform:uppercase;margin-bottom:8px">Cambios Pendientes</div>
+            <div style="font-size:32px;font-weight:800;color:#0f62fe">{{ pendingSummary.totalChanges }}</div>
+            <div style="font-size:13px;color:#8d8d8d;margin-top:4px">{{ pendingSummary.totalSocios }} socios</div>
+          </div>
+          <div style="border:1px solid #e5e8ec;border-radius:12px;padding:20px;background:#fff">
+            <div style="font-size:13px;font-weight:700;color:#6f6f6f;text-transform:uppercase;margin-bottom:8px">Batches Generados</div>
+            <div style="font-size:32px;font-weight:800;color:#24a148">{{ batchHistory.length }}</div>
+            <div style="font-size:13px;color:#8d8d8d;margin-top:4px">histórico completo</div>
+          </div>
+          <div style="border:1px solid #e5e8ec;border-radius:12px;padding:20px;background:#fff;display:flex;flex-direction:column;justify-content:center">
+            <button onClick="{{ generarBatch }}" disabled="{{ pendingSummary.totalChanges === 0 }}" style="background:#0f62fe;color:#fff;border:none;border-radius:999px;padding:14px 24px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;width:100%;opacity:{{ pendingSummary.totalChanges === 0 ? 0.4 : 1 }}">Generar Batch TXT</button>
+            <div style="font-size:12px;color:#8d8d8d;text-align:center;margin-top:8px">Consolida y exporta</div>
+          </div>
+        </div>
+
+        <!-- PENDING CHANGES LIST -->
+        <sc-if value="{{ pendingSummary.totalChanges > 0 }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-bottom:32px">
+            <h2 style="font-size:24px;font-weight:700;margin-bottom:16px">Cambios por Socio</h2>
+            <div style="border:1px solid #e0e0e0;border-radius:8px;overflow:hidden;background:#fff">
+              <sc-for list="{{ pendingChangesList }}" as="socio" hint-placeholder-count="3">
+                <div style="padding:16px 20px;border-bottom:1px solid #f0f0f0">
+                  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+                    <div style="font-size:16px;font-weight:700">Socio {{ socio.docume }}</div>
+                    <div style="font-size:13px;color:#8d8d8d">{{ socio.changes.length }} cambios</div>
+                  </div>
+                  <div style="display:flex;flex-wrap:wrap;gap:8px">
+                    <sc-for list="{{ socio.changes }}" as="change" hint-placeholder-count="2">
+                      <div style="background:#edf5ff;color:#0f62fe;padding:6px 12px;border-radius:6px;font-size:13px;font-weight:600">
+                        {{ change.field }}: {{ change.value }}
+                      </div>
+                    </sc-for>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+
+        <!-- BATCH HISTORY -->
+        <div style="margin-bottom:32px">
+          <h2 style="font-size:24px;font-weight:700;margin-bottom:16px">Historial de Batches</h2>
+          <sc-if value="{{ batchHistory.length === 0 }}" hint-placeholder-val="{{ false }}">
+            <div style="border:1px solid #e0e0e0;border-radius:8px;padding:32px;text-align:center;color:#8d8d8d;background:#fff">
+              No hay batches generados aún
+            </div>
+          </sc-if>
+          <sc-if value="{{ batchHistory.length > 0 }}" hint-placeholder-val="{{ true }}">
+            <div style="border:1px solid #e0e0e0;border-radius:8px;overflow:hidden;background:#fff">
+              <div style="display:grid;grid-template-columns:200px 1fr 120px 140px 140px;background:#f4f4f4;color:#525252;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:0.04em">
+                <div style="padding:12px 16px">Batch ID</div>
+                <div style="padding:12px 16px">Archivo</div>
+                <div style="padding:12px 16px">Socios</div>
+                <div style="padding:12px 16px">Fecha</div>
+                <div style="padding:12px 16px">Acción</div>
+              </div>
+              <sc-for list="{{ batchHistory }}" as="batch" hint-placeholder-count="3">
+                <div style="display:grid;grid-template-columns:200px 1fr 120px 140px 140px;border-top:1px solid #f0f0f0;font-size:13px;align-items:center">
+                  <div style="padding:12px 16px;font-weight:700;color:#0f62fe">{{ batch.id }}</div>
+                  <div style="padding:12px 16px;color:#525252">{{ batch.filename }}</div>
+                  <div style="padding:12px 16px;font-weight:600">{{ batch.recordCount }}</div>
+                  <div style="padding:12px 16px;color:#8d8d8d">{{ batch.dateLabel }}</div>
+                  <div style="padding:12px 16px">
+                    <button onClick="{{ batch.download }}" style="background:#0f62fe;color:#fff;border:none;border-radius:6px;padding:6px 12px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">Descargar</button>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+
+        <!-- TXT FORMAT REFERENCE -->
+        <details style="margin-top:32px">
+          <summary style="font-size:18px;font-weight:700;cursor:pointer;padding:12px 0">Referencia del formato TXT</summary>
 
         <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:28px">
           <div style="border:1px solid #e5e8ec;border-radius:8px;padding:16px;background:#fff"><div style="font-size:12px;font-weight:700;color:#6f6f6f;text-transform:uppercase">Formato</div><div style="font-size:18px;font-weight:800;margin-top:4px">TXT ; + CRLF</div></div>
@@ -662,6 +739,7 @@ class Component extends DCLogic {
     draft: "", feed: "todos",
     login: { user: "", pass: "" }, loginError: "", simView: "mensual",
     loginTab: "socio", adminLogin: { user: "", pass: "" }, auth: { role: null, token: null },
+    socioSession: null, socioForm: emptySocioForm(), socioError: "", socioSuccess: "",
     // Paste your deployed backend URL here (e.g. the Code Engine app URL from backend/README.md).
     // Leave empty to keep running in local-only demo mode (admin/cooperativa2026, nothing persists).
     apiBase: "",
@@ -672,6 +750,8 @@ class Component extends DCLogic {
     registro: { nombres: "", apellidos: "", dni: "", area: "", email: "", celular: "", password: "", accept: false }, registroError: "", registroSuccess: false,
     newProv: { name: "", cat: "", desc: "", disc: "" },
     socioMsg: "",
+    pendingSummary: { totalSocios: 0, totalChanges: 0, socios: [] },
+    batchHistory: [],
     proveedores: [
       {slotId:"prov-0",name:"Plaza Vea",cat:"Supermercados",desc:"Descuento en compras y días de socio exclusivos.",disc:"Hasta 10% dcto."},
       {slotId:"prov-1",name:"Inkafarma",cat:"Farmacias",desc:"Precios preferenciales en medicamentos y cuidado personal.",disc:"15% dcto."},
@@ -719,6 +799,26 @@ class Component extends DCLogic {
       }));
     }catch(e){
       this.setState({ apiError: "No se pudo conectar con el backend. Mostrando datos locales." });
+    }
+  }
+
+  async loadPendingChanges(){
+    if(!this.state.apiBase) return;
+    try{
+      const data = await this.apiFetch("/api/admin/pending-changes");
+      this.setState({ pendingSummary: data });
+    }catch(e){
+      console.error("Error loading pending changes:", e);
+    }
+  }
+
+  async loadBatchHistory(){
+    if(!this.state.apiBase) return;
+    try{
+      const data = await this.apiFetch("/api/admin/batches");
+      this.setState({ batchHistory: data.batches || [] });
+    }catch(e){
+      console.error("Error loading batch history:", e);
     }
   }
 
@@ -778,6 +878,7 @@ class Component extends DCLogic {
     const navItems = [
       ["Anuncios","anuncios"],["Quiénes Somos","quienes"],["Proveedores","proveedores"],
       ...(this.state.auth.role === "admin" ? [["Descargar TXT","socios"]] : []),
+      ...(this.state.socioSession ? [["Mi Perfil","socio-perfil"]] : []),
       ["Préstamos","prestamos"],["Servicios","servicios"]
     ];
     const nav = navItems.map(([label,key]) => ({
@@ -852,6 +953,8 @@ class Component extends DCLogic {
               if(!res.ok){ this.setState({loginError: body.error || "Usuario o contraseña de administrador incorrectos."}); return; }
               this.setState({loginError:"", auth:{role:"admin", token: body.token}});
               await this.loadContent();
+              await this.loadPendingChanges();
+              await this.loadBatchHistory();
               this.go("anuncios");
             }catch(e){
               this.setState({loginError:"No se pudo conectar con el backend. Revisa apiBase en el estado del componente."});
@@ -861,6 +964,8 @@ class Component extends DCLogic {
 
           if(a.user.trim()==="admin" && a.pass==="cooperativa2026"){
             this.setState({loginError:"", auth:{role:"admin", token:null}});
+            await this.loadPendingChanges();
+            await this.loadBatchHistory();
             this.go("anuncios");
             return;
           }
@@ -868,8 +973,56 @@ class Component extends DCLogic {
           return;
         }
         const l = this.state.login;
-        if(!l.user.trim()||!l.pass.trim()){ this.setState({loginError:"Ingresa tu DNI o correo y tu contraseña."}); return; }
-        this.setState({loginError:"Prototipo: este formulario aún no está conectado al sistema real de socios."});
+        if(!l.user.trim()){ this.setState({loginError:"Ingresa tu código de socio (DOCUME)."}); return; }
+        const docume = l.user.trim();
+        const base = (this.state.apiBase || "").replace(/\/$/, "");
+        if(base){
+          try{
+            const res = await fetch(base + "/api/socios/" + docume);
+            if(!res.ok){
+              this.setState({loginError: "Socio no encontrado con el código " + docume});
+              return;
+            }
+            const body = await res.json();
+            this.setState({
+              loginError: "",
+              socioSession: body.socio,
+              socioForm: { ...body.socio }
+            });
+            this.go("socio-perfil");
+          }catch(e){
+            this.setState({loginError:"No se pudo conectar con el backend."});
+          }
+          return;
+        }
+        const demoSocio = {
+          DOCUME: docume,
+          TIPDID: "1",
+          DOCIDE: "40123456",
+          APEPAT: "PEREZ",
+          APEMAT: "GARCIA",
+          NOMBRE: "JUANA MARIA",
+          DIRECC: "Av. Las Palmeras 123",
+          LOCALI: "LIMA",
+          PROVIN: "LIMA",
+          DEPART: "LIMA",
+          NCOMPL: "PEREZ GARCIA JUANA MARIA",
+          NOMBC2: "juanamaria@example.com",
+          TELCEL: "999888777",
+          NACION: "1",
+          CCIUDA: "150131",
+          NOMCON: "",
+          ESTCIV: "S",
+          CARGAM: "0",
+          OFICIO: "ANALISTA",
+          SECTO1: "0"
+        };
+        this.setState({
+          loginError: "",
+          socioSession: demoSocio,
+          socioForm: { ...demoSocio }
+        });
+        this.go("socio-perfil");
       },
 
       showPrefs: this.state.showPrefs,
@@ -992,6 +1145,23 @@ class Component extends DCLogic {
 
       apiError: this.state.apiError,
       socioMsg: this.state.socioMsg,
+      
+      pendingSummary: this.state.pendingSummary,
+      pendingChangesList: this.state.pendingSummary.socios || [],
+      
+      batchHistory: this.state.batchHistory.map(b => ({
+        ...b,
+        dateLabel: new Date(b.createdAt).toLocaleDateString("es-PE", { day:"2-digit", month:"2-digit", year:"numeric" }),
+        download: async () => {
+          try {
+            const data = await this.apiFetch("/api/socios/txt", { method:"POST" });
+            this.descargarTxt(data.txt, b.filename);
+          } catch(err) {
+            this.setState({ socioMsg: err.message });
+          }
+        }
+      })),
+      
       txtLayoutRows: TXT_LAYOUT_FIELDS.map((f, i) => ({
         n: i + 1,
         key: f.key,
@@ -1000,11 +1170,29 @@ class Component extends DCLogic {
         kind: f.type === "select" ? "catalogo" : f.type === "numeric" ? "numerico" : f.type
       })),
 
+      generarBatch: async ()=>{
+        this.setState({ socioMsg:"" });
+        if(this.state.pendingSummary.totalChanges === 0) {
+          this.setState({ socioMsg: "No hay cambios pendientes para exportar." });
+          return;
+        }
+        try{
+          const data = await this.apiFetch("/api/socios/txt", { method:"POST", headers:{ "Content-Type":"application/json" } });
+          this.descargarTxt(data.txt, data.batch.filename);
+          this.setState({ socioMsg: `Batch ${data.batch.id} generado: ${data.batch.recordCount} socios exportados.` });
+          // Reload pending changes and batch history
+          await this.loadPendingChanges();
+          await this.loadBatchHistory();
+        }catch(err){
+          this.setState({ socioMsg: this.renderSocioReport(err.report) || err.message });
+        }
+      },
+
       descargarTxtTodos: async ()=>{
         this.setState({ socioMsg:"" });
         try{
           const data = await this.apiFetch("/api/socios/txt", { method:"POST", headers:{ "Content-Type":"application/json" } });
-          this.descargarTxt(data.txt);
+          this.descargarTxt(data.txt, data.batch?.filename);
         }catch(err){
           this.setState({ socioMsg: this.renderSocioReport(err.report) || err.message });
         }
@@ -1019,16 +1207,15 @@ class Component extends DCLogic {
         return parts.join(" · ");
       },
 
-      descargarTxt: (txt)=>{
+      descargarTxt: (txt, filename)=>{
         const today = new Date().toISOString().slice(0,10).replace(/-/g,"");
-        const name = "socios-" + today + ".txt";
+        const name = filename || ("socios-" + today + ".txt");
         const blob = new Blob([txt], { type:"text/plain;charset=utf-8" });
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url; a.download = name;
         document.body.appendChild(a); a.click();
         setTimeout(()=>{ URL.revokeObjectURL(url); a.remove(); }, 0);
-        this.setState({ socioMsg: "TXT generado: " + name + " (21 campos delimitados por ;)." });
       },
 
       prestamos: prestamosData.map(p=>({...p, goDetalle:()=>{
@@ -1119,9 +1306,51 @@ class Component extends DCLogic {
       onIngreso: (e)=>this.setState({ingreso:+e.target.value}),
       afPct: Math.round(afRatio*100)+"%", afWidth: Math.min(afRatio*100,100)+"%", afColor, afLabel,
       capPct: capPctN+"%", intPct: (100-capPctN)+"%",
-      cuotaBanco: this.money(cuotaBancoNum), bankTeaLabel: sel.bank+"%",
-      ahorro: this.money(ahorroNum)
-    };
+       cuotaBanco: this.money(cuotaBancoNum), bankTeaLabel: sel.bank+"%",
+       ahorro: this.money(ahorroNum),
+
+       isSocioPerfil: page==="socio-perfil" && this.state.socioSession,
+       socioDocume: this.state.socioSession ? this.state.socioSession.DOCUME : "",
+       socioFields: SOCIO_FIELDS.map(f => {
+         const val = this.state.socioForm[f.key] ?? "";
+         return {
+           key: f.key,
+           label: f.label,
+           type: f.type === "numeric" ? "number" : "text",
+           isSelect: f.type === "select",
+           value: val,
+           options: f.type === "select" ? (f.optsKey === "NACION_OPTS" ? NACION_OPTS : f.optsKey === "ESTCIV_OPTS" ? ESTCIV_OPTS : TIPDID_OPTS).map(o => ({v: o.v, l: o.l, selected: val === o.v})) : [],
+           onInput: (e) => {
+             const v = e.target.value;
+             this.setState(s => ({ socioForm: { ...s.socioForm, [f.key]: v } }));
+           }
+         };
+       }),
+       socioError: this.state.socioError,
+       socioSuccess: this.state.socioSuccess,
+       socioSave: async () => {
+         this.setState({ socioError: "", socioSuccess: "" });
+         const docume = this.state.socioSession.DOCUME;
+         const base = (this.state.apiBase || "").replace(/\/$/, "");
+         if(base){
+           try{
+             const res = await this.apiFetch("/api/socios/" + docume, {
+               method: "PUT",
+               body: JSON.stringify(this.state.socioForm)
+             });
+             this.setState({ socioSession: res.socio, socioSuccess: "Cambios guardados exitosamente. Pendiente de sincronización con S400." });
+           }catch(e){
+             this.setState({ socioError: e.message });
+           }
+           return;
+         }
+         this.setState({ socioSession: { ...this.state.socioSession, ...this.state.socioForm }, socioSuccess: "Cambios guardados (modo demo local). Pendiente de sincronización con S400." });
+       },
+       socioLogout: () => {
+         this.setState({ socioSession: null, socioForm: emptySocioForm() });
+         this.go("inicio");
+       }
+     };
   }
 }
 </script>
