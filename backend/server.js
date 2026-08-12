@@ -69,9 +69,7 @@ app.put("/api/tasas", requireAdmin, async (req, res) => {
 
 // ---------- socios: perfiles autoservicio + TXT bulk para el S400 ----------
 // Los socios leen/actualizan su propio perfil (login demo) y el admin genera
-// el TXT de ancho fijo con todos los socios desde la BD (~4 veces al año).
-
-const SOCIO_KEYS = txt.LAYOUT.map((c) => c.key).filter((k) => k !== "DOCUME");
+// el TXT delimitado con todos los socios desde la BD.
 
 function pickSocioFields(body) {
   const out = {};
@@ -112,7 +110,7 @@ app.put("/api/socios/:docume", async (req, res) => {
   res.json({ ok: true, socio: saved });
 });
 
-// genera el TXT de ancho fijo con todos los socios (admin, oculto)
+// genera el TXT delimitado con todos los socios (admin)
 app.post("/api/socios/txt", requireAdmin, async (req, res) => {
   const socios = await store.listSocios();
   if (!socios.length) return res.status(400).json({ error: "No hay socios." });

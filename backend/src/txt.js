@@ -2,6 +2,12 @@
 // 21 fields per row, semicolon-delimited ("campo;campo;..."), UTF-8, CRLF.
 // An empty field means the value did not change (no tocar). Each row ends with ";".
 
+const CATALOGS = {
+  TIPDID: new Set(["1", "3", "4", "6"]),
+  NACION: new Set(["1", "2"]),
+  ESTCIV: new Set(["S", "C", "V", "D"])
+};
+
 const LAYOUT = [
   { key: "DOCUME", field: "DOCUME", length: 6, type: "char", note: "clave — código del socio (nunca editable)" },
   { key: "TIPDID", field: "TIPDID", length: 1, type: "char" },
@@ -16,7 +22,7 @@ const LAYOUT = [
   { key: "NCOMPL", field: "NCOMPL", length: 60, type: "char" },
   { key: "NOMBC2", field: "NOMBC2", length: 50, type: "char" },
   { key: "TELCEL", field: "TELCEL", length: 9, type: "zoned" },
-  { key: "NACION", field: "NACION", length: 6, type: "zoned", note: "lugar de nacimiento (Ubigeo)" },
+  { key: "NACION", field: "NACION", length: 1, type: "char", note: "nacionalidad — 1=Peruana, 2=Extranjera" },
   { key: "CCIUDA", field: "CCIUDA", length: 6, type: "zoned", note: "ciudad de trabajo (Ubigeo)" },
   { key: "NOMCON", field: "NOMCON", length: 40, type: "char" },
   { key: "DNICY", field: "DNICY", length: 8, type: "zoned", note: "DNI del cónyuge" },
@@ -37,6 +43,14 @@ function isNoTouch(v) {
   return v == null || v === "";
 }
 
+function hasFieldBreaks(raw) {
+  return raw.includes(";") || /[\r\n]/.test(raw);
+}
+
+function normalizeCatalogValue(raw) {
+  return String(raw).trim().toUpperCase();
+}
+
 // Returns [] when ok, or [{ key, field, msg }].
 function validateRow(row) {
   const errors = [];
@@ -46,6 +60,8 @@ function validateRow(row) {
     errors.push({ key: "DOCUME", field: "DOCUME", msg: "DOCUME es obligatorio (clave del socio)." });
   } else if (byteLen(docume) > 6) {
     errors.push({ key: "DOCUME", field: "DOCUME", msg: "DOCUME excede 6 bytes." });
+  } else if (hasFieldBreaks(docume)) {
+    errors.push({ key: "DOCUME", field: "DOCUME", msg: "DOCUME no puede contener ';' ni saltos de linea." });
   }
 
   for (const col of LAYOUT) {
@@ -53,18 +69,25 @@ function validateRow(row) {
     const raw = row && row[col.key] != null ? String(row[col.key]) : "";
     if (isNoTouch(raw)) continue;
     if (raw.includes(";")) {
-      errors.push({ key: col.key, field: col.field, msg: col.field + " no puede contener el carácter ';' (separador)." });
+      errors.push({ key: col.key, field: col.field, msg: col.field + " no puede contener el caracter ';' (separador)." });
       continue;
     }
     if (/[\r\n]/.test(raw)) {
-      errors.push({ key: col.key, field: col.field, msg: col.field + " no puede contener saltos de línea." });
+      errors.push({ key: col.key, field: col.field, msg: col.field + " no puede contener saltos de linea." });
+      continue;
+    }
+    if (CATALOGS[col.key]) {
+      if (!CATALOGS[col.key].has(normalizeCatalogValue(raw))) {
+        const allowed = Array.from(CATALOGS[col.key]).join(", ");
+        errors.push({ key: col.key, field: col.field, msg: col.field + " debe ser uno de: " + allowed + "." });
+      }
       continue;
     }
     if (col.type === "zoned") {
       if (!/^\d+$/.test(raw)) {
-        errors.push({ key: col.key, field: col.field, msg: col.field + " debe ser numérico (zanado)." });
+        errors.push({ key: col.key, field: col.field, msg: col.field + " debe ser numerico (zoned)." });
       } else if (raw.length > col.length) {
-        errors.push({ key: col.key, field: col.field, msg: col.field + " excede " + col.length + " dígitos." });
+        errors.push({ key: col.key, field: col.field, msg: col.field + " excede " + col.length + " digitos." });
       }
     } else if (byteLen(raw) > col.length) {
       errors.push({ key: col.key, field: col.field, msg: col.field + " excede " + col.length + " bytes." });
@@ -78,7 +101,8 @@ function serializeRow(row) {
   const parts = [];
   for (const col of LAYOUT) {
     const raw = row && row[col.key] != null ? String(row[col.key]) : "";
-    parts.push(isNoTouch(raw) ? "" : raw);
+    const value = CATALOGS[col.key] ? normalizeCatalogValue(raw) : raw;
+    parts.push(isNoTouch(raw) ? "" : value);
   }
   return parts.join(";") + ";";
 }
@@ -103,4 +127,4 @@ function build(rows) {
   return { hasErrors, report, txt: serialized.join("\r\n") };
 }
 
-module.exports = { LAYOUT, NO_TOUCH, byteLen, isNoTouch, validateRow, serializeRow, build };
+module.exports = { LAYOUT, CATALOGS, NO_TOUCH, byteLen, isNoTouch, validateRow, serializeRow, build };

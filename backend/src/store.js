@@ -32,7 +32,7 @@ const DEFAULT_DATA = {
       NCOMPL: "PEREZ GARCIA JUANA MARIA",
       NOMBC2: "juanamaria@example.com",
       TELCEL: "999888777",
-      NACION: "150101",
+      NACION: "1",
       CCIUDA: "150131",
       NOMCON: "",
       ESTCIV: "S",

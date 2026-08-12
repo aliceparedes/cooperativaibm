@@ -15,7 +15,7 @@ const rows = [
     DIRECC: "Av. Los Próceres 1234 Dpto 402 San Isidro", LOCALI: "SAN ISIDRO",
     PROVIN: "LIMA", DEPART: "LIMA", NCOMPL: "NUÑEZ QUISPE JOSE ALBERTO",
     NOMBC2: "abi.test@coop.com.pe", TELCEL: "987654321",
-    NACION: "150101", CCIUDA: "150100", NOMCON: "PEREZ LOPEZ CARMEN ROSA",
+    NACION: "1", CCIUDA: "150100", NOMCON: "PEREZ LOPEZ CARMEN ROSA",
     DNICY: "12345678", ESTCIV: "C", CARGAM: "03", OFICIO: "INGENIERO", SECTO1: "02"
   },
   {
@@ -23,7 +23,7 @@ const rows = [
   },
   {
     DOCUME: "800002", TIPDID: "3", DOCIDE: "12345678901",
-    NACION: "140101", CCIUDA: "140100",
+    NACION: "2", CCIUDA: "140100",
     ESTCIV: "D", CARGAM: "99", OFICIO: "DOCENTE", SECTO1: "07"
   },
   {
@@ -74,7 +74,7 @@ check("validación: zoned no numérico", () => {
   const bad = build([{ DOCUME: "999999", TELCEL: "12x" }]);
   assert.strictEqual(bad.hasErrors, true);
   const err = bad.report[0].errors.find((e) => e.key === "TELCEL");
-  assert.ok(err && /numérico/.test(err.msg));
+  assert.ok(err && /numerico/.test(err.msg));
 });
 
 check("validación: valor no puede contener ';'", () => {
@@ -112,6 +112,25 @@ check("validación: aislar fila con error (no tira el resto)", () => {
   assert.ok(/999003/.test(res.txt), "la fila buena sigue presente");
 });
 
+check("validacion: catalogos cerrados del TXT", () => {
+  const badTipdid = build([{ DOCUME: "999999", TIPDID: "2" }]);
+  assert.strictEqual(badTipdid.hasErrors, true);
+  assert.ok(badTipdid.report[0].errors.some((e) => e.key === "TIPDID"));
+
+  const badNacion = build([{ DOCUME: "999999", NACION: "150101" }]);
+  assert.strictEqual(badNacion.hasErrors, true);
+  assert.ok(badNacion.report[0].errors.some((e) => e.key === "NACION"));
+
+  const badEstciv = build([{ DOCUME: "999999", ESTCIV: "X" }]);
+  assert.strictEqual(badEstciv.hasErrors, true);
+  assert.ok(badEstciv.report[0].errors.some((e) => e.key === "ESTCIV"));
+});
+
+check("serializacion: catalogos se normalizan antes de salir", () => {
+  const r = build([{ DOCUME: "999999", NACION: " 1 ", ESTCIV: "c" }]);
+  assert.strictEqual(r.hasErrors, false);
+  assert.strictEqual(r.txt, "999999;;;;;;;;;;;;;1;;;;C;;;;");
+});
 if (!allOk) {
   console.error("\nFAILURES — revisa el módulo o el fixture.");
   process.exit(1);

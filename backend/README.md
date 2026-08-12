@@ -7,7 +7,7 @@ A small Express API that the site's admin login talks to. It provides:
 - `POST /api/anuncios` / `DELETE /api/anuncios/:id` — admin only
 - `POST /api/proveedores` / `DELETE /api/proveedores/:id` — admin only
 - `PUT /api/tasas` — admin only
-- `POST /api/socios/txt` — admin only; serializes partner updates to a fixed-width TXT for the S400
+- `POST /api/socios/txt` — admin only; serializes partner updates to the 21-field semicolon-delimited TXT for the S400
 
 Storage is pluggable: a JSON file by default (fine for local testing), or
 IBM Cloudant for a real deployment (`STORAGE=cloudant`).
@@ -165,7 +165,7 @@ layout exacto de campos vive en `backend/src/txt.js` (21 campos, delimitado,
 CRLF). Los catálogos TIPDID / NACION / ESTCIV están en el frontend y en el
 `.dc.html` (constantes `OPTS`). El fixture de referencia
 `backend/test/fixtures/cooperativa-txt-prueba.gold.txt` reproduce el formato
-acordado con José y se verifica con `node --test` en `backend/`.
+acordado con José y se verifica con `node test/txt.gold.test.js` en `backend/`.
 
 ## Notes
 

@@ -444,16 +444,36 @@
       </sc-if>
 
       <sc-if value="{{ socioAdminView }}" hint-placeholder-val="{{ false }}">
-      <div style="border:1px solid #0f62fe;background:#f4f9ff;border-radius:14px;padding:22px;margin-bottom:36px">
-        <div style="font-size:15px;font-weight:700;color:#0f62fe;margin-bottom:6px">Exportar socios al S400</div>
-        <p style="font-size:13px;color:#52606d;margin:0 0 16px">Descarga el TXT con todos los socios actualizados (formato delimitado del S400) para procesarlo desde el sistema.</p>
+      <section style="padding:56px;max-width:1120px">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:24px;margin-bottom:28px">
+          <div>
+            <h1 style="font-size:40px;font-weight:800;letter-spacing:-0.02em;margin-bottom:8px">Exportar socios al S400</h1>
+            <p style="font-size:16px;color:#52606d;line-height:1.55;max-width:740px">Genera el TXT delimitado por punto y coma con los 21 campos confirmados para la carga de Jose. Campos vacios salen como separadores consecutivos y significan no tocar.</p>
+          </div>
+          <button onClick="{{ descargarTxtTodos }}" style="background:#0f62fe;color:#fff;border:none;border-radius:999px;padding:14px 28px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap">Descargar TXT</button>
+        </div>
 
-        <sc-if value="{{ socioMsg }}" hint-placeholder-val="{{ '' }}">
-          <div style="color:#da1e28;font-size:13px;margin:0 0 14px">{{ socioMsg }}</div>
+        <sc-if value="{{ socioMsg }}" hint-placeholder-val="{{ false }}">
+          <div style="border:1px solid #d9dee4;background:#f8fafc;color:#3b4653;border-radius:10px;padding:12px 14px;font-size:13px;margin-bottom:20px;line-height:1.45">{{ socioMsg }}</div>
         </sc-if>
 
-        <button onClick="{{ descargarTxtTodos }}" style="background:#0f62fe;color:#fff;border:none;border-radius:999px;padding:12px 28px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit">Descargar TXT</button>
-      </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:28px">
+          <div style="border:1px solid #e5e8ec;border-radius:8px;padding:16px;background:#fff"><div style="font-size:12px;font-weight:700;color:#6f6f6f;text-transform:uppercase">Formato</div><div style="font-size:18px;font-weight:800;margin-top:4px">TXT ; + CRLF</div></div>
+          <div style="border:1px solid #e5e8ec;border-radius:8px;padding:16px;background:#fff"><div style="font-size:12px;font-weight:700;color:#6f6f6f;text-transform:uppercase">Campos</div><div style="font-size:18px;font-weight:800;margin-top:4px">21 en orden fijo</div></div>
+          <div style="border:1px solid #e5e8ec;border-radius:8px;padding:16px;background:#fff"><div style="font-size:12px;font-weight:700;color:#6f6f6f;text-transform:uppercase">Clave</div><div style="font-size:18px;font-weight:800;margin-top:4px">DOCUME</div></div>
+        </div>
+
+        <div style="border:1px solid #e0e0e0;border-radius:8px;overflow:hidden;background:#fff">
+          <div style="display:grid;grid-template-columns:64px 120px 1fr 90px 110px;background:#f4f4f4;color:#525252;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:0.04em">
+            <div style="padding:12px 14px">Col.</div><div style="padding:12px 14px">Campo</div><div style="padding:12px 14px">Descripcion</div><div style="padding:12px 14px">Max.</div><div style="padding:12px 14px">Tipo</div>
+          </div>
+          <sc-for list="{{ txtLayoutRows }}" as="r" hint-placeholder-count="21">
+            <div style="display:grid;grid-template-columns:64px 120px 1fr 90px 110px;border-top:1px solid #f0f0f0;font-size:13px;color:#262626">
+              <div style="padding:10px 14px;color:#6f6f6f">{{ r.n }}</div><div style="padding:10px 14px;font-weight:800">{{ r.key }}</div><div style="padding:10px 14px">{{ r.label }}</div><div style="padding:10px 14px">{{ r.bytes }}</div><div style="padding:10px 14px;color:#52606d">{{ r.kind }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </section>
       </sc-if>
 
       <sc-if value="{{ socioNoAdminView }}" hint-placeholder-val="{{ false }}">
@@ -587,14 +607,10 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;100%&quot;,&quot;height&quot;:&quot;800px&quot;},&quot;tasaAnual&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:null,&quot;min&quot;:5,&quot;max&quot;:20,&quot;step&quot;:0.5,&quot;unit&quot;:&quot;%&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Simulador&quot;,&quot;label&quot;:&quot;Forzar tasa anual (opcional)&quot;},&quot;montoMax&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:150000,&quot;min&quot;:50000,&quot;max&quot;:300000,&quot;step&quot;:10000,&quot;unit&quot;:&quot;S/&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Simulador&quot;,&quot;label&quot;:&quot;Monto máximo&quot;},&quot;mostrarSimulador&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Simulador&quot;,&quot;label&quot;:&quot;Mostrar simulador&quot;}}">
 const TIPDID_OPTS = [
-  {v:"1",l:"DNI / Libreta electoral"},
-  {v:"2",l:"Carnet de identidad"},
-  {v:"3",l:"Carnet de extranjería"},
+  {v:"1",l:"DNI"},
+  {v:"3",l:"Carnet de extranjeria"},
   {v:"4",l:"Pasaporte"},
-  {v:"5",l:"Libreta tributaria"},
-  {v:"6",l:"RUC"},
-  {v:"R",l:"Fuerzas policiales"},
-  {v:"S",l:"Fuerzas armadas"}
+  {v:"6",l:"RUC"}
 ];
 const ESTCIV_OPTS = [
   {v:"S",l:"Soltero"},{v:"C",l:"Casado"},{v:"D",l:"Divorciado"},{v:"V",l:"Viudo"}
@@ -606,12 +622,12 @@ const OPTS = { TIPDID_OPTS, ESTCIV_OPTS, NACION_OPTS };
 
 const SOCIO_FIELDS = [
   { key:"TIPDID", label:"Tipo de documento", bytes:1,  type:"select",  optsKey:"TIPDID_OPTS" },
-  { key:"DOCIDE", label:"DNI",               bytes:11, type:"numeric", placeholder:"Solo dígitos" },
+  { key:"DOCIDE", label:"Documento de identidad", bytes:11, type:"numeric", placeholder:"Solo digitos" },
   { key:"APEPAT", label:"Apellido paterno",  bytes:20, type:"text" },
   { key:"APEMAT", label:"Apellido materno",  bytes:20, type:"text" },
   { key:"NOMBRE", label:"Nombres",           bytes:30, type:"text" },
   { key:"DIRECC", label:"Dirección",         bytes:80, type:"text" },
-  { key:"LOCALI", label:"Localidad",         bytes:40, type:"text" },
+  { key:"LOCALI", label:"Distrito",          bytes:40, type:"text" },
   { key:"PROVIN", label:"Provincia",         bytes:40, type:"text" },
   { key:"DEPART", label:"Departamento",      bytes:40, type:"text" },
   { key:"NCOMPL", label:"Nombre completo",   bytes:60, type:"text" },
@@ -623,9 +639,11 @@ const SOCIO_FIELDS = [
   { key:"DNICY", label:"DNI del cónyuge",    bytes:8,  type:"numeric" },
   { key:"ESTCIV", label:"Estado civil",      bytes:1,  type:"select",  optsKey:"ESTCIV_OPTS" },
   { key:"CARGAM", label:"Cargas familiares", bytes:2,  type:"numeric" },
-  { key:"OFICIO", label:"Oficio",            bytes:20, type:"text" },
+  { key:"OFICIO", label:"Profesion",         bytes:20, type:"text" },
   { key:"SECTO1", label:"N.º de hijos",      bytes:2,  type:"numeric" }
 ];
+
+const TXT_LAYOUT_FIELDS = [{ key:"DOCUME", label:"Codigo del socio", bytes:6, type:"clave" }, ...SOCIO_FIELDS];
 
 function emptySocioForm(){
   const f = { DOCUME: "" };
@@ -974,6 +992,13 @@ class Component extends DCLogic {
 
       apiError: this.state.apiError,
       socioMsg: this.state.socioMsg,
+      txtLayoutRows: TXT_LAYOUT_FIELDS.map((f, i) => ({
+        n: i + 1,
+        key: f.key,
+        label: f.label,
+        bytes: f.bytes,
+        kind: f.type === "select" ? "catalogo" : f.type === "numeric" ? "numerico" : f.type
+      })),
 
       descargarTxtTodos: async ()=>{
         this.setState({ socioMsg:"" });
@@ -1003,6 +1028,7 @@ class Component extends DCLogic {
         a.href = url; a.download = name;
         document.body.appendChild(a); a.click();
         setTimeout(()=>{ URL.revokeObjectURL(url); a.remove(); }, 0);
+        this.setState({ socioMsg: "TXT generado: " + name + " (21 campos delimitados por ;)." });
       },
 
       prestamos: prestamosData.map(p=>({...p, goDetalle:()=>{
