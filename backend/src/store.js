@@ -17,6 +17,30 @@ const DEFAULT_DATA = {
     { id: "seed-1", name: "Plaza Vea", cat: "Supermercados", desc: "Descuento en compras y días de socio exclusivos.", disc: "Hasta 10% dcto." },
     { id: "seed-2", name: "Inkafarma", cat: "Farmacias", desc: "Precios preferenciales en medicamentos y cuidado personal.", disc: "15% dcto." }
   ],
+  socios: [
+    {
+      DOCUME: "100001",
+      TIPDID: "1",
+      DOCIDE: "40123456",
+      APEPAT: "PEREZ",
+      APEMAT: "GARCIA",
+      NOMBRE: "JUANA MARIA",
+      DIRECC: "Av. Las Palmeras 123",
+      LOCALI: "LIMA",
+      PROVIN: "LIMA",
+      DEPART: "LIMA",
+      NCOMPL: "PEREZ GARCIA JUANA MARIA",
+      NOMBC2: "juanamaria@example.com",
+      TELCEL: "999888777",
+      NACION: "150101",
+      CCIUDA: "150131",
+      NOMCON: "",
+      ESTCIV: "S",
+      CARGAM: "0",
+      OFICIO: "ANALISTA",
+      SECTO1: "0"
+    }
+  ],
   updatedAt: new Date().toISOString()
 };
 
@@ -85,6 +109,26 @@ function makeFileStore() {
       data.updatedAt = new Date().toISOString();
       write(data);
       return data.tasas;
+    },
+    async listSocios() {
+      const data = read();
+      return data.socios || [];
+    },
+    async getSocio(docume) {
+      const data = read();
+      return (data.socios || []).find((s) => String(s.DOCUME) === String(docume)) || null;
+    },
+    async saveSocio(socio) {
+      const data = read();
+      const list = data.socios || [];
+      const i = list.findIndex((s) => String(s.DOCUME) === String(socio.DOCUME));
+      const next = { ...socio, updatedAt: new Date().toISOString() };
+      if (i >= 0) list[i] = next;
+      else list.push(next);
+      data.socios = list;
+      data.updatedAt = new Date().toISOString();
+      write(data);
+      return next;
     }
   };
 }
@@ -172,6 +216,26 @@ function makeCloudantStore() {
       doc.updatedAt = new Date().toISOString();
       await saveDoc(doc);
       return doc.tasas;
+    },
+    async listSocios() {
+      const doc = await getDoc();
+      return doc.socios || [];
+    },
+    async getSocio(docume) {
+      const doc = await getDoc();
+      return (doc.socios || []).find((s) => String(s.DOCUME) === String(docume)) || null;
+    },
+    async saveSocio(socio) {
+      const doc = await getDoc();
+      const list = doc.socios || [];
+      const i = list.findIndex((s) => String(s.DOCUME) === String(socio.DOCUME));
+      const next = { ...socio, updatedAt: new Date().toISOString() };
+      if (i >= 0) list[i] = next;
+      else list.push(next);
+      doc.socios = list;
+      doc.updatedAt = new Date().toISOString();
+      await saveDoc(doc);
+      return next;
     }
   };
 }
