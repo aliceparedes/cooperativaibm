@@ -553,6 +553,46 @@
       </section>
       </sc-if>
 
+      <sc-if value="{{ isSocioPerfil }}" hint-placeholder-val="{{ true }}">
+      <section style="padding:56px;display:flex;justify-content:center">
+        <div style="width:100%;max-width:760px">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+            <h1 style="font-size:32px;font-weight:800;letter-spacing:-0.02em">Mi Perfil</h1>
+            <button onClick="{{ socioLogout }}" style="background:#fff;color:#da1e28;border:1px solid #da1e28;border-radius:999px;padding:10px 18px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">Cerrar sesión</button>
+          </div>
+          <p style="font-size:15px;color:#52606d;margin-bottom:28px">Código de socio: <strong style="color:#0f62fe">{{ socioDocume }}</strong>. Actualiza tus datos, quedarán pendientes de sincronización con S400.</p>
+
+          <sc-if value="{{ socioSuccess }}" hint-placeholder-val="{{ false }}">
+            <div style="border:1px solid #42be65;background:#defbe6;color:#0e6027;border-radius:10px;padding:12px 14px;font-size:13px;margin-bottom:20px;line-height:1.45">{{ socioSuccess }}</div>
+          </sc-if>
+          <sc-if value="{{ socioError }}" hint-placeholder-val="{{ false }}">
+            <div style="border:1px solid #fa4d56;background:#fff1f1;color:#a2191f;border-radius:10px;padding:12px 14px;font-size:13px;margin-bottom:20px;line-height:1.45">{{ socioError }}</div>
+          </sc-if>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
+            <sc-for list="{{ socioFields }}" as="f" hint-placeholder-count="6">
+              <div>
+                <label style="display:block;font-size:13px;font-weight:600;color:#3b4653;margin-bottom:7px">{{ f.label }}</label>
+                <sc-if value="{{ f.isSelect }}" hint-placeholder-val="{{ false }}">
+                  <select value="{{ f.value }}" onChange="{{ f.onInput }}" style="width:100%;border:1px solid #d9dee4;border-radius:10px;padding:13px 14px;font-size:15px;font-family:inherit;outline:none;background:#fff" style-focus="border:1px solid #0f62fe;box-shadow:0 0 0 3px #edf5ff">
+                    <sc-for list="{{ f.options }}" as="o" hint-placeholder-count="4">
+                      <option value="{{ o.v }}" selected="{{ o.selected }}">{{ o.l }}</option>
+                    </sc-for>
+                  </select>
+                </sc-if>
+                <sc-if value="{{ !f.isSelect }}" hint-placeholder-val="{{ true }}">
+                  <input type="{{ f.type }}" value="{{ f.value }}" onInput="{{ f.onInput }}" style="width:100%;border:1px solid #d9dee4;border-radius:10px;padding:13px 14px;font-size:15px;font-family:inherit;outline:none" style-focus="border:1px solid #0f62fe;box-shadow:0 0 0 3px #edf5ff">
+                </sc-if>
+              </div>
+            </sc-for>
+          </div>
+
+          <button onClick="{{ socioSave }}" style="background:#0f62fe;color:#fff;border:none;border-radius:999px;padding:14px 24px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:28px">Guardar cambios</button>
+          <div style="font-size:12px;color:#8d8d8d;text-align:left;margin-top:8px">Los cambios quedan en estado "pendiente" hasta que se genere el batch TXT.</div>
+        </div>
+      </section>
+      </sc-if>
+
       <sc-if value="{{ socioNoAdminView }}" hint-placeholder-val="{{ false }}">
         <div style="padding:22px;color:#8b95a1;font-size:14px">Esta sección es solo para administradores.</div>
       </sc-if>
@@ -685,9 +725,8 @@
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;100%&quot;,&quot;height&quot;:&quot;800px&quot;},&quot;tasaAnual&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:null,&quot;min&quot;:5,&quot;max&quot;:20,&quot;step&quot;:0.5,&quot;unit&quot;:&quot;%&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Simulador&quot;,&quot;label&quot;:&quot;Forzar tasa anual (opcional)&quot;},&quot;montoMax&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:150000,&quot;min&quot;:50000,&quot;max&quot;:300000,&quot;step&quot;:10000,&quot;unit&quot;:&quot;S/&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Simulador&quot;,&quot;label&quot;:&quot;Monto máximo&quot;},&quot;mostrarSimulador&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Simulador&quot;,&quot;label&quot;:&quot;Mostrar simulador&quot;}}">
 const TIPDID_OPTS = [
   {v:"1",l:"DNI"},
-  {v:"3",l:"Carnet de extranjeria"},
   {v:"4",l:"Pasaporte"},
-  {v:"6",l:"RUC"}
+  {v:"7",l:"Otro"}
 ];
 const ESTCIV_OPTS = [
   {v:"S",l:"Soltero"},{v:"C",l:"Casado"},{v:"D",l:"Divorciado"},{v:"V",l:"Viudo"}

@@ -130,8 +130,9 @@ El admin **no edita socios desde la web**; eso se hace directo en el S400.
 
 ### Convenciones del TXT
 
-- Formato de José: filas separadas por `;`, cada fila termina en `;`, line
-  endings CRLF, UTF-8.
+- Formato de José: filas separadas por `;`, exactamente **21 campos por fila**
+  (20 separadores, sin `;` final), line endings CRLF, UTF-8. El S400 carga cada
+  fila partiéndola con `;` y validando que tenga exactamente 21 partes.
 - **21 campos** en orden fijo (ver `LAYOUT` en `backend/src/txt.js`):
   `DOCUME(6) | TIPDID(1) | DOCIDE(11) | APEPAT(20) | APEMAT(20) | NOMBRE(30) |
   DIRECC(80) | LOCALI(40) | PROVIN(40) | DEPART(40) | NCOMPL(60) |

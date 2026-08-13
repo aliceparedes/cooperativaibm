@@ -1,9 +1,11 @@
 // Delimited TXT serializer for socios data updates (track 2).
-// 21 fields per row, semicolon-delimited ("campo;campo;..."), UTF-8, CRLF.
-// An empty field means the value did not change (no tocar). Each row ends with ";".
+// 21 fields per row, semicolon-delimited ("campo;campo;campo..."), UTF-8, CRLF.
+// An empty field means the value did not change (no tocar). Rows have exactly
+// 21 fields (20 separators, no trailing ";") — matches the prod loader,
+// which splits on ";" and requires exactly 21 parts.
 
 const CATALOGS = {
-  TIPDID: new Set(["1", "3", "4", "6"]),
+  TIPDID: new Set(["1", "4", "7"]),
   NACION: new Set(["1", "2"]),
   ESTCIV: new Set(["S", "C", "V", "D"])
 };
@@ -104,7 +106,7 @@ function serializeRow(row) {
     const value = CATALOGS[col.key] ? normalizeCatalogValue(raw) : raw;
     parts.push(isNoTouch(raw) ? "" : value);
   }
-  return parts.join(";") + ";";
+  return parts.join(";");
 }
 
 // Returns { hasErrors, report: [{row, docume, errors[]}], txt }.

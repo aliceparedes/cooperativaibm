@@ -22,7 +22,7 @@ const rows = [
     DOCUME: "888888", ESTCIV: "S", OFICIO: "INGENIERO"
   },
   {
-    DOCUME: "800002", TIPDID: "3", DOCIDE: "12345678901",
+    DOCUME: "800002", TIPDID: "7", DOCIDE: "12345678901",
     NACION: "2", CCIUDA: "140100",
     ESTCIV: "D", CARGAM: "99", OFICIO: "DOCENTE", SECTO1: "07"
   },
@@ -52,15 +52,15 @@ check("build() reproduce el gold byte a byte", () => {
 
 check("campo vacío = no tocar (sin padding)", () => {
   const r = build([{ DOCUME: "888888", ESTCIV: "S", OFICIO: "INGENIERO" }]);
-  assert.strictEqual(r.txt, "888888;;;;;;;;;;;;;;;;;S;;INGENIERO;;");
+  assert.strictEqual(r.txt, "888888;;;;;;;;;;;;;;;;;S;;INGENIERO;");
 });
 
-check("fila termina en ';' y usa CRLF", () => {
+check("fila tiene 21 campos (20 separadores) y usa CRLF", () => {
   const r = build([{ DOCUME: "999999" }]);
-  assert.ok(r.txt.endsWith(";"), "la fila debe terminar en ';'");
-  assert.strictEqual(r.txt, "999999;;;;;;;;;;;;;;;;;;;;;");
+  assert.strictEqual(r.txt.split(";").length, 21, "la fila debe tener exactamente 21 campos");
+  assert.strictEqual(r.txt, "999999;;;;;;;;;;;;;;;;;;;;");
   const two = build([{ DOCUME: "100000" }, { DOCUME: "100001" }]);
-  assert.strictEqual(two.txt, "100000;;;;;;;;;;;;;;;;;;;;;\r\n100001;;;;;;;;;;;;;;;;;;;;;");
+  assert.strictEqual(two.txt, "100000;;;;;;;;;;;;;;;;;;;;\r\n100001;;;;;;;;;;;;;;;;;;;;");
 });
 
 check("validación: exceso de longitud en char", () => {
@@ -129,7 +129,7 @@ check("validacion: catalogos cerrados del TXT", () => {
 check("serializacion: catalogos se normalizan antes de salir", () => {
   const r = build([{ DOCUME: "999999", NACION: " 1 ", ESTCIV: "c" }]);
   assert.strictEqual(r.hasErrors, false);
-  assert.strictEqual(r.txt, "999999;;;;;;;;;;;;;1;;;;C;;;;");
+  assert.strictEqual(r.txt, "999999;;;;;;;;;;;;;1;;;;C;;;");
 });
 if (!allOk) {
   console.error("\nFAILURES — revisa el módulo o el fixture.");
