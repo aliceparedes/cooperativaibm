@@ -1154,8 +1154,23 @@ class Component extends DCLogic {
         dateLabel: new Date(b.createdAt).toLocaleDateString("es-PE", { day:"2-digit", month:"2-digit", year:"numeric" }),
         download: async () => {
           try {
-            const data = await this.apiFetch("/api/socios/txt", { method:"POST" });
-            this.descargarTxt(data.txt, b.filename);
+            const base = (this.state.apiBase || "").replace(/\/$/, "");
+            const url = base + "/api/admin/batches/" + encodeURIComponent(b.id) + "/download";
+            
+            const headers = {};
+            if (this.state.auth.token) {
+              headers.Authorization = "Bearer " + this.state.auth.token;
+            }
+            
+            const res = await fetch(url, { headers });
+            
+            if (!res.ok) {
+              const body = await res.json().catch(() => ({}));
+              throw new Error(body.error || "No se pudo descargar el batch.");
+            }
+            
+            const txt = await res.text();
+            this.descargarTxt(txt, b.filename);
           } catch(err) {
             this.setState({ socioMsg: err.message });
           }

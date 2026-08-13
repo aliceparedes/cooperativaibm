@@ -161,7 +161,8 @@ app.post("/api/socios/txt", requireAdmin, async (req, res) => {
     filename,
     recordCount: rows.length,
     status: "EXPORTED",
-    createdBy: req.user?.username || "admin"
+    createdBy: req.user?.username || "admin",
+    txt: result.txt  // Store the TXT content with the batch
   });
 
   // Mark all pending changes as EXPORTED and associate with batch
@@ -230,6 +231,26 @@ app.get("/api/admin/batches/:id", requireAdmin, async (req, res) => {
   const batchChanges = allChanges.filter((c) => c.batchId === batch.id);
   
   res.json({ batch, changes: batchChanges });
+});
+
+// admin: download historical batch TXT
+app.get("/api/admin/batches/:id/download", requireAdmin, async (req, res) => {
+  const batch = await store.getBatch(req.params.id);
+  
+  if (!batch) {
+    return res.status(404).json({ error: "Batch no encontrado." });
+  }
+  
+  if (!batch.txt) {
+    return res.status(404).json({
+      error: "El TXT de este batch no está disponible. Los batches antiguos no almacenaban el contenido."
+    });
+  }
+  
+  // Return the historical TXT content
+  res.setHeader("Content-Type", "text/plain; charset=utf-8");
+  res.setHeader("Content-Disposition", `attachment; filename="${batch.filename}"`);
+  res.send(batch.txt);
 });
 
 
