@@ -5,7 +5,7 @@ A small Express API that the site's admin login talks to. It provides:
 - `POST /api/auth/login` — admin login, returns a JWT
 - `GET /api/content` — public: `{ anuncios, proveedores, tasas }`
 - `POST /api/anuncios` / `DELETE /api/anuncios/:id` — admin only
-- `POST /api/proveedores` / `DELETE /api/proveedores/:id` — admin only
+- `POST /api/proveedores` / `PUT /api/proveedores/:id` / `DELETE /api/proveedores/:id` — admin only
 - `PUT /api/tasas` — admin only
 
 Storage is pluggable: a JSON file by default (fine for local testing), or

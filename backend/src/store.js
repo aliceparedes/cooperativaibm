@@ -73,6 +73,15 @@ function makeFileStore() {
       write(data);
       return prov;
     },
+    async updateProveedor(id, patch) {
+      const data = read();
+      const idx = data.proveedores.findIndex((p) => p.id === id);
+      if (idx === -1) return null;
+      data.proveedores[idx] = { ...data.proveedores[idx], ...patch, id };
+      data.updatedAt = new Date().toISOString();
+      write(data);
+      return data.proveedores[idx];
+    },
     async removeProveedor(id) {
       const data = read();
       data.proveedores = data.proveedores.filter((p) => p.id !== id);
@@ -159,6 +168,15 @@ function makeCloudantStore() {
       doc.updatedAt = new Date().toISOString();
       await saveDoc(doc);
       return prov;
+    },
+    async updateProveedor(id, patch) {
+      const doc = await getDoc();
+      const idx = doc.proveedores.findIndex((p) => p.id === id);
+      if (idx === -1) return null;
+      doc.proveedores[idx] = { ...doc.proveedores[idx], ...patch, id };
+      doc.updatedAt = new Date().toISOString();
+      await saveDoc(doc);
+      return doc.proveedores[idx];
     },
     async removeProveedor(id) {
       const doc = await getDoc();

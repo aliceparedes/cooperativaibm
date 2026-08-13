@@ -217,14 +217,74 @@
         <!-- ADMIN: AGREGAR PROVEEDOR -->
         <sc-if value="{{ isAdmin }}" hint-placeholder-val="{{ false }}">
         <div style="border:1px solid #da1e28;background:#fff5f5;border-radius:0;padding:22px;margin-bottom:36px">
-          <div style="font-size:15px;font-weight:700;color:#da1e28;margin-bottom:14px">Agregar proveedor (admin)</div>
-          <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px;margin-bottom:14px">
-            <input type="text" placeholder="Nombre" value="{{ newProv.name }}" onInput="{{ onNewProvName }}" style="border:1px solid #d9dee4;border-radius:0;padding:11px 12px;font-size:14px;font-family:inherit;outline:none">
-            <input type="text" placeholder="Categoría" value="{{ newProv.cat }}" onInput="{{ onNewProvCat }}" style="border:1px solid #d9dee4;border-radius:0;padding:11px 12px;font-size:14px;font-family:inherit;outline:none">
-            <input type="text" placeholder="Descripción" value="{{ newProv.desc }}" onInput="{{ onNewProvDesc }}" style="border:1px solid #d9dee4;border-radius:0;padding:11px 12px;font-size:14px;font-family:inherit;outline:none">
+          <div style="font-size:15px;font-weight:700;color:#da1e28;margin-bottom:4px">{{ proveedorFormTitle }}</div>
+          <div style="font-size:13px;color:#8a4a4a;margin-bottom:16px">Completa estos datos y se publicará automáticamente con su propia página, lista con foto, descripción y documentos para que los socios la vean.</div>
+          <sc-if value="{{ isEditingProveedor }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;align-items:center;gap:10px;background:#fff;border:1px solid #d9dee4;padding:10px 14px;margin-bottom:16px;font-size:13px">
+              <span>Editando <strong>{{ editingProveedorName }}</strong>.</span>
+              <span onClick="{{ cancelEditProveedor }}" style="color:#da1e28;font-weight:600;cursor:pointer">Cancelar edición</span>
+            </div>
+          </sc-if>
+
+          <div style="font-size:13px;font-weight:700;color:#161616;margin-bottom:6px">1. Datos básicos</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px">
+            <input type="text" placeholder="Nombre del proveedor" value="{{ newProv.name }}" onInput="{{ onNewProvName }}" style="border:1px solid #d9dee4;border-radius:0;padding:11px 12px;font-size:14px;font-family:inherit;outline:none">
+            <input type="text" placeholder="Categoría (ej. Salud, Seguros)" value="{{ newProv.cat }}" onInput="{{ onNewProvCat }}" style="border:1px solid #d9dee4;border-radius:0;padding:11px 12px;font-size:14px;font-family:inherit;outline:none">
             <input type="text" placeholder="Descuento (ej. 10% dcto.)" value="{{ newProv.disc }}" onInput="{{ onNewProvDisc }}" style="border:1px solid #d9dee4;border-radius:0;padding:11px 12px;font-size:14px;font-family:inherit;outline:none">
           </div>
-          <button onClick="{{ addProveedor }}" style="background:#da1e28;color:#fff;border:none;border-radius:0;padding:11px 24px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit">+ Agregar proveedor</button>
+
+          <div style="font-size:13px;font-weight:700;color:#161616;margin-bottom:6px">2. Descripción larga (explícalo con palabras sencillas: qué es, qué incluye, cómo lo usa el socio)</div>
+          <textarea value="{{ newProv.desc }}" onInput="{{ onNewProvDesc }}" placeholder="Ejemplo: Este convenio le da al socio y su familia directa un descuento del 20% en consultas y exámenes. Para usarlo, presenta tu carnet de socio en cualquier sede..." style="width:100%;min-height:90px;resize:vertical;border:1px solid #d9dee4;border-radius:0;padding:11px 12px;font-size:14px;font-family:inherit;outline:none;margin-bottom:16px;box-sizing:border-box"></textarea>
+
+          <div style="font-size:13px;font-weight:700;color:#161616;margin-bottom:6px">3. Adjuntos (opcional)</div>
+          <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:14px">
+            <label style="display:inline-flex;align-items:center;gap:6px;border:1px solid #d9dee4;background:#fff;border-radius:0;padding:10px 14px;font-size:13px;font-weight:600;cursor:pointer;color:#161616">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.2 15c.7-1.2 1-2.5.8-3.9-.4-2.2-2.2-4-4.4-4.4-.7-.1-1.4-.1-2-.1C14.9 4.3 12.6 3 10 3 6.1 3 3 6.1 3 10c0 1.5.5 3 1.3 4.1"/><path d="M12 12v9"/><path d="m16 16-4-4-4 4"/></svg>
+              Adjuntar foto
+              <input type="file" accept="image/*" onChange="{{ onNewProvPhoto }}" style="display:none">
+            </label>
+            <sc-if value="{{ newProvHasPhoto }}" hint-placeholder-val="{{ false }}">
+              <span style="font-size:13px;color:#0e6027;font-weight:600">✓ foto lista</span>
+              <span onClick="{{ clearNewProvPhoto }}" style="font-size:13px;color:#da1e28;font-weight:600;cursor:pointer">Quitar</span>
+            </sc-if>
+            <label style="display:inline-flex;align-items:center;gap:6px;border:1px solid #d9dee4;background:#fff;border-radius:0;padding:10px 14px;font-size:13px;font-weight:600;cursor:pointer;color:#161616">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+              Adjuntar documentos (PDF, Word)
+              <input type="file" accept=".pdf,.doc,.docx,application/pdf,application/msword" multiple onChange="{{ onNewProvDocs }}" style="display:none">
+            </label>
+          </div>
+          <sc-if value="{{ newProvHasDocs }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:14px">
+              <sc-for list="{{ newProv.docs }}" as="d" hint-placeholder-count="2">
+                <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:#161616">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+                  <span>{{ d.name }}</span>
+                  <span onClick="{{ d.remove }}" style="color:#da1e28;font-weight:600;cursor:pointer">Quitar</span>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+
+          <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:10px">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            <input type="text" placeholder="Nombre del enlace (ej. Página web, Formulario)" value="{{ newProv.linkDraft.label }}" onInput="{{ onNewProvLinkLabel }}" style="flex:1;min-width:160px;border:1px solid #d9dee4;border-radius:0;padding:9px 12px;font-size:13px;font-family:inherit;outline:none">
+            <input type="text" placeholder="https://..." value="{{ newProv.linkDraft.url }}" onInput="{{ onNewProvLinkUrl }}" style="flex:1;min-width:160px;border:1px solid #d9dee4;border-radius:0;padding:9px 12px;font-size:13px;font-family:inherit;outline:none">
+            <button onClick="{{ addNewProvLink }}" style="border:1px solid #0043ce;background:#fff;color:#0043ce;border-radius:0;padding:9px 14px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit">+ Añadir enlace</button>
+          </div>
+          <sc-if value="{{ newProvHasLinks }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:14px">
+              <sc-for list="{{ newProv.links }}" as="l" hint-placeholder-count="2">
+                <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:#161616">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                  <span style="font-weight:600">{{ l.label }}</span>
+                  <span style="color:#8b95a1">{{ l.url }}</span>
+                  <span onClick="{{ l.remove }}" style="color:#da1e28;font-weight:600;cursor:pointer">Quitar</span>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+
+          <button onClick="{{ addProveedor }}" style="background:#da1e28;color:#fff;border:none;border-radius:0;padding:11px 24px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit">{{ proveedorFormBtnLabel }}</button>
         </div>
         </sc-if>
 
@@ -328,13 +388,18 @@
             <div style="margin-top:auto;align-self:flex-start;display:flex;align-items:center;gap:5px;background:#edf5ff;color:#0043ce;font-weight:700;font-size:14px;padding:6px 12px;border-radius:0">Ver planes <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
           </div>
           <sc-for list="{{ proveedores }}" as="p" hint-placeholder-count="8">
-            <div style="border:1px solid #e5e8ec;border-radius:0;padding:22px;display:flex;flex-direction:column;gap:12px;position:relative" style-hover="box-shadow:0 8px 26px rgba(15,36,56,0.09)">
+            <div onClick="{{ p.goDetalle }}" style="border:1px solid #e5e8ec;border-radius:0;padding:22px;display:flex;flex-direction:column;gap:12px;position:relative;cursor:pointer" style-hover="box-shadow:0 8px 26px rgba(15,36,56,0.09)">
               <sc-if value="{{ isAdmin }}" hint-placeholder-val="{{ false }}">
-                <div onClick="{{ p.remove }}" title="Eliminar proveedor" style="position:absolute;top:12px;right:12px;width:26px;height:26px;border-radius:0;background:#fff0f0;color:#da1e28;display:flex;align-items:center;justify-content:center;font-weight:800;cursor:pointer;font-size:15px">×</div>
+                <div style="position:absolute;top:12px;right:12px;display:flex;gap:6px;z-index:1">
+                  <div onClick="{{ p.edit }}" title="Editar proveedor" style="width:26px;height:26px;border-radius:0;background:#edf5ff;color:#0043ce;display:flex;align-items:center;justify-content:center;cursor:pointer">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
+                  </div>
+                  <div onClick="{{ p.remove }}" title="Eliminar proveedor" style="width:26px;height:26px;border-radius:0;background:#fff0f0;color:#da1e28;display:flex;align-items:center;justify-content:center;font-weight:800;cursor:pointer;font-size:15px">×</div>
+                </div>
               </sc-if>
               <div style="display:flex;align-items:center;gap:12px">
                 <div style="width:46px;height:46px;border-radius:0;overflow:hidden;flex:0 0 46px">
-                  <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="{{ p.slotId }}" shape="rounded" radius="10" fit="contain" placeholder="Logo" hint-size="46px,46px"></x-import>
+                  <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="{{ p.slotId }}" shape="rounded" radius="10" fit="contain" src="{{ p.photo }}" placeholder="Logo" hint-size="46px,46px"></x-import>
                 </div>
                 <div>
                   <div style="font-size:17px;font-weight:700">{{ p.name }}</div>
@@ -342,7 +407,10 @@
                 </div>
               </div>
               <div style="font-size:14px;color:#52606d;line-height:1.5">{{ p.desc }}</div>
-              <div style="margin-top:auto;align-self:flex-start;background:#edf5ff;color:#0043ce;font-weight:700;font-size:14px;padding:6px 12px;border-radius:0">{{ p.disc }}</div>
+              <div style="margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%">
+                <div style="align-self:flex-start;background:#edf5ff;color:#0043ce;font-weight:700;font-size:14px;padding:6px 12px;border-radius:0">{{ p.disc }}</div>
+                <span style="display:inline-flex;align-items:center;gap:5px;font-size:13px;font-weight:600;color:#0043ce">Ver más <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+              </div>
             </div>
           </sc-for>
         </div>
@@ -402,16 +470,17 @@
           <h1 style="font-size:48px;font-weight:800;letter-spacing:-0.02em">Oncosalud</h1>
         </div>
         <p style="font-size:18px;color:#52606d;margin-bottom:36px;max-width:720px">Convenio corporativo para socios y familiares directos, con 18% de descuento sobre la tarifa de mercado. Dos planes disponibles:</p>
-        <div style="border:1px solid #e5e8ec;border-radius:0;overflow:hidden;max-width:720px;margin-bottom:36px">
-          <div style="display:grid;grid-template-columns:1.4fr 1fr 1fr;background:#0043ce;color:#fff;font-size:14px;font-weight:700;padding:14px 20px">
+        <div style="border:1px solid #e5e8ec;border-radius:0;overflow:hidden;max-width:820px;margin-bottom:36px">
+          <div style="display:grid;grid-template-columns:2fr 1fr 1.2fr;background:#0043ce;color:#fff;font-size:14px;font-weight:700;padding:14px 20px">
             <div>Concepto</div><div>Oncoclásico Pro</div><div>Oncoplus</div>
           </div>
-          <sc-for list="{{ oncosaludPlanes }}" as="o" hint-placeholder-count="4">
-            <div style="display:grid;grid-template-columns:1.4fr 1fr 1fr;padding:14px 20px;font-size:14px;border-top:1px solid #eceef1;align-items:center" style-hover="background:#f4f8fc">
+          <sc-for list="{{ oncosaludPlanes }}" as="o" hint-placeholder-count="5">
+            <div style="display:grid;grid-template-columns:2fr 1fr 1.2fr;padding:14px 20px;font-size:14px;border-top:1px solid #eceef1;align-items:center" style-hover="background:#f4f8fc">
               <div style="font-weight:600">{{ o.concepto }}</div><div>{{ o.clasico }}</div><div>{{ o.plus }}</div>
             </div>
           </sc-for>
         </div>
+        <p style="font-size:13px;color:#8b95a1;max-width:720px;margin-bottom:20px">Consultas, activación de beneficio oncológico y reclamos: Call Center (01) 513-7900 (lunes a viernes 8am-8pm, sábados 8am-2pm) · WhatsApp 987 777 050 · contactos@oncosalud.pe.</p>
         <div style="background:#edf5ff;color:#0043ce;font-weight:700;font-size:14px;padding:6px 12px;border-radius:0;display:inline-block">18% dcto.</div>
       </section>
       </sc-if>
@@ -434,7 +503,7 @@
           <div style="display:grid;grid-template-columns:2fr 1fr;background:#0043ce;color:#fff;font-size:14px;font-weight:700;padding:14px 20px">
             <div>Cobertura</div><div>Suma</div>
           </div>
-          <sc-for list="{{ rimacCoberturas }}" as="r" hint-placeholder-count="11">
+          <sc-for list="{{ rimacCoberturas }}" as="r" hint-placeholder-count="13">
             <div style="display:grid;grid-template-columns:2fr 1fr;padding:12px 20px;font-size:14px;border-top:1px solid #eceef1;align-items:center" style-hover="background:#f4f8fc">
               <div style="font-weight:600">{{ r.concepto }}</div><div>{{ r.suma }}</div>
             </div>
@@ -443,7 +512,7 @@
 
         <h2 style="font-size:26px;font-weight:700;margin-bottom:18px">Beneficios adicionales</h2>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:920px;margin-bottom:36px">
-          <sc-for list="{{ rimacBeneficios }}" as="b" hint-placeholder-count="10">
+          <sc-for list="{{ rimacBeneficios }}" as="b" hint-placeholder-count="14">
             <div style="border:1px solid #e5e8ec;border-radius:0;padding:16px">
               <div style="font-size:14px;font-weight:700;margin-bottom:4px">{{ b.title }}</div>
               <div style="font-size:13px;color:#52606d;line-height:1.4">{{ b.desc }}</div>
@@ -456,13 +525,24 @@
           <div style="display:grid;grid-template-columns:1.4fr 1fr;background:#0043ce;color:#fff;font-size:14px;font-weight:700;padding:14px 20px">
             <div>Concepto</div><div>Deducible</div>
           </div>
-          <sc-for list="{{ rimacDeducibles }}" as="d" hint-placeholder-count="7">
+          <sc-for list="{{ rimacDeducibles }}" as="d" hint-placeholder-count="11">
             <div style="display:grid;grid-template-columns:1.4fr 1fr;padding:12px 20px;font-size:14px;border-top:1px solid #eceef1;align-items:center" style-hover="background:#f4f8fc">
               <div style="font-weight:600">{{ d.concepto }}</div><div>{{ d.valor }}</div>
             </div>
           </sc-for>
         </div>
-        <p style="font-size:13px;color:#8b95a1;max-width:820px;margin-bottom:20px">Los vehículos con suma asegurada mayor a US$60,000, o de mediano riesgo y alta gama, requieren GPS obligatorio según la clasificación de la póliza. Consulta con MN & Asociados si tu vehículo está incluido.</p>
+        <h2 style="font-size:26px;font-weight:700;margin-bottom:18px">Condiciones para vehículos de alto riesgo</h2>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:920px;margin-bottom:16px">
+          <div style="border:1px solid #e5e8ec;border-radius:0;padding:20px">
+            <div style="font-size:16px;font-weight:700;margin-bottom:8px">GPS obligatorio</div>
+            <p style="font-size:14px;color:#52606d;line-height:1.5">Para cualquier vehículo asegurado con suma asegurada mayor a US$ 60,000, y para los modelos clasificados como mediano riesgo y alta gama. Excepciones: en el Toyota Yaris es obligatorio solo si es nuevo (hasta 3 años de antigüedad); en la Toyota Hi Lux, solo si es nueva (hasta 5 años de antigüedad).</p>
+          </div>
+          <div style="border:1px solid #e5e8ec;border-radius:0;padding:20px">
+            <div style="font-size:16px;font-weight:700;margin-bottom:8px">Seguro contra robo de computadora</div>
+            <p style="font-size:14px;color:#52606d;line-height:1.5">Instalación obligatoria y gratuita para unidades con antigüedad mayor al año 2002 de las marcas Honda (Civic, Ferio, Domani, Partner) y Mitsubishi (Lancer, Mirage, Montero, Challenger, Pajero). Si el vehículo no cuenta con este dispositivo instalado, Rímac no otorga cobertura en caso de robo.</p>
+          </div>
+        </div>
+        <p style="font-size:13px;color:#8b95a1;max-width:820px;margin-bottom:20px">El listado completo de modelos y marcas que califican como "mediano riesgo y alta gama" (con deducible del 15%) o que requieren GPS obligatorio es extenso y se actualiza según la clasificación vigente de la póliza. Consulta con MN & Asociados (998 334 426) o con Aló Rímac (411-1111) si tu vehículo está incluido antes de contratar.</p>
         <div style="background:#edf5ff;color:#0043ce;font-weight:700;font-size:14px;padding:6px 12px;border-radius:0;display:inline-block">Tarifa corporativa</div>
       </section>
       </sc-if>
@@ -547,6 +627,22 @@
           </div>
         </div>
 
+        <h2 style="font-size:26px;font-weight:700;margin-bottom:18px">Contactos de atención</h2>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;max-width:920px;margin-bottom:36px">
+          <div style="border:1px solid #e5e8ec;border-radius:0;padding:20px">
+            <div style="font-size:16px;font-weight:700;margin-bottom:8px">Jardines de la Paz</div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:14px;color:#52606d"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0043ce" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 15px"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"/></svg>Alejandro Candiotti · 946 288 157</div>
+          </div>
+          <div style="border:1px solid #e5e8ec;border-radius:0;padding:20px">
+            <div style="font-size:16px;font-weight:700;margin-bottom:8px">Campo Fe</div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:14px;color:#52606d"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0043ce" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 15px"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"/></svg>Martha García · 998 337 498 / 969 757 905</div>
+          </div>
+          <div style="border:1px solid #e5e8ec;border-radius:0;padding:20px">
+            <div style="font-size:16px;font-weight:700;margin-bottom:8px">Cooperativa</div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:14px;color:#52606d"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0043ce" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 15px"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"/></svg>Diana Huanay · 999 436 902</div>
+          </div>
+        </div>
+
         <h2 style="font-size:26px;font-weight:700;margin-bottom:18px">Documentación necesaria</h2>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:820px;margin-bottom:36px">
           <sc-for list="{{ sepelioDocumentos }}" as="doc" hint-placeholder-count="5">
@@ -586,6 +682,42 @@
 
         <p style="font-size:13px;color:#8b95a1;max-width:820px;margin-bottom:20px">Precios, marcas y stock disponible varían según campaña vigente. Solicita el catálogo actualizado con tu asesor de la Cooperativa o directamente en los puntos de venta Perufarma.</p>
         <div style="background:#edf5ff;color:#0043ce;font-weight:700;font-size:14px;padding:6px 12px;border-radius:0;display:inline-block">Precio corporativo</div>
+      </section>
+      </sc-if>
+
+      <!-- ================= PROVEEDOR (página auto-generada para proveedores agregados por admin) ================= -->
+      <sc-if value="{{ isProveedorDetalle }}" hint-placeholder-val="{{ false }}">
+      <section style="padding:56px">
+        <a onClick="{{ goProveedores }}" style="display:inline-flex;align-items:center;gap:6px;font-weight:600;cursor:pointer;margin-bottom:28px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg> Volver a Proveedores</a>
+        <sc-if value="{{ proveedorActual.hasPhoto }}" hint-placeholder-val="{{ false }}">
+          <div style="position:relative;aspect-ratio:21/9;max-width:820px;border-radius:0;overflow:hidden;margin-bottom:28px">
+            <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="{{ proveedorActual.slotId }}-hero" shape="rect" fit="cover" src="{{ proveedorActual.photo }}" placeholder="{{ proveedorActual.name }}" hint-size="100%,100%"></x-import>
+          </div>
+        </sc-if>
+        <div style="display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:10px;max-width:820px">
+          <h1 style="font-size:40px;font-weight:800;letter-spacing:-0.02em">{{ proveedorActual.name }}</h1>
+        </div>
+        <div style="font-size:14px;color:#8b95a1;margin-bottom:24px">{{ proveedorActual.cat }}</div>
+        <p style="font-size:18px;line-height:1.6;color:#52606d;max-width:720px;margin-bottom:28px;white-space:pre-line">{{ proveedorActual.desc }}</p>
+        <div style="display:flex;flex-wrap:wrap;align-items:center;gap:14px;margin-bottom:32px">
+          <div style="background:#edf5ff;color:#0043ce;font-weight:700;font-size:14px;padding:8px 16px;border-radius:0;display:inline-block">{{ proveedorActual.disc }}</div>
+          <sc-if value="{{ proveedorActual.hasLinks }}" hint-placeholder-val="{{ false }}">
+            <sc-for list="{{ proveedorActual.links }}" as="l" hint-placeholder-count="1">
+              <a href="{{ l.url }}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:#0043ce;color:#fff;font-weight:700;font-size:14px;padding:9px 18px;border-radius:0;cursor:pointer">{{ l.label }} <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a>
+            </sc-for>
+          </sc-if>
+        </div>
+        <sc-if value="{{ proveedorActual.hasDocs }}" hint-placeholder-val="{{ false }}">
+          <h2 style="font-size:20px;font-weight:700;margin-bottom:14px">Documentos para descargar</h2>
+          <div style="display:flex;flex-direction:column;gap:10px;max-width:480px">
+            <sc-for list="{{ proveedorActual.docs }}" as="d" hint-placeholder-count="2">
+              <a href="{{ d.data }}" download="{{ d.name }}" style="display:flex;align-items:center;gap:10px;border:1px solid #e5e8ec;padding:12px 16px;color:#0043ce;font-weight:600;font-size:14px;cursor:pointer" style-hover="background:#f4f8fc">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>
+                {{ d.name }}
+              </a>
+            </sc-for>
+          </div>
+        </sc-if>
       </section>
       </sc-if>
 
@@ -837,7 +969,7 @@
       <section style="padding:56px">
         <h1 style="font-size:48px;font-weight:800;letter-spacing:-0.02em;margin-bottom:36px">Servicios</h1>
         <div style="display:flex;flex-direction:column;gap:22px;max-width:1000px">
-          <sc-for list="{{ servicios }}" as="s" hint-placeholder-count="4">
+          <sc-for list="{{ servicios }}" as="s" hint-placeholder-count="3">
             <div style="border:1px solid #e5e8ec;border-radius:0;overflow:hidden;display:grid;grid-template-columns:340px 1fr">
               <div style="position:relative;min-height:200px;overflow:hidden">
                 <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="{{ s.slotId }}" shape="rect" fit="cover" src="{{ s.photo }}" placeholder="{{ s.img }}" hint-size="100%,100%"></x-import>
@@ -1080,7 +1212,9 @@ class Component extends DCLogic {
     tasas: { "sola-firma": 13, consumo: 13, "largo-plazo": 12, automotriz: 8.0, hipotecario: 8, garantia: 11, academico: 8.75 },
     tasaSaved: {},
     registro: { nombres: "", apellidos: "", dni: "", area: "", email: "", celular: "", password: "", accept: false }, registroError: "", registroSuccess: false,
-    newProv: { name: "", cat: "", desc: "", disc: "" },
+    newProv: { name: "", cat: "", desc: "", disc: "", photo: "", link: "", docs: [], links: [], linkDraft: { label: "", url: "" } },
+    proveedorDetalleSlot: null,
+    editingProveedorSlot: null,
     proveedores: [],
     posts: [
       {id:1,author:"Cooperativa",role:"Cuenta oficial",time:"hace 2 h",tag:"Anuncio",color:"#0043ce",initials:"CI",tab:"cooperativa",text:"📢 Recuerda que puedes solicitar tus préstamos, tu Seguro de Autos con Rímac o inscribirte en el Fondo de Sepelio escribiendo a cualquiera de nuestras contactos en la sección Quiénes Somos.",hasImg:false,slotId:"post-1",img:"",likes:48,liked:false},
@@ -1230,6 +1364,7 @@ class Component extends DCLogic {
       isServicios: page==="servicios", isRegistro: page==="registro", isLogin: page==="login", isAnuncios: page==="anuncios",
       isFondoSepelio: page==="fondo-sepelio",
       isPerufarma: page==="perufarma",
+      isProveedorDetalle: page==="proveedor-detalle",
       isBebidas: page==="bebidas",
       isSmartFit: page==="smartfit",
       isOncosalud: page==="oncosalud",
@@ -1459,10 +1594,11 @@ class Component extends DCLogic {
         "Extensión del beneficio a familiares del colaborador"
       ],
       oncosaludPlanes: [
-        {concepto:"Cobertura",clasico:"Desde 70%",plus:"100%"},
-        {concepto:"Copagos",clasico:"Con copagos",plus:"Sin copagos"},
-        {concepto:"Deducibles",clasico:"Con deducibles",plus:"Sin deducibles"},
-        {concepto:"Chequeos",clasico:"Cada dos años",plus:"Anuales"}
+        {concepto:"Terapia biológica / blanco dirigida",clasico:"70% (copago 30%)",plus:"100%, sin copago"},
+        {concepto:"Material de osteosíntesis",clasico:"70% (copago 30%)",plus:"100%, sin copago"},
+        {concepto:"Prótesis y reconstrucción mamaria",clasico:"70% (copago 30%)",plus:"100%, sin copago"},
+        {concepto:"Traslado aéreo (pacientes de provincia)",clasico:"No cubre",plus:"100%, 1 pasaje ida y vuelta al año"},
+        {concepto:"Alimentación para acompañante (pacientes pediátricos)",clasico:"No cubre",plus:"100%, sin copago"}
       ],
       rimacCoberturas: [
         {concepto:"Daño Propio",suma:"Suma Asegurada"},
@@ -1475,18 +1611,24 @@ class Component extends DCLogic {
         {concepto:"Accidentes Personales: Gastos de Curación",suma:"Hasta US$ 10,000 por ocupante"},
         {concepto:"Accidentes Personales: Gastos de Sepelio",suma:"US$ 4,000 por ocupante"},
         {concepto:"Accesorios musicales (máximo)",suma:"US$ 3,500"},
-        {concepto:"Responsabilidad Civil por Ausencia de Control",suma:"US$ 150,000"}
+        {concepto:"Responsabilidad Civil por Ausencia de Control",suma:"US$ 150,000"},
+        {concepto:"Rehabilitación automática de la suma asegurada",suma:"Cubierto"},
+        {concepto:"Uso de Vías No Autorizadas",suma:"Cubierto"}
       ],
       rimacBeneficios: [
         {title:"Vehículo de reemplazo",desc:"Para cualquier tipo de evento, sin límite, 30 días por vigencia."},
         {title:"Chofer de reemplazo",desc:"7 asistencias durante la vigencia de la póliza."},
-        {title:"Asesoría 24h por accidentes de tránsito",desc:"Procuración, grúa y ambulancia — Aló Rímac 411-1111."},
+        {title:"Asesoría 24h por accidentes de tránsito",desc:"Procuración, grúa y ambulancia — Aló Rímac 411-1111 / MN & Asociados 998 334 426."},
         {title:"Auxilio mecánico",desc:"Sin límite durante la vigencia, máximo 3 atenciones por mes."},
         {title:"Reembolso de grúa y ambulancia",desc:"Hasta US$ 2,500 cada uno, donde no haya cobertura de Rímac."},
         {title:"Búsqueda y rescate",desc:"Hasta US$ 10,000 para vehículos de uso particular."},
+        {title:"Limpieza de vehículo por traslado de heridos",desc:"Hasta US$ 250, por reembolso."},
         {title:"Defensa Jurídico Penal",desc:"Hasta US$ 10,000, incluye servicio de procuraduría."},
+        {title:"Cirugía estética (piloto y copiloto)",desc:"Hasta US$ 4,000 por persona, por daños en accidentes de tránsito."},
         {title:"Descuentos en grifos",desc:"Repsol: Premium S/1.00/gl, Regular S/0.5/gl, Diesel E+ S/0.4/gl, Autogas 3%."},
         {title:"Descuento en baterías Etna",desc:"20% de descuento."},
+        {title:"Servicio de conductor para traslado",desc:"Traslado del vehículo a la revisión técnica o taller por mantenimiento."},
+        {title:"Asistencia médica para el hogar",desc:"S/ 30 + IGV."},
         {title:"Ampliación a vehículos adicionales",desc:"Motocicleta, scooter y bicicleta: daño propio US$1,000, RC US$2,000."}
       ],
       rimacDeducibles: [
@@ -1496,7 +1638,11 @@ class Component extends DCLogic {
         {concepto:"Mediano Riesgo y Alta Gama",valor:"15% del siniestro, mín. US$150 + IGV"},
         {concepto:"Pérdida total y Robo total",valor:"Sin deducible (salvo Ausencia de Control)"},
         {concepto:"Responsabilidad Civil",valor:"10% del siniestro, mín. US$150 + IGV"},
-        {concepto:"Ausencia de Control",valor:"20% del siniestro, mín. US$200 + IGV"}
+        {concepto:"Ausencia de Control",valor:"20% del siniestro, mín. US$200 + IGV"},
+        {concepto:"Uso de Vías No Autorizadas",valor:"Según taller utilizado"},
+        {concepto:"Rotura accidental de lunas",valor:"Sin deducible con lunas de fabricación nacional"},
+        {concepto:"Vehículo de reemplazo",valor:"US$70 + IGV"},
+        {concepto:"Vehículos de Timón Cambiado",valor:"Coaseguro 80/20 en Pérdida Parcial y Total"}
       ],
       movistarPlanes: [
         {precio:"S/ 30.00",gb:"6GB",ldi:"—"},
@@ -1544,32 +1690,114 @@ class Component extends DCLogic {
         {name:"Lucía Torres",email:"lucia.torres.polo@ibm.com",mailto:"mailto:lucia.torres.polo@ibm.com",roles:"Contacto general"}
       ],
 
-      newProv: this.state.newProv,
+      newProv: {...this.state.newProv, docs: this.state.newProv.docs.map((d,i)=>({...d,
+        remove: ()=>this.setState(s=>({newProv:{...s.newProv, docs:s.newProv.docs.filter((_,j)=>j!==i)}}))
+      })), links: this.state.newProv.links.map((l,i)=>({...l,
+        remove: ()=>this.setState(s=>({newProv:{...s.newProv, links:s.newProv.links.filter((_,j)=>j!==i)}}))
+      }))},
+      newProvHasPhoto: !!this.state.newProv.photo,
+      newProvHasDocs: this.state.newProv.docs.length > 0,
+      newProvHasLinks: this.state.newProv.links.length > 0,
+      isEditingProveedor: !!this.state.editingProveedorSlot,
+      editingProveedorName: (this.state.proveedores.find(x=>x.slotId===this.state.editingProveedorSlot) || {}).name || "",
+      proveedorFormTitle: this.state.editingProveedorSlot ? "Editar proveedor (admin)" : "Agregar proveedor (admin)",
+      proveedorFormBtnLabel: this.state.editingProveedorSlot ? "Guardar cambios" : "+ Publicar proveedor",
       onNewProvName: (e)=>this.setState(s=>({newProv:{...s.newProv,name:e.target.value}})),
       onNewProvCat: (e)=>this.setState(s=>({newProv:{...s.newProv,cat:e.target.value}})),
       onNewProvDesc: (e)=>this.setState(s=>({newProv:{...s.newProv,desc:e.target.value}})),
       onNewProvDisc: (e)=>this.setState(s=>({newProv:{...s.newProv,disc:e.target.value}})),
+      onNewProvPhoto: (e)=>{
+        const file = e.target.files && e.target.files[0];
+        if(!file) return;
+        const reader = new FileReader();
+        reader.onload = ()=> this.setState(s=>({newProv:{...s.newProv,photo:reader.result}}));
+        reader.readAsDataURL(file);
+      },
+      clearNewProvPhoto: ()=>this.setState(s=>({newProv:{...s.newProv,photo:""}})),
+      onNewProvDocs: (e)=>{
+        const files = e.target.files ? Array.from(e.target.files) : [];
+        files.forEach(file=>{
+          const reader = new FileReader();
+          reader.onload = ()=> this.setState(s=>({newProv:{...s.newProv, docs:[...s.newProv.docs, {name:file.name, data:reader.result}]}}));
+          reader.readAsDataURL(file);
+        });
+      },
+      onNewProvLinkLabel: (e)=>this.setState(s=>({newProv:{...s.newProv,linkDraft:{...s.newProv.linkDraft,label:e.target.value}}})),
+      onNewProvLinkUrl: (e)=>this.setState(s=>({newProv:{...s.newProv,linkDraft:{...s.newProv.linkDraft,url:e.target.value}}})),
+      addNewProvLink: ()=>{
+        const draft = this.state.newProv.linkDraft;
+        let url = draft.url.trim();
+        if(!url) return;
+        if(!/^https?:\/\//i.test(url)) url = "https://" + url;
+        const label = draft.label.trim() || url;
+        this.setState(s=>({newProv:{...s.newProv, links:[...s.newProv.links, {label, url}], linkDraft:{label:"",url:""}}}));
+      },
       addProveedor: async ()=>{
         const np = this.state.newProv;
         if(!np.name.trim()) return;
+        const docs = np.docs.map(d=>({name:d.name, data:d.data}));
+        const links = np.links.map(l=>({label:l.label, url:l.url}));
+        const empty = {name:"",cat:"",desc:"",disc:"",photo:"",link:"",docs:[],links:[],linkDraft:{label:"",url:""}};
+        const payload = {name:np.name.trim(), cat:np.cat.trim()||"General", desc:np.desc.trim(), disc:np.disc.trim()||"Beneficios", photo:np.photo||"", link:np.link.trim(), docs, links};
+        const editingSlot = this.state.editingProveedorSlot;
+        const editing = editingSlot ? this.state.proveedores.find(x=>x.slotId===editingSlot) : null;
+
+        if(editing){
+          if(this.state.apiBase){
+            try{
+              const updated = await this.apiFetch("/api/proveedores/"+(editing.remoteId||editing.slotId), { method:"PUT", body: JSON.stringify(payload) });
+              const entry = {slotId:editing.slotId, remoteId:editing.remoteId, name:updated.name, cat:updated.cat, desc:updated.desc, disc:updated.disc, photo:updated.photo||"", link:updated.link||"", docs:updated.docs||[], links:updated.links||[]};
+              this.setState(s=>({proveedores:s.proveedores.map(x=>x.slotId===editing.slotId?entry:x), newProv:empty, editingProveedorSlot:null, apiError:"", lastUpdatedAt:new Date().toISOString()}));
+            }catch(e){ this.setState({apiError: e.message}); }
+            return;
+          }
+          const entry = {...editing, ...payload};
+          this.setState(s=>({proveedores:s.proveedores.map(x=>x.slotId===editing.slotId?entry:x), newProv:empty, editingProveedorSlot:null, lastUpdatedAt:new Date().toISOString()}));
+          return;
+        }
+
         if(this.state.apiBase){
           try{
-            const created = await this.apiFetch("/api/proveedores", { method:"POST", body: JSON.stringify(np) });
-            const entry = {slotId:"prov-"+created.id, remoteId:created.id, name:created.name, cat:created.cat, desc:created.desc, disc:created.disc};
-            this.setState(s=>({proveedores:[...s.proveedores, entry], newProv:{name:"",cat:"",desc:"",disc:""}, apiError:"", lastUpdatedAt:new Date().toISOString()}));
+            const created = await this.apiFetch("/api/proveedores", { method:"POST", body: JSON.stringify(payload) });
+            const entry = {slotId:"prov-"+created.id, remoteId:created.id, name:created.name, cat:created.cat, desc:created.desc, disc:created.disc, photo:created.photo||"", link:created.link||"", docs:created.docs||[], links:created.links||[]};
+            this.setState(s=>({proveedores:[...s.proveedores, entry], newProv:empty, apiError:"", lastUpdatedAt:new Date().toISOString()}));
           }catch(e){ this.setState({apiError: e.message}); }
           return;
         }
-        const entry = {slotId:"prov-"+Date.now(), name:np.name.trim(), cat:np.cat.trim()||"General", desc:np.desc.trim(), disc:np.disc.trim()||"Beneficios"};
-        this.setState(s=>({proveedores:[...s.proveedores, entry], newProv:{name:"",cat:"",desc:"",disc:""}, lastUpdatedAt:new Date().toISOString()}));
+        const entry = {slotId:"prov-"+Date.now(), ...payload};
+        this.setState(s=>({proveedores:[...s.proveedores, entry], newProv:empty, lastUpdatedAt:new Date().toISOString()}));
       },
-      proveedores: this.state.proveedores.map(p=>({...p, remove: async ()=>{
-        if(this.state.apiBase){
-          try{ await this.apiFetch("/api/proveedores/"+(p.remoteId||p.slotId), { method:"DELETE" }); }
-          catch(e){ this.setState({apiError: e.message}); return; }
+      cancelEditProveedor: ()=>this.setState({editingProveedorSlot:null, newProv:{name:"",cat:"",desc:"",disc:"",photo:"",link:"",docs:[],links:[],linkDraft:{label:"",url:""}}}),
+      proveedores: this.state.proveedores.map(p=>({...p,
+        goDetalle: ()=>this.setState({page:"proveedor-detalle", proveedorDetalleSlot:p.slotId}),
+        edit: (e)=>{
+          if(e && e.stopPropagation) e.stopPropagation();
+          this.setState({
+            newProv: {
+              name: p.name, cat: p.cat, desc: p.desc, disc: p.disc, photo: p.photo||"", link: p.link||"",
+              docs: (p.docs||[]).map(d=>({name:d.name, data:d.data})),
+              links: (p.links||[]).map(l=>({label:l.label, url:l.url})),
+              linkDraft: { label:"", url:"" }
+            },
+            editingProveedorSlot: p.slotId
+          });
+          const m = this.mainEl; if(m) m.scrollTop = 0;
+        },
+        remove: async (e)=>{
+          if(e && e.stopPropagation) e.stopPropagation();
+          if(this.state.apiBase){
+            try{ await this.apiFetch("/api/proveedores/"+(p.remoteId||p.slotId), { method:"DELETE" }); }
+            catch(err){ this.setState({apiError: err.message}); return; }
+          }
+          this.setState(s=>({proveedores:s.proveedores.filter(x=>x.slotId!==p.slotId), lastUpdatedAt:new Date().toISOString()}));
         }
-        this.setState(s=>({proveedores:s.proveedores.filter(x=>x.slotId!==p.slotId), lastUpdatedAt:new Date().toISOString()}));
-      }})),
+      })),
+      proveedorActual: (()=>{
+        const p = this.state.proveedores.find(x=>x.slotId===this.state.proveedorDetalleSlot) || {name:"",cat:"",desc:"",disc:"",photo:"",link:"",docs:[],links:[],slotId:"proveedor-actual"};
+        const docs = p.docs || [];
+        const links = [...(p.link ? [{label:"Sitio web", url:p.link}] : []), ...(p.links || [])];
+        return {...p, hasPhoto: !!p.photo, hasLinks: links.length > 0, hasDocs: docs.length > 0, docs, links};
+      })(),
 
       apiError: this.state.apiError,
 
@@ -1604,10 +1832,9 @@ class Component extends DCLogic {
       goPerufarma: ()=>this.go("perufarma"),
 
       servicios: [
-        {slotId:"serv-0",photo:"https://picsum.photos/seed/carins2/700/400",title:"Seguro de Autos",img:"Foto auto",desc:"Convenio con Rímac que garantiza la mejor tarifa del mercado. Descuento de la prima en 18 meses sin recargo de intereses, con descuento por planilla."},
+        {slotId:"serv-0",photo:"./uploads/rimac-auto.jpg",title:"Seguro de Autos",img:"Foto auto",desc:"Convenio con Rímac que garantiza la mejor tarifa del mercado. Descuento de la prima en 18 meses sin recargo de intereses, con descuento por planilla.",goDetalle:()=>this.go("rimac")},
         {slotId:"serv-1",photo:"https://picsum.photos/seed/park2/700/400",title:"Fondo de Sepelio",img:"Foto parque cementerio",desc:"Cubre los gastos de sepelio del socio, cónyuge, hijos menores de 25 años y padres. Aporte de $5 mensuales (no reembolsable) y cobertura hasta $3,000 con Jardines de la Paz y Campo Fe.",goDetalle:()=>this.go("fondo-sepelio")},
-        {slotId:"serv-2",photo:"https://picsum.photos/seed/office2/700/400",title:"Oncosalud",img:"Foto consultorio",desc:"Convenio corporativo para socios y familiares directos, con 18% de descuento sobre la tarifa de mercado."},
-        {slotId:"serv-3",photo:"https://picsum.photos/seed/phone2/700/400",title:"Telefonía y Assist Card",img:"Foto telefonía",desc:"Contrato corporativo con Movistar (promociones en planes y equipos, descuento por planilla) y venta de Seguros de Viaje Assist Card con descuento."}
+        {slotId:"serv-2",photo:"./uploads/oncosalud-doctora.png",title:"Oncosalud",img:"Foto consultorio",desc:"Convenio corporativo para socios y familiares directos, con 18% de descuento sobre la tarifa de mercado.",goDetalle:()=>this.go("oncosalud")}
       ],
 
       regFields: [

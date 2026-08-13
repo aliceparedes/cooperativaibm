@@ -6,7 +6,7 @@ const { login, requireAdmin } = require("./src/auth");
 const store = require("./src/store");
 
 const app = express();
-app.use(express.json());
+app.use(express.json({ limit: "20mb" }));
 
 const allowedOrigin = process.env.ALLOWED_ORIGIN || "*";
 app.use(cors({ origin: allowedOrigin }));
@@ -38,16 +38,47 @@ app.delete("/api/anuncios/:id", requireAdmin, async (req, res) => {
   res.status(204).end();
 });
 
+function parseProveedorPayload(body) {
+  const { name, cat, desc, disc, photo, link, docs, links } = body || {};
+  if (!name || !name.trim()) return { error: "Falta el nombre del proveedor." };
+  if (photo && !/^data:image\//.test(photo)) return { error: "El adjunto debe ser una imagen." };
+  const cleanDocs = Array.isArray(docs)
+    ? docs
+        .filter((d) => d && typeof d.name === "string" && typeof d.data === "string" && /^data:/.test(d.data))
+        .map((d) => ({ name: d.name.trim(), data: d.data }))
+    : [];
+  const cleanLinks = Array.isArray(links)
+    ? links
+        .filter((l) => l && typeof l.url === "string" && /^https?:\/\//i.test(l.url))
+        .map((l) => ({ label: (typeof l.label === "string" && l.label.trim()) || l.url, url: l.url }))
+    : [];
+  return {
+    payload: {
+      name: name.trim(),
+      cat: (cat || "").trim() || "General",
+      desc: (desc || "").trim(),
+      disc: (disc || "").trim() || "Beneficios",
+      photo: (photo || "").trim(),
+      link: (link || "").trim(),
+      docs: cleanDocs,
+      links: cleanLinks
+    }
+  };
+}
+
 app.post("/api/proveedores", requireAdmin, async (req, res) => {
-  const { name, cat, desc, disc } = req.body || {};
-  if (!name || !name.trim()) return res.status(400).json({ error: "Falta el nombre del proveedor." });
-  const prov = await store.addProveedor({
-    name: name.trim(),
-    cat: (cat || "").trim() || "General",
-    desc: (desc || "").trim(),
-    disc: (disc || "").trim() || "Beneficios"
-  });
+  const { error, payload } = parseProveedorPayload(req.body);
+  if (error) return res.status(400).json({ error });
+  const prov = await store.addProveedor(payload);
   res.status(201).json(prov);
+});
+
+app.put("/api/proveedores/:id", requireAdmin, async (req, res) => {
+  const { error, payload } = parseProveedorPayload(req.body);
+  if (error) return res.status(400).json({ error });
+  const prov = await store.updateProveedor(req.params.id, payload);
+  if (!prov) return res.status(404).json({ error: "Proveedor no encontrado." });
+  res.json(prov);
 });
 
 app.delete("/api/proveedores/:id", requireAdmin, async (req, res) => {
