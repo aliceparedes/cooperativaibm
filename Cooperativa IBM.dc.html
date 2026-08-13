@@ -1083,6 +1083,161 @@
       </section>
       </sc-if>
 
+      <!-- ================= SOCIOS (ADMIN) ================= -->
+      <sc-if value="{{ socioAdminView }}" hint-placeholder-val="{{ false }}">
+      <section style="padding:56px;max-width:1120px">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:24px;margin-bottom:28px">
+          <div>
+            <h1 style="font-size:40px;font-weight:800;letter-spacing:-0.02em;margin-bottom:8px">Gestión de Cambios Pendientes</h1>
+            <p style="font-size:16px;color:#52606d;line-height:1.55;max-width:740px">Los socios pueden actualizar su información personal. Los cambios quedan pendientes hasta que generes un batch TXT para cargar al S400.</p>
+          </div>
+        </div>
+
+        <sc-if value="{{ socioMsg }}" hint-placeholder-val="{{ false }}">
+          <div style="border:1px solid #d9dee4;background:#f8fafc;color:#3b4653;border-radius:0;padding:12px 14px;font-size:13px;margin-bottom:20px;line-height:1.45">{{ socioMsg }}</div>
+        </sc-if>
+
+        <!-- PENDING CHANGES SUMMARY -->
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px">
+          <div style="border:1px solid #e5e8ec;border-radius:0;padding:20px;background:#fff">
+            <div style="font-size:13px;font-weight:700;color:#6f6f6f;text-transform:uppercase;margin-bottom:8px">Cambios Pendientes</div>
+            <div style="font-size:32px;font-weight:800;color:#0043ce">{{ pendingSummary.totalChanges }}</div>
+            <div style="font-size:13px;color:#8d8d8d;margin-top:4px">{{ pendingSummary.totalSocios }} socios</div>
+          </div>
+          <div style="border:1px solid #e5e8ec;border-radius:0;padding:20px;background:#fff">
+            <div style="font-size:13px;font-weight:700;color:#6f6f6f;text-transform:uppercase;margin-bottom:8px">Batches Generados</div>
+            <div style="font-size:32px;font-weight:800;color:#24a148">{{ batchHistory.length }}</div>
+            <div style="font-size:13px;color:#8d8d8d;margin-top:4px">histórico completo</div>
+          </div>
+          <div style="border:1px solid #e5e8ec;border-radius:0;padding:20px;background:#fff;display:flex;flex-direction:column;justify-content:center">
+            <button onClick="{{ generarBatch }}" disabled="{{ pendingSummary.totalChanges === 0 }}" style="background:#0043ce;color:#fff;border:none;border-radius:0;padding:14px 24px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;width:100%;opacity:{{ pendingSummary.totalChanges === 0 ? 0.4 : 1 }}">Generar Batch TXT</button>
+            <div style="font-size:12px;color:#8d8d8d;text-align:center;margin-top:8px">Consolida y exporta</div>
+          </div>
+        </div>
+
+        <!-- PENDING CHANGES LIST -->
+        <sc-if value="{{ pendingSummary.totalChanges > 0 }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-bottom:32px">
+            <h2 style="font-size:24px;font-weight:700;margin-bottom:16px">Cambios por Socio</h2>
+            <div style="border:1px solid #e0e0e0;border-radius:0;overflow:hidden;background:#fff">
+              <sc-for list="{{ pendingChangesList }}" as="socio" hint-placeholder-count="3">
+                <div style="padding:16px 20px;border-bottom:1px solid #f0f0f0">
+                  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+                    <div style="font-size:16px;font-weight:700">Socio {{ socio.docume }}</div>
+                    <div style="font-size:13px;color:#8d8d8d">{{ socio.changes.length }} cambios</div>
+                  </div>
+                  <div style="display:flex;flex-wrap:wrap;gap:8px">
+                    <sc-for list="{{ socio.changes }}" as="change" hint-placeholder-count="2">
+                      <div style="background:#edf5ff;color:#0043ce;padding:6px 12px;border-radius:0;font-size:13px;font-weight:600">
+                        {{ change.field }}: {{ change.value }}
+                      </div>
+                    </sc-for>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+
+        <!-- BATCH HISTORY -->
+        <div style="margin-bottom:32px">
+          <h2 style="font-size:24px;font-weight:700;margin-bottom:16px">Historial de Batches</h2>
+          <sc-if value="{{ batchHistory.length === 0 }}" hint-placeholder-val="{{ false }}">
+            <div style="border:1px solid #e0e0e0;border-radius:0;padding:32px;text-align:center;color:#8d8d8d;background:#fff">
+              No hay batches generados aún
+            </div>
+          </sc-if>
+          <sc-if value="{{ batchHistory.length > 0 }}" hint-placeholder-val="{{ true }}">
+            <div style="border:1px solid #e0e0e0;border-radius:0;overflow:hidden;background:#fff">
+              <div style="display:grid;grid-template-columns:200px 1fr 120px 140px 140px;background:#f4f4f4;color:#525252;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:0.04em">
+                <div style="padding:12px 16px">Batch ID</div>
+                <div style="padding:12px 16px">Archivo</div>
+                <div style="padding:12px 16px">Socios</div>
+                <div style="padding:12px 16px">Fecha</div>
+                <div style="padding:12px 16px">Acción</div>
+              </div>
+              <sc-for list="{{ batchHistory }}" as="batch" hint-placeholder-count="3">
+                <div style="display:grid;grid-template-columns:200px 1fr 120px 140px 140px;border-top:1px solid #f0f0f0;font-size:13px;align-items:center">
+                  <div style="padding:12px 16px;font-weight:700;color:#0043ce">{{ batch.id }}</div>
+                  <div style="padding:12px 16px;color:#525252">{{ batch.filename }}</div>
+                  <div style="padding:12px 16px;font-weight:600">{{ batch.recordCount }}</div>
+                  <div style="padding:12px 16px;color:#8d8d8d">{{ batch.dateLabel }}</div>
+                  <div style="padding:12px 16px">
+                    <button onClick="{{ batch.download }}" style="background:#0043ce;color:#fff;border:none;border-radius:0;padding:6px 12px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">Descargar</button>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+
+        <!-- TXT FORMAT REFERENCE -->
+        <details style="margin-top:32px">
+          <summary style="font-size:18px;font-weight:700;cursor:pointer;padding:12px 0">Referencia del formato TXT</summary>
+
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:28px">
+          <div style="border:1px solid #e5e8ec;border-radius:0;padding:16px;background:#fff"><div style="font-size:12px;font-weight:700;color:#6f6f6f;text-transform:uppercase">Formato</div><div style="font-size:18px;font-weight:800;margin-top:4px">TXT ; + CRLF</div></div>
+          <div style="border:1px solid #e5e8ec;border-radius:0;padding:16px;background:#fff"><div style="font-size:12px;font-weight:700;color:#6f6f6f;text-transform:uppercase">Campos</div><div style="font-size:18px;font-weight:800;margin-top:4px">21 en orden fijo</div></div>
+          <div style="border:1px solid #e5e8ec;border-radius:0;padding:16px;background:#fff"><div style="font-size:12px;font-weight:700;color:#6f6f6f;text-transform:uppercase">Clave</div><div style="font-size:18px;font-weight:800;margin-top:4px">DOCUME</div></div>
+        </div>
+
+        <div style="border:1px solid #e0e0e0;border-radius:0;overflow:hidden;background:#fff">
+          <div style="display:grid;grid-template-columns:64px 120px 1fr 90px 110px;background:#f4f4f4;color:#525252;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:0.04em">
+            <div style="padding:12px 14px">Col.</div><div style="padding:12px 14px">Campo</div><div style="padding:12px 14px">Descripción</div><div style="padding:12px 14px">Max.</div><div style="padding:12px 14px">Tipo</div>
+          </div>
+          <sc-for list="{{ txtLayoutRows }}" as="r" hint-placeholder-count="21">
+            <div style="display:grid;grid-template-columns:64px 120px 1fr 90px 110px;border-top:1px solid #f0f0f0;font-size:13px;color:#262626">
+              <div style="padding:10px 14px;color:#6f6f6f">{{ r.n }}</div><div style="padding:10px 14px;font-weight:800">{{ r.key }}</div><div style="padding:10px 14px">{{ r.label }}</div><div style="padding:10px 14px">{{ r.bytes }}</div><div style="padding:10px 14px;color:#52606d">{{ r.kind }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </section>
+      </sc-if>
+
+      <sc-if value="{{ isSocioPerfil }}" hint-placeholder-val="{{ true }}">
+      <section style="padding:56px;display:flex;justify-content:center">
+        <div style="width:100%;max-width:760px">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+            <h1 style="font-size:32px;font-weight:800;letter-spacing:-0.02em">Mi Perfil</h1>
+            <button onClick="{{ socioLogout }}" style="background:#fff;color:#da1e28;border:1px solid #da1e28;border-radius:0;padding:10px 18px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">Cerrar sesión</button>
+          </div>
+          <p style="font-size:15px;color:#52606d;margin-bottom:28px">Código de socio: <strong style="color:#0043ce">{{ socioDocume }}</strong>. Actualiza tus datos, quedarán pendientes de sincronización con S400.</p>
+
+          <sc-if value="{{ socioSuccess }}" hint-placeholder-val="{{ false }}">
+            <div style="border:1px solid #42be65;background:#defbe6;color:#0e6027;border-radius:0;padding:12px 14px;font-size:13px;margin-bottom:20px;line-height:1.45">{{ socioSuccess }}</div>
+          </sc-if>
+          <sc-if value="{{ socioError }}" hint-placeholder-val="{{ false }}">
+            <div style="border:1px solid #fa4d56;background:#fff1f1;color:#a2191f;border-radius:0;padding:12px 14px;font-size:13px;margin-bottom:20px;line-height:1.45">{{ socioError }}</div>
+          </sc-if>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
+            <sc-for list="{{ socioFields }}" as="f" hint-placeholder-count="6">
+              <div>
+                <label style="display:block;font-size:13px;font-weight:600;color:#3b4653;margin-bottom:7px">{{ f.label }}</label>
+                <sc-if value="{{ f.isSelect }}" hint-placeholder-val="{{ false }}">
+                  <select value="{{ f.value }}" onChange="{{ f.onInput }}" style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:13px 14px;font-size:15px;font-family:inherit;outline:none;background:#fff" style-focus="border:1px solid #0043ce;box-shadow:0 0 0 3px #edf5ff">
+                    <sc-for list="{{ f.options }}" as="o" hint-placeholder-count="4">
+                      <option value="{{ o.v }}" selected="{{ o.selected }}">{{ o.l }}</option>
+                    </sc-for>
+                  </select>
+                </sc-if>
+                <sc-if value="{{ !f.isSelect }}" hint-placeholder-val="{{ true }}">
+                  <input type="{{ f.type }}" value="{{ f.value }}" onInput="{{ f.onInput }}" style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:13px 14px;font-size:15px;font-family:inherit;outline:none" style-focus="border:1px solid #0043ce;box-shadow:0 0 0 3px #edf5ff">
+                </sc-if>
+              </div>
+            </sc-for>
+          </div>
+
+          <button onClick="{{ socioSave }}" style="background:#0043ce;color:#fff;border:none;border-radius:0;padding:14px 24px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:28px">Guardar cambios</button>
+          <div style="font-size:12px;color:#8d8d8d;text-align:left;margin-top:8px">Los cambios quedan en estado "pendiente" hasta que se genere el batch TXT.</div>
+        </div>
+      </section>
+      </sc-if>
+
+      <sc-if value="{{ socioNoAdminView }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:22px;color:#8b95a1;font-size:14px">Esta sección es solo para administradores.</div>
+      </sc-if>
+
       <!-- ================= REGISTRO ================= -->
       <sc-if value="{{ isRegistro }}" hint-placeholder-val="{{ true }}">
       <section style="padding:56px;display:flex;justify-content:center">
@@ -1139,9 +1294,9 @@
 
           <sc-if value="{{ !isLoginTabAdmin }}" hint-placeholder-val="{{ true }}">
           <h1 style="font-size:34px;font-weight:800;letter-spacing:-0.02em;margin-bottom:6px">Login Socios</h1>
-          <p style="font-size:16px;color:#52606d;margin-bottom:30px">Ingresa con tu IBMid y contraseña de socio.</p>
-          <label style="display:block;font-size:13px;font-weight:600;color:#3b4653;margin-bottom:7px">IBMid</label>
-          <input type="email" placeholder="tu.nombre@ibm.com" value="{{ loginUser }}" onInput="{{ onLoginUser }}" style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:14px;font-size:15px;font-family:inherit;outline:none;margin-bottom:18px" style-focus="border:1px solid #0043ce;box-shadow:0 0 0 3px #edf5ff">
+          <p style="font-size:16px;color:#52606d;margin-bottom:30px">Ingresa con tu documento y contraseña de socio.</p>
+          <label style="display:block;font-size:13px;font-weight:600;color:#3b4653;margin-bottom:7px">DNI o correo</label>
+          <input type="text" placeholder="Ej. 40123456" value="{{ loginUser }}" onInput="{{ onLoginUser }}" style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:14px;font-size:15px;font-family:inherit;outline:none;margin-bottom:18px" style-focus="border:1px solid #0043ce;box-shadow:0 0 0 3px #edf5ff">
           <label style="display:block;font-size:13px;font-weight:600;color:#3b4653;margin-bottom:7px">Contraseña</label>
           <input type="password" placeholder="••••••••" value="{{ loginPass }}" onInput="{{ onLoginPass }}" style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:14px;font-size:15px;font-family:inherit;outline:none;margin-bottom:8px" style-focus="border:1px solid #0043ce;box-shadow:0 0 0 3px #edf5ff">
           <div style="text-align:right;margin-bottom:22px"><a style="font-size:14px;cursor:pointer">¿Olvidaste tu contraseña?</a></div>
@@ -1292,6 +1447,55 @@
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;100%&quot;,&quot;height&quot;:&quot;800px&quot;},&quot;mostrarSimulador&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Simulador&quot;,&quot;label&quot;:&quot;Mostrar simulador&quot;}}">
+const TIPDID_OPTS = [
+  {v:"1",l:"DNI"},
+  {v:"4",l:"Pasaporte"},
+  {v:"7",l:"Otro"}
+];
+const ESTCIV_OPTS = [
+  {v:"S",l:"Soltero"},{v:"C",l:"Casado"},{v:"D",l:"Divorciado"},{v:"V",l:"Viudo"}
+];
+const NACION_OPTS = [
+  {v:"1",l:"Peruana"},{v:"2",l:"Extranjera"}
+];
+const OPTS = { TIPDID_OPTS, ESTCIV_OPTS, NACION_OPTS };
+
+const SOCIO_FIELDS = [
+  { key:"TIPDID", label:"Tipo de documento", bytes:1,  type:"select",  optsKey:"TIPDID_OPTS" },
+  { key:"DOCIDE", label:"Documento de identidad", bytes:11, type:"numeric", placeholder:"Solo digitos" },
+  { key:"APEPAT", label:"Apellido paterno",  bytes:20, type:"text" },
+  { key:"APEMAT", label:"Apellido materno",  bytes:20, type:"text" },
+  { key:"NOMBRE", label:"Nombres",           bytes:30, type:"text" },
+  { key:"DIRECC", label:"Dirección",         bytes:80, type:"text" },
+  { key:"LOCALI", label:"Distrito",          bytes:40, type:"text" },
+  { key:"PROVIN", label:"Provincia",         bytes:40, type:"text" },
+  { key:"DEPART", label:"Departamento",      bytes:40, type:"text" },
+  { key:"NCOMPL", label:"Nombre completo",   bytes:60, type:"text" },
+  { key:"NOMBC2", label:"Correo",            bytes:50, type:"text" },
+  { key:"TELCEL", label:"Celular",           bytes:9,  type:"numeric" },
+  { key:"NACION", label:"Nacionalidad",      bytes:1,  type:"select",  optsKey:"NACION_OPTS" },
+  { key:"CCIUDA", label:"Código de ciudad",  bytes:6,  type:"numeric" },
+  { key:"NOMCON", label:"Nombre del cónyuge",bytes:40, type:"text" },
+  { key:"DNICY", label:"DNI del cónyuge",    bytes:8,  type:"numeric" },
+  { key:"ESTCIV", label:"Estado civil",      bytes:1,  type:"select",  optsKey:"ESTCIV_OPTS" },
+  { key:"CARGAM", label:"Cargas familiares", bytes:2,  type:"numeric" },
+  { key:"OFICIO", label:"Profesion",         bytes:20, type:"text" },
+  { key:"SECTO1", label:"N.º de hijos",      bytes:2,  type:"numeric" }
+];
+
+const TXT_LAYOUT_FIELDS = [{ key:"DOCUME", label:"Codigo del socio", bytes:6, type:"clave" }, ...SOCIO_FIELDS];
+
+function emptySocioForm(){
+  const f = { DOCUME: "" };
+  SOCIO_FIELDS.forEach(x => { f[x.key] = ""; });
+  return f;
+}
+function emptySocioChecked(){
+  const c = {};
+  SOCIO_FIELDS.forEach(x => { c[x.key] = false; });
+  return c;
+}
+
 class Component extends DCLogic {
   state = { page: "inicio", monto: 300000, plazo: 180, showPrefs: false, showProfile: false, interests: {},
     showOnboarding: false, onboardingStep: 1, onboardingSegments: {},
@@ -1299,6 +1503,7 @@ class Component extends DCLogic {
     draft: "", feed: "todos",
     login: { user: "", pass: "" }, loginError: "", simView: "mensual",
     loginTab: "socio", adminLogin: { user: "", pass: "" }, auth: { role: null, token: null },
+    socioSession: null, socioForm: emptySocioForm(), socioError: "", socioSuccess: "",
     // Paste your deployed backend URL here (e.g. the Code Engine app URL from backend/README.md).
     // Leave empty to keep running in local-only demo mode (admin/cooperativa2026, nothing persists).
     apiBase: "https://coop-api.2dfzriph4wl8.us-south.codeengine.appdomain.cloud",
@@ -1308,6 +1513,9 @@ class Component extends DCLogic {
     tasaSaved: {},
     registro: { nombres: "", apellidos: "", dni: "", area: "", email: "", celular: "", password: "", accept: false }, registroError: "", registroSuccess: false,
     newProv: { name: "", cat: "", desc: "", disc: "", photo: "", link: "", docs: [], links: [], linkDraft: { label: "", url: "" } },
+    socioMsg: "",
+    pendingSummary: { totalSocios: 0, totalChanges: 0, socios: [] },
+    batchHistory: [],
     proveedorDetalleSlot: null,
     editingProveedorSlot: null,
     proveedores: [],
@@ -1362,6 +1570,26 @@ class Component extends DCLogic {
     return { id: a.id, remoteId: a.id, author: a.author, role: a.role, time: "", tag: a.tag, color: "#0043ce", initials: "AD", tab: "cooperativa", text: a.text, hasImg: false, slotId: "post-"+a.id, img: "", likes: 0, liked: false };
   }
 
+  async loadPendingChanges(){
+    if(!this.state.apiBase) return;
+    try{
+      const data = await this.apiFetch("/api/admin/pending-changes");
+      this.setState({ pendingSummary: data });
+    }catch(e){
+      console.error("Error loading pending changes:", e);
+    }
+  }
+
+  async loadBatchHistory(){
+    if(!this.state.apiBase) return;
+    try{
+      const data = await this.apiFetch("/api/admin/batches");
+      this.setState({ batchHistory: data.batches || [] });
+    }catch(e){
+      console.error("Error loading batch history:", e);
+    }
+  }
+
   async apiFetch(path, options){
     const base = (this.state.apiBase || "").replace(/\/$/, "");
     const opts = { ...options, headers: { "Content-Type": "application/json", ...(options && options.headers) } };
@@ -1373,7 +1601,9 @@ class Component extends DCLogic {
     }
     if(!res.ok){
       const body = await res.json().catch(()=>({}));
-      throw new Error(body.error || "Error del servidor.");
+      const err = new Error(body.error || "Error del servidor.");
+      err.report = body.report;
+      throw err;
     }
     if(res.status === 204) return null;
     return res.json();
@@ -1485,7 +1715,9 @@ class Component extends DCLogic {
 
     const navItems = [
       ["Anuncios","anuncios"],["Quiénes Somos","quienes"],["Ahorro","ahorro"],["Proveedores","proveedores"],
-      ["Préstamos","prestamos"],["Servicios","servicios"]
+      ["Préstamos","prestamos"],["Servicios","servicios"],
+      ...(this.state.auth.role === "admin" ? [["Descargar TXT","socios"]] : []),
+      ...(this.state.socioSession ? [["Mi Perfil","socio-perfil"]] : [])
     ];
     const nav = navItems.map(([label,key]) => ({
       label, go: () => this.go(key),
@@ -1519,6 +1751,9 @@ class Component extends DCLogic {
       isInicio: page==="inicio", isQuienes: page==="quienes", isAhorro: page==="ahorro",
       isProveedores: page==="proveedores", isPrestamos: page==="prestamos", isPrestamoDetalle: page==="prestamo-detalle",
       isServicios: page==="servicios", isRegistro: page==="registro", isLogin: page==="login", isAnuncios: page==="anuncios",
+      socioAdminView: page==="socios" && this.state.auth.role === "admin",
+      socioNoAdminView: page==="socios" && this.state.auth.role !== "admin",
+      isSocioPerfil: page==="socio-perfil",
       isFondoSepelio: page==="fondo-sepelio",
       isPerufarma: page==="perufarma",
       isProveedorDetalle: page==="proveedor-detalle",
@@ -1562,6 +1797,8 @@ class Component extends DCLogic {
               if(!res.ok){ this.setState({loginError: body.error || "Usuario o contraseña de administrador incorrectos."}); return; }
               this.setState({loginError:"", auth:{role:"admin", token: body.token}});
               await this.loadContent();
+              await this.loadPendingChanges();
+              await this.loadBatchHistory();
               this.go("anuncios");
             }catch(e){
               this.setState({loginError:"No se pudo conectar con el backend. Revisa apiBase en el estado del componente."});
@@ -1571,6 +1808,8 @@ class Component extends DCLogic {
 
           if(a.user.trim()==="admin" && a.pass==="cooperativa2026"){
             this.setState({loginError:"", auth:{role:"admin", token:null}});
+            await this.loadPendingChanges();
+            await this.loadBatchHistory();
             this.go("anuncios");
             return;
           }
@@ -1578,8 +1817,56 @@ class Component extends DCLogic {
           return;
         }
         const l = this.state.login;
-        if(!l.user.trim()||!l.pass.trim()){ this.setState({loginError:"Ingresa tu DNI o correo y tu contraseña."}); return; }
-        this.setState({loginError:"Prototipo: este formulario aún no está conectado al sistema real de socios."});
+        if(!l.user.trim()){ this.setState({loginError:"Ingresa tu código de socio (DOCUME)."}); return; }
+        const docume = l.user.trim();
+        const base = (this.state.apiBase || "").replace(/\/$/, "");
+        if(base){
+          try{
+            const res = await fetch(base + "/api/socios/" + docume);
+            if(!res.ok){
+              this.setState({loginError: "Socio no encontrado con el código " + docume});
+              return;
+            }
+            const body = await res.json();
+            this.setState({
+              loginError: "",
+              socioSession: body.socio,
+              socioForm: { ...body.socio }
+            });
+            this.go("socio-perfil");
+          }catch(e){
+            this.setState({loginError:"No se pudo conectar con el backend."});
+          }
+          return;
+        }
+        const demoSocio = {
+          DOCUME: docume,
+          TIPDID: "1",
+          DOCIDE: "40123456",
+          APEPAT: "PEREZ",
+          APEMAT: "GARCIA",
+          NOMBRE: "JUANA MARIA",
+          DIRECC: "Av. Las Palmeras 123",
+          LOCALI: "LIMA",
+          PROVIN: "LIMA",
+          DEPART: "LIMA",
+          NCOMPL: "PEREZ GARCIA JUANA MARIA",
+          NOMBC2: "juanamaria@example.com",
+          TELCEL: "999888777",
+          NACION: "1",
+          CCIUDA: "150131",
+          NOMCON: "",
+          ESTCIV: "S",
+          CARGAM: "0",
+          OFICIO: "ANALISTA",
+          SECTO1: "0"
+        };
+        this.setState({
+          loginError: "",
+          socioSession: demoSocio,
+          socioForm: { ...demoSocio }
+        });
+        this.go("socio-perfil");
       },
 
       showPrefs: this.state.showPrefs,
@@ -2073,7 +2360,137 @@ class Component extends DCLogic {
       afPct: Math.round(afRatio*100)+"%", afWidth: Math.min(afRatio*100,100)+"%", afColor, afLabel,
       capPct: capPctN+"%", intPct: (100-capPctN)+"%",
       cuotaBanco: this.money(cuotaBancoNum), totalBanco: this.money(totalBancoNum), bankTeaLabel: sel.bank+"%",
-      ahorro: this.money(ahorroNum)
+      ahorro: this.money(ahorroNum),
+
+      socioMsg: this.state.socioMsg,
+
+      pendingSummary: this.state.pendingSummary,
+      pendingChangesList: this.state.pendingSummary.socios || [],
+
+      batchHistory: this.state.batchHistory.map(b => ({
+        ...b,
+        dateLabel: new Date(b.createdAt).toLocaleDateString("es-PE", { day:"2-digit", month:"2-digit", year:"numeric" }),
+        download: async () => {
+          try {
+            const base = (this.state.apiBase || "").replace(/\/$/, "");
+            const url = base + "/api/admin/batches/" + encodeURIComponent(b.id) + "/download";
+
+            const headers = {};
+            if (this.state.auth.token) {
+              headers.Authorization = "Bearer " + this.state.auth.token;
+            }
+
+            const res = await fetch(url, { headers });
+
+            if (!res.ok) {
+              const body = await res.json().catch(() => ({}));
+              throw new Error(body.error || "No se pudo descargar el batch.");
+            }
+
+            const txt = await res.text();
+            this.descargarTxt(txt, b.filename);
+          } catch(err) {
+            this.setState({ socioMsg: err.message });
+          }
+        }
+      })),
+
+      txtLayoutRows: TXT_LAYOUT_FIELDS.map((f, i) => ({
+        n: i + 1,
+        key: f.key,
+        label: f.label,
+        bytes: f.bytes,
+        kind: f.type === "select" ? "catalogo" : f.type === "numeric" ? "numerico" : f.type
+      })),
+
+      generarBatch: async ()=>{
+        this.setState({ socioMsg:"" });
+        if(this.state.pendingSummary.totalChanges === 0) {
+          this.setState({ socioMsg: "No hay cambios pendientes para exportar." });
+          return;
+        }
+        try{
+          const data = await this.apiFetch("/api/socios/txt", { method:"POST", headers:{ "Content-Type":"application/json" } });
+          this.descargarTxt(data.txt, data.batch.filename);
+          this.setState({ socioMsg: `Batch ${data.batch.id} generado: ${data.batch.recordCount} socios exportados.` });
+          await this.loadPendingChanges();
+          await this.loadBatchHistory();
+        }catch(err){
+          this.setState({ socioMsg: this.renderSocioReport(err.report) || err.message });
+        }
+      },
+
+      descargarTxtTodos: async ()=>{
+        this.setState({ socioMsg:"" });
+        try{
+          const data = await this.apiFetch("/api/socios/txt", { method:"POST", headers:{ "Content-Type":"application/json" } });
+          this.descargarTxt(data.txt, data.batch?.filename);
+        }catch(err){
+          this.setState({ socioMsg: this.renderSocioReport(err.report) || err.message });
+        }
+      },
+
+      renderSocioReport: (report)=>{
+        if(!Array.isArray(report) || !report.length) return "";
+        const parts = [];
+        report.forEach(r=>{
+          (r.errors||[]).forEach(e=>{ parts.push((r.docume ? "Socio " + r.docume + ": " : "") + e.msg); });
+        });
+        return parts.join(" · ");
+      },
+
+      descargarTxt: (txt, filename)=>{
+        const today = new Date().toISOString().slice(0,10).replace(/-/g,"");
+        const name = filename || ("socios-" + today + ".txt");
+        const blob = new Blob([txt], { type:"text/plain;charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url; a.download = name;
+        document.body.appendChild(a); a.click();
+        setTimeout(()=>{ URL.revokeObjectURL(url); a.remove(); }, 0);
+      },
+
+      isSocioPerfil: page==="socio-perfil" && this.state.socioSession,
+      socioDocume: this.state.socioSession ? this.state.socioSession.DOCUME : "",
+      socioFields: SOCIO_FIELDS.map(f => {
+        const val = this.state.socioForm[f.key] ?? "";
+        return {
+          key: f.key,
+          label: f.label,
+          type: f.type === "numeric" ? "number" : "text",
+          isSelect: f.type === "select",
+          value: val,
+          options: f.type === "select" ? (f.optsKey === "NACION_OPTS" ? NACION_OPTS : f.optsKey === "ESTCIV_OPTS" ? ESTCIV_OPTS : TIPDID_OPTS).map(o => ({v: o.v, l: o.l, selected: val === o.v})) : [],
+          onInput: (e) => {
+            const v = e.target.value;
+            this.setState(s => ({ socioForm: { ...s.socioForm, [f.key]: v } }));
+          }
+        };
+      }),
+      socioError: this.state.socioError,
+      socioSuccess: this.state.socioSuccess,
+      socioSave: async () => {
+        this.setState({ socioError: "", socioSuccess: "" });
+        const docume = this.state.socioSession.DOCUME;
+        const base = (this.state.apiBase || "").replace(/\/$/, "");
+        if(base){
+          try{
+            const res = await this.apiFetch("/api/socios/" + docume, {
+              method: "PUT",
+              body: JSON.stringify(this.state.socioForm)
+            });
+            this.setState({ socioSession: res.socio, socioSuccess: "Cambios guardados exitosamente. Pendiente de sincronización con S400." });
+          }catch(e){
+            this.setState({ socioError: e.message });
+          }
+          return;
+        }
+        this.setState({ socioSession: { ...this.state.socioSession, ...this.state.socioForm }, socioSuccess: "Cambios guardados (modo demo local). Pendiente de sincronización con S400." });
+      },
+      socioLogout: () => {
+        this.setState({ socioSession: null, socioForm: emptySocioForm() });
+        this.go("inicio");
+      }
     };
   }
 }

@@ -3,6 +3,8 @@ const path = require("path");
 
 const DEFAULT_DATA = {
   tasas: { "sola-firma": 13, consumo: 13, "largo-plazo": 12, automotriz: 8.0, hipotecario: 8, garantia: 11, academico: 8.75 },
+  changes: [],
+  batches: [],
   anuncios: [
     {
       id: "seed-1",
@@ -16,6 +18,30 @@ const DEFAULT_DATA = {
   proveedores: [
     { id: "seed-1", name: "Rímac Seguros", cat: "Seguro de Autos", desc: "Mejor tarifa del mercado, descuento de la prima en 18 meses sin recargo de intereses.", disc: "Tarifa corporativa" },
     { id: "seed-2", name: "Oncosalud", cat: "Salud", desc: "Convenio corporativo para socios y familiares directos.", disc: "18% dcto." }
+  ],
+  socios: [
+    {
+      DOCUME: "100001",
+      TIPDID: "1",
+      DOCIDE: "40123456",
+      APEPAT: "PEREZ",
+      APEMAT: "GARCIA",
+      NOMBRE: "JUANA MARIA",
+      DIRECC: "Av. Las Palmeras 123",
+      LOCALI: "LIMA",
+      PROVIN: "LIMA",
+      DEPART: "LIMA",
+      NCOMPL: "PEREZ GARCIA JUANA MARIA",
+      NOMBC2: "juanamaria@example.com",
+      TELCEL: "999888777",
+      NACION: "1",
+      CCIUDA: "150131",
+      NOMCON: "",
+      ESTCIV: "S",
+      CARGAM: "0",
+      OFICIO: "ANALISTA",
+      SECTO1: "0"
+    }
   ],
   updatedAt: new Date().toISOString()
 };
@@ -94,6 +120,82 @@ function makeFileStore() {
       data.updatedAt = new Date().toISOString();
       write(data);
       return data.tasas;
+    },
+    async listSocios() {
+      const data = read();
+      return data.socios || [];
+    },
+    async getSocio(docume) {
+      const data = read();
+      return (data.socios || []).find((s) => String(s.DOCUME) === String(docume)) || null;
+    },
+    async saveSocio(socio) {
+      const data = read();
+      const list = data.socios || [];
+      const i = list.findIndex((s) => String(s.DOCUME) === String(socio.DOCUME));
+      const next = { ...socio, updatedAt: new Date().toISOString() };
+      if (i >= 0) list[i] = next;
+      else list.push(next);
+      data.socios = list;
+      data.updatedAt = new Date().toISOString();
+      write(data);
+      return next;
+    },
+    async listChanges() {
+      const data = read();
+      return data.changes || [];
+    },
+    async getPendingChanges() {
+      const data = read();
+      return (data.changes || []).filter((c) => c.status === "PENDING");
+    },
+    async addChange(change) {
+      const data = read();
+      const newChange = {
+        id: newId(),
+        ...change,
+        status: change.status || "PENDING",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      };
+      data.changes = data.changes || [];
+      data.changes.push(newChange);
+      data.updatedAt = new Date().toISOString();
+      write(data);
+      return newChange;
+    },
+    async updateChangeStatus(changeId, status, batchId = null) {
+      const data = read();
+      const change = (data.changes || []).find((c) => c.id === changeId);
+      if (change) {
+        change.status = status;
+        change.updatedAt = new Date().toISOString();
+        if (batchId) change.batchId = batchId;
+        data.updatedAt = new Date().toISOString();
+        write(data);
+      }
+      return change;
+    },
+    async listBatches() {
+      const data = read();
+      return data.batches || [];
+    },
+    async getBatch(batchId) {
+      const data = read();
+      return (data.batches || []).find((b) => b.id === batchId) || null;
+    },
+    async createBatch(batch) {
+      const data = read();
+      const newBatch = {
+        id: newId(),
+        ...batch,
+        createdAt: new Date().toISOString()
+      };
+      data.batches = data.batches || [];
+      data.batches.push(newBatch);
+      data.updatedAt = new Date().toISOString();
+      write(data);
+      return newBatch;
     }
   };
 }
@@ -190,6 +292,82 @@ function makeCloudantStore() {
       doc.updatedAt = new Date().toISOString();
       await saveDoc(doc);
       return doc.tasas;
+    },
+    async listSocios() {
+      const doc = await getDoc();
+      return doc.socios || [];
+    },
+    async getSocio(docume) {
+      const doc = await getDoc();
+      return (doc.socios || []).find((s) => String(s.DOCUME) === String(docume)) || null;
+    },
+    async saveSocio(socio) {
+      const doc = await getDoc();
+      const list = doc.socios || [];
+      const i = list.findIndex((s) => String(s.DOCUME) === String(socio.DOCUME));
+      const next = { ...socio, updatedAt: new Date().toISOString() };
+      if (i >= 0) list[i] = next;
+      else list.push(next);
+      doc.socios = list;
+      doc.updatedAt = new Date().toISOString();
+      await saveDoc(doc);
+      return next;
+    },
+    async listChanges() {
+      const doc = await getDoc();
+      return doc.changes || [];
+    },
+    async getPendingChanges() {
+      const doc = await getDoc();
+      return (doc.changes || []).filter((c) => c.status === "PENDING");
+    },
+    async addChange(change) {
+      const doc = await getDoc();
+      const newChange = {
+        id: newId(),
+        ...change,
+        status: change.status || "PENDING",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      };
+      doc.changes = doc.changes || [];
+      doc.changes.push(newChange);
+      doc.updatedAt = new Date().toISOString();
+      await saveDoc(doc);
+      return newChange;
+    },
+    async updateChangeStatus(changeId, status, batchId = null) {
+      const doc = await getDoc();
+      const change = (doc.changes || []).find((c) => c.id === changeId);
+      if (change) {
+        change.status = status;
+        change.updatedAt = new Date().toISOString();
+        if (batchId) change.batchId = batchId;
+        doc.updatedAt = new Date().toISOString();
+        await saveDoc(doc);
+      }
+      return change;
+    },
+    async listBatches() {
+      const doc = await getDoc();
+      return doc.batches || [];
+    },
+    async getBatch(batchId) {
+      const doc = await getDoc();
+      return (doc.batches || []).find((b) => b.id === batchId) || null;
+    },
+    async createBatch(batch) {
+      const doc = await getDoc();
+      const newBatch = {
+        id: newId(),
+        ...batch,
+        createdAt: new Date().toISOString()
+      };
+      doc.batches = doc.batches || [];
+      doc.batches.push(newBatch);
+      doc.updatedAt = new Date().toISOString();
+      await saveDoc(doc);
+      return newBatch;
     }
   };
 }

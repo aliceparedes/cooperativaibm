@@ -7,6 +7,7 @@ A small Express API that the site's admin login talks to. It provides:
 - `POST /api/anuncios` / `DELETE /api/anuncios/:id` — admin only
 - `POST /api/proveedores` / `PUT /api/proveedores/:id` / `DELETE /api/proveedores/:id` — admin only
 - `PUT /api/tasas` — admin only
+- `POST /api/socios/txt` — admin only; serializes partner updates to the 21-field semicolon-delimited TXT for the S400
 
 Storage is pluggable: a JSON file by default (fine for local testing), or
 IBM Cloudant for a real deployment (`STORAGE=cloudant`).
@@ -109,6 +110,63 @@ call the API:
 ```bash
 ibmcloud ce application update --name coop-api --env ALLOWED_ORIGIN=https://your-domain
 ```
+
+## Autoservicio de socios + export TXT para el S400
+
+Los socios actualizan su propio perfil desde el sitio; el administrador solo
+**descarga el TXT bulk** con todos los socios (formato delimitado por `;`, 21
+campos, CRLF) para cargarlo en el S400.
+
+### Flujo
+
+1. **Socio** entra a su perfil (login por conectar con IBM Verify) y edita sus
+   datos → `GET /api/socios/:docume` para leer su registro y
+   `PUT /api/socios/:docume` para guardar cambios.
+2. **Admin** entra, nav **Descargar TXT**, y pulsa **Descargar TXT**: baja
+   `socios-{YYYYMMDD}.txt` con todos los socios actualizados.
+3. Entregar ese archivo a José para cargarlo en el S400.
+
+El admin **no edita socios desde la web**; eso se hace directo en el S400.
+
+### Convenciones del TXT
+
+- Formato de José: filas separadas por `;`, exactamente **21 campos por fila**
+  (20 separadores, sin `;` final), line endings CRLF, UTF-8. El S400 carga cada
+  fila partiéndola con `;` y validando que tenga exactamente 21 partes.
+- **21 campos** en orden fijo (ver `LAYOUT` en `backend/src/txt.js`):
+  `DOCUME(6) | TIPDID(1) | DOCIDE(11) | APEPAT(20) | APEMAT(20) | NOMBRE(30) |
+  DIRECC(80) | LOCALI(40) | PROVIN(40) | DEPART(40) | NCOMPL(60) |
+  NOMBC2(50) | TELCEL(9) | NACION(1) | CCIUDA(6) | NOMCON(40) | DNICY(8, DNI
+  del cónyuge) | ESTCIV(1) | CARGAM(2) | OFICIO(20) | SECTO1(2)`.
+- **Campo vacío = no tocar** → se escribe como `;` consecutivo (nada entre
+  separadores) y el S400 conserva el valor actual.
+- La **clave de la fila** es `DOCUME` y siempre se manda (nunca vacío).
+- `;` y saltos de línea están prohibidos dentro de cualquier valor (romperían
+  el formato delimitado).
+
+### Endpoint
+
+`POST /api/socios/txt` (admin only) — serializa **todos** los socios de la BD
+(autoservicio + demo), sin body.
+
+Responde `200 { ok, txt, bytes }` o `422 { error, report }` donde `report`
+es una lista de filas con errores, p.ej.:
+
+```json
+{
+  "error": "Hay filas con errores.",
+  "report": [
+    { "row": 1, "docume": "100001", "errors": [{ "key": "DNICY", "field": "DNICY", "msg": "..." }] }
+  ]
+}
+```
+
+Las filas con errores se aíslan (el TXT no se genera si alguna falla). El
+layout exacto de campos vive en `backend/src/txt.js` (21 campos, delimitado,
+CRLF). Los catálogos TIPDID / NACION / ESTCIV están en el frontend y en el
+`.dc.html` (constantes `OPTS`). El fixture de referencia
+`backend/test/fixtures/cooperativa-txt-prueba.gold.txt` reproduce el formato
+acordado con José y se verifica con `node test/txt.gold.test.js` en `backend/`.
 
 ## Notes
 
