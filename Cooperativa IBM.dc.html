@@ -114,6 +114,31 @@
             </sc-for>
           </div>
 
+          <div style="margin-top:48px;margin-bottom:20px;display:flex;align-items:baseline;justify-content:space-between">
+            <h2 style="font-size:30px;font-weight:600;letter-spacing:-0.01em">Recomendado para ti</h2>
+            <a onClick="{{ openPrefs }}" style="font-size:14px;font-weight:600;color:#0043ce;cursor:pointer">Editar preferencias</a>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px">
+            <sc-for list="{{ recomendaciones }}" as="r" hint-placeholder-count="3">
+              <div onClick="{{ r.go }}" style="border:1px solid #e5e8ec;border-radius:0;padding:24px;cursor:pointer;display:flex;flex-direction:column;gap:10px" style-hover="box-shadow:0 8px 26px rgba(15,36,56,0.09)">
+                <div style="width:44px;height:44px;border-radius:0;background:{{ r.bg }};display:flex;align-items:center;justify-content:center;color:{{ r.color }}">
+                  <sc-if value="{{ r.icon === 'zap' }}" hint-placeholder-val="{{ false }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></sc-if>
+                  <sc-if value="{{ r.icon === 'cart' }}" hint-placeholder-val="{{ false }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg></sc-if>
+                  <sc-if value="{{ r.icon === 'calendar' }}" hint-placeholder-val="{{ false }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg></sc-if>
+                  <sc-if value="{{ r.icon === 'car' }}" hint-placeholder-val="{{ false }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg></sc-if>
+                  <sc-if value="{{ r.icon === 'house' }}" hint-placeholder-val="{{ false }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></sc-if>
+                  <sc-if value="{{ r.icon === 'key' }}" hint-placeholder-val="{{ false }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15.5 7.5 2.3 2.3a1 1 0 0 0 1.4 0l2.1-2.1a1 1 0 0 0 0-1.4L19 4a1 1 0 0 0-1.4 0L15.5 6.1"/><path d="m21 2-9.6 9.6"/><circle cx="7.5" cy="15.5" r="5.5"/></svg></sc-if>
+                  <sc-if value="{{ r.icon === 'cap' }}" hint-placeholder-val="{{ false }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></svg></sc-if>
+                  <sc-if value="{{ r.icon === 'shield' }}" hint-placeholder-val="{{ false }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.35 8.75a1 1 0 0 1-.6-.01C8.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.79 17 5 19 5a1 1 0 0 1 1 1z"/></svg></sc-if>
+                  <sc-if value="{{ r.icon === 'heart' }}" hint-placeholder-val="{{ false }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg></sc-if>
+                </div>
+                <div style="font-size:18px;font-weight:700">{{ r.title }}</div>
+                <div style="font-size:14px;color:#52606d;line-height:1.5">{{ r.desc }}</div>
+                <div style="font-size:12px;font-weight:600;color:#0043ce;margin-top:auto">{{ r.reason }}</div>
+              </div>
+            </sc-for>
+          </div>
+
           <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px;border-top:1px solid #eceef1;padding-top:40px">
             <sc-for list="{{ stats }}" as="s" hint-placeholder-count="3">
               <div>
@@ -1168,21 +1193,21 @@
           </sc-for>
         </div>
 
-        <h3 style="font-size:20px;font-weight:800;margin:30px 0 18px">Promociones que deseas ver</h3>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
-          <sc-for list="{{ promoCards }}" as="c" hint-placeholder-count="4">
-            <div onClick="{{ c.toggle }}" style="{{ c.cardStyle }}">
-              <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px">
-                <div style="width:44px;height:44px;border-radius:0;background:#f0f2f5;display:flex;align-items:center;justify-content:center;color:#52606d">
-                  <sc-if value="{{ c.key === 'descuentos' }}" hint-placeholder-val="{{ true }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" x2="5" y1="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg></sc-if>
-                  <sc-if value="{{ c.key === 'prestamos' }}" hint-placeholder-val="{{ false }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg></sc-if>
-                  <sc-if value="{{ c.key === 'servicios' }}" hint-placeholder-val="{{ false }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg></sc-if>
-                  <sc-if value="{{ c.key === 'seguros' }}" hint-placeholder-val="{{ false }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg></sc-if>
-                </div>
-                <div style="{{ c.boxStyle }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="opacity:{{ c.checkOpacity }}"><path d="M20 6 9 17l-5-5"/></svg></div>
-              </div>
-              <div style="font-size:19px;font-weight:800;margin-bottom:4px">{{ c.title }}</div>
-              <div style="font-size:15px;color:#8b95a1;line-height:1.45">{{ c.desc }}</div>
+        <h3 style="font-size:20px;font-weight:800;margin:30px 0 6px">Productos que te interesan</h3>
+        <p style="font-size:14px;color:#8b95a1;margin-bottom:16px">Elige los que quieras — usamos esto para armar tu sección "Recomendado para ti" en Inicio.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:10px">
+          <sc-for list="{{ interestOptions }}" as="c" hint-placeholder-count="10">
+            <div onClick="{{ c.toggle }}" style="{{ c.chipStyle }}">
+              <sc-if value="{{ c.icon === 'zap' }}" hint-placeholder-val="{{ false }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></sc-if>
+              <sc-if value="{{ c.icon === 'cart' }}" hint-placeholder-val="{{ false }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg></sc-if>
+              <sc-if value="{{ c.icon === 'calendar' }}" hint-placeholder-val="{{ false }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg></sc-if>
+              <sc-if value="{{ c.icon === 'car' }}" hint-placeholder-val="{{ false }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg></sc-if>
+              <sc-if value="{{ c.icon === 'house' }}" hint-placeholder-val="{{ false }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></sc-if>
+              <sc-if value="{{ c.icon === 'key' }}" hint-placeholder-val="{{ false }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15.5 7.5 2.3 2.3a1 1 0 0 0 1.4 0l2.1-2.1a1 1 0 0 0 0-1.4L19 4a1 1 0 0 0-1.4 0L15.5 6.1"/><path d="m21 2-9.6 9.6"/><circle cx="7.5" cy="15.5" r="5.5"/></svg></sc-if>
+              <sc-if value="{{ c.icon === 'cap' }}" hint-placeholder-val="{{ false }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></svg></sc-if>
+              <sc-if value="{{ c.icon === 'shield' }}" hint-placeholder-val="{{ false }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.35 8.75a1 1 0 0 1-.6-.01C8.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.79 17 5 19 5a1 1 0 0 1 1 1z"/></svg></sc-if>
+              <sc-if value="{{ c.icon === 'heart' }}" hint-placeholder-val="{{ false }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg></sc-if>
+              {{ c.title }}
             </div>
           </sc-for>
         </div>
@@ -1195,11 +1220,81 @@
     </div>
   </div>
   </sc-if>
+
+  <!-- ================= ONBOARDING: CUESTIONARIO DE PREFERENCIAS (primer login) ================= -->
+  <sc-if value="{{ showOnboarding }}" hint-placeholder-val="{{ false }}">
+  <div style="position:absolute;inset:0;z-index:60;background:rgba(4,10,20,0.6);display:flex;align-items:center;justify-content:center;padding:32px">
+    <div style="width:100%;max-width:680px;max-height:90%;background:#fff;border-radius:0;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 30px 80px rgba(0,0,0,0.35)">
+
+      <sc-if value="{{ isOnboardingStep1 }}" hint-placeholder-val="{{ true }}">
+        <div style="padding:34px 40px 22px;border-bottom:1px solid #eceef1">
+          <div style="font-size:13px;font-weight:700;color:#0043ce;margin-bottom:6px">Paso 1 de 2</div>
+          <h2 style="font-size:28px;font-weight:800;letter-spacing:-0.02em">¡Bienvenido/a, socio/a!</h2>
+          <p style="font-size:16px;color:#8b95a1;margin-top:6px">Cuéntanos qué te interesa para armar tus recomendaciones. Puedes elegir varias.</p>
+        </div>
+        <div style="padding:26px 40px;overflow-y:auto;flex:1">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+            <sc-for list="{{ onboardingOptions }}" as="s" hint-placeholder-count="6">
+              <div onClick="{{ s.toggle }}" style="{{ s.cardStyle }}">
+                <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+                  <div style="width:38px;height:38px;border-radius:0;background:#f0f2f5;display:flex;align-items:center;justify-content:center;color:#52606d;flex:0 0 38px">
+                    <sc-if value="{{ s.icon === 'house' }}" hint-placeholder-val="{{ true }}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></sc-if>
+                    <sc-if value="{{ s.icon === 'car' }}" hint-placeholder-val="{{ false }}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg></sc-if>
+                    <sc-if value="{{ s.icon === 'cap' }}" hint-placeholder-val="{{ false }}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></svg></sc-if>
+                    <sc-if value="{{ s.icon === 'zap' }}" hint-placeholder-val="{{ false }}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></sc-if>
+                    <sc-if value="{{ s.icon === 'calendar' }}" hint-placeholder-val="{{ false }}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg></sc-if>
+                    <sc-if value="{{ s.icon === 'heart' }}" hint-placeholder-val="{{ false }}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg></sc-if>
+                  </div>
+                  <div style="{{ s.boxStyle }}"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="opacity:{{ s.checkOpacity }}"><path d="M20 6 9 17l-5-5"/></svg></div>
+                </div>
+                <div style="font-size:16px;font-weight:800;margin-bottom:3px">{{ s.title }}</div>
+                <div style="font-size:13px;color:#8b95a1;line-height:1.4">{{ s.desc }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="padding:20px 40px;border-top:1px solid #eceef1;display:flex;justify-content:space-between;align-items:center">
+          <a onClick="{{ skipOnboarding }}" style="font-size:16px;color:#8b95a1;cursor:pointer">Omitir por ahora</a>
+          <button onClick="{{ goOnboardingStep2 }}" style="background:#0043ce;color:#fff;border:none;border-radius:0;padding:15px 30px;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit">Continuar</button>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isOnboardingStep2 }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:34px 40px 22px;border-bottom:1px solid #eceef1">
+          <div style="font-size:13px;font-weight:700;color:#0043ce;margin-bottom:6px">Paso 2 de 2</div>
+          <h2 style="font-size:28px;font-weight:800;letter-spacing:-0.02em">Esto te recomendamos</h2>
+          <p style="font-size:16px;color:#8b95a1;margin-top:6px">Según lo que elegiste. Lo verás también en Inicio, y puedes cambiarlo cuando quieras.</p>
+        </div>
+        <div style="padding:26px 40px;overflow-y:auto;flex:1">
+          <sc-if value="{{ hasOnboardingPreview }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <sc-for list="{{ onboardingPreview }}" as="p" hint-placeholder-count="3">
+                <div style="border:1px solid #e5e8ec;border-radius:0;padding:18px 20px">
+                  <div style="font-size:17px;font-weight:700;margin-bottom:4px">{{ p.title }}</div>
+                  <div style="font-size:14px;color:#52606d;line-height:1.5">{{ p.desc }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+          <sc-if value="{{ !hasOnboardingPreview }}" hint-placeholder-val="{{ true }}">
+            <p style="font-size:15px;color:#8b95a1">No elegiste ninguna categoría — puedes volver atrás o terminar y explorar todos los productos por tu cuenta.</p>
+          </sc-if>
+        </div>
+        <div style="padding:20px 40px;border-top:1px solid #eceef1;display:flex;justify-content:space-between;align-items:center">
+          <a onClick="{{ backOnboardingStep1 }}" style="font-size:16px;color:#8b95a1;cursor:pointer">← Volver</a>
+          <button onClick="{{ finishOnboarding }}" style="background:#0043ce;color:#fff;border:none;border-radius:0;padding:15px 30px;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit">Listo, ver mi portal</button>
+        </div>
+      </sc-if>
+
+    </div>
+  </div>
+  </sc-if>
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;100%&quot;,&quot;height&quot;:&quot;800px&quot;},&quot;mostrarSimulador&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Simulador&quot;,&quot;label&quot;:&quot;Mostrar simulador&quot;}}">
 class Component extends DCLogic {
-  state = { page: "inicio", monto: 300000, plazo: 180, showPrefs: false, showProfile: false, promos: { descuentos: true, prestamos: false, servicios: false, seguros: false },
+  state = { page: "inicio", monto: 300000, plazo: 180, showPrefs: false, showProfile: false, interests: {},
+    showOnboarding: false, onboardingStep: 1, onboardingSegments: {},
     simTipo: "hipotecario", ingreso: 6000,
     draft: "", feed: "todos",
     login: { user: "", pass: "" }, loginError: "", simView: "mensual",
@@ -1253,6 +1348,14 @@ class Component extends DCLogic {
     }catch(e){
       this.setState({ apiError: "No se pudo conectar con el backend. Mostrando datos locales." });
     }
+  }
+
+  maybeShowOnboarding(){
+    try{
+      if(!localStorage.getItem("coope_onboarding_done")){
+        this.setState({ showOnboarding: true, onboardingStep: 1 });
+      }
+    }catch(e){}
   }
 
   mapAnuncio(a){
@@ -1325,6 +1428,60 @@ class Component extends DCLogic {
       {key:"academico",slotId:"loan-6",photo:"./uploads/academico-graduacion.jpg",title:"Crédito Académico",tasa:tasas.academico.toFixed(1)+"% TEA",img:"Foto estudiantes",desc:"Hasta S/50,000 a pagar en 48 meses. Requiere mínimo 6 meses como socio."}
     ].map(p=>({...p, ...CREDIT_COLORS[p.key]}));
     const prestamoActualData = prestamosData.find(p=>p.key===this.state.simTipo) || prestamosData[0];
+
+    // ---- Motor de recomendaciones: content-based, por tags compartidos entre productos ----
+    const RECO_TAGS = {
+      "sola-firma": ["rapido","efectivo"],
+      consumo: ["rapido","compras"],
+      "largo-plazo": ["flexible","efectivo"],
+      automotriz: ["vehiculo"],
+      hipotecario: ["vivienda"],
+      garantia: ["vivienda","flexible"],
+      academico: ["educacion"],
+      rimac: ["vehiculo","proteccion"],
+      "fondo-sepelio": ["proteccion","familia"],
+      oncosalud: ["salud","proteccion"]
+    };
+    const SERVICIOS_RECO = [
+      {key:"rimac", title:"Seguro de Autos", desc:"Convenio con Rímac: la mejor tarifa del mercado y descuento por planilla.", icon:"car", color:"#8a3ffc", bg:"#f6f2ff", go:()=>this.go("rimac")},
+      {key:"fondo-sepelio", title:"Fondo de Sepelio", desc:"Cobertura para el socio y su familia directa desde $5 mensuales.", icon:"shield", color:"#52606d", bg:"#f0f2f5", go:()=>this.go("fondo-sepelio")},
+      {key:"oncosalud", title:"Oncosalud", desc:"18% de descuento sobre la tarifa de mercado para socios y familiares directos.", icon:"heart", color:"#da1e28", bg:"#fff0f0", go:()=>this.go("oncosalud")}
+    ];
+    const interests = this.state.interests || {};
+    const selectedInterestKeys = Object.keys(interests).filter(k=>interests[k]);
+    const tagOverlap = (a,b)=>a.filter(t=>b.includes(t)).length;
+    const recoCandidates = [
+      ...prestamosData.map(p=>({key:p.key, title:p.title, desc:p.desc, tags:RECO_TAGS[p.key]||[], color:p.color, bg:p.bg, icon:p.icon,
+        go:()=>{ const lim=LOAN_LIMITS[p.key]; this.setState({simTipo:p.key, monto:lim.defMonto, plazo:lim.defPlazo, page:"prestamo-detalle"}); const m=this.mainEl; if(m) m.scrollTop=0; }
+      })),
+      ...SERVICIOS_RECO.map(s=>({key:s.key, title:s.title, desc:s.desc, tags:RECO_TAGS[s.key]||[], color:s.color, bg:s.bg, icon:s.icon, go:s.go}))
+    ];
+    const scoredReco = recoCandidates.map(item=>{
+      let score = 0, reason = "";
+      if(interests[item.key]){ score += 10; reason = "Elegiste esto en tus preferencias"; }
+      if(item.key === this.state.simTipo && !interests[item.key]){ score += 3; reason = reason || "Basado en tu simulador de préstamos"; }
+      let related = 0;
+      selectedInterestKeys.forEach(sk=>{ if(sk!==item.key) related += tagOverlap(item.tags, RECO_TAGS[sk]||[]); });
+      if(related>0){ score += related*2; if(!reason) reason = "Relacionado con tus preferencias"; }
+      return {...item, score, reason: reason || "Sugerido para ti"};
+    }).sort((a,b)=>b.score-a.score);
+
+    // ---- Cuestionario de onboarding: segmenta los 10 productos en 6 necesidades de vida ----
+    const SEGMENTOS = [
+      {key:"vivienda", title:"Vivienda", desc:"Comprar, mejorar o invertir en mi casa o departamento", icon:"house", tags:["vivienda"]},
+      {key:"vehiculo", title:"Vehículo", desc:"Comprar o mantener mi auto", icon:"car", tags:["vehiculo"]},
+      {key:"educacion", title:"Estudios", desc:"Estudiar o pagar estudios, míos o de mi familia", icon:"cap", tags:["educacion"]},
+      {key:"liquidez", title:"Gasto inmediato", desc:"Cubrir una compra o gasto urgente", icon:"zap", tags:["rapido","compras","efectivo"]},
+      {key:"proyecto", title:"Proyecto a futuro", desc:"Un proyecto a mediano o largo plazo, sin apuro", icon:"calendar", tags:["flexible"]},
+      {key:"proteccion", title:"Salud y familia", desc:"Proteger la salud y el bienestar de mi familia", icon:"heart", tags:["salud","proteccion","familia"]}
+    ];
+    const onboardingSegments = this.state.onboardingSegments || {};
+    const activeSegTags = SEGMENTOS.filter(s=>onboardingSegments[s.key]).flatMap(s=>s.tags);
+    const onboardingPreview = recoCandidates
+      .map(item=>({...item, score: item.tags.filter(t=>activeSegTags.includes(t)).length}))
+      .filter(i=>i.score>0)
+      .sort((a,b)=>b.score-a.score)
+      .slice(0,3);
 
     const navItems = [
       ["Anuncios","anuncios"],["Quiénes Somos","quienes"],["Ahorro","ahorro"],["Proveedores","proveedores"],
@@ -1440,19 +1597,42 @@ class Component extends DCLogic {
         {label:"Teléfono",type:"tel",ph:"999 999 999",wrap:""},
         {label:"DNI / CE",type:"text",ph:"12345678",wrap:""}
       ],
-      promoCards: [
-        {key:"descuentos",title:"Convenios Corporativos",desc:"Ofertas y promociones especiales"},
-        {key:"prestamos",title:"Préstamos",desc:"Hipotecario, automotriz, académico y más"},
-        {key:"servicios",title:"Servicios",desc:"Seguro de autos, Fondo de Sepelio y salud"},
-        {key:"seguros",title:"Bienestar",desc:"Eventos, capacitaciones y recreación"}
-      ].map(c=>{
-        const on = !!this.state.promos[c.key];
-        return { ...c, toggle:()=>this.setState(s=>({promos:{...s.promos,[c.key]:!s.promos[c.key]}})),
-          checkOpacity: on ? 1 : 0,
-          cardStyle: "border:1px solid "+(on?"#0043ce":"#e5e8ec")+";background:"+(on?"#edf5ff":"#fff")+";border-radius:0;padding:22px;cursor:pointer;transition:all .12s",
-          boxStyle: "width:26px;height:26px;border-radius:0;display:flex;align-items:center;justify-content:center;color:#fff;border:2px solid "+(on?"#0043ce":"#cfd6dd")+";background:"+(on?"#0043ce":"transparent")
+      interestOptions: recoCandidates.map(c=>{
+        const on = !!interests[c.key];
+        return { key:c.key, title:c.title, icon:c.icon, on,
+          toggle: ()=>this.setState(s=>({interests:{...s.interests, [c.key]: !s.interests[c.key]}})),
+          chipStyle: "display:flex;align-items:center;gap:8px;border:1px solid "+(on?"#0043ce":"#d9dee4")+";background:"+(on?"#edf5ff":"#fff")+";color:"+(on?"#0043ce":"#161616")+";border-radius:20px;padding:10px 16px;font-size:14px;font-weight:600;cursor:pointer"
         };
       }),
+      recomendaciones: scoredReco.slice(0,3).map((r,i)=>({...r, slotId:"reco-"+i})),
+
+      showOnboarding: this.state.showOnboarding,
+      isOnboardingStep1: this.state.onboardingStep === 1,
+      isOnboardingStep2: this.state.onboardingStep === 2,
+      onboardingOptions: SEGMENTOS.map(s=>{
+        const on = !!onboardingSegments[s.key];
+        return { ...s, on,
+          toggle: ()=>this.setState(st=>({onboardingSegments:{...st.onboardingSegments, [s.key]: !st.onboardingSegments[s.key]}})),
+          checkOpacity: on ? 1 : 0,
+          cardStyle: "border:1px solid "+(on?"#0043ce":"#e5e8ec")+";background:"+(on?"#edf5ff":"#fff")+";border-radius:0;padding:16px;cursor:pointer;transition:all .12s"
+        };
+      }),
+      onboardingPreview: onboardingPreview,
+      hasOnboardingPreview: onboardingPreview.length > 0,
+      goOnboardingStep2: ()=>this.setState({onboardingStep:2}),
+      backOnboardingStep1: ()=>this.setState({onboardingStep:1}),
+      skipOnboarding: ()=>{
+        try{ localStorage.setItem("coope_onboarding_done","1"); }catch(e){}
+        this.setState({showOnboarding:false, onboardingStep:1});
+      },
+      finishOnboarding: ()=>{
+        const newInterests = {...this.state.interests};
+        recoCandidates.forEach(item=>{
+          if(item.tags.some(t=>activeSegTags.includes(t))) newInterests[item.key] = true;
+        });
+        try{ localStorage.setItem("coope_onboarding_done","1"); }catch(e){}
+        this.setState({interests:newInterests, showOnboarding:false, onboardingStep:1});
+      },
 
       pilares: [
         {icon:"%",title:"Ahorra e invierte",desc:"Ahorro simple desde S/50 mensuales o depósitos a plazo fijo, con intereses en soles y dólares."},
@@ -1858,6 +2038,7 @@ class Component extends DCLogic {
         }
         if(!r.accept){ this.setState({registroError:"Debes aceptar el estatuto y el tratamiento de datos personales."}); return; }
         this.setState({registroError:"", registroSuccess:true});
+        this.maybeShowOnboarding();
       },
 
       mostrarSimulador, montoMin, montoMax, montoStep, plazoMin, plazoMax, plazoStep,
