@@ -3,6 +3,7 @@
 A small Express API that the site's admin login talks to. It provides:
 
 - `POST /api/auth/login` — admin login, returns a JWT
+- `POST /api/auth/socio-login` — socio login (placeholder del seam IBM Verify), returns `{ token, socio }`
 - `GET /api/content` — public: `{ anuncios, proveedores, tasas }`
 - `POST /api/anuncios` / `DELETE /api/anuncios/:id` — admin only
 - `POST /api/proveedores` / `PUT /api/proveedores/:id` / `DELETE /api/proveedores/:id` — admin only
@@ -119,8 +120,10 @@ campos, CRLF) para cargarlo en el S400.
 
 ### Flujo
 
-1. **Socio** entra a su perfil (login por conectar con IBM Verify) y edita sus
-   datos → `GET /api/socios/:docume` para leer su registro y
+1. **Socio** entra a su perfil — login actual **placeholder** en
+   `POST /api/auth/socio-login` (seam para IBM Verify; hoy valida el DOCUME en
+   el store y emite el JWT `role:"socio"`) — y edita sus datos →
+   `GET /api/socios/:docume` para leer su registro y
    `PUT /api/socios/:docume` para guardar cambios.
 2. **Admin** entra, nav **Descargar TXT**, y pulsa **Descargar TXT**: baja
    `socios-{YYYYMMDD}.txt` con todos los socios actualizados.

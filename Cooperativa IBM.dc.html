@@ -1822,14 +1822,20 @@ class Component extends DCLogic {
         const base = (this.state.apiBase || "").replace(/\/$/, "");
         if(base){
           try{
-            const res = await fetch(base + "/api/socios/" + docume);
+            // Login de socio — POST /api/auth/socio-login (placeholder del seam
+            // que luego valida IBM Verify). Devuelve { token, socio }.
+            const res = await fetch(base + "/api/auth/socio-login", {
+              method: "POST", headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ docume })
+            });
+            const body = await res.json().catch(()=>({}));
             if(!res.ok){
-              this.setState({loginError: "Socio no encontrado con el código " + docume});
+              this.setState({loginError: body.error || "Socio no encontrado con el código " + docume});
               return;
             }
-            const body = await res.json();
             this.setState({
               loginError: "",
+              auth: { role: "socio", token: body.token },
               socioSession: body.socio,
               socioForm: { ...body.socio }
             });

@@ -47,4 +47,30 @@ function requireAdmin(req, res, next) {
   }
 }
 
-module.exports = { login, requireAdmin };
+// Socio login — PLACEHOLDER (seam para IBM Verify).
+// Hoy solo verifica que el DOCUME existe en el store y emite un JWT
+// role:"socio"; en producción esto se reemplaza por la validación del token
+// de IBM Verify y la emisión (o mapeo) del JWT interno que usa el resto de
+// endpoints del portal.
+function socioLogin(socio) {
+  return jwt.sign({ role: "socio", docume: socio.DOCUME }, secret, { expiresIn: "12h" });
+}
+
+// Middleware para endpoints de socio: agrega req.socio = { role, docume }
+// sacado del token. Cada socio solo opera su propio DOCUME (PRD §11: editar
+// solo sus propios datos); el dueño se valida en cada ruta contra req.socio.
+function requireSocio(req, res, next) {
+  const header = req.headers.authorization || "";
+  const token = header.startsWith("Bearer ") ? header.slice(7) : null;
+  if (!token) return res.status(401).json({ error: "No autorizado." });
+  try {
+    const payload = jwt.verify(token, secret);
+    if (payload.role !== "socio") return res.status(403).json({ error: "Prohibido." });
+    req.socio = payload;
+    next();
+  } catch {
+    return res.status(401).json({ error: "Sesión inválida o expirada." });
+  }
+}
+
+module.exports = { login, requireAdmin, socioLogin, requireSocio };

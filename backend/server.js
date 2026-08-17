@@ -2,9 +2,10 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 
-const { login, requireAdmin } = require("./src/auth");
+const { login, requireAdmin, socioLogin, requireSocio } = require("./src/auth");
 const store = require("./src/store");
 const txt = require("./src/txt");
+const reads = require("./src/reads");
 
 const app = express();
 app.use(express.json({ limit: "20mb" }));
@@ -20,6 +21,28 @@ app.post("/api/auth/login", async (req, res) => {
   const token = await login(user, pass);
   if (!token) return res.status(401).json({ error: "Usuario o contraseña incorrectos." });
   res.json({ token });
+});
+
+// Socio login — PLACEHOLDER (seam para IBM Verify).
+// Hoy solo valida que el DOCUME exista (db2 si DATAAPI_ENABLED, si no el
+// mirror local) y emite el JWT de socio. Cuando se integre IBM Verify, este
+// endpoint cambia por la validación del token/oAuth del proveedor: mismo
+// contrato de respuesta { token, socio, source }.
+app.post("/api/auth/socio-login", async (req, res) => {
+  const { docume } = req.body || {};
+  if (!docume || !String(docume).trim()) {
+    return res.status(400).json({ error: "Falta el código de socio (DOCUME)." });
+  }
+  const key = String(docume).trim();
+  let read;
+  try {
+    read = await reads.readSocio(store, key);
+  } catch (e) {
+    return res.status(e.status || 500).json({ error: e.message });
+  }
+  if (!read.socio) return res.status(404).json({ error: "Socio no encontrado con el código " + key });
+  const token = socioLogin(read.socio);
+  res.json({ token, socio: read.socio, source: read.source });
 });
 
 app.get("/api/content", async (req, res) => {
@@ -118,16 +141,32 @@ app.get("/api/socios", requireAdmin, async (req, res) => {
   res.json({ socios });
 });
 
-// perfil de un socio
-app.get("/api/socios/:docume", async (req, res) => {
-  const socio = await store.getSocio(req.params.docume);
-  if (!socio) return res.status(404).json({ error: "Socio no encontrado." });
-  res.json({ socio });
+// perfil de un socio (requiere token de socio — placeholder IBM Verify)
+// db2 autoritativo si DATAAPI_ENABLED; si no, mirror local. El overlay de
+// cambios pendientes solo se aplica sobre base db2 (Fase C).
+app.get("/api/socios/:docume", requireSocio, async (req, res) => {
+  if (String(req.params.docume) !== req.socio.docume) {
+    return res.status(403).json({ error: "Solo puedes ver tu propio perfil." });
+  }
+  let read;
+  try {
+    read = await reads.readSocio(store, req.params.docume);
+  } catch (e) {
+    return res.status(e.status || 500).json({ error: e.message });
+  }
+  if (!read.socio) return res.status(404).json({ error: "Socio no encontrado." });
+  const body = { socio: read.socio, source: read.source };
+  if (read.overlaid && read.overlaid.length) body.overlaid = read.overlaid;
+  if (read.autoCleared && read.autoCleared.length) body.autoCleared = read.autoCleared;
+  res.json(body);
 });
 
 // actualizar perfil de un socio (autoservicio demo)
-app.put("/api/socios/:docume", async (req, res) => {
+app.put("/api/socios/:docume", requireSocio, async (req, res) => {
   const docume = String(req.params.docume || "").trim();
+  if (docume !== req.socio.docume) {
+    return res.status(403).json({ error: "Solo puedes editar tu propio perfil." });
+  }
   const existing = await store.getSocio(docume);
   const base = existing || { DOCUME: docume };
   const patch = pickSocioFields(req.body || {});
