@@ -8,26 +8,28 @@ const GOLD = fs.readFileSync(
   "utf8"
 );
 
+// Delta rows: read-only fields (TIPDID, DOCIDE, NACION, DNICY) are never part of
+// a real portal delta — pickSocioFields() strips them — so they're absent here.
 const rows = [
   {
-    DOCUME: "999999", TIPDID: "1", DOCIDE: "72345678",
-    APEPAT: "NUÑEZ", APEMAT: "ZEGARRA", NOMBRE: "JOSÉ ALBERTO",
-    DIRECC: "Av. Los Próceres 1234 Dpto 402 San Isidro", LOCALI: "SAN ISIDRO",
-    PROVIN: "LIMA", DEPART: "LIMA", NCOMPL: "NUÑEZ QUISPE JOSE ALBERTO",
-    NOMBC2: "abi.test@coop.com.pe", TELCEL: "987654321",
-    NACION: "1", CCIUDA: "150100", NOMCON: "PEREZ LOPEZ CARMEN ROSA",
-    DNICY: "12345678", ESTCIV: "C", CARGAM: "03", OFICIO: "INGENIERO", SECTO1: "02"
+    DOCUME: "B00003", APEPAT: "BURGOS", APEMAT: "RAMOS", NOMBRE: "JUAN HECTOR",
+    DIRECC: "CALLE EL CARMEN 118 LT 9A PPJJ", LOCALI: "PISCO",
+    PROVIN: "ICA", DEPART: "ICA", NCOMPL: "BURGOS RAMOS JUAN HECTOR",
+    NOMBC2: "juan.burgos@bluetab.net", TELCEL: "953693912",
+    CCIUDA: "110102", NOMCON: "", ESTCIV: "S", CARGAM: "3", OFICIO: "ING DE SIST E INFORM", SECTO1: "0"
   },
   {
     DOCUME: "888888", ESTCIV: "S", OFICIO: "INGENIERO"
   },
   {
-    DOCUME: "800002", TIPDID: "7", DOCIDE: "12345678901",
-    NACION: "2", CCIUDA: "140100",
-    ESTCIV: "D", CARGAM: "99", OFICIO: "DOCENTE", SECTO1: "07"
+    DOCUME: "B00008", APEPAT: "NAMUCHE", APEMAT: "MALDONADO", NOMBRE: "LUIS EDUARDO",
+    DIRECC: "JR RICARDO AICARDI 345 DPTO 101", LOCALI: "STGO SURCO",
+    PROVIN: "LIMA", DEPART: "LIMA", NCOMPL: "NAMUCHE MALDONADO LUIS EDUARDO",
+    NOMBC2: "LUIS.NAMUCHE@BLUETAB.NET", TELCEL: "966881929",
+    CCIUDA: "150140", NOMCON: "", ESTCIV: "S", CARGAM: "1", OFICIO: "INGENIERO", SECTO1: "0"
   },
   {
-    DOCUME: "999001", DNICY: "76543210", ESTCIV: "C"
+    DOCUME: "999001", ESTCIV: "C"
   }
 ];
 
@@ -127,9 +129,36 @@ check("validacion: catalogos cerrados del TXT", () => {
 });
 
 check("serializacion: catalogos se normalizan antes de salir", () => {
-  const r = build([{ DOCUME: "999999", NACION: " 1 ", ESTCIV: "c" }]);
+  const r = build([{ DOCUME: "999999", ESTCIV: "c" }]);
   assert.strictEqual(r.hasErrors, false);
-  assert.strictEqual(r.txt, "999999;;;;;;;;;;;;;1;;;;C;;;");
+  assert.strictEqual(r.txt, "999999;;;;;;;;;;;;;;;;;C;;;");
+});
+
+check("readOnly: serializeRow nunca transmite identidad/nacionalidad en delta", () => {
+  const out = serializeRow({
+    DOCUME: "999999", TIPDID: "1", DOCIDE: "12345678", NACION: "1", DNICY: "87654321",
+    APEPAT: "NUÑEZ"
+  });
+  const fields = out.split(";");
+  assert.strictEqual(fields[0], "999999", "DOCUME (clave) sobrevive");
+  assert.strictEqual(fields[1], "", "TIPDID no se transmite");
+  assert.strictEqual(fields[2], "", "DOCIDE no se transmite");
+  assert.strictEqual(fields[3], "NUÑEZ", "campo editable se serializa");
+  assert.strictEqual(fields[13], "", "NACION no se transmite");
+  assert.strictEqual(fields[16], "", "DNICY no se transmite");
+});
+
+check("validateRow acepta valores readOnly del socio base (estado completo)", () => {
+  const row = {
+    DOCUME: "999999", TIPDID: "1", DOCIDE: "12345678", NACION: "1"
+  };
+  assert.deepStrictEqual(validateRow(row), [], "el estado base mergeado debe validar");
+});
+
+check("catalogo TIPDID cerrado a DNI (1)", () => {
+  const bad = build([{ DOCUME: "999999", TIPDID: "2" }]);
+  assert.strictEqual(bad.hasErrors, true);
+  assert.ok(bad.report[0].errors.some((e) => e.key === "TIPDID"));
 });
 if (!allOk) {
   console.error("\nFAILURES — revisa el módulo o el fixture.");

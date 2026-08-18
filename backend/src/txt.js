@@ -5,15 +5,18 @@
 // which splits on ";" and requires exactly 21 parts.
 
 const CATALOGS = {
-  TIPDID: new Set(["1", "4", "7"]),
+  TIPDID: new Set(["1"]),
   NACION: new Set(["1", "2"]),
   ESTCIV: new Set(["S", "C", "V", "D"])
 };
 
+// readOnly fields are identity/locked by contract (PRD 18-ago-26): they can be
+// read for display but never written by the socio. The TXT delta serializes
+// them empty (no tocar) and pickSocioFields filters them server-side.
 const LAYOUT = [
-  { key: "DOCUME", field: "DOCUME", length: 6, type: "char", note: "clave — código del socio (nunca editable)" },
-  { key: "TIPDID", field: "TIPDID", length: 1, type: "char" },
-  { key: "DOCIDE", field: "DOCIDE", length: 11, type: "zoned" },
+  { key: "DOCUME", field: "DOCUME", length: 6, type: "char", readOnly: true, note: "clave — código del socio (nunca editable)" },
+  { key: "TIPDID", field: "TIPDID", length: 1, type: "char", readOnly: true, note: "tipo de documento — fijo 1=DNI" },
+  { key: "DOCIDE", field: "DOCIDE", length: 11, type: "zoned", readOnly: true, note: "n° de documento — solo lectura" },
   { key: "APEPAT", field: "APEPAT", length: 20, type: "char" },
   { key: "APEMAT", field: "APEMAT", length: 20, type: "char" },
   { key: "NOMBRE", field: "NOMBRE", length: 30, type: "char" },
@@ -24,10 +27,10 @@ const LAYOUT = [
   { key: "NCOMPL", field: "NCOMPL", length: 60, type: "char" },
   { key: "NOMBC2", field: "NOMBC2", length: 50, type: "char" },
   { key: "TELCEL", field: "TELCEL", length: 9, type: "zoned" },
-  { key: "NACION", field: "NACION", length: 1, type: "char", note: "nacionalidad — 1=Peruana, 2=Extranjera" },
+  { key: "NACION", field: "NACION", length: 1, type: "char", readOnly: true, note: "nacionalidad — fija 1=Peruana" },
   { key: "CCIUDA", field: "CCIUDA", length: 6, type: "zoned", note: "ciudad de trabajo (Ubigeo)" },
   { key: "NOMCON", field: "NOMCON", length: 40, type: "char" },
-  { key: "DNICY", field: "DNICY", length: 8, type: "zoned", note: "DNI del cónyuge" },
+  { key: "DNICY", field: "DNICY", length: 8, type: "zoned", readOnly: true, note: "DNI del cónyuge — no capturado en MVP, se envía vacío" },
   { key: "ESTCIV", field: "ESTCIV", length: 1, type: "char" },
   { key: "CARGAM", field: "CARGAM", length: 2, type: "zoned" },
   { key: "OFICIO", field: "OFICIO", length: 20, type: "char" },
@@ -99,10 +102,22 @@ function validateRow(row) {
   return errors;
 }
 
+// Delta serializer: DOCUME always serializes (row key); readOnly fields always
+// serialize empty (no tocar) so identity/nationality is never transmitted as an
+// update; editable fields serialize their value. Defense in depth on top of
+// pickSocioFields().
 function serializeRow(row) {
   const parts = [];
   for (const col of LAYOUT) {
     const raw = row && row[col.key] != null ? String(row[col.key]) : "";
+    if (col.key === "DOCUME") {
+      parts.push(raw);
+      continue;
+    }
+    if (col.readOnly) {
+      parts.push("");
+      continue;
+    }
     const value = CATALOGS[col.key] ? normalizeCatalogValue(raw) : raw;
     parts.push(isNoTouch(raw) ? "" : value);
   }

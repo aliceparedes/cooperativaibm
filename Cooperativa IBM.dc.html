@@ -1212,8 +1212,13 @@
 
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
             <sc-for list="{{ socioFields }}" as="f" hint-placeholder-count="6">
+              <sc-if value="{{ !f.hidden }}" hint-placeholder-val="{{ true }}">
               <div>
                 <label style="display:block;font-size:13px;font-weight:600;color:#3b4653;margin-bottom:7px">{{ f.label }}</label>
+                <sc-if value="{{ f.readOnly }}" hint-placeholder-val="{{ false }}">
+                  <div style="padding:13px 14px;font-size:15px;background:#f2f4f8;border:1px solid #e0e6ec;border-radius:0;color:#52606d">{{ f.value }}</div>
+                </sc-if>
+                <sc-if value="{{ !f.readOnly }}" hint-placeholder-val="{{ true }}">
                 <sc-if value="{{ f.isSelect }}" hint-placeholder-val="{{ false }}">
                   <select value="{{ f.value }}" onChange="{{ f.onInput }}" style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:13px 14px;font-size:15px;font-family:inherit;outline:none;background:#fff" style-focus="border:1px solid #0043ce;box-shadow:0 0 0 3px #edf5ff">
                     <sc-for list="{{ f.options }}" as="o" hint-placeholder-count="4">
@@ -1224,7 +1229,9 @@
                 <sc-if value="{{ !f.isSelect }}" hint-placeholder-val="{{ true }}">
                   <input type="{{ f.type }}" value="{{ f.value }}" onInput="{{ f.onInput }}" style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:13px 14px;font-size:15px;font-family:inherit;outline:none" style-focus="border:1px solid #0043ce;box-shadow:0 0 0 3px #edf5ff">
                 </sc-if>
+                </sc-if>
               </div>
+              </sc-if>
             </sc-for>
           </div>
 
@@ -1448,21 +1455,21 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;100%&quot;,&quot;height&quot;:&quot;800px&quot;},&quot;mostrarSimulador&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Simulador&quot;,&quot;label&quot;:&quot;Mostrar simulador&quot;}}">
 const TIPDID_OPTS = [
-  {v:"1",l:"DNI"},
-  {v:"4",l:"Pasaporte"},
-  {v:"7",l:"Otro"}
+  {v:"1",l:"DNI"}
 ];
 const ESTCIV_OPTS = [
   {v:"S",l:"Soltero"},{v:"C",l:"Casado"},{v:"D",l:"Divorciado"},{v:"V",l:"Viudo"}
 ];
 const NACION_OPTS = [
-  {v:"1",l:"Peruana"},{v:"2",l:"Extranjera"}
+  {v:"1",l:"Peruana"}
 ];
 const OPTS = { TIPDID_OPTS, ESTCIV_OPTS, NACION_OPTS };
 
+// readOnly: identidad/nacionalidad fijas por contrato (PRD 18-ago-26) — se muestran
+// como texto estático en el perfil y nunca se envían. hidden: campo no capturado en MVP.
 const SOCIO_FIELDS = [
-  { key:"TIPDID", label:"Tipo de documento", bytes:1,  type:"select",  optsKey:"TIPDID_OPTS" },
-  { key:"DOCIDE", label:"Documento de identidad", bytes:11, type:"numeric", placeholder:"Solo digitos" },
+  { key:"TIPDID", label:"Tipo de documento", bytes:1,  type:"select",  optsKey:"TIPDID_OPTS", readOnly:true },
+  { key:"DOCIDE", label:"Documento de identidad", bytes:11, type:"numeric", placeholder:"Solo digitos", readOnly:true },
   { key:"APEPAT", label:"Apellido paterno",  bytes:20, type:"text" },
   { key:"APEMAT", label:"Apellido materno",  bytes:20, type:"text" },
   { key:"NOMBRE", label:"Nombres",           bytes:30, type:"text" },
@@ -1473,10 +1480,10 @@ const SOCIO_FIELDS = [
   { key:"NCOMPL", label:"Nombre completo",   bytes:60, type:"text" },
   { key:"NOMBC2", label:"Correo",            bytes:50, type:"text" },
   { key:"TELCEL", label:"Celular",           bytes:9,  type:"numeric" },
-  { key:"NACION", label:"Nacionalidad",      bytes:1,  type:"select",  optsKey:"NACION_OPTS" },
+  { key:"NACION", label:"Nacionalidad",      bytes:1,  type:"select",  optsKey:"NACION_OPTS", readOnly:true },
   { key:"CCIUDA", label:"Código de ciudad",  bytes:6,  type:"numeric" },
   { key:"NOMCON", label:"Nombre del cónyuge",bytes:40, type:"text" },
-  { key:"DNICY", label:"DNI del cónyuge",    bytes:8,  type:"numeric" },
+  { key:"DNICY", label:"DNI del cónyuge",    bytes:8,  type:"numeric", readOnly:true, hidden:true },
   { key:"ESTCIV", label:"Estado civil",      bytes:1,  type:"select",  optsKey:"ESTCIV_OPTS" },
   { key:"CARGAM", label:"Cargas familiares", bytes:2,  type:"numeric" },
   { key:"OFICIO", label:"Profesion",         bytes:20, type:"text" },
@@ -2465,6 +2472,8 @@ class Component extends DCLogic {
           label: f.label,
           type: f.type === "numeric" ? "number" : "text",
           isSelect: f.type === "select",
+          readOnly: !!f.readOnly,
+          hidden: !!f.hidden,
           value: val,
           options: f.type === "select" ? (f.optsKey === "NACION_OPTS" ? NACION_OPTS : f.optsKey === "ESTCIV_OPTS" ? ESTCIV_OPTS : TIPDID_OPTS).map(o => ({v: o.v, l: o.l, selected: val === o.v})) : [],
           onInput: (e) => {
@@ -2479,11 +2488,14 @@ class Component extends DCLogic {
         this.setState({ socioError: "", socioSuccess: "" });
         const docume = this.state.socioSession.DOCUME;
         const base = (this.state.apiBase || "").replace(/\/$/, "");
+        // only editable fields leave the client; read-only identity stays fixed
+        const editable = {};
+        SOCIO_FIELDS.forEach(f => { if(!f.readOnly) editable[f.key] = this.state.socioForm[f.key]; });
         if(base){
           try{
             const res = await this.apiFetch("/api/socios/" + docume, {
               method: "PUT",
-              body: JSON.stringify(this.state.socioForm)
+              body: JSON.stringify(editable)
             });
             this.setState({ socioSession: res.socio, socioSuccess: "Cambios guardados exitosamente. Pendiente de sincronización con S400." });
           }catch(e){
@@ -2491,7 +2503,7 @@ class Component extends DCLogic {
           }
           return;
         }
-        this.setState({ socioSession: { ...this.state.socioSession, ...this.state.socioForm }, socioSuccess: "Cambios guardados (modo demo local). Pendiente de sincronización con S400." });
+        this.setState({ socioSession: { ...this.state.socioSession, ...editable }, socioSuccess: "Cambios guardados (modo demo local). Pendiente de sincronización con S400." });
       },
       socioLogout: () => {
         this.setState({ socioSession: null, socioForm: emptySocioForm() });

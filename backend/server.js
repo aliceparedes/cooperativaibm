@@ -130,6 +130,7 @@ function pickSocioFields(body) {
   for (const col of txt.LAYOUT) {
     const k = col.key;
     if (k === "DOCUME") continue;
+    if (col.readOnly) continue; // identity/nationality locked: never writable
     if (body[k] !== undefined) out[k] = body[k] == null ? "" : String(body[k]);
   }
   return out;
