@@ -1,18 +1,13 @@
 // dataapi client — lee el perfil personal del socio desde db2 (Fase B).
-// Contrato de lectura: GET {DATAAPI_URL}/coopesocios/by-docume/{docume}
-// devuelve solo los 21 campos personales. La escritura en db2 NO pasa por el
-// portal (Regla 1: TXT -> José -> S400 -> db2).
+// Usa LoopBack filter API (lowercase field names) en lugar de los endpoints
+// custom (/by-docume, /by-email) que devuelven campos incompletos.
 //
-// La whitelist de campos se aplica ARRIBA, en el dataapi (pickPersonal /
-// PERSONAL_FIELDS del controller). Este cliente es un passthrough: devuelve
-// lo que venga sin filtrar. No asumas aquí una validación de campos que no
-// existe: cualquier campo nuevo que añada el dataapi llegará al frontend tal
-// cual.
+// LoopBack filter: GET {DATAAPI_URL}/coopesocios?filter={"where":{...}}
+// Devuelve array de objetos con todos los campos.
 //
 // Discriminación de resultados:
-//   - 200            -> { status: 'ok', socio }
-//   - 404            -> { status: 'not_found' }  (aún no migrado a db2)
-//   - 5xx/otro/timeout/error de conexión -> { status: 'unavailable', error }
+//   - 200 con array    -> 0=not_found, 1=ok, >1=ambiguous (409)
+//   - 404/otro         -> unavailable
 
 const http = require("http");
 const https = require("https");
@@ -49,16 +44,40 @@ function request(url) {
   });
 }
 
-// Lee el perfil de un socio. Nunca lanza: devuelve un resultado discriminado.
-async function readSocio(docume) {
-  const url = `${DATAAPI_URL}/coopesocios/by-docume/${encodeURIComponent(String(docume).trim())}`;
+// DB2 (LoopBack) → S400 (PRD) field name mapping.
+// LoopBack lowercase → uppercase already done by queryFilter;
+// this maps DB2-specific names to the S400 names the rest of the code expects.
+const DB2_TO_S400 = {
+  CODEMPLEADO: "DOCUME",
+  // Add more here if DB2 adds columns with different names
+};
+
+function mapToS400(row) {
+  const out = { ...row };
+  for (const [db2, s400] of Object.entries(DB2_TO_S400)) {
+    if (db2 in out) {
+      out[s400] = out[db2];
+      // keep original too so dataapi lookups still work
+    }
+  }
+  return out;
+}
+
+// Helper: query LoopBack filter API, return array of matches
+async function queryFilter(filter) {
+  const url = `${DATAAPI_URL}/coopesocios?filter=${encodeURIComponent(JSON.stringify(filter))}`;
   try {
     const res = await request(url);
-    if (res.status === 200) {
-      return { status: "ok", socio: res.json };
-    }
-    if (res.status === 404) {
-      return { status: "not_found" };
+    if (res.status === 200 && Array.isArray(res.json)) {
+      // Normalize lowercase LoopBack field names to uppercase for frontend compatibility
+      const rows = res.json.map(row => {
+        const normalized = {};
+        for (const [key, val] of Object.entries(row)) {
+          normalized[key.toUpperCase()] = val;
+        }
+        return mapToS400(normalized);
+      });
+      return { status: "ok", rows };
     }
     return { status: "unavailable", error: `dataapi respondió ${res.status}` };
   } catch (e) {
@@ -66,4 +85,32 @@ async function readSocio(docume) {
   }
 }
 
-module.exports = { isEnabled, readSocio, DATAAPI_URL };
+// Lee el perfil de un socio por DOCUME (codempleado, uppercase).
+// LoopBack usa campo lowercase 'codempleado' para el DOCUME de DB2.
+async function readSocio(docume) {
+  const key = String(docume).trim();
+  if (!key) return { status: "not_found" };
+  const result = await queryFilter({ where: { codempleado: key } });
+  if (result.status !== "ok") return result;
+  if (result.rows.length === 0) return { status: "not_found" };
+  if (result.rows.length > 1) {
+    return { status: "ambiguous", error: `Multiple records for docume ${key}` };
+  }
+  return { status: "ok", socio: result.rows[0] };
+}
+
+// Lee el perfil de un socio por email (NOMBC2).
+// LoopBack usa campo lowercase 'nombc2'.
+async function readSocioByEmail(email) {
+  const key = String(email).trim();
+  if (!key) return { status: "not_found" };
+  const result = await queryFilter({ where: { nombc2: key } });
+  if (result.status !== "ok") return result;
+  if (result.rows.length === 0) return { status: "not_found" };
+  if (result.rows.length > 1) {
+    return { status: "ambiguous", error: `Multiple accounts with email ${key}` };
+  }
+  return { status: "ok", socio: result.rows[0] };
+}
+
+module.exports = { isEnabled, readSocio, readSocioByEmail, DATAAPI_URL };
