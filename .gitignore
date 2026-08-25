@@ -1,0 +1,17 @@
+# Environment and secrets
+.env
+*.pem
+*.key
+
+# Test artifacts
+test-token.txt
+
+# Dependencies
+node_modules/
+
+# Data files
+data.json
+
+# OS files
+.DS_Store
+Thumbs.db
