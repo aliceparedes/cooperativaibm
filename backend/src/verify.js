@@ -64,6 +64,7 @@ function getDb2Conn() {
 
 /**
  * Direct DB2 lookup: email → full socio record.
+ * Tries NOMBC2 first (primary IBM email), then EMAILEMPLEADO (alternate).
  * Returns { status: 'ok', socio } | { status: 'not_found' }
  */
 function lookupSocioByEmailDirect(email) {
@@ -71,26 +72,47 @@ function lookupSocioByEmailDirect(email) {
     const conn = getDb2Conn();
     if (!conn) return resolve({ status: "unavailable", error: "DB2 connection not initialized" });
 
-    const sql = `SELECT * FROM MSZ77777.COOPESOCIOS WHERE LOWER(TRIM(NOMBC2)) = LOWER(TRIM(?)) FETCH FIRST 2 ROWS ONLY`;
+    // Try NOMBC2 first (primary IBM email used for OIDC)
+    const sqlNombc2 = `SELECT * FROM MSZ77777.COOPESOCIOS WHERE LOWER(TRIM(NOMBC2)) = LOWER(TRIM(?)) FETCH FIRST 2 ROWS ONLY`;
 
     try {
-      conn.query(sql, [email], (err, rows) => {
+      conn.query(sqlNombc2, [email], (err, rows) => {
         if (err) {
-          console.error("[verify] DB2 lookup error:", err.message);
+          console.error("[verify] DB2 lookup error (nombc2):", err.message);
           return resolve({ status: "unavailable", error: err.message });
         }
-        if (!rows || rows.length === 0) {
-          return resolve({ status: "not_found" });
+        if (rows && rows.length > 0) {
+          if (rows.length > 1) {
+            console.warn("[verify] ambiguous email in nombc2 — multiple rows:", rows.length);
+          }
+          const socio = {};
+          for (const [key, val] of Object.entries(rows[0])) {
+            socio[key.toUpperCase()] = val;
+          }
+          return resolve({ status: "ok", socio });
         }
-        if (rows.length > 1) {
-          console.warn("[verify] ambiguous email — multiple rows:", rows.length);
-        }
-        // Normalize field names to uppercase (DB2 may return mixed case)
-        const socio = {};
-        for (const [key, val] of Object.entries(rows[0])) {
-          socio[key.toUpperCase()] = val;
-        }
-        resolve({ status: "ok", socio });
+
+        // Fallback: try EMAILEMPLEADO (alternate email, used by jubilados and others)
+        console.log("[verify] not found in nombc2, trying emailempleado for:", email);
+        const sqlAlt = `SELECT * FROM MSZ77777.COOPESOCIOS WHERE LOWER(TRIM(EMAILEMPLEADO)) = LOWER(TRIM(?)) FETCH FIRST 2 ROWS ONLY`;
+
+        conn.query(sqlAlt, [email], (err2, rows2) => {
+          if (err2) {
+            console.error("[verify] DB2 lookup error (emailempleado):", err2.message);
+            return resolve({ status: "unavailable", error: err2.message });
+          }
+          if (!rows2 || rows2.length === 0) {
+            return resolve({ status: "not_found" });
+          }
+          if (rows2.length > 1) {
+            console.warn("[verify] ambiguous email in emailempleado — multiple rows:", rows2.length);
+          }
+          const socio = {};
+          for (const [key, val] of Object.entries(rows2[0])) {
+            socio[key.toUpperCase()] = val;
+          }
+          resolve({ status: "ok", socio });
+        });
       });
     } catch (e) {
       console.error("[verify] DB2 lookup exception:", e.message);

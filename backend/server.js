@@ -205,7 +205,10 @@ app.put("/api/socios/:docume", requireSocio, async (req, res) => {
 
   const errors = txt.validateRow(next);
   if (docume.trim() === "") errors.unshift({ key: "DOCUME", field: "DOCUME", msg: "DOCUME es obligatorio (clave del socio)." });
-  if (errors.length) return res.status(422).json({ error: "Hay campos con errores.", report: [{ row: 1, docume, errors }] });
+  if (errors.length) {
+    res.statusCode = 422;
+    return res.json({ error: "Hay campos con errores.", report: [{ row: 1, docume, errors }] });
+  }
 
   // Persist the updated profile
   await store.saveSocio(next);
@@ -249,7 +252,8 @@ app.post("/api/socios/txt", requireAdmin, async (req, res) => {
   const result = txt.build(rows);
   
   if (result.hasErrors) {
-    return res.status(422).json({ error: "Hay filas con errores.", report: result.report });
+    res.statusCode = 422;
+    return res.json({ error: "Hay filas con errores.", report: result.report });
   }
 
   // Create batch
