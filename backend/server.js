@@ -10,8 +10,12 @@ const reads = require("./src/reads");
 const app = express();
 app.use(express.json({ limit: "20mb" }));
 
-const allowedOrigin = process.env.ALLOWED_ORIGIN || "*";
-app.use(cors({ origin: allowedOrigin }));
+const allowedOrigins = (process.env.ALLOWED_ORIGIN || "*").split(",").map((o) => o.trim());
+app.use(
+  cors({
+    origin: allowedOrigins.includes("*") ? "*" : allowedOrigins
+  })
+);
 
 app.get("/api/health", (req, res) => res.json({ ok: true }));
 
@@ -119,6 +123,118 @@ app.put("/api/tasas", requireAdmin, async (req, res) => {
   }
   const tasas = await store.updateTasas(patch);
   res.json(tasas);
+});
+
+const PRODUCTO_KEYS = ["bebidas", "rimac", "movistar", "perufarma", "smartfit", "oncosalud"];
+
+app.put("/api/productos/:key", requireAdmin, async (req, res) => {
+  if (!PRODUCTO_KEYS.includes(req.params.key)) return res.status(404).json({ error: "Producto no encontrado." });
+  const { title, cat, desc } = req.body || {};
+  const patch = {};
+  if (typeof title === "string") patch.title = title.trim();
+  if (typeof cat === "string") patch.cat = cat.trim();
+  if (typeof desc === "string") patch.desc = desc.trim();
+  const producto = await store.updateProducto(req.params.key, patch);
+  res.json(producto);
+});
+
+const PRESTAMO_KEYS = ["sola-firma", "consumo", "largo-plazo", "automotriz", "hipotecario", "garantia", "academico"];
+const PRESTAMO_NUMERIC_FIELDS = ["montoMin", "montoMax", "montoStep", "plazoMin", "plazoMax", "plazoStep", "bank", "defMonto", "defPlazo"];
+
+app.put("/api/prestamos/:key", requireAdmin, async (req, res) => {
+  if (!PRESTAMO_KEYS.includes(req.params.key)) return res.status(404).json({ error: "Préstamo no encontrado." });
+  const body = req.body || {};
+  const patch = {};
+  if (typeof body.title === "string") patch.title = body.title.trim();
+  if (typeof body.desc === "string") patch.desc = body.desc.trim();
+  for (const k of PRESTAMO_NUMERIC_FIELDS) {
+    const v = body[k];
+    if (typeof v === "number" && !Number.isNaN(v)) patch[k] = v;
+  }
+  const prestamo = await store.updateLoanProduct(req.params.key, patch);
+  res.json(prestamo);
+});
+
+function parseHistoriaPayload(body) {
+  const { date, text } = body || {};
+  if (!date || !String(date).trim()) return { error: "Falta la fecha." };
+  if (!text || !String(text).trim()) return { error: "Falta el texto." };
+  return { payload: { date: String(date).trim(), text: String(text).trim() } };
+}
+
+app.post("/api/historia", requireAdmin, async (req, res) => {
+  const { error, payload } = parseHistoriaPayload(req.body);
+  if (error) return res.status(400).json({ error });
+  const h = await store.addHistoria(payload);
+  res.status(201).json(h);
+});
+
+app.put("/api/historia/:id", requireAdmin, async (req, res) => {
+  const { error, payload } = parseHistoriaPayload(req.body);
+  if (error) return res.status(400).json({ error });
+  const h = await store.updateHistoria(req.params.id, payload);
+  if (!h) return res.status(404).json({ error: "Elemento no encontrado." });
+  res.json(h);
+});
+
+app.delete("/api/historia/:id", requireAdmin, async (req, res) => {
+  await store.removeHistoria(req.params.id);
+  res.status(204).end();
+});
+
+const DOCLINK_KEYS = ["estatuto", "memorias", "directiva"];
+
+app.put("/api/doclinks/:key", requireAdmin, async (req, res) => {
+  if (!DOCLINK_KEYS.includes(req.params.key)) return res.status(404).json({ error: "Documento no encontrado." });
+  const { label, url } = req.body || {};
+  const patch = {};
+  if (typeof label === "string") patch.label = label.trim();
+  if (typeof url === "string") {
+    if (url.trim() && !/^https?:\/\//i.test(url.trim())) return res.status(400).json({ error: "El enlace debe comenzar con http:// o https://." });
+    patch.url = url.trim();
+  }
+  const docLink = await store.updateDocLink(req.params.key, patch);
+  res.json(docLink);
+});
+
+const AHORRO_INFO_KEYS = ["simple", "plazoFijo"];
+
+app.put("/api/ahorro-info/:key", requireAdmin, async (req, res) => {
+  if (!AHORRO_INFO_KEYS.includes(req.params.key)) return res.status(404).json({ error: "No encontrado." });
+  const { title, items } = req.body || {};
+  const patch = {};
+  if (typeof title === "string") patch.title = title.trim();
+  if (Array.isArray(items)) patch.items = items.map((i) => String(i).trim()).filter(Boolean);
+  const info = await store.updateAhorroInfo(req.params.key, patch);
+  res.json(info);
+});
+
+function parseAhorroTasaPayload(body) {
+  const { plazo, soles, dolares } = body || {};
+  if (!plazo || !String(plazo).trim()) return { error: "Falta el plazo." };
+  if (!soles || !String(soles).trim()) return { error: "Falta la tasa en soles." };
+  if (!dolares || !String(dolares).trim()) return { error: "Falta la tasa en dólares." };
+  return { payload: { plazo: String(plazo).trim(), soles: String(soles).trim(), dolares: String(dolares).trim() } };
+}
+
+app.post("/api/ahorro-tasas", requireAdmin, async (req, res) => {
+  const { error, payload } = parseAhorroTasaPayload(req.body);
+  if (error) return res.status(400).json({ error });
+  const t = await store.addAhorroTasa(payload);
+  res.status(201).json(t);
+});
+
+app.put("/api/ahorro-tasas/:id", requireAdmin, async (req, res) => {
+  const { error, payload } = parseAhorroTasaPayload(req.body);
+  if (error) return res.status(400).json({ error });
+  const t = await store.updateAhorroTasa(req.params.id, payload);
+  if (!t) return res.status(404).json({ error: "Elemento no encontrado." });
+  res.json(t);
+});
+
+app.delete("/api/ahorro-tasas/:id", requireAdmin, async (req, res) => {
+  await store.removeAhorroTasa(req.params.id);
+  res.status(204).end();
 });
 
 // ---------- socios: perfiles autoservicio + TXT bulk para el S400 ----------

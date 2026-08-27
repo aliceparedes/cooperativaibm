@@ -4,7 +4,7 @@ A small Express API that the site's admin login talks to. It provides:
 
 - `POST /api/auth/login` — admin login, returns a JWT
 - `POST /api/auth/socio-login` — socio login (placeholder del seam IBM Verify), returns `{ token, socio }`
-- `GET /api/content` — public: `{ anuncios, proveedores, tasas }`
+- `GET /api/content` — public: `{ anuncios, proveedores, tasas, ... }`, plus `updatedAt` (global) and `sectionUpdatedAt` (`{ tasas, ahorroTasas, anuncios, proveedores, historia, productos, ... }`) with the ISO timestamp of the last change to each section
 - `POST /api/anuncios` / `DELETE /api/anuncios/:id` — admin only
 - `POST /api/proveedores` / `PUT /api/proveedores/:id` / `DELETE /api/proveedores/:id` — admin only
 - `PUT /api/tasas` — admin only

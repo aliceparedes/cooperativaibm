@@ -19,6 +19,9 @@
   a:hover{color:#0043ce}
   ::-webkit-scrollbar{width:10px;height:10px}
   ::-webkit-scrollbar-thumb{background:#d4d9df;border-radius:0}
+  .range-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:20px;height:20px;border-radius:50%;background:#fff;border:3px solid #0043ce;box-shadow:0 1px 4px rgba(0,0,0,0.25);cursor:pointer}
+  .range-slider::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:#fff;border:3px solid #0043ce;box-shadow:0 1px 4px rgba(0,0,0,0.25);cursor:pointer;box-sizing:border-box}
+  .range-slider::-moz-range-track{background:transparent}
 </style>
 </helmet>
 <div style="display:flex;height:100vh;width:100%;background:#000;overflow:hidden;font-family:'IBM Plex Sans','Helvetica Neue',Helvetica,Arial,sans-serif;font-optical-sizing:auto;font-style:normal;font-variation-settings:'wdth' 100">
@@ -176,9 +179,10 @@
           </sc-for>
         </div>
 
-        <h2 style="font-size:26px;font-weight:700;margin-bottom:24px">Nuestra historia</h2>
-        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:52px">
-          <sc-for list="{{ historia }}" as="h" hint-placeholder-count="4">
+        <h2 style="font-size:26px;font-weight:700;margin-bottom:6px">Nuestra historia</h2>
+        <p style="font-size:13px;color:#8b95a1;margin-bottom:24px">Actualizado el {{ historiaUpdated }}</p>
+        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-bottom:52px">
+          <sc-for list="{{ historia }}" as="h" hint-placeholder-count="5">
             <div style="border-top:4px solid #0043ce;padding-top:14px">
               <div style="font-size:14px;font-weight:700;color:#0043ce;margin-bottom:8px">{{ h.date }}</div>
               <p style="font-size:14px;line-height:1.5;color:#52606d">{{ h.text }}</p>
@@ -187,10 +191,158 @@
         </div>
 
         <h2 style="font-size:26px;font-weight:700;margin-bottom:18px">Documentos</h2>
+        <sc-if value="{{ isAdmin }}" hint-placeholder-val="{{ false }}">
+          <sc-if value="{{ editingDocLinkKey }}" hint-placeholder-val="{{ false }}">
+            <div style="border:1px solid #d9dee4;background:#f9fafb;border-radius:0;padding:16px;margin-bottom:16px;max-width:920px;display:flex;flex-direction:column;gap:10px">
+              <div style="font-size:14px;font-weight:700">Editar documento</div>
+              <label style="font-size:12px;font-weight:600;color:#3b4653">Etiqueta</label>
+              <input type="text" value="{{ docLinkEdit.label }}" onInput="{{ onDocLinkEditLabel }}" style="border:1px solid #d9dee4;border-radius:0;padding:9px 10px;font-size:13px;font-family:inherit;outline:none">
+              <label style="font-size:12px;font-weight:600;color:#3b4653">Enlace (https://...)</label>
+              <input type="text" placeholder="https://..." value="{{ docLinkEdit.url }}" onInput="{{ onDocLinkEditUrl }}" style="border:1px solid #d9dee4;border-radius:0;padding:9px 10px;font-size:13px;font-family:inherit;outline:none">
+              <div style="display:flex;gap:10px">
+                <button onClick="{{ saveDocLinkEdit }}" style="background:#0043ce;color:#fff;border:none;border-radius:0;padding:9px 16px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">Guardar</button>
+                <button onClick="{{ cancelDocLinkEdit }}" style="background:transparent;color:#52606d;border:1px solid #d9dee4;border-radius:0;padding:9px 16px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">Cancelar</button>
+              </div>
+            </div>
+          </sc-if>
+        </sc-if>
         <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:920px">
           <sc-for list="{{ docLinks }}" as="d" hint-placeholder-count="3">
-            <button style="border:1px solid #d9dee4;background:#fff;border-radius:0;padding:22px;font-size:17px;font-weight:600;color:#161616;cursor:pointer;font-family:inherit" style-hover="border:1px solid #0043ce;background:#edf5ff">{{ d }}</button>
+            <div onClick="{{ d.go }}" style="border:1px solid #d9dee4;background:#fff;border-radius:0;padding:22px;font-size:17px;font-weight:600;color:#161616;cursor:pointer;font-family:inherit;position:relative" style-hover="border:1px solid #0043ce;background:#edf5ff">
+              <sc-if value="{{ isAdmin }}" hint-placeholder-val="{{ false }}">
+                <div onClick="{{ d.edit }}" title="Editar" style="position:absolute;top:8px;right:8px;width:22px;height:22px;border-radius:0;background:#edf5ff;color:#0043ce;display:flex;align-items:center;justify-content:center;cursor:pointer">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
+                </div>
+              </sc-if>
+              {{ d.label }}
+            </div>
           </sc-for>
+        </div>
+
+        <h2 style="font-size:26px;font-weight:700;margin-bottom:24px;margin-top:52px">Organigrama</h2>
+
+        <div style="margin-bottom:44px">
+          <h3 style="font-size:16px;font-weight:700;color:#0043ce;margin-bottom:16px">1. Gestión</h3>
+          <div style="display:flex;flex-direction:column;align-items:center">
+            <div style="border:1px solid #d9dee4;border-radius:0;padding:14px 22px;text-align:center;background:#fff;min-width:220px">
+              <div style="font-size:15px;font-weight:700">Presidente del Consejo de Administración</div>
+              <div style="font-size:13px;color:#52606d;margin-top:4px">Luis del Busto</div>
+            </div>
+            <div style="width:2px;height:24px;background:#0043ce"></div>
+            <div style="border:1px solid #d9dee4;border-radius:0;padding:14px 22px;text-align:center;background:#fff;min-width:220px">
+              <div style="font-size:15px;font-weight:700">Gerente</div>
+              <div style="font-size:13px;color:#52606d;margin-top:4px">Lucía Torres</div>
+            </div>
+            <div style="width:2px;height:24px;background:#0043ce"></div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;width:100%;max-width:1000px">
+              <div style="border-top:4px solid #0043ce;padding:16px;background:#f9fafb">
+                <div style="font-size:14px;font-weight:700;margin-bottom:8px">Administradoras</div>
+                <div style="font-size:13px;color:#52606d;line-height:1.7">Diana Huanay<br>Janet Ríos<br>Eliana Barreda</div>
+              </div>
+              <div style="border-top:4px solid #0043ce;padding:16px;background:#f9fafb">
+                <div style="font-size:14px;font-weight:700;margin-bottom:8px">Contador</div>
+                <div style="font-size:13px;color:#52606d">Raúl Tello</div>
+              </div>
+              <div style="border-top:4px solid #0043ce;padding:16px;background:#f9fafb">
+                <div style="font-size:14px;font-weight:700;margin-bottom:8px">Sistemas</div>
+                <div style="font-size:13px;color:#52606d">José Olivera</div>
+              </div>
+              <div style="border-top:4px solid #0043ce;padding:16px;background:#f9fafb">
+                <div style="font-size:14px;font-weight:700;margin-bottom:8px">Crédito</div>
+                <div style="font-size:13px;color:#52606d">Connie Hughes</div>
+              </div>
+              <div style="border-top:4px solid #0043ce;padding:16px;background:#f9fafb">
+                <div style="font-size:14px;font-weight:700;margin-bottom:8px">Riesgo</div>
+                <div style="font-size:13px;color:#52606d">Lucero Miranda</div>
+              </div>
+              <div style="border-top:4px solid #0043ce;padding:16px;background:#f9fafb">
+                <div style="font-size:14px;font-weight:700;margin-bottom:8px">UIF</div>
+                <div style="font-size:13px;color:#52606d">Unidad de Riesgos</div>
+              </div>
+            </div>
+            <div style="border:1px solid #d9dee4;border-radius:0;padding:16px;margin-top:20px;width:100%;max-width:1000px">
+              <div style="font-size:14px;font-weight:700;margin-bottom:8px">Comités</div>
+              <div style="font-size:13px;color:#52606d;line-height:1.7">Comité de Crédito · Comité de Riesgo · Comité de Educación</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-bottom:44px">
+          <h3 style="font-size:16px;font-weight:700;color:#0043ce;margin-bottom:16px">2. Consejo de Administración</h3>
+          <div style="display:flex;flex-direction:column;align-items:center">
+            <div style="border:1px solid #d9dee4;border-radius:0;padding:14px 22px;text-align:center;background:#fff;min-width:220px">
+              <div style="font-size:15px;font-weight:700">Presidente</div>
+              <div style="font-size:13px;color:#52606d;margin-top:4px">Luis del Busto</div>
+            </div>
+            <div style="width:2px;height:24px;background:#0043ce"></div>
+            <div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:center">
+              <div style="border:1px solid #d9dee4;border-radius:0;padding:14px 22px;text-align:center;background:#fff;min-width:180px">
+                <div style="font-size:15px;font-weight:700">Vicepresidente</div>
+                <div style="font-size:13px;color:#52606d;margin-top:4px">Andrea Cabrera</div>
+              </div>
+              <div style="border:1px solid #d9dee4;border-radius:0;padding:14px 22px;text-align:center;background:#fff;min-width:180px">
+                <div style="font-size:15px;font-weight:700">Secretario</div>
+                <div style="font-size:13px;color:#52606d;margin-top:4px">Lucero Miranda</div>
+              </div>
+            </div>
+            <div style="width:2px;height:24px;background:#0043ce"></div>
+            <div style="display:flex;gap:14px;flex-wrap:wrap;justify-content:center">
+              <div style="background:#f1f7f8;border-left:4px solid #0043ce;padding:12px 16px;text-align:center;min-width:150px">
+                <div style="font-size:13px;font-weight:700;margin-bottom:4px">Vocal</div>
+                <div style="font-size:13px;color:#52606d">Connie Hughes</div>
+              </div>
+              <div style="background:#f1f7f8;border-left:4px solid #0043ce;padding:12px 16px;text-align:center;min-width:150px">
+                <div style="font-size:13px;font-weight:700;margin-bottom:4px">Vocal</div>
+                <div style="font-size:13px;color:#52606d">María Katia Pinto</div>
+              </div>
+              <div style="background:#f1f7f8;border-left:4px solid #0043ce;padding:12px 16px;text-align:center;min-width:150px">
+                <div style="font-size:13px;font-weight:700;margin-bottom:4px">Vocal</div>
+                <div style="font-size:13px;color:#52606d">Patricia Macedo</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-bottom:44px">
+          <h3 style="font-size:16px;font-weight:700;color:#0043ce;margin-bottom:16px">3. Consejo de Vigilancia</h3>
+          <div style="display:flex;flex-direction:column;align-items:center">
+            <div style="border:1px solid #d9dee4;border-radius:0;padding:14px 22px;text-align:center;background:#fff;min-width:220px">
+              <div style="font-size:15px;font-weight:700">Presidente</div>
+              <div style="font-size:13px;color:#52606d;margin-top:4px">Fernando Giulfo</div>
+            </div>
+            <div style="width:2px;height:24px;background:#0043ce"></div>
+            <div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:center">
+              <div style="border:1px solid #d9dee4;border-radius:0;padding:14px 22px;text-align:center;background:#fff;min-width:180px">
+                <div style="font-size:15px;font-weight:700">Vicepresidente</div>
+                <div style="font-size:13px;color:#52606d;margin-top:4px">Alessi Botto</div>
+              </div>
+              <div style="border:1px solid #d9dee4;border-radius:0;padding:14px 22px;text-align:center;background:#fff;min-width:180px">
+                <div style="font-size:15px;font-weight:700">Secretario</div>
+                <div style="font-size:13px;color:#52606d;margin-top:4px">Gisella Rodríguez</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h3 style="font-size:16px;font-weight:700;color:#0043ce;margin-bottom:16px">4. Comité Electoral</h3>
+          <div style="display:flex;flex-direction:column;align-items:center">
+            <div style="border:1px solid #d9dee4;border-radius:0;padding:14px 22px;text-align:center;background:#fff;min-width:220px">
+              <div style="font-size:15px;font-weight:700">Presidente</div>
+              <div style="font-size:13px;color:#52606d;margin-top:4px">Arturo Vásquez</div>
+            </div>
+            <div style="width:2px;height:24px;background:#0043ce"></div>
+            <div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:center">
+              <div style="border:1px solid #d9dee4;border-radius:0;padding:14px 22px;text-align:center;background:#fff;min-width:180px">
+                <div style="font-size:15px;font-weight:700">Vicepresidente</div>
+                <div style="font-size:13px;color:#52606d;margin-top:4px">Karen Matallana</div>
+              </div>
+              <div style="border:1px solid #d9dee4;border-radius:0;padding:14px 22px;text-align:center;background:#fff;min-width:180px">
+                <div style="font-size:15px;font-weight:700">Secretario</div>
+                <div style="font-size:13px;color:#52606d;margin-top:4px">Rafael Anduaga</div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
       </sc-if>
@@ -201,35 +353,92 @@
         <h1 style="font-size:48px;font-weight:800;letter-spacing:-0.02em;margin-bottom:10px">Ahorro</h1>
         <p style="font-size:18px;color:#52606d;margin-bottom:36px;max-width:720px">La captación de ahorros por parte de la Cooperativa tiene 2 fuentes. No cobramos comisiones ni gastos administrativos.</p>
 
+        <sc-if value="{{ isAdmin }}" hint-placeholder-val="{{ false }}">
+          <sc-if value="{{ editingAhorroInfoKey }}" hint-placeholder-val="{{ false }}">
+            <div style="border:1px solid #d9dee4;background:#f9fafb;border-radius:0;padding:20px;margin-bottom:18px;display:flex;flex-direction:column;gap:12px;max-width:640px">
+              <div style="font-size:15px;font-weight:700">Editar sección</div>
+              <label style="font-size:13px;font-weight:600;color:#3b4653">Título</label>
+              <input type="text" value="{{ ahorroInfoEdit.title }}" onInput="{{ onAhorroInfoEditTitle }}" style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:10px;font-size:14px;font-family:inherit;outline:none">
+              <label style="font-size:13px;font-weight:600;color:#3b4653">Puntos (uno por línea)</label>
+              <textarea value="{{ ahorroInfoEdit.itemsText }}" onInput="{{ onAhorroInfoEditItems }}" rows="4" style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:10px;font-size:14px;font-family:inherit;outline:none;resize:vertical"></textarea>
+              <div style="display:flex;gap:10px">
+                <button onClick="{{ saveAhorroInfoEdit }}" style="background:#0043ce;color:#fff;border:none;border-radius:0;padding:10px 18px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit">Guardar</button>
+                <button onClick="{{ cancelAhorroInfoEdit }}" style="background:transparent;color:#52606d;border:1px solid #d9dee4;border-radius:0;padding:10px 18px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit">Cancelar</button>
+              </div>
+            </div>
+          </sc-if>
+        </sc-if>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:48px">
-          <div style="border:1px solid #e5e8ec;border-radius:0;padding:28px">
-            <h3 style="font-size:22px;font-weight:700;margin-bottom:14px">Ahorro Simple</h3>
+          <div style="border:1px solid #e5e8ec;border-radius:0;padding:28px;position:relative">
+            <sc-if value="{{ isAdmin }}" hint-placeholder-val="{{ false }}">
+              <div onClick="{{ ahorroInfo.simple.edit }}" title="Editar" style="position:absolute;top:12px;right:12px;width:26px;height:26px;border-radius:0;background:#edf5ff;color:#0043ce;display:flex;align-items:center;justify-content:center;cursor:pointer">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
+              </div>
+            </sc-if>
+            <h3 style="font-size:22px;font-weight:700;margin-bottom:14px">{{ ahorroInfo.simple.title }}</h3>
             <ul style="font-size:15px;color:#52606d;line-height:1.8;padding-left:18px">
-              <li>Ahorro mensual que se descuenta por planilla</li>
-              <li>Monto mínimo S/50</li>
-              <li>Es de libre disponibilidad</li>
+              <sc-for list="{{ ahorroInfo.simple.items }}" as="item" hint-placeholder-count="3">
+                <li>{{ item }}</li>
+              </sc-for>
             </ul>
           </div>
-          <div style="border:1px solid #e5e8ec;border-radius:0;padding:28px">
-            <h3 style="font-size:22px;font-weight:700;margin-bottom:14px">Depósitos a Plazo Fijo</h3>
+          <div style="border:1px solid #e5e8ec;border-radius:0;padding:28px;position:relative">
+            <sc-if value="{{ isAdmin }}" hint-placeholder-val="{{ false }}">
+              <div onClick="{{ ahorroInfo.plazoFijo.edit }}" title="Editar" style="position:absolute;top:12px;right:12px;width:26px;height:26px;border-radius:0;background:#edf5ff;color:#0043ce;display:flex;align-items:center;justify-content:center;cursor:pointer">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
+              </div>
+            </sc-if>
+            <h3 style="font-size:22px;font-weight:700;margin-bottom:14px">{{ ahorroInfo.plazoFijo.title }}</h3>
             <ul style="font-size:15px;color:#52606d;line-height:1.8;padding-left:18px">
-              <li>Plazos de 90, 180, 360 y 720 días</li>
-              <li>Monto mínimo para abrir depósitos: S/3,000 ó $1,000</li>
+              <sc-for list="{{ ahorroInfo.plazoFijo.items }}" as="item" hint-placeholder-count="2">
+                <li>{{ item }}</li>
+              </sc-for>
             </ul>
           </div>
         </div>
 
         <h2 style="font-size:26px;font-weight:700;margin-bottom:18px">Tasas de interés que ofrece la Cooperativa</h2>
+        <sc-if value="{{ isAdmin }}" hint-placeholder-val="{{ false }}">
+          <div style="border:1px solid #d9dee4;background:#f9fafb;border-radius:0;padding:16px;margin-bottom:16px;display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;max-width:640px">
+            <div>
+              <label style="display:block;font-size:12px;font-weight:600;color:#3b4653;margin-bottom:4px">Plazo</label>
+              <input type="text" placeholder="ej. 90 días" value="{{ newAhorroTasa.plazo }}" onInput="{{ onNewAhorroTasaPlazo }}" style="border:1px solid #d9dee4;border-radius:0;padding:9px 10px;font-size:13px;font-family:inherit;outline:none;width:140px">
+            </div>
+            <div>
+              <label style="display:block;font-size:12px;font-weight:600;color:#3b4653;margin-bottom:4px">Soles</label>
+              <input type="text" placeholder="ej. 4.00%" value="{{ newAhorroTasa.soles }}" onInput="{{ onNewAhorroTasaSoles }}" style="border:1px solid #d9dee4;border-radius:0;padding:9px 10px;font-size:13px;font-family:inherit;outline:none;width:100px">
+            </div>
+            <div>
+              <label style="display:block;font-size:12px;font-weight:600;color:#3b4653;margin-bottom:4px">Dólares</label>
+              <input type="text" placeholder="ej. 0.75%" value="{{ newAhorroTasa.dolares }}" onInput="{{ onNewAhorroTasaDolares }}" style="border:1px solid #d9dee4;border-radius:0;padding:9px 10px;font-size:13px;font-family:inherit;outline:none;width:100px">
+            </div>
+            <button onClick="{{ addAhorroTasa }}" style="background:#0043ce;color:#fff;border:none;border-radius:0;padding:9px 16px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">{{ ahorroTasaSubmitLabel }}</button>
+            <sc-if value="{{ editingAhorroTasaSlot }}" hint-placeholder-val="{{ false }}">
+              <button onClick="{{ cancelAhorroTasaEdit }}" style="background:transparent;color:#52606d;border:1px solid #d9dee4;border-radius:0;padding:9px 16px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">Cancelar</button>
+            </sc-if>
+          </div>
+        </sc-if>
         <div style="border:1px solid #e5e8ec;border-radius:0;overflow:hidden;max-width:640px">
           <div style="display:grid;grid-template-columns:2fr 1fr 1fr;background:#0043ce;color:#fff;font-size:14px;font-weight:700;padding:14px 20px">
             <div>Plazo</div><div>Soles</div><div>Dólares</div>
           </div>
           <sc-for list="{{ ahorroTasas }}" as="t" hint-placeholder-count="5">
-            <div style="display:grid;grid-template-columns:2fr 1fr 1fr;padding:14px 20px;font-size:15px;border-top:1px solid #eceef1" style-hover="background:#f4f8fc">
+            <div style="display:grid;grid-template-columns:2fr 1fr 1fr;padding:14px 20px;font-size:15px;border-top:1px solid #eceef1;position:relative" style-hover="background:#f4f8fc">
               <div style="font-weight:600">{{ t.plazo }}</div><div>{{ t.soles }}</div><div>{{ t.dolares }}</div>
+              <sc-if value="{{ isAdmin }}" hint-placeholder-val="{{ false }}">
+                <div style="position:absolute;top:8px;right:12px;display:flex;gap:6px">
+                  <div onClick="{{ t.edit }}" title="Editar" style="width:20px;height:20px;border-radius:0;background:#edf5ff;color:#0043ce;display:flex;align-items:center;justify-content:center;cursor:pointer">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
+                  </div>
+                  <div onClick="{{ t.remove }}" title="Eliminar" style="width:20px;height:20px;border-radius:0;background:#fff0f0;color:#da1e28;display:flex;align-items:center;justify-content:center;cursor:pointer">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                  </div>
+                </div>
+              </sc-if>
             </div>
           </sc-for>
         </div>
+        <p style="font-size:13px;color:#8b95a1;margin-top:10px">Tasas actualizadas el {{ ahorroTasasUpdated }}</p>
       </section>
       </sc-if>
 
@@ -237,7 +446,8 @@
       <sc-if value="{{ isProveedores }}" hint-placeholder-val="{{ true }}">
       <section style="padding:56px">
         <h1 style="font-size:48px;font-weight:800;letter-spacing:-0.02em;margin-bottom:10px">Proveedores</h1>
-        <p style="font-size:18px;color:#52606d;margin-bottom:28px;max-width:720px">Convenios con empresas peruanas líderes. Presenta tu carnet de socio y accede a descuentos exclusivos.</p>
+        <p style="font-size:18px;color:#52606d;margin-bottom:8px;max-width:720px">Convenios con empresas peruanas líderes. Presenta tu carnet de socio y accede a descuentos exclusivos.</p>
+        <p style="font-size:13px;color:#8b95a1;margin-bottom:28px">Proveedores actualizados el {{ proveedoresUpdated }} · Productos actualizados el {{ productosUpdated }}</p>
 
         <!-- ADMIN: AGREGAR PROVEEDOR -->
         <sc-if value="{{ isAdmin }}" hint-placeholder-val="{{ false }}">
@@ -333,85 +543,49 @@
             </div>
           </sc-for>
         </div>
+        <sc-if value="{{ isAdmin }}" hint-placeholder-val="{{ false }}">
+          <sc-if value="{{ editingProductoKey }}" hint-placeholder-val="{{ false }}">
+            <div style="border:1px solid #d9dee4;background:#f9fafb;border-radius:0;padding:20px;margin-bottom:18px;display:flex;flex-direction:column;gap:12px">
+              <div style="font-size:15px;font-weight:700">Editar producto</div>
+              <label style="font-size:13px;font-weight:600;color:#3b4653">Título</label>
+              <input type="text" value="{{ productoEdit.title }}" onInput="{{ onProductoEditTitle }}" style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:10px;font-size:14px;font-family:inherit;outline:none">
+              <label style="font-size:13px;font-weight:600;color:#3b4653">Categoría</label>
+              <input type="text" value="{{ productoEdit.cat }}" onInput="{{ onProductoEditCat }}" style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:10px;font-size:14px;font-family:inherit;outline:none">
+              <label style="font-size:13px;font-weight:600;color:#3b4653">Descripción</label>
+              <textarea value="{{ productoEdit.desc }}" onInput="{{ onProductoEditDesc }}" rows="2" style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:10px;font-size:14px;font-family:inherit;outline:none;resize:vertical"></textarea>
+              <div style="display:flex;gap:10px">
+                <button onClick="{{ saveProductoEdit }}" style="background:#0043ce;color:#fff;border:none;border-radius:0;padding:10px 18px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit">Guardar</button>
+                <button onClick="{{ cancelProductoEdit }}" style="background:transparent;color:#52606d;border:1px solid #d9dee4;border-radius:0;padding:10px 18px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit">Cancelar</button>
+              </div>
+            </div>
+          </sc-if>
+        </sc-if>
         <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px">
-          <div onClick="{{ goBebidas }}" style="border:1px solid #e5e8ec;border-radius:0;padding:22px;display:flex;flex-direction:column;gap:12px;cursor:pointer" style-hover="box-shadow:0 8px 26px rgba(15,36,56,0.09)">
-            <div style="display:flex;align-items:center;gap:12px">
-              <div style="width:46px;height:46px;border-radius:0;background:#edf5ff;color:#0043ce;display:flex;align-items:center;justify-content:center;flex:0 0 46px">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M7 10h10"/><path d="M12 15v7"/><path d="M12 15a5 5 0 0 0 5-5V3H7v7a5 5 0 0 0 5 5Z"/></svg>
+          <sc-for list="{{ productos }}" as="p" hint-placeholder-count="6">
+            <div onClick="{{ p.go }}" style="border:1px solid #e5e8ec;border-radius:0;padding:22px;display:flex;flex-direction:column;gap:12px;position:relative;cursor:pointer" style-hover="box-shadow:0 8px 26px rgba(15,36,56,0.09)">
+              <sc-if value="{{ isAdmin }}" hint-placeholder-val="{{ false }}">
+                <div onClick="{{ p.edit }}" title="Editar producto" style="position:absolute;top:12px;right:12px;width:26px;height:26px;border-radius:0;background:#edf5ff;color:#0043ce;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:1">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
+                </div>
+              </sc-if>
+              <div style="display:flex;align-items:center;gap:12px">
+                <div style="width:46px;height:46px;border-radius:0;background:#edf5ff;color:#0043ce;display:flex;align-items:center;justify-content:center;flex:0 0 46px">
+                  <sc-if value="{{ p.key === 'bebidas' }}" hint-placeholder-val="{{ true }}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M7 10h10"/><path d="M12 15v7"/><path d="M12 15a5 5 0 0 0 5-5V3H7v7a5 5 0 0 0 5 5Z"/></svg></sc-if>
+                  <sc-if value="{{ p.key === 'rimac' }}" hint-placeholder-val="{{ false }}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg></sc-if>
+                  <sc-if value="{{ p.key === 'movistar' }}" hint-placeholder-val="{{ false }}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg></sc-if>
+                  <sc-if value="{{ p.key === 'perufarma' }}" hint-placeholder-val="{{ false }}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/></svg></sc-if>
+                  <sc-if value="{{ p.key === 'smartfit' }}" hint-placeholder-val="{{ false }}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.4 14.4 9.6 9.6"/><path d="M18.657 21.485a2 2 0 1 1-2.829-2.828l-1.767 1.768a2 2 0 1 1-2.829-2.829l6.364-6.364a2 2 0 1 1 2.829 2.829l-1.768 1.767a2 2 0 1 1 2.828 2.829z"/><path d="m21.5 21.5-1.4-1.4"/><path d="M3.9 3.9 2.5 2.5"/><path d="M6.404 12.768a2 2 0 1 1-2.829-2.829l1.768-1.767a2 2 0 1 1-2.828-2.829l2.828-2.828a2 2 0 1 1 2.829 2.828l1.767-1.768a2 2 0 1 1 2.829 2.829z"/></svg></sc-if>
+                  <sc-if value="{{ p.key === 'oncosalud' }}" hint-placeholder-val="{{ false }}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 2v2"/><path d="M5 2v2"/><path d="M5 3H4a2 2 0 0 0-2 2v4a6 6 0 0 0 12 0V5a2 2 0 0 0-2-2h-1"/><path d="M8 15a6 6 0 0 0 12 0v-3"/><circle cx="20" cy="10" r="2"/></svg></sc-if>
+                </div>
+                <div>
+                  <div style="font-size:17px;font-weight:700">{{ p.title }}</div>
+                  <div style="font-size:13px;color:#8b95a1">{{ p.cat }}</div>
+                </div>
               </div>
-              <div>
-                <div style="font-size:17px;font-weight:700">Bebidas</div>
-                <div style="font-size:13px;color:#8b95a1">Licores y bebidas</div>
-              </div>
+              <div style="font-size:14px;color:#52606d;line-height:1.5">{{ p.desc }}</div>
+              <div style="margin-top:auto;align-self:flex-start;display:flex;align-items:center;gap:5px;background:#edf5ff;color:#0043ce;font-weight:700;font-size:14px;padding:6px 12px;border-radius:0">{{ p.cta }} <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
             </div>
-            <div style="font-size:14px;color:#52606d;line-height:1.5">Lista de precios de nuestro proveedor de licores para socios: whisky, vinos, piscos, ron y más.</div>
-            <div style="margin-top:auto;align-self:flex-start;display:flex;align-items:center;gap:5px;background:#edf5ff;color:#0043ce;font-weight:700;font-size:14px;padding:6px 12px;border-radius:0">Ver precios <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
-          </div>
-          <div onClick="{{ goRimac }}" style="border:1px solid #e5e8ec;border-radius:0;padding:22px;display:flex;flex-direction:column;gap:12px;cursor:pointer" style-hover="box-shadow:0 8px 26px rgba(15,36,56,0.09)">
-            <div style="display:flex;align-items:center;gap:12px">
-              <div style="width:46px;height:46px;border-radius:0;background:#edf5ff;color:#0043ce;display:flex;align-items:center;justify-content:center;flex:0 0 46px">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg>
-              </div>
-              <div>
-                <div style="font-size:17px;font-weight:700">Rímac Seguros</div>
-                <div style="font-size:13px;color:#8b95a1">Seguro de Autos</div>
-              </div>
-            </div>
-            <div style="font-size:14px;color:#52606d;line-height:1.5">Programa de seguro vehicular corporativo para socios de la Cooperativa.</div>
-            <div style="margin-top:auto;align-self:flex-start;display:flex;align-items:center;gap:5px;background:#edf5ff;color:#0043ce;font-weight:700;font-size:14px;padding:6px 12px;border-radius:0">Ver coberturas <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
-          </div>
-          <div onClick="{{ goMovistar }}" style="border:1px solid #e5e8ec;border-radius:0;padding:22px;display:flex;flex-direction:column;gap:12px;cursor:pointer" style-hover="box-shadow:0 8px 26px rgba(15,36,56,0.09)">
-            <div style="display:flex;align-items:center;gap:12px">
-              <div style="width:46px;height:46px;border-radius:0;background:#edf5ff;color:#0043ce;display:flex;align-items:center;justify-content:center;flex:0 0 46px">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
-              </div>
-              <div>
-                <div style="font-size:17px;font-weight:700">Movistar</div>
-                <div style="font-size:13px;color:#8b95a1">Telefonía celular</div>
-              </div>
-            </div>
-            <div style="font-size:14px;color:#52606d;line-height:1.5">Contrato corporativo con planes de datos, LDI y descuentos en equipos. La línea pasa a ser corporativa y se descuenta por planilla.</div>
-            <div style="margin-top:auto;align-self:flex-start;display:flex;align-items:center;gap:5px;background:#edf5ff;color:#0043ce;font-weight:700;font-size:14px;padding:6px 12px;border-radius:0">Ver planes <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
-          </div>
-          <div onClick="{{ goPerufarma }}" style="border:1px solid #e5e8ec;border-radius:0;padding:22px;display:flex;flex-direction:column;gap:12px;cursor:pointer" style-hover="box-shadow:0 8px 26px rgba(15,36,56,0.09)">
-            <div style="display:flex;align-items:center;gap:12px">
-              <div style="width:46px;height:46px;border-radius:0;background:#edf5ff;color:#0043ce;display:flex;align-items:center;justify-content:center;flex:0 0 46px">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/></svg>
-              </div>
-              <div>
-                <div style="font-size:17px;font-weight:700">Perufarma</div>
-                <div style="font-size:13px;color:#8b95a1">Farmacias</div>
-              </div>
-            </div>
-            <div style="font-size:14px;color:#52606d;line-height:1.5">Catálogo corporativo con precios preferenciales en dermocosmética, cuidado personal y más.</div>
-            <div style="margin-top:auto;align-self:flex-start;display:flex;align-items:center;gap:5px;background:#edf5ff;color:#0043ce;font-weight:700;font-size:14px;padding:6px 12px;border-radius:0">Ver catálogo <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
-          </div>
-          <div onClick="{{ goSmartFit }}" style="border:1px solid #e5e8ec;border-radius:0;padding:22px;display:flex;flex-direction:column;gap:12px;cursor:pointer" style-hover="box-shadow:0 8px 26px rgba(15,36,56,0.09)">
-            <div style="display:flex;align-items:center;gap:12px">
-              <div style="width:46px;height:46px;border-radius:0;background:#edf5ff;color:#0043ce;display:flex;align-items:center;justify-content:center;flex:0 0 46px">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.4 14.4 9.6 9.6"/><path d="M18.657 21.485a2 2 0 1 1-2.829-2.828l-1.767 1.768a2 2 0 1 1-2.829-2.829l6.364-6.364a2 2 0 1 1 2.829 2.829l-1.768 1.767a2 2 0 1 1 2.828 2.829z"/><path d="m21.5 21.5-1.4-1.4"/><path d="M3.9 3.9 2.5 2.5"/><path d="M6.404 12.768a2 2 0 1 1-2.829-2.829l1.768-1.767a2 2 0 1 1-2.828-2.829l2.828-2.828a2 2 0 1 1 2.829 2.828l1.767-1.768a2 2 0 1 1 2.829 2.829z"/></svg>
-              </div>
-              <div>
-                <div style="font-size:17px;font-weight:700">Smart Fit</div>
-                <div style="font-size:13px;color:#8b95a1">Gimnasio</div>
-              </div>
-            </div>
-            <div style="font-size:14px;color:#52606d;line-height:1.5">Plan Black Corporativo, exclusivo para colaboradores de la Cooperativa.</div>
-            <div style="margin-top:auto;align-self:flex-start;display:flex;align-items:center;gap:5px;background:#edf5ff;color:#0043ce;font-weight:700;font-size:14px;padding:6px 12px;border-radius:0">Ver beneficios <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
-          </div>
-          <div onClick="{{ goOncosalud }}" style="border:1px solid #e5e8ec;border-radius:0;padding:22px;display:flex;flex-direction:column;gap:12px;cursor:pointer" style-hover="box-shadow:0 8px 26px rgba(15,36,56,0.09)">
-            <div style="display:flex;align-items:center;gap:12px">
-              <div style="width:46px;height:46px;border-radius:0;background:#edf5ff;color:#0043ce;display:flex;align-items:center;justify-content:center;flex:0 0 46px">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 2v2"/><path d="M5 2v2"/><path d="M5 3H4a2 2 0 0 0-2 2v4a6 6 0 0 0 12 0V5a2 2 0 0 0-2-2h-1"/><path d="M8 15a6 6 0 0 0 12 0v-3"/><circle cx="20" cy="10" r="2"/></svg>
-              </div>
-              <div>
-                <div style="font-size:17px;font-weight:700">Oncosalud</div>
-                <div style="font-size:13px;color:#8b95a1">Salud</div>
-              </div>
-            </div>
-            <div style="font-size:14px;color:#52606d;line-height:1.5">Convenio corporativo para socios y familiares directos.</div>
-            <div style="margin-top:auto;align-self:flex-start;display:flex;align-items:center;gap:5px;background:#edf5ff;color:#0043ce;font-weight:700;font-size:14px;padding:6px 12px;border-radius:0">Ver planes <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
-          </div>
+          </sc-for>
           <sc-for list="{{ proveedores }}" as="p" hint-placeholder-count="8">
             <div onClick="{{ p.goDetalle }}" style="border:1px solid #e5e8ec;border-radius:0;padding:22px;display:flex;flex-direction:column;gap:12px;position:relative;cursor:pointer" style-hover="box-shadow:0 8px 26px rgba(15,36,56,0.09)">
               <sc-if value="{{ isAdmin }}" hint-placeholder-val="{{ false }}">
@@ -791,6 +965,37 @@
                   </button>
                 </div>
               </div>
+              <div style="margin-top:10px;border:1px solid #d9dee4;border-radius:0;padding:14px 16px;display:flex;flex-direction:column;gap:10px;background:#f9fafb">
+                <span style="font-size:13px;font-weight:700;color:#3b4653">Editar producto (admin)</span>
+                <input type="text" value="{{ l.draft.title }}" onInput="{{ l.onDraftTitle }}" placeholder="Título" style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:8px 10px;font-size:13px;font-family:inherit;outline:none">
+                <textarea value="{{ l.draft.desc }}" onInput="{{ l.onDraftDesc }}" rows="2" placeholder="Descripción" style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:8px 10px;font-size:13px;font-family:inherit;outline:none;resize:vertical"></textarea>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+                  <div>
+                    <label style="font-size:11px;color:#8b95a1">Monto mín. (S/)</label>
+                    <input type="number" value="{{ l.draft.montoMin }}" onInput="{{ l.onDraftMontoMin }}" style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:7px 9px;font-size:13px;font-family:inherit;outline:none">
+                  </div>
+                  <div>
+                    <label style="font-size:11px;color:#8b95a1">Monto máx. (S/)</label>
+                    <input type="number" value="{{ l.draft.montoMax }}" onInput="{{ l.onDraftMontoMax }}" style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:7px 9px;font-size:13px;font-family:inherit;outline:none">
+                  </div>
+                  <div>
+                    <label style="font-size:11px;color:#8b95a1">Plazo mín. (meses)</label>
+                    <input type="number" value="{{ l.draft.plazoMin }}" onInput="{{ l.onDraftPlazoMin }}" style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:7px 9px;font-size:13px;font-family:inherit;outline:none">
+                  </div>
+                  <div>
+                    <label style="font-size:11px;color:#8b95a1">Plazo máx. (meses)</label>
+                    <input type="number" value="{{ l.draft.plazoMax }}" onInput="{{ l.onDraftPlazoMax }}" style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:7px 9px;font-size:13px;font-family:inherit;outline:none">
+                  </div>
+                  <div>
+                    <label style="font-size:11px;color:#8b95a1">TEA banco comparación (%)</label>
+                    <input type="number" step="0.1" value="{{ l.draft.bank }}" onInput="{{ l.onDraftBank }}" style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:7px 9px;font-size:13px;font-family:inherit;outline:none">
+                  </div>
+                </div>
+                <button onClick="{{ l.onPrestamoSave }}" style="align-self:flex-start;display:inline-flex;align-items:center;gap:5px;background:#0043ce;color:#fff;border:none;border-radius:0;padding:8px 16px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">
+                  <sc-if value="{{ l.prestamoIsSaved }}" hint-placeholder-val="{{ false }}"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></sc-if>
+                  {{ l.prestamoSavedLabel }}
+                </button>
+              </div>
             </sc-if>
             </div>
           </sc-for>
@@ -801,12 +1006,12 @@
           <div>
             <h3 style="font-size:17px;font-weight:700;margin-bottom:12px">Soles</h3>
             <div style="border:1px solid #e5e8ec;border-radius:0;overflow:hidden">
-              <div style="display:grid;grid-template-columns:2fr 1fr 1fr;background:#0043ce;color:#fff;font-size:13px;font-weight:700;padding:12px 16px">
-                <div>Concepto</div><div>TEA</div><div>TEA sin desgr.</div>
+              <div style="display:grid;grid-template-columns:2fr 1fr;background:#0043ce;color:#fff;font-size:13px;font-weight:700;padding:12px 16px">
+                <div>Concepto</div><div>TEA</div>
               </div>
               <sc-for list="{{ tasasSoles }}" as="t" hint-placeholder-count="12">
-                <div style="display:grid;grid-template-columns:2fr 1fr 1fr;padding:11px 16px;font-size:14px;border-top:1px solid #eceef1" style-hover="background:#f4f8fc">
-                  <div style="font-weight:600">{{ t.concepto }}</div><div>{{ t.tea }}</div><div>{{ t.teaSin }}</div>
+                <div style="display:grid;grid-template-columns:2fr 1fr;padding:11px 16px;font-size:14px;border-top:1px solid #eceef1" style-hover="background:#f4f8fc">
+                  <div style="font-weight:600">{{ t.concepto }}</div><div>{{ t.tea }}</div>
                 </div>
               </sc-for>
             </div>
@@ -814,12 +1019,12 @@
           <div>
             <h3 style="font-size:17px;font-weight:700;margin-bottom:12px">Dólares</h3>
             <div style="border:1px solid #e5e8ec;border-radius:0;overflow:hidden">
-              <div style="display:grid;grid-template-columns:2fr 1fr 1fr;background:#0043ce;color:#fff;font-size:13px;font-weight:700;padding:12px 16px">
-                <div>Concepto</div><div>TEA</div><div>TEA sin desgr.</div>
+              <div style="display:grid;grid-template-columns:2fr 1fr;background:#0043ce;color:#fff;font-size:13px;font-weight:700;padding:12px 16px">
+                <div>Concepto</div><div>TEA</div>
               </div>
               <sc-for list="{{ tasasDolares }}" as="t" hint-placeholder-count="7">
-                <div style="display:grid;grid-template-columns:2fr 1fr 1fr;padding:11px 16px;font-size:14px;border-top:1px solid #eceef1" style-hover="background:#f4f8fc">
-                  <div style="font-weight:600">{{ t.concepto }}</div><div>{{ t.tea }}</div><div>{{ t.teaSin }}</div>
+                <div style="display:grid;grid-template-columns:2fr 1fr;padding:11px 16px;font-size:14px;border-top:1px solid #eceef1" style-hover="background:#f4f8fc">
+                  <div style="font-weight:600">{{ t.concepto }}</div><div>{{ t.tea }}</div>
                 </div>
               </sc-for>
             </div>
@@ -873,12 +1078,14 @@
                   <span style="padding:14px 0 14px 14px;font-size:16px;font-weight:700;color:#8b95a1">S/</span>
                   <input type="number" min="{{ montoMin }}" max="{{ montoMax }}" step="{{ montoStep }}" value="{{ monto }}" onInput="{{ onMonto }}" style="flex:1;width:100%;min-width:0;border:none;outline:none;padding:14px 14px 14px 6px;font-size:16px;font-weight:700;font-family:inherit;color:#161616;background:transparent">
                 </div>
-                <div style="font-size:12px;color:#8d8d8d;margin-top:8px">Ingresa un monto entre {{ montoMinLabel }} y {{ montoMaxLabel }}</div>
+                <input type="range" class="range-slider" min="{{ montoMin }}" max="{{ montoMax }}" step="{{ montoStep }}" value="{{ monto }}" onInput="{{ onMonto }}" style="{{ montoSliderStyle }}">
+                <div style="display:flex;justify-content:space-between;font-size:12px;color:#8d8d8d;margin-top:8px"><span>{{ montoMinLabel }}</span><span>{{ montoMaxLabel }}</span></div>
               </div>
               <div>
                 <label style="display:block;font-size:15px;font-weight:600;margin-bottom:6px">Plazo (meses)</label>
                 <input type="number" min="{{ plazoMin }}" max="{{ plazoMax }}" step="{{ plazoStep }}" value="{{ plazo }}" onInput="{{ onPlazo }}" style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:14px;font-size:16px;font-weight:700;font-family:inherit;outline:none;color:#161616" style-focus="border:1px solid #0043ce;box-shadow:0 0 0 3px #edf5ff">
-                <div style="font-size:12px;color:#8d8d8d;margin-top:8px">Ingresa un plazo entre {{ plazoMinLabel }} y {{ plazoMaxLabel }}</div>
+                <input type="range" class="range-slider" min="{{ plazoMin }}" max="{{ plazoMax }}" step="{{ plazoStep }}" value="{{ plazo }}" onInput="{{ onPlazo }}" style="{{ plazoSliderStyle }}">
+                <div style="display:flex;justify-content:space-between;font-size:12px;color:#8d8d8d;margin-top:8px"><span>{{ plazoMinLabel }}</span><span>{{ plazoMaxLabel }}</span></div>
               </div>
               <div>
                 <label style="display:block;font-size:15px;font-weight:600;margin-bottom:6px">Tu ingreso mensual (soles)</label>
@@ -950,9 +1157,9 @@
                   <div style="font-size:13px;font-weight:700;color:#0e6027;text-transform:uppercase;letter-spacing:0.04em">Compara con un banco tradicional (tasa {{ bankTeaLabel }})</div>
                 </div>
 
-                <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;margin-bottom:14px">
+                <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;margin-bottom:16px">
                   <div style="text-align:center">
-                    <div style="font-size:11px;color:#52606d;margin-bottom:6px">Cuota mensual en banco</div>
+                    <div style="font-size:11px;color:#52606d;margin-bottom:6px">Cuota en banco</div>
                     <div style="font-size:20px;font-weight:800;color:#8d8d8d;text-decoration:line-through;text-decoration-color:#da1e28;text-decoration-thickness:2px">{{ cuotaBanco }}</div>
                   </div>
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0e6027" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
@@ -962,28 +1169,16 @@
                   </div>
                 </div>
 
-                <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;padding-top:14px;border-top:1px solid #a7f0ba;margin-bottom:16px">
-                  <div style="text-align:center">
-                    <div style="font-size:11px;color:#52606d;margin-bottom:6px">Total pagado en banco</div>
-                    <div style="font-size:20px;font-weight:800;color:#8d8d8d;text-decoration:line-through;text-decoration-color:#da1e28;text-decoration-thickness:2px">{{ totalBanco }}</div>
-                  </div>
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0e6027" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-                  <div style="text-align:center">
-                    <div style="font-size:11px;color:#0e6027;margin-bottom:6px">Total pagado como socio</div>
-                    <div style="font-size:20px;font-weight:800;color:#0e6027">{{ total }}</div>
-                  </div>
-                </div>
-
                 <div style="text-align:center;border-top:1px solid #a7f0ba;padding-top:16px">
                   <div style="font-size:13px;color:#0e6027;font-weight:600">Ahorras en total, durante los {{ plazo }} meses de tu préstamo</div>
                   <div style="font-size:32px;font-weight:800;color:#0e6027;letter-spacing:-0.02em">{{ ahorro }}</div>
                 </div>
               </div>
 
-              <button style="background:{{ prestamoActual.color }};color:#fff;border:none;border-radius:0;padding:15px;font-size:16px;font-weight:600;cursor:pointer;font-family:inherit">Solicitar este préstamo</button>
+              <a href="{{ solicitarPrestamoMailto }}" style="display:block;text-align:center;text-decoration:none;background:{{ prestamoActual.color }};color:#fff;border:none;border-radius:0;padding:15px;font-size:16px;font-weight:600;cursor:pointer;font-family:inherit">Solicitar este préstamo</a>
             </div>
           </div>
-          <p style="font-size:12px;color:#8b95a1;margin-top:24px">*Cálculo referencial. La tasa y condiciones finales dependen de la evaluación crediticia de cada socio.</p>
+          <p style="font-size:12px;color:#8b95a1;margin-top:24px">Nota: La cuota calculada es referencial y puede variar según la fecha de emisión y/o desembolso, las condiciones de la operación y otros factores aplicables. La cuota y condiciones definitivas serán determinadas e informadas por la Cooperativa al momento de la aprobación y/o desembolso del préstamo. El resultado del simulador no constituye una oferta ni aprobación de crédito.</p>
         </div>
         </sc-if>
       </section>
@@ -1018,6 +1213,7 @@
             <h1 style="font-size:40px;font-weight:800;letter-spacing:-0.02em">Anuncios</h1>
             <span style="font-size:14px;color:#6f6f6f">Comunidad Cooperativa</span>
           </div>
+          <p style="font-size:13px;color:#8b95a1;margin:-8px 0 20px">Actualizado el {{ anunciosUpdated }}</p>
 
           <!-- COMPOSER (solo administrador) -->
           <sc-if value="{{ isAdmin }}" hint-placeholder-val="{{ false }}">
@@ -1149,7 +1345,7 @@
 
           <sc-if value="{{ isLoginTabAdmin }}" hint-placeholder-val="{{ false }}">
           <h1 style="font-size:34px;font-weight:800;letter-spacing:-0.02em;margin-bottom:6px">Login Administrador</h1>
-          <p style="font-size:16px;color:#52606d;margin-bottom:30px">Acceso para editar anuncios, proveedores y tasas de interés.</p>
+          <p style="font-size:16px;color:#52606d;margin-bottom:30px">Acceso para editar anuncios, proveedores, productos, préstamos, historia y tasas de interés.</p>
           <label style="display:block;font-size:13px;font-weight:600;color:#3b4653;margin-bottom:7px">Usuario</label>
           <input type="text" placeholder="admin" value="{{ adminUser }}" onInput="{{ onAdminUser }}" style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:14px;font-size:15px;font-family:inherit;outline:none;margin-bottom:18px" style-focus="border:1px solid #0043ce;box-shadow:0 0 0 3px #edf5ff">
           <label style="display:block;font-size:13px;font-weight:600;color:#3b4653;margin-bottom:7px">Contraseña</label>
@@ -1301,9 +1497,10 @@ class Component extends DCLogic {
     loginTab: "socio", adminLogin: { user: "", pass: "" }, auth: { role: null, token: null },
     // Paste your deployed backend URL here (e.g. the Code Engine app URL from backend/README.md).
     // Leave empty to keep running in local-only demo mode (admin/cooperativa2026, nothing persists).
-    apiBase: "https://coop-api.2dfzriph4wl8.us-south.codeengine.appdomain.cloud",
+    apiBase: "",
     apiError: "",
     lastUpdatedAt: "2026-08-03T00:00:00-05:00",
+    sectionUpdatedAt: {},
     tasas: { "sola-firma": 13, consumo: 13, "largo-plazo": 12, automotriz: 8.0, hipotecario: 8, garantia: 11, academico: 8.75 },
     tasaSaved: {},
     registro: { nombres: "", apellidos: "", dni: "", area: "", email: "", celular: "", password: "", accept: false }, registroError: "", registroSuccess: false,
@@ -1311,6 +1508,50 @@ class Component extends DCLogic {
     proveedorDetalleSlot: null,
     editingProveedorSlot: null,
     proveedores: [],
+    productos: {
+      bebidas: { title: "Bebidas", cat: "Licores y bebidas", desc: "Lista de precios de nuestro proveedor de licores para socios: whisky, vinos, piscos, ron y más." },
+      rimac: { title: "Rímac Seguros", cat: "Seguro de Autos", desc: "Programa de seguro vehicular corporativo para socios de la Cooperativa." },
+      movistar: { title: "Movistar", cat: "Telefonía celular", desc: "Contrato corporativo con planes de datos, LDI y descuentos en equipos. La línea pasa a ser corporativa y se descuenta por planilla." },
+      perufarma: { title: "Perufarma", cat: "Farmacias", desc: "Catálogo corporativo con precios preferenciales en dermocosmética, cuidado personal y más." },
+      smartfit: { title: "Smart Fit", cat: "Gimnasio", desc: "Plan Black Corporativo, exclusivo para colaboradores de la Cooperativa." },
+      oncosalud: { title: "Oncosalud", cat: "Salud", desc: "Convenio corporativo para socios y familiares directos." }
+    },
+    editingProductoKey: null,
+    productoEdit: { title: "", cat: "", desc: "" },
+    prestamosOverrides: {},
+    editingPrestamoKey: null,
+    prestamoEdit: { title: "", desc: "", montoMin: 0, montoMax: 0, plazoMin: 0, plazoMax: 0, bank: 0 },
+    historia: [
+      { id: "seed-1", date: "18 jul. 1942", text: "Fundada como \"Asociación de Empleados\"." },
+      { id: "seed-2", date: "3 dic. 1963", text: "Reconocida oficialmente como \"Cooperativa de Crédito de los Empleados de IBM Ltda.\"" },
+      { id: "seed-3", date: "10 ene. 1983", text: "Cambió su razón social a \"Cooperativa de Servicios Múltiples de los Empleados de IBM del Perú S.A.\"" },
+      { id: "seed-4", date: "4 ene. 1995", text: "Registrada como \"Cooperativa de Ahorro y Crédito de los Empleados de IBM\"." },
+      { id: "seed-5", date: "7 feb. 2019", text: "Inscrita en el Registro Nacional de Cooperativas de Ahorro y Crédito, supervisada por la SBS." }
+    ],
+    prestamoDrafts: {},
+    prestamoSaved: {},
+    docLinks: {
+      estatuto: { label: "Estatuto", url: "" },
+      memorias: { label: "Memorias", url: "" },
+      directiva: { label: "Directiva", url: "" }
+    },
+    editingDocLinkKey: null,
+    docLinkEdit: { label: "", url: "" },
+    ahorroInfo: {
+      simple: { title: "Ahorro Simple", items: ["Ahorro mensual que se descuenta por planilla", "Monto mínimo S/50", "Es de libre disponibilidad"] },
+      plazoFijo: { title: "Depósitos a Plazo Fijo", items: ["Plazos de 90, 180, 360 y 720 días", "Monto mínimo para abrir depósitos: S/3,000 ó $1,000"] }
+    },
+    editingAhorroInfoKey: null,
+    ahorroInfoEdit: { title: "", itemsText: "" },
+    ahorroTasas: [
+      { id: "seed-1", plazo: "Ahorro", soles: "2.00%", dolares: "0.25%" },
+      { id: "seed-2", plazo: "90 días", soles: "4.00%", dolares: "0.75%" },
+      { id: "seed-3", plazo: "180 días", soles: "4.50%", dolares: "1.50%" },
+      { id: "seed-4", plazo: "360 días", soles: "5.25%", dolares: "2.00%" },
+      { id: "seed-5", plazo: "720 días", soles: "5.50%", dolares: "2.50%" }
+    ],
+    editingAhorroTasaSlot: null,
+    newAhorroTasa: { plazo: "", soles: "", dolares: "" },
     posts: [
       {id:1,author:"Cooperativa",role:"Cuenta oficial",time:"hace 2 h",tag:"Anuncio",color:"#0043ce",initials:"CI",tab:"cooperativa",text:"📢 Recuerda que puedes solicitar tus préstamos, tu Seguro de Autos con Rímac o inscribirte en el Fondo de Sepelio escribiendo a cualquiera de nuestras contactos en la sección Quiénes Somos.",hasImg:false,slotId:"post-1",img:"",likes:48,liked:false},
       {id:2,author:"Junta Directiva",role:"Gobierno cooperativo",time:"ayer",tag:"Evento",color:"#8a3ffc",initials:"JD",tab:"eventos",text:"Los invitamos a la Asamblea General de Socios. Se presentará la memoria anual y el reparto de excedentes.",hasImg:false,slotId:"post-2",img:"",likes:31,liked:true},
@@ -1320,11 +1561,26 @@ class Component extends DCLogic {
   go(p){ this.setState({ page: p }); const m=this.mainEl; if(m) m.scrollTop=0; }
   get mainEl(){ return this.host && this.host.querySelector ? this.host.querySelector("main") : document.querySelector("main"); }
 
-  money(n){ return "S/ " + Math.round(n).toLocaleString("es-PE"); }
+  money(n){ return "S/ " + n.toLocaleString("es-PE", { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
 
   formatUpdated(iso){
     const d = iso ? new Date(iso) : new Date();
     return d.toLocaleDateString("es-PE", { day:"numeric", month:"long", year:"numeric" });
+  }
+
+  // Last-updated date for one or more sections (the most recent wins), falling back
+  // to the global timestamp when the backend has not recorded any of them yet.
+  sectionUpdated(...keys){
+    const map = this.state.sectionUpdatedAt || {};
+    const stamps = keys.map(k => map[k]).filter(Boolean).sort();
+    return this.formatUpdated(stamps[stamps.length - 1] || this.state.lastUpdatedAt);
+  }
+
+  // Merge into a setState updater to bump both the global and per-section timestamps
+  // so an admin edit shows the new date without waiting for a reload.
+  touchSection(s, key){
+    const now = new Date().toISOString();
+    return { lastUpdatedAt: now, sectionUpdatedAt: { ...(s.sectionUpdatedAt||{}), [key]: now } };
   }
 
   // ---- Backend integration (see backend/README.md) ----
@@ -1342,8 +1598,17 @@ class Component extends DCLogic {
       this.setState(s => ({
         tasas: { ...s.tasas, ...(data.tasas||{}) },
         posts: (data.anuncios||[]).map(a => this.mapAnuncio(a)),
-        proveedores: (data.proveedores||[]).map(p => ({ slotId: "prov-"+p.id, remoteId: p.id, name: p.name, cat: p.cat, desc: p.desc, disc: p.disc })),
-        lastUpdatedAt: data.updatedAt || s.lastUpdatedAt
+        proveedores: (data.proveedores||[])
+          .filter(p => !["Rímac Seguros", "Oncosalud"].includes(p.name))
+          .map(p => ({ slotId: "prov-"+p.id, remoteId: p.id, name: p.name, cat: p.cat, desc: p.desc, disc: p.disc })),
+        productos: { ...s.productos, ...Object.fromEntries(Object.entries(data.productos||{}).map(([k,v])=>[k,{...s.productos[k],...v}])) },
+        prestamosOverrides: { ...s.prestamosOverrides, ...(data.prestamos||{}) },
+        docLinks: { ...s.docLinks, ...Object.fromEntries(Object.entries(data.docLinks||{}).map(([k,v])=>[k,{...s.docLinks[k],...v}])) },
+        historia: (data.historia||[]).map(h => ({ id: h.id, remoteId: h.id, date: h.date, text: h.text })),
+        ahorroInfo: { ...s.ahorroInfo, ...Object.fromEntries(Object.entries(data.ahorroInfo||{}).map(([k,v])=>[k,{...s.ahorroInfo[k],...v}])) },
+        ahorroTasas: (data.ahorroTasas||[]).map(t => ({ id: t.id, remoteId: t.id, plazo: t.plazo, soles: t.soles, dolares: t.dolares })),
+        lastUpdatedAt: data.updatedAt || s.lastUpdatedAt,
+        sectionUpdatedAt: { ...(s.sectionUpdatedAt||{}), ...(data.sectionUpdatedAt||{}) }
       }));
     }catch(e){
       this.setState({ apiError: "No se pudo conectar con el backend. Mostrando datos locales." });
@@ -1402,6 +1667,15 @@ class Component extends DCLogic {
       academico:    {montoMin:2000, montoMax:50000, montoStep:1000, plazoMin:6, plazoMax:48, plazoStep:6, bank:15, defMonto:15000, defPlazo:36}
     };
 
+    const prestamosOverrides = this.state.prestamosOverrides || {};
+    Object.keys(LOAN_LIMITS).forEach(k=>{
+      const o = prestamosOverrides[k];
+      if(!o) return;
+      ["montoMin","montoMax","montoStep","plazoMin","plazoMax","plazoStep","bank","defMonto","defPlazo"].forEach(f=>{
+        if(typeof o[f]==="number") LOAN_LIMITS[k][f]=o[f];
+      });
+    });
+
     const tasas = this.state.tasas;
     const loanTypes = [
       {key:"sola-firma",label:"Préstamos Inmediatos",tea:tasas["sola-firma"]},
@@ -1411,7 +1685,10 @@ class Component extends DCLogic {
       {key:"hipotecario",label:"Hipotecario",tea:tasas.hipotecario},
       {key:"garantia",label:"Garantía Hipotecaria",tea:tasas.garantia},
       {key:"academico",label:"Académico",tea:tasas.academico}
-    ].map(t=>({...t, ...CREDIT_COLORS[t.key], bank:LOAN_LIMITS[t.key].bank}));
+    ].map(t=>{
+      const o = prestamosOverrides[t.key] || {};
+      return {...t, ...CREDIT_COLORS[t.key], bank:LOAN_LIMITS[t.key].bank, label:o.title||t.label};
+    });
     const sel = loanTypes.find(t=>t.key===this.state.simTipo) || loanTypes[0];
     const selLimits = LOAN_LIMITS[sel.key];
     const tasa = sel.tea;
@@ -1426,7 +1703,10 @@ class Component extends DCLogic {
       {key:"hipotecario",slotId:"loan-4",photo:"./uploads/hipotecario-llaves.jpg",title:"Crédito Hipotecario",tasa:tasas.hipotecario.toFixed(1)+"% TEA",img:"Foto casa",desc:"Hasta el 80% del valor del inmueble, monto máximo S/900,000, a pagar en hasta 216 meses (18 años). Requiere 12 meses como socio."},
       {key:"garantia",slotId:"loan-5",photo:"./uploads/hipotecario-casa.jpg",title:"Garantía Hipotecaria",tasa:tasas.garantia.toFixed(1)+"% TEA",img:"Garantía hipotecaria",desc:"Hasta S/900,000, a pagar en hasta 216 meses (18 años). Requiere 12 meses como socio."},
       {key:"academico",slotId:"loan-6",photo:"./uploads/academico-graduacion.jpg",title:"Crédito Académico",tasa:tasas.academico.toFixed(1)+"% TEA",img:"Foto estudiantes",desc:"Hasta S/50,000 a pagar en 48 meses. Requiere mínimo 6 meses como socio."}
-    ].map(p=>({...p, ...CREDIT_COLORS[p.key]}));
+    ].map(p=>{
+      const o = prestamosOverrides[p.key] || {};
+      return {...p, ...CREDIT_COLORS[p.key], title:o.title||p.title, desc:o.desc||p.desc};
+    });
     const prestamoActualData = prestamosData.find(p=>p.key===this.state.simTipo) || prestamosData[0];
 
     // ---- Motor de recomendaciones: content-based, por tags compartidos entre productos ----
@@ -1492,14 +1772,14 @@ class Component extends DCLogic {
       style: "padding:14px 18px;border-radius:0;font-size:17px;cursor:pointer;font-weight:"+(page===key?"600":"500")+";color:"+(page===key?"#fff":"#8b95a1")+";background:"+(page===key?"#17181b":"transparent")
     }));
 
-    const r = tasa/100/12;
+    const DESGRAVAMEN_PCT = 0.5;
+    const r = (tasa + DESGRAVAMEN_PCT)/100/12;
     const n = this.state.plazo;
     const P = this.state.monto;
     const pmt = (rate)=> rate===0 ? P/n : (P*rate)/(1-Math.pow(1+rate,-n));
     const cuotaNum = pmt(r);
     const totalNum = cuotaNum*n;
     const cuotaBancoNum = pmt(sel.bank/100/12);
-    const totalBancoNum = cuotaBancoNum*n;
     const ahorroNum = (cuotaBancoNum - cuotaNum) * n;
     const capPctN = Math.round((P/totalNum)*100);
     const RING_R = 64, RING_C = 2*Math.PI*RING_R;
@@ -1512,10 +1792,37 @@ class Component extends DCLogic {
     const afColor = afRatio<=0.30 ? "#24a148" : (afRatio<=0.40 ? "#f1c21b" : "#da1e28");
     const afLabel = afRatio<=0.30 ? "Saludable" : (afRatio<=0.40 ? "Ajustado" : "Elevado");
 
+    // "Solicitar este préstamo" abre un correo a Lucía Torres con la simulación actual.
+    const SOLICITUD_EMAIL = "lucia.torres.polo@ibm.com";
+    const solicitudSubject = "Solicitud de préstamo — " + prestamoActualData.title;
+    const solicitudBody =
+      "Hola Lucía:\n\n" +
+      "Quisiera solicitar el siguiente préstamo, simulado en la web de la Cooperativa:\n\n" +
+      "- Producto: " + prestamoActualData.title + "\n" +
+      "- Monto solicitado: " + this.money(P) + "\n" +
+      "- Plazo: " + n + " meses\n" +
+      "- Tasa referencial: " + tasa + "% TEA\n" +
+      "- Cuota mensual estimada: " + this.money(cuotaNum) + "\n" +
+      "- Total estimado a pagar: " + this.money(totalNum) + "\n\n" +
+      "Mis datos:\n" +
+      "- Nombre completo: \n" +
+      "- DNI: \n" +
+      "- Área / centro de costo: \n" +
+      "- Teléfono de contacto: \n\n" +
+      "Quedo atento(a) a los siguientes pasos. Gracias.";
+    const solicitarPrestamoMailto = "mailto:" + SOLICITUD_EMAIL +
+      "?subject=" + encodeURIComponent(solicitudSubject) +
+      "&body=" + encodeURIComponent(solicitudBody);
+
     return {
       nav,
       lastUpdated: this.formatUpdated(this.state.lastUpdatedAt),
-      tasasUpdated: this.formatUpdated(this.state.lastUpdatedAt),
+      tasasUpdated: this.sectionUpdated("tasas", "prestamos"),
+      ahorroTasasUpdated: this.sectionUpdated("ahorroTasas"),
+      anunciosUpdated: this.sectionUpdated("anuncios"),
+      proveedoresUpdated: this.sectionUpdated("proveedores"),
+      productosUpdated: this.sectionUpdated("productos"),
+      historiaUpdated: this.sectionUpdated("historia"),
       isInicio: page==="inicio", isQuienes: page==="quienes", isAhorro: page==="ahorro",
       isProveedores: page==="proveedores", isPrestamos: page==="prestamos", isPrestamoDetalle: page==="prestamo-detalle",
       isServicios: page==="servicios", isRegistro: page==="registro", isLogin: page==="login", isAnuncios: page==="anuncios",
@@ -1660,12 +1967,12 @@ class Component extends DCLogic {
         if(this.state.apiBase){
           try{
             const created = await this.apiFetch("/api/anuncios", { method:"POST", body: JSON.stringify({ text: t }) });
-            this.setState(s=>({posts:[this.mapAnuncio(created),...s.posts], draft:"", apiError:"", lastUpdatedAt:new Date().toISOString()}));
+            this.setState(s=>({posts:[this.mapAnuncio(created),...s.posts], draft:"", apiError:"", ...this.touchSection(s,"anuncios")}));
           }catch(e){ this.setState({apiError: e.message}); }
           return;
         }
         const np={id:Date.now(),author:"Cooperativa",role:"Administrador",time:"ahora",tag:"Anuncio",color:"#0043ce",initials:"AD",tab:"cooperativa",text:t,hasImg:false,slotId:"post-"+Date.now(),img:"",likes:0,liked:false};
-        this.setState(s=>({posts:[np,...s.posts],draft:"",lastUpdatedAt:new Date().toISOString()}));
+        this.setState(s=>({posts:[np,...s.posts],draft:"",...this.touchSection(s,"anuncios")}));
       },
       feedFilters: [["todos","Todos"],["cooperativa","Cooperativa"],["proveedores","Descuentos"],["eventos","Eventos"],["socios","Socios"]].map(([k,label])=>{
         const on=this.state.feed===k;
@@ -1683,7 +1990,7 @@ class Component extends DCLogic {
             try{ await this.apiFetch("/api/anuncios/"+(p.remoteId||p.id), { method:"DELETE" }); }
             catch(e){ this.setState({apiError: e.message}); return; }
           }
-          this.setState(s=>({posts:s.posts.filter(x=>x.id!==p.id), lastUpdatedAt:new Date().toISOString()}));
+          this.setState(s=>({posts:s.posts.filter(x=>x.id!==p.id), ...this.touchSection(s,"anuncios")}));
         }
       })),
 
@@ -1692,37 +1999,123 @@ class Component extends DCLogic {
         {value:"3",label:"Empresas afiliadas"},
         {value:"84",label:"Años al servicio de nuestros socios"}
       ],
-      docLinks: ["Estatuto","Memorias","Directiva"],
-      ahorroTasas: [
-        {plazo:"Ahorro",soles:"2.00%",dolares:"0.25%"},
-        {plazo:"90 días",soles:"4.00%",dolares:"0.75%"},
-        {plazo:"180 días",soles:"4.50%",dolares:"1.50%"},
-        {plazo:"360 días",soles:"5.25%",dolares:"2.00%"},
-        {plazo:"720 días",soles:"5.50%",dolares:"2.50%"}
-      ],
+      docLinks: ["estatuto","memorias","directiva"].map(key=>{
+        const d = this.state.docLinks[key];
+        return {
+          key, label: d.label, url: d.url, hasUrl: !!d.url,
+          go: ()=>{ if(d.url) window.open(d.url, "_blank"); },
+          edit: (e)=>{ if(e && e.stopPropagation) e.stopPropagation(); this.setState({editingDocLinkKey:key, docLinkEdit:{label:d.label, url:d.url}}); }
+        };
+      }),
+      editingDocLinkKey: this.state.editingDocLinkKey,
+      docLinkEdit: this.state.docLinkEdit,
+      onDocLinkEditLabel: (e)=>this.setState(s=>({docLinkEdit:{...s.docLinkEdit, label:e.target.value}})),
+      onDocLinkEditUrl: (e)=>this.setState(s=>({docLinkEdit:{...s.docLinkEdit, url:e.target.value}})),
+      saveDocLinkEdit: async ()=>{
+        const key = this.state.editingDocLinkKey;
+        if(!key) return;
+        const payload = {...this.state.docLinkEdit};
+        if(this.state.apiBase){
+          try{
+            const updated = await this.apiFetch("/api/doclinks/"+key, { method:"PUT", body: JSON.stringify(payload) });
+            this.setState(s=>({docLinks:{...s.docLinks, [key]: updated}, editingDocLinkKey:null, apiError:"", lastUpdatedAt:new Date().toISOString()}));
+          }catch(e){ this.setState({apiError: e.message}); }
+          return;
+        }
+        this.setState(s=>({docLinks:{...s.docLinks, [key]: payload}, editingDocLinkKey:null, lastUpdatedAt:new Date().toISOString()}));
+      },
+      cancelDocLinkEdit: ()=>this.setState({editingDocLinkKey:null}),
+
+      ahorroInfo: Object.fromEntries(Object.entries(this.state.ahorroInfo).map(([key,info])=>[key, {
+        ...info,
+        edit: ()=>this.setState({editingAhorroInfoKey:key, ahorroInfoEdit:{title:info.title, itemsText:info.items.join("\n")}})
+      }])),
+      editingAhorroInfoKey: this.state.editingAhorroInfoKey,
+      ahorroInfoEdit: this.state.ahorroInfoEdit,
+      onAhorroInfoEditTitle: (e)=>this.setState(s=>({ahorroInfoEdit:{...s.ahorroInfoEdit, title:e.target.value}})),
+      onAhorroInfoEditItems: (e)=>this.setState(s=>({ahorroInfoEdit:{...s.ahorroInfoEdit, itemsText:e.target.value}})),
+      cancelAhorroInfoEdit: ()=>this.setState({editingAhorroInfoKey:null}),
+      saveAhorroInfoEdit: async ()=>{
+        const key = this.state.editingAhorroInfoKey;
+        if(!key) return;
+        const payload = { title: this.state.ahorroInfoEdit.title, items: this.state.ahorroInfoEdit.itemsText.split("\n").map(s=>s.trim()).filter(Boolean) };
+        if(this.state.apiBase){
+          try{
+            const updated = await this.apiFetch("/api/ahorro-info/"+key, { method:"PUT", body: JSON.stringify(payload) });
+            this.setState(s=>({ahorroInfo:{...s.ahorroInfo, [key]: updated}, editingAhorroInfoKey:null, apiError:"", lastUpdatedAt:new Date().toISOString()}));
+          }catch(e){ this.setState({apiError: e.message}); }
+          return;
+        }
+        this.setState(s=>({ahorroInfo:{...s.ahorroInfo, [key]: payload}, editingAhorroInfoKey:null, lastUpdatedAt:new Date().toISOString()}));
+      },
+
+      ahorroTasas: this.state.ahorroTasas.map(t=>({
+        ...t,
+        edit: ()=>this.setState({editingAhorroTasaSlot:t.id, newAhorroTasa:{plazo:t.plazo, soles:t.soles, dolares:t.dolares}}),
+        remove: async ()=>{
+          if(this.state.apiBase){
+            try{ await this.apiFetch("/api/ahorro-tasas/"+(t.remoteId||t.id), { method:"DELETE" }); }
+            catch(err){ this.setState({apiError: err.message}); return; }
+          }
+          this.setState(s=>({ahorroTasas: s.ahorroTasas.filter(x=>x.id!==t.id), ...this.touchSection(s,"ahorroTasas")}));
+        }
+      })),
+      editingAhorroTasaSlot: this.state.editingAhorroTasaSlot,
+      newAhorroTasa: this.state.newAhorroTasa,
+      onNewAhorroTasaPlazo: (e)=>this.setState(s=>({newAhorroTasa:{...s.newAhorroTasa, plazo:e.target.value}})),
+      onNewAhorroTasaSoles: (e)=>this.setState(s=>({newAhorroTasa:{...s.newAhorroTasa, soles:e.target.value}})),
+      onNewAhorroTasaDolares: (e)=>this.setState(s=>({newAhorroTasa:{...s.newAhorroTasa, dolares:e.target.value}})),
+      ahorroTasaSubmitLabel: this.state.editingAhorroTasaSlot ? "Guardar cambios" : "Agregar fila",
+      cancelAhorroTasaEdit: ()=>this.setState({editingAhorroTasaSlot:null, newAhorroTasa:{plazo:"",soles:"",dolares:""}}),
+      addAhorroTasa: async ()=>{
+        const payload = {...this.state.newAhorroTasa};
+        if(!payload.plazo || !payload.soles || !payload.dolares) return;
+        const editingId = this.state.editingAhorroTasaSlot;
+        if(editingId){
+          const existing = this.state.ahorroTasas.find(x=>x.id===editingId);
+          if(this.state.apiBase){
+            try{
+              const updated = await this.apiFetch("/api/ahorro-tasas/"+(existing.remoteId||editingId), { method:"PUT", body: JSON.stringify(payload) });
+              this.setState(s=>({ahorroTasas: s.ahorroTasas.map(x=>x.id===editingId?{...x,...updated}:x), editingAhorroTasaSlot:null, newAhorroTasa:{plazo:"",soles:"",dolares:""}, apiError:"", ...this.touchSection(s,"ahorroTasas")}));
+            }catch(e){ this.setState({apiError: e.message}); }
+            return;
+          }
+          this.setState(s=>({ahorroTasas: s.ahorroTasas.map(x=>x.id===editingId?{...x,...payload}:x), editingAhorroTasaSlot:null, newAhorroTasa:{plazo:"",soles:"",dolares:""}, ...this.touchSection(s,"ahorroTasas")}));
+          return;
+        }
+        if(this.state.apiBase){
+          try{
+            const created = await this.apiFetch("/api/ahorro-tasas", { method:"POST", body: JSON.stringify(payload) });
+            this.setState(s=>({ahorroTasas:[...s.ahorroTasas, {id:created.id, remoteId:created.id, ...payload}], newAhorroTasa:{plazo:"",soles:"",dolares:""}, apiError:"", ...this.touchSection(s,"ahorroTasas")}));
+          }catch(e){ this.setState({apiError: e.message}); }
+          return;
+        }
+        this.setState(s=>({ahorroTasas:[...s.ahorroTasas, {id:"local-"+Date.now(), ...payload}], newAhorroTasa:{plazo:"",soles:"",dolares:""}, ...this.touchSection(s,"ahorroTasas")}));
+      },
+
       tasasVigencia: "setiembre 2025",
       tasasSoles: [
-        {concepto:"Préstamos Inmediatos",tea:"13.00%",teaSin:"15.00%"},
-        {concepto:"Crédito de Consumo",tea:"13.00%",teaSin:"15.00%"},
-        {concepto:"Crédito Escolar",tea:"9.00%",teaSin:"11.00%"},
-        {concepto:"Crédito Salud (Oncosalud)",tea:"6.00%",teaSin:"8.00%"},
-        {concepto:"Crédito Largo Plazo",tea:"12.00%",teaSin:"14.00%"},
-        {concepto:"Crédito Largo Plazo compra de deuda",tea:"10.00%",teaSin:"12.00%"},
-        {concepto:"Crédito Académico",tea:"8.75%",teaSin:"11.00%"},
-        {concepto:"Crédito Automóvil",tea:"8.00%",teaSin:"10.00%"},
-        {concepto:"Crédito Hipotecario",tea:"8.00%",teaSin:"n/a"},
-        {concepto:"Crédito Garantía Hipotecaria",tea:"11.00%",teaSin:"n/a"},
-        {concepto:"Crédito Traslado Hipotecario",tea:"7.00%",teaSin:"n/a"},
-        {concepto:"Seguro de Desgravamen",tea:"0.50%",teaSin:"0.00%"}
+        {concepto:"Préstamos Inmediatos",tea:"13.00%"},
+        {concepto:"Crédito de Consumo",tea:"13.00%"},
+        {concepto:"Crédito Escolar",tea:"9.00%"},
+        {concepto:"Crédito Salud (Oncosalud)",tea:"6.00%"},
+        {concepto:"Crédito Largo Plazo",tea:"12.00%"},
+        {concepto:"Crédito Largo Plazo compra de deuda",tea:"10.00%"},
+        {concepto:"Crédito Académico",tea:"8.75%"},
+        {concepto:"Crédito Automóvil",tea:"8.00%"},
+        {concepto:"Crédito Hipotecario",tea:"8.00%"},
+        {concepto:"Crédito Garantía Hipotecaria",tea:"11.00%"},
+        {concepto:"Crédito Traslado Hipotecario",tea:"7.00%"},
+        {concepto:"Seguro de Desgravamen",tea:"0.50%"}
       ],
       tasasDolares: [
-        {concepto:"Crédito de Consumo",tea:"11.00%",teaSin:"13.00%"},
-        {concepto:"Crédito Largo Plazo",tea:"9.00%",teaSin:"11.00%"},
-        {concepto:"Crédito Académico",tea:"6.00%",teaSin:"8.00%"},
-        {concepto:"Crédito Automóvil",tea:"7.50%",teaSin:"10.00%"},
-        {concepto:"Crédito Hipotecario",tea:"5.50%",teaSin:"n/a"},
-        {concepto:"Crédito Garantía Hipotecaria",tea:"7.00%",teaSin:"n/a"},
-        {concepto:"Seguro de Desgravamen",tea:"0.50%",teaSin:"0.00%"}
+        {concepto:"Crédito de Consumo",tea:"11.00%"},
+        {concepto:"Crédito Largo Plazo",tea:"9.00%"},
+        {concepto:"Crédito Académico",tea:"6.00%"},
+        {concepto:"Crédito Automóvil",tea:"7.50%"},
+        {concepto:"Crédito Hipotecario",tea:"5.50%"},
+        {concepto:"Crédito Garantía Hipotecaria",tea:"7.00%"},
+        {concepto:"Seguro de Desgravamen",tea:"0.50%"}
       ],
       bebidas: [
         {cat:"WHISKY",marca:"JOHNNIE WALKER GOLD RESERVE",medida:"X 750",cant:4,precio:"195.00"},
@@ -1857,12 +2250,7 @@ class Component extends DCLogic {
         {title:"Suplementos y bienestar",desc:"Suplementos efervescentes y productos de bienestar, ej. Magnesol."},
         {title:"Cuidado capilar y otros",desc:"Coloración y otras categorías del portafolio, ej. Issue Professional."}
       ],
-      historia: [
-        {date:"18 jul. 1942",text:"Fundada como \"Asociación de Empleados\"."},
-        {date:"12 dic. 1963",text:"Reconocida oficialmente como \"Cooperativa de Servicios Múltiples\"."},
-        {date:"4 ene. 1995",text:"Registrada como \"Cooperativa de Ahorro y Crédito de los Empleados de IBM\"."},
-        {date:"7 feb. 2019",text:"Inscrita en el Registro Nacional de Cooperativas de Ahorro y Crédito, supervisada por la SBS."}
-      ],
+      historia: this.state.historia,
       contactos: [
         {name:"Diana Huanay",email:"dhuanay@pe.ibm.com",mailto:"mailto:dhuanay@pe.ibm.com",roles:"Préstamos Hipotecarios y Vehiculares · Inscripción en Seguro de Autos · Liquidación de Fondo de Sepelio · 999 436 902"},
         {name:"Janet Ríos",email:"jrios@pe.ibm.com",mailto:"mailto:jrios@pe.ibm.com",roles:"Préstamos Consumo y Largo Plazo · Inscripción en Telefonía y Oncosalud"},
@@ -1927,12 +2315,12 @@ class Component extends DCLogic {
             try{
               const updated = await this.apiFetch("/api/proveedores/"+(editing.remoteId||editing.slotId), { method:"PUT", body: JSON.stringify(payload) });
               const entry = {slotId:editing.slotId, remoteId:editing.remoteId, name:updated.name, cat:updated.cat, desc:updated.desc, disc:updated.disc, photo:updated.photo||"", link:updated.link||"", docs:updated.docs||[], links:updated.links||[]};
-              this.setState(s=>({proveedores:s.proveedores.map(x=>x.slotId===editing.slotId?entry:x), newProv:empty, editingProveedorSlot:null, apiError:"", lastUpdatedAt:new Date().toISOString()}));
+              this.setState(s=>({proveedores:s.proveedores.map(x=>x.slotId===editing.slotId?entry:x), newProv:empty, editingProveedorSlot:null, apiError:"", ...this.touchSection(s,"proveedores")}));
             }catch(e){ this.setState({apiError: e.message}); }
             return;
           }
           const entry = {...editing, ...payload};
-          this.setState(s=>({proveedores:s.proveedores.map(x=>x.slotId===editing.slotId?entry:x), newProv:empty, editingProveedorSlot:null, lastUpdatedAt:new Date().toISOString()}));
+          this.setState(s=>({proveedores:s.proveedores.map(x=>x.slotId===editing.slotId?entry:x), newProv:empty, editingProveedorSlot:null, ...this.touchSection(s,"proveedores")}));
           return;
         }
 
@@ -1940,12 +2328,12 @@ class Component extends DCLogic {
           try{
             const created = await this.apiFetch("/api/proveedores", { method:"POST", body: JSON.stringify(payload) });
             const entry = {slotId:"prov-"+created.id, remoteId:created.id, name:created.name, cat:created.cat, desc:created.desc, disc:created.disc, photo:created.photo||"", link:created.link||"", docs:created.docs||[], links:created.links||[]};
-            this.setState(s=>({proveedores:[...s.proveedores, entry], newProv:empty, apiError:"", lastUpdatedAt:new Date().toISOString()}));
+            this.setState(s=>({proveedores:[...s.proveedores, entry], newProv:empty, apiError:"", ...this.touchSection(s,"proveedores")}));
           }catch(e){ this.setState({apiError: e.message}); }
           return;
         }
         const entry = {slotId:"prov-"+Date.now(), ...payload};
-        this.setState(s=>({proveedores:[...s.proveedores, entry], newProv:empty, lastUpdatedAt:new Date().toISOString()}));
+        this.setState(s=>({proveedores:[...s.proveedores, entry], newProv:empty, ...this.touchSection(s,"proveedores")}));
       },
       cancelEditProveedor: ()=>this.setState({editingProveedorSlot:null, newProv:{name:"",cat:"",desc:"",disc:"",photo:"",link:"",docs:[],links:[],linkDraft:{label:"",url:""}}}),
       proveedores: this.state.proveedores.map(p=>({...p,
@@ -1969,7 +2357,7 @@ class Component extends DCLogic {
             try{ await this.apiFetch("/api/proveedores/"+(p.remoteId||p.slotId), { method:"DELETE" }); }
             catch(err){ this.setState({apiError: err.message}); return; }
           }
-          this.setState(s=>({proveedores:s.proveedores.filter(x=>x.slotId!==p.slotId), lastUpdatedAt:new Date().toISOString()}));
+          this.setState(s=>({proveedores:s.proveedores.filter(x=>x.slotId!==p.slotId), ...this.touchSection(s,"proveedores")}));
         }
       })),
       proveedorActual: (()=>{
@@ -1981,26 +2369,90 @@ class Component extends DCLogic {
 
       apiError: this.state.apiError,
 
-      prestamos: prestamosData.map(p=>({...p, goDetalle:()=>{
-        const lim = LOAN_LIMITS[p.key];
-        this.setState({simTipo:p.key, monto:lim.defMonto, plazo:lim.defPlazo, page:"prestamo-detalle"});
-        const m=this.mainEl; if(m) m.scrollTop=0;
-      }, tasaEdit: tasas[p.key], onTasaInput:(e)=>{
-        const v = parseFloat(e.target.value); if(isNaN(v)) return;
-        this.setState(s=>({tasas:{...s.tasas,[p.key]:v}, tasaSaved:{...s.tasaSaved,[p.key]:false}}));
-      }, tasaIsSaved: !!(this.state.tasaSaved && this.state.tasaSaved[p.key]),
-      tasaSavedLabel: this.state.tasaSaved && this.state.tasaSaved[p.key] ? "Guardado" : "Guardar",
-      onTasaSave: async ()=>{
+      productos: (()=>{
+        const PRODUCTO_META = {
+          bebidas: {cta:"Ver precios", page:"bebidas"},
+          rimac: {cta:"Ver coberturas", page:"rimac"},
+          movistar: {cta:"Ver planes", page:"movistar"},
+          perufarma: {cta:"Ver catálogo", page:"perufarma"},
+          smartfit: {cta:"Ver beneficios", page:"smartfit"},
+          oncosalud: {cta:"Ver planes", page:"oncosalud"}
+        };
+        return Object.keys(PRODUCTO_META).map(key=>({
+          key,
+          ...this.state.productos[key],
+          ...PRODUCTO_META[key],
+          go: ()=>this.go(PRODUCTO_META[key].page),
+          edit: (e)=>{ if(e && e.stopPropagation) e.stopPropagation(); this.setState({editingProductoKey:key, productoEdit:{...this.state.productos[key]}}); }
+        }));
+      })(),
+      editingProductoKey: this.state.editingProductoKey,
+      productoEdit: this.state.productoEdit,
+      onProductoEditTitle: (e)=>this.setState(s=>({productoEdit:{...s.productoEdit, title:e.target.value}})),
+      onProductoEditCat: (e)=>this.setState(s=>({productoEdit:{...s.productoEdit, cat:e.target.value}})),
+      onProductoEditDesc: (e)=>this.setState(s=>({productoEdit:{...s.productoEdit, desc:e.target.value}})),
+      saveProductoEdit: async ()=>{
+        const key = this.state.editingProductoKey;
+        if(!key) return;
+        const payload = {...this.state.productoEdit};
         if(this.state.apiBase){
           try{
-            await this.apiFetch("/api/tasas", { method:"PUT", body: JSON.stringify({ [p.key]: this.state.tasas[p.key] }) });
-            this.setState(s=>({apiError:"", lastUpdatedAt:new Date().toISOString(), tasaSaved:{...s.tasaSaved,[p.key]:true}}));
+            const updated = await this.apiFetch("/api/productos/"+key, { method:"PUT", body: JSON.stringify(payload) });
+            this.setState(s=>({productos:{...s.productos, [key]: updated}, editingProductoKey:null, apiError:"", ...this.touchSection(s,"productos")}));
           }catch(e){ this.setState({apiError: e.message}); }
           return;
         }
-        this.setState(s=>({lastUpdatedAt:new Date().toISOString(), tasaSaved:{...s.tasaSaved,[p.key]:true}}));
-      }})),
+        this.setState(s=>({productos:{...s.productos, [key]: payload}, editingProductoKey:null, ...this.touchSection(s,"productos")}));
+      },
+      cancelProductoEdit: ()=>this.setState({editingProductoKey:null}),
+
+      prestamos: prestamosData.map(p=>{
+        const lim = LOAN_LIMITS[p.key];
+        const draft = this.state.prestamoDrafts[p.key] || {title:p.title, desc:p.desc, montoMin:lim.montoMin, montoMax:lim.montoMax, plazoMin:lim.plazoMin, plazoMax:lim.plazoMax, bank:lim.bank};
+        const setDraft = (field)=>(e)=>{
+          const isNum = field!=="title" && field!=="desc";
+          const v = isNum ? parseFloat(e.target.value) : e.target.value;
+          if(isNum && isNaN(v)) return;
+          this.setState(s=>({prestamoDrafts:{...s.prestamoDrafts,[p.key]:{...draft,[field]:v}}, prestamoSaved:{...s.prestamoSaved,[p.key]:false}}));
+        };
+        return {...p, goDetalle:()=>{
+          this.setState({simTipo:p.key, monto:lim.defMonto, plazo:lim.defPlazo, page:"prestamo-detalle"});
+          const m=this.mainEl; if(m) m.scrollTop=0;
+        }, tasaEdit: tasas[p.key], onTasaInput:(e)=>{
+          const v = parseFloat(e.target.value); if(isNaN(v)) return;
+          this.setState(s=>({tasas:{...s.tasas,[p.key]:v}, tasaSaved:{...s.tasaSaved,[p.key]:false}}));
+        }, tasaIsSaved: !!(this.state.tasaSaved && this.state.tasaSaved[p.key]),
+        tasaSavedLabel: this.state.tasaSaved && this.state.tasaSaved[p.key] ? "Guardado" : "Guardar",
+        onTasaSave: async ()=>{
+          if(this.state.apiBase){
+            try{
+              await this.apiFetch("/api/tasas", { method:"PUT", body: JSON.stringify({ [p.key]: this.state.tasas[p.key] }) });
+              this.setState(s=>({apiError:"", ...this.touchSection(s,"tasas"), tasaSaved:{...s.tasaSaved,[p.key]:true}}));
+            }catch(e){ this.setState({apiError: e.message}); }
+            return;
+          }
+          this.setState(s=>({...this.touchSection(s,"tasas"), tasaSaved:{...s.tasaSaved,[p.key]:true}}));
+        },
+        draft, onDraftTitle:setDraft("title"), onDraftDesc:setDraft("desc"),
+        onDraftMontoMin:setDraft("montoMin"), onDraftMontoMax:setDraft("montoMax"),
+        onDraftPlazoMin:setDraft("plazoMin"), onDraftPlazoMax:setDraft("plazoMax"),
+        onDraftBank:setDraft("bank"),
+        prestamoIsSaved: !!(this.state.prestamoSaved && this.state.prestamoSaved[p.key]),
+        prestamoSavedLabel: this.state.prestamoSaved && this.state.prestamoSaved[p.key] ? "Guardado" : "Guardar producto",
+        onPrestamoSave: async ()=>{
+          const payload = {title:draft.title, desc:draft.desc, montoMin:draft.montoMin, montoMax:draft.montoMax, plazoMin:draft.plazoMin, plazoMax:draft.plazoMax, bank:draft.bank};
+          if(this.state.apiBase){
+            try{
+              const updated = await this.apiFetch("/api/prestamos/"+p.key, { method:"PUT", body: JSON.stringify(payload) });
+              this.setState(s=>({prestamosOverrides:{...s.prestamosOverrides,[p.key]:updated}, apiError:"", ...this.touchSection(s,"prestamos"), prestamoSaved:{...s.prestamoSaved,[p.key]:true}}));
+            }catch(e){ this.setState({apiError: e.message}); }
+            return;
+          }
+          this.setState(s=>({prestamosOverrides:{...s.prestamosOverrides,[p.key]:payload}, ...this.touchSection(s,"prestamos"), prestamoSaved:{...s.prestamoSaved,[p.key]:true}}));
+        }};
+      }),
       prestamoActual: {...prestamoActualData, tasaLabel: prestamoActualData.tasa},
+      solicitarPrestamoMailto,
       goPrestamos: ()=>this.go("prestamos"),
       goProveedores: ()=>this.go("proveedores"),
       goBebidas: ()=>this.go("bebidas"),
@@ -2051,6 +2503,8 @@ class Component extends DCLogic {
       capitalLabel: this.money(P),
       onMonto: (e)=>this.setState({monto:+e.target.value}),
       onPlazo: (e)=>this.setState({plazo:+e.target.value}),
+      montoSliderStyle: "-webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:0;outline:none;cursor:pointer;margin-top:10px;background:linear-gradient(to right,#0043ce "+Math.round(((this.state.monto-montoMin)/(montoMax-montoMin))*100)+"%,#e0e0e0 "+Math.round(((this.state.monto-montoMin)/(montoMax-montoMin))*100)+"%)",
+      plazoSliderStyle: "-webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:0;outline:none;cursor:pointer;margin-top:10px;background:linear-gradient(to right,#0043ce "+Math.round(((this.state.plazo-plazoMin)/(plazoMax-plazoMin))*100)+"%,#e0e0e0 "+Math.round(((this.state.plazo-plazoMin)/(plazoMax-plazoMin))*100)+"%)",
 
       simView,
       ringValue: simView==="total" ? this.money(totalNum) : this.money(cuotaNum),
@@ -2072,7 +2526,7 @@ class Component extends DCLogic {
       onIngreso: (e)=>this.setState({ingreso:+e.target.value}),
       afPct: Math.round(afRatio*100)+"%", afWidth: Math.min(afRatio*100,100)+"%", afColor, afLabel,
       capPct: capPctN+"%", intPct: (100-capPctN)+"%",
-      cuotaBanco: this.money(cuotaBancoNum), totalBanco: this.money(totalBancoNum), bankTeaLabel: sel.bank+"%",
+      cuotaBanco: this.money(cuotaBancoNum), bankTeaLabel: sel.bank+"%",
       ahorro: this.money(ahorroNum)
     };
   }
