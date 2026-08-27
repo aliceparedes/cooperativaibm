@@ -3,6 +3,7 @@ const express = require("express");
 const cors = require("cors");
 
 const { login, requireAdmin, socioLogin, requireSocio } = require("./src/auth");
+const verify = require("./src/verify");
 const store = require("./src/store");
 const txt = require("./src/txt");
 const reads = require("./src/reads");
@@ -13,9 +14,16 @@ app.use(express.json({ limit: "20mb" }));
 const allowedOrigins = (process.env.ALLOWED_ORIGIN || "*").split(",").map((o) => o.trim());
 app.use(
   cors({
-    origin: allowedOrigins.includes("*") ? "*" : allowedOrigins
+    origin: allowedOrigins.includes("*") ? "*" : allowedOrigins,
+    credentials: true
   })
 );
+
+// Cookie parser (para IBM Verify state + auth_token)
+app.use(require("cookie-parser")());
+
+// Middleware: cookie → Authorization header (compatible con requireSocio existente)
+app.use(verify.cookieToAuth);
 
 app.get("/api/health", (req, res) => res.json({ ok: true }));
 
@@ -47,6 +55,29 @@ app.post("/api/auth/socio-login", async (req, res) => {
   if (!read.socio) return res.status(404).json({ error: "Socio no encontrado con el código " + key });
   const token = socioLogin(read.socio);
   res.json({ token, socio: read.socio, source: read.source });
+});
+
+// ─── IBM Verify OIDC ────────────────────────────────────────────────────────
+// Redirect al login de IBM Verify (genera state firmado en cookie)
+app.get("/api/auth/verify/login", verify.verifyLoginHandler);
+
+// Callback de IBM Verify: valida state → exchange code → validateIdToken → socioLogin → cookie
+app.get("/api/auth/verify/callback", verify.verifyCallbackHandler);
+
+// Logout: limpiar cookie
+app.post("/api/auth/verify/logout", (req, res) => {
+  verify.clearAuthCookie(res);
+  res.json({ ok: true });
+});
+
+// Get current socio from auth cookie (used after OIDC redirect)
+app.get("/api/auth/me", requireSocio, async (req, res) => {
+  try {
+    const read = await reads.readSocio(store, req.socio.docume);
+    res.json({ socio: read.socio, source: read.source });
+  } catch (e) {
+    res.status(e.status || 500).json({ error: e.message });
+  }
 });
 
 app.get("/api/content", async (req, res) => {
@@ -262,7 +293,7 @@ app.get("/api/socios", requireAdmin, async (req, res) => {
 // db2 autoritativo si DATAAPI_ENABLED; si no, mirror local. El overlay de
 // cambios pendientes solo se aplica sobre base db2 (Fase C).
 app.get("/api/socios/:docume", requireSocio, async (req, res) => {
-  if (String(req.params.docume) !== req.socio.docume) {
+  if (String(req.params.docume).trim() !== String(req.socio.docume).trim()) {
     return res.status(403).json({ error: "Solo puedes ver tu propio perfil." });
   }
   let read;
@@ -281,7 +312,7 @@ app.get("/api/socios/:docume", requireSocio, async (req, res) => {
 // actualizar perfil de un socio (autoservicio demo)
 app.put("/api/socios/:docume", requireSocio, async (req, res) => {
   const docume = String(req.params.docume || "").trim();
-  if (docume !== req.socio.docume) {
+  if (docume !== String(req.socio.docume).trim()) {
     return res.status(403).json({ error: "Solo puedes editar tu propio perfil." });
   }
   const existing = await store.getSocio(docume);
@@ -291,7 +322,10 @@ app.put("/api/socios/:docume", requireSocio, async (req, res) => {
 
   const errors = txt.validateRow(next);
   if (docume.trim() === "") errors.unshift({ key: "DOCUME", field: "DOCUME", msg: "DOCUME es obligatorio (clave del socio)." });
-  if (errors.length) return res.status(422).json({ error: "Hay campos con errores.", report: [{ row: 1, docume, errors }] });
+  if (errors.length) {
+    res.statusCode = 422;
+    return res.json({ error: "Hay campos con errores.", report: [{ row: 1, docume, errors }] });
+  }
 
   // Persist the updated profile
   await store.saveSocio(next);
@@ -335,7 +369,8 @@ app.post("/api/socios/txt", requireAdmin, async (req, res) => {
   const result = txt.build(rows);
   
   if (result.hasErrors) {
-    return res.status(422).json({ error: "Hay filas con errores.", report: result.report });
+    res.statusCode = 422;
+    return res.json({ error: "Hay filas con errores.", report: result.report });
   }
 
   // Create batch

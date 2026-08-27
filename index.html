@@ -34,7 +34,7 @@
         <div onClick="{{ item.go }}" style="{{ item.style }}">{{ item.label }}</div>
       </sc-for>
     </nav>
-    <sc-if value="{{ !isAdmin }}" hint-placeholder-val="{{ true }}">
+    <sc-if value="{{ !isAdmin && !isSocio }}" hint-placeholder-val="{{ true }}">
       <div style="display:flex;flex-direction:column;gap:10px;margin-top:24px">
         <button onClick="{{ goRegistro }}" style="background:#0043ce;color:#fff;border:none;border-radius:0;padding:16px;font-size:16px;font-weight:600;cursor:pointer;font-family:inherit">¡Vuélvete socio!</button>
         <button onClick="{{ goLogin }}" style="background:transparent;color:#fff;border:1px solid #fff;border-radius:0;padding:16px;font-size:16px;font-weight:600;cursor:pointer;font-family:inherit">Iniciar como socio</button>
@@ -53,29 +53,31 @@
         <span style="background:#da1e28;color:#fff;font-size:13px;font-weight:700;padding:8px 16px;border-radius:0;letter-spacing:0.02em">Modo administrador</span>
         <button onClick="{{ logout }}" style="background:transparent;color:#fff;border:1px solid #4c4c4c;border-radius:0;padding:12px 24px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit">Cerrar sesión</button>
       </sc-if>
-      <sc-if value="{{ !isAdmin }}" hint-placeholder-val="{{ true }}">
+      <sc-if value="{{ !isAdmin && !isSocio }}" hint-placeholder-val="{{ true }}">
+        <button onClick="{{ goLogin }}" style="background:transparent;color:#fff;border:1px solid #4c4c4c;border-radius:0;padding:12px 24px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit">Iniciar sesión</button>
+      </sc-if>
+      <sc-if value="{{ isSocio }}" hint-placeholder-val="{{ false }}">
         <div style="position:relative">
           <div onClick="{{ toggleProfile }}" title="Tu perfil" style="display:flex;align-items:center;gap:9px;background:#17181b;color:#fff;border-radius:0;padding:6px 16px 6px 6px;cursor:pointer">
-            <div style="width:30px;height:30px;border-radius:0;background:#0043ce;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex:0 0 30px">S</div>
-            <span style="font-weight:600;font-size:14px">Mi perfil</span>
+            <div style="width:30px;height:30px;border-radius:0;background:#0043ce;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex:0 0 30px">{{ socioInitials }}</div>
+            <span style="font-weight:600;font-size:14px">{{ socioName || "Mi perfil" }}</span>
           </div>
           <sc-if value="{{ showProfile }}" hint-placeholder-val="{{ false }}">
             <div style="position:absolute;top:56px;right:0;width:280px;background:#fff;border-radius:0;box-shadow:0 16px 40px rgba(0,0,0,0.25);overflow:hidden;z-index:60;color:#161616">
               <div style="padding:20px;display:flex;gap:12px;align-items:center;border-bottom:1px solid #eceef1">
-                <div style="width:48px;height:48px;border-radius:0;background:#0043ce;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;flex:0 0 48px">S</div>
+                <div style="width:48px;height:48px;border-radius:0;background:#0043ce;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;flex:0 0 48px">{{ socioInitials }}</div>
                 <div>
-                  <div style="font-size:16px;font-weight:700">Sofía Ramírez</div>
-                  <div style="font-size:13px;color:#8b95a1">Socia N.º 1842</div>
+                  <div style="font-size:16px;font-weight:700">{{ socioName || "Socio" }}</div>
+                  <div style="font-size:13px;color:#8b95a1">{{ socioDocume }}</div>
                 </div>
               </div>
               <div style="padding:16px 20px;display:flex;flex-direction:column;gap:10px;font-size:13px;color:#52606d;border-bottom:1px solid #eceef1">
-                <div style="display:flex;align-items:center;gap:9px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg> sofia.ramirez@pe.ibm.com</div>
-                <div style="display:flex;align-items:center;gap:9px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg> +51 987 654 321</div>
-                <div style="display:flex;align-items:center;gap:9px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg> Socia desde marzo 2019</div>
+                <div style="display:flex;align-items:center;gap:9px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg> {{ socioEmail }}</div>
+                <div style="display:flex;align-items:center;gap:9px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg> {{ socioPhone }}</div>
               </div>
               <div style="display:flex;flex-direction:column">
                 <a onClick="{{ openPrefsFromProfile }}" style="padding:14px 20px;font-size:14px;font-weight:600;cursor:pointer;color:#161616" style-hover="background:#f4f8fc">Editar preferencias</a>
-                <a onClick="{{ closeProfile }}" style="padding:14px 20px;font-size:14px;font-weight:600;cursor:pointer;color:#8b95a1" style-hover="background:#f4f8fc">Cerrar</a>
+                <a onClick="{{ logout }}" style="padding:14px 20px;font-size:14px;font-weight:600;cursor:pointer;color:#8b95a1" style-hover="background:#f4f8fc">Cerrar sesión</a>
               </div>
             </div>
           </sc-if>
@@ -1335,12 +1337,8 @@
 
           <sc-if value="{{ !isLoginTabAdmin }}" hint-placeholder-val="{{ true }}">
           <h1 style="font-size:34px;font-weight:800;letter-spacing:-0.02em;margin-bottom:6px">Login Socios</h1>
-          <p style="font-size:16px;color:#52606d;margin-bottom:30px">Ingresa con tu IBMid y contraseña de socio.</p>
-          <label style="display:block;font-size:13px;font-weight:600;color:#3b4653;margin-bottom:7px">IBMid</label>
-          <input type="email" placeholder="tu.nombre@ibm.com" value="{{ loginUser }}" onInput="{{ onLoginUser }}" style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:14px;font-size:15px;font-family:inherit;outline:none;margin-bottom:18px" style-focus="border:1px solid #0043ce;box-shadow:0 0 0 3px #edf5ff">
-          <label style="display:block;font-size:13px;font-weight:600;color:#3b4653;margin-bottom:7px">Contraseña</label>
-          <input type="password" placeholder="••••••••" value="{{ loginPass }}" onInput="{{ onLoginPass }}" style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:14px;font-size:15px;font-family:inherit;outline:none;margin-bottom:8px" style-focus="border:1px solid #0043ce;box-shadow:0 0 0 3px #edf5ff">
-          <div style="text-align:right;margin-bottom:22px"><a style="font-size:14px;cursor:pointer">¿Olvidaste tu contraseña?</a></div>
+          <p style="font-size:16px;color:#52606d;margin-bottom:30px">Accede con tu IBMid corporativo.</p>
+          <a onClick="{{ goOidcLogin }}" style="display:block;width:100%;background:#161616;color:#fff;text-align:center;text-decoration:none;border:none;border-radius:0;padding:16px;font-size:16px;font-weight:600;cursor:pointer;font-family:inherit">Ingresar con IBMid</a>
           </sc-if>
 
           <sc-if value="{{ isLoginTabAdmin }}" hint-placeholder-val="{{ false }}">
@@ -1355,10 +1353,122 @@
           <sc-if value="{{ loginError }}" hint-placeholder-val="{{ false }}">
             <p style="color:#da1e28;font-size:14px;font-weight:600;margin-bottom:18px">{{ loginError }}</p>
           </sc-if>
+          <sc-if value="{{ isLoginTabAdmin }}" hint-placeholder-val="{{ false }}">
           <button onClick="{{ loginSubmit }}" style="width:100%;background:#0043ce;color:#fff;border:none;border-radius:0;padding:16px;font-size:16px;font-weight:600;cursor:pointer;font-family:inherit">Ingresar</button>
+          </sc-if>
           <p style="text-align:center;font-size:14px;color:#52606d;margin-top:20px">¿No tienes cuenta? <a onClick="{{ goRegistro }}" style="cursor:pointer;font-weight:600">Regístrate</a></p>
         </div>
       </section>
+      </sc-if>
+
+      <!-- ================= ADMIN SOCIOS ================= -->
+      <sc-if value="{{ socioAdminView }}" hint-placeholder-val="{{ false }}">
+      <section style="padding:56px;max-width:1120px">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:24px;margin-bottom:28px">
+          <div>
+            <h1 style="font-size:40px;font-weight:800;letter-spacing:-0.02em;margin-bottom:8px">Gestión de Cambios Pendientes</h1>
+            <p style="font-size:16px;color:#52606d;line-height:1.55;max-width:740px">Los socios pueden actualizar su información personal. Los cambios quedan pendientes hasta que generes un batch TXT para cargar al S400.</p>
+          </div>
+        </div>
+
+        <sc-if value="{{ socioMsg }}" hint-placeholder-val="{{ false }}">
+          <div style="border:1px solid #d9dee4;background:#f8fafc;color:#3b4653;border-radius:0;padding:12px 14px;font-size:13px;margin-bottom:20px;line-height:1.45">{{ socioMsg }}</div>
+        </sc-if>
+
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px">
+          <div style="border:1px solid #e5e8ec;border-radius:0;padding:20px;background:#fff">
+            <div style="font-size:13px;font-weight:700;color:#6f6f6f;text-transform:uppercase;margin-bottom:8px">Cambios Pendientes</div>
+            <div style="font-size:32px;font-weight:800;color:#0043ce">{{ pendingSummary.totalChanges }}</div>
+            <div style="font-size:13px;color:#8d8d8d;margin-top:4px">{{ pendingSummary.totalSocios }} socios</div>
+          </div>
+          <div style="border:1px solid #e5e8ec;border-radius:0;padding:20px;background:#fff">
+            <div style="font-size:13px;font-weight:700;color:#6f6f6f;text-transform:uppercase;margin-bottom:8px">Batches Generados</div>
+            <div style="font-size:32px;font-weight:800;color:#24a148">{{ batchHistory.length }}</div>
+            <div style="font-size:13px;color:#8d8d8d;margin-top:4px">histórico completo</div>
+          </div>
+          <div style="border:1px solid #e5e8ec;border-radius:0;padding:20px;background:#fff;display:flex;flex-direction:column;justify-content:center">
+            <button onClick="{{ generarBatch }}" disabled="{{ pendingSummary.totalChanges === 0 }}" style="background:#0043ce;color:#fff;border:none;border-radius:0;padding:14px 24px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;width:100%;opacity:{{ pendingSummary.totalChanges === 0 ? 0.4 : 1 }}">Generar Batch TXT</button>
+            <div style="font-size:12px;color:#8d8d8d;text-align:center;margin-top:8px">Consolida y exporta</div>
+          </div>
+        </div>
+
+        <sc-if value="{{ pendingSummary.totalChanges > 0 }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-bottom:32px">
+            <h2 style="font-size:24px;font-weight:700;margin-bottom:16px">Cambios por Socio</h2>
+            <div style="border:1px solid #e0e0e0;border-radius:0;overflow:hidden;background:#fff">
+              <sc-for list="{{ pendingChangesList }}" as="socio" hint-placeholder-count="3">
+                <div style="padding:16px 20px;border-bottom:1px solid #f0f0f0">
+                  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+                    <div style="font-size:16px;font-weight:700">Socio {{ socio.docume }}</div>
+                    <div style="font-size:13px;color:#8d8d8d">{{ socio.changes.length }} cambios</div>
+                  </div>
+                  <div style="display:flex;flex-wrap:wrap;gap:8px">
+                    <sc-for list="{{ socio.changes }}" as="change" hint-placeholder-count="2">
+                      <div style="background:#edf5ff;color:#0043ce;padding:6px 12px;border-radius:0;font-size:13px;font-weight:600">
+                        {{ change.field }}: {{ change.value }}
+                      </div>
+                    </sc-for>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+
+        <div style="margin-bottom:32px">
+          <h2 style="font-size:24px;font-weight:700;margin-bottom:16px">Historial de Batches</h2>
+          <sc-if value="{{ batchHistory.length === 0 }}" hint-placeholder-val="{{ false }}">
+            <div style="border:1px solid #e0e0e0;border-radius:0;padding:32px;text-align:center;color:#8d8d8d;background:#fff">
+              No hay batches generados aún
+            </div>
+          </sc-if>
+          <sc-if value="{{ batchHistory.length > 0 }}" hint-placeholder-val="{{ true }}">
+            <div style="border:1px solid #e0e0e0;border-radius:0;overflow:hidden;background:#fff">
+              <div style="display:grid;grid-template-columns:200px 1fr 120px 140px 140px;background:#f4f4f4;color:#525252;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:0.04em">
+                <div style="padding:12px 16px">Batch ID</div>
+                <div style="padding:12px 16px">Archivo</div>
+                <div style="padding:12px 16px">Socios</div>
+                <div style="padding:12px 16px">Fecha</div>
+                <div style="padding:12px 16px">Acción</div>
+              </div>
+              <sc-for list="{{ batchHistory }}" as="batch" hint-placeholder-count="3">
+                <div style="display:grid;grid-template-columns:200px 1fr 120px 140px 140px;border-top:1px solid #f0f0f0;font-size:13px;align-items:center">
+                  <div style="padding:12px 16px;font-weight:700;color:#0043ce">{{ batch.id }}</div>
+                  <div style="padding:12px 16px;color:#525252">{{ batch.filename }}</div>
+                  <div style="padding:12px 16px;font-weight:600">{{ batch.recordCount }}</div>
+                  <div style="padding:12px 16px;color:#8d8d8d">{{ batch.dateLabel }}</div>
+                  <div style="padding:12px 16px">
+                    <button onClick="{{ batch.download }}" style="background:#0043ce;color:#fff;border:none;border-radius:0;padding:6px 12px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">Descargar</button>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+
+        <details style="margin-top:32px">
+          <summary style="font-size:18px;font-weight:700;cursor:pointer;padding:12px 0">Referencia del formato TXT</summary>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:16px 0 28px">
+            <div style="border:1px solid #e5e8ec;border-radius:0;padding:16px;background:#fff"><div style="font-size:12px;font-weight:700;color:#6f6f6f;text-transform:uppercase">Formato</div><div style="font-size:18px;font-weight:800;margin-top:4px">TXT ; + CRLF</div></div>
+            <div style="border:1px solid #e5e8ec;border-radius:0;padding:16px;background:#fff"><div style="font-size:12px;font-weight:700;color:#6f6f6f;text-transform:uppercase">Campos</div><div style="font-size:18px;font-weight:800;margin-top:4px">21 en orden fijo</div></div>
+            <div style="border:1px solid #e5e8ec;border-radius:0;padding:16px;background:#fff"><div style="font-size:12px;font-weight:700;color:#6f6f6f;text-transform:uppercase">Clave</div><div style="font-size:18px;font-weight:800;margin-top:4px">DOCUME</div></div>
+          </div>
+          <div style="border:1px solid #e0e0e0;border-radius:0;overflow:hidden;background:#fff">
+            <div style="display:grid;grid-template-columns:64px 120px 1fr 90px 110px;background:#f4f4f4;color:#525252;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:0.04em">
+              <div style="padding:12px 14px">Col.</div><div style="padding:12px 14px">Campo</div><div style="padding:12px 14px">Descripción</div><div style="padding:12px 14px">Max.</div><div style="padding:12px 14px">Tipo</div>
+            </div>
+            <sc-for list="{{ txtLayoutRows }}" as="r" hint-placeholder-count="21">
+              <div style="display:grid;grid-template-columns:64px 120px 1fr 90px 110px;border-top:1px solid #f0f0f0;font-size:13px;color:#262626">
+                <div style="padding:10px 14px;color:#6f6f6f">{{ r.n }}</div><div style="padding:10px 14px;font-weight:800">{{ r.key }}</div><div style="padding:10px 14px">{{ r.label }}</div><div style="padding:10px 14px">{{ r.bytes }}</div><div style="padding:10px 14px;color:#52606d">{{ r.kind }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </details>
+      </section>
+      </sc-if>
+
+      <sc-if value="{{ socioNoAdminView }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:22px;color:#8b95a1;font-size:14px">Esta sección es solo para administradores.</div>
       </sc-if>
 
       <footer style="background:#161616;color:#c6c6c6;padding:22px 56px;font-size:13px;text-align:center">2026 © Cooperativa de Ahorro y Crédito de Empleados · Supervisada por la SBS · Última actualización: {{ lastUpdated }}</footer>
@@ -1379,14 +1489,119 @@
       </div>
 
       <div style="padding:28px 40px;overflow-y:auto;flex:1">
+        <!-- READ-ONLY: Identity fields -->
+        <h3 style="font-size:20px;font-weight:800;margin-bottom:18px">Datos de identidad</h3>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:28px">
+          <div>
+            <label style="display:block;font-size:14px;color:#8b95a1;margin-bottom:8px">Código de socio</label>
+            <input type="text" value="{{ socioDocume }}" disabled style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:14px 16px;font-size:16px;font-family:inherit;background:#f4f4f4;color:#525252;cursor:not-allowed">
+          </div>
+          <div>
+            <label style="display:block;font-size:14px;color:#8b95a1;margin-bottom:8px">Tipo de documento</label>
+            <input type="text" value="DNI" disabled style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:14px 16px;font-size:16px;font-family:inherit;background:#f4f4f4;color:#525252;cursor:not-allowed">
+          </div>
+          <div>
+            <label style="display:block;font-size:14px;color:#8b95a1;margin-bottom:8px">N° de documento</label>
+            <input type="text" value="{{ socioDocide }}" disabled style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:14px 16px;font-size:16px;font-family:inherit;background:#f4f4f4;color:#525252;cursor:not-allowed">
+          </div>
+          <div>
+            <label style="display:block;font-size:14px;color:#8b95a1;margin-bottom:8px">Nacionalidad</label>
+            <input type="text" value="Peruana" disabled style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:14px 16px;font-size:16px;font-family:inherit;background:#f4f4f4;color:#525252;cursor:not-allowed">
+          </div>
+          <div>
+            <label style="display:block;font-size:14px;color:#8b95a1;margin-bottom:8px">DNI del cónyuge</label>
+            <input type="text" value="{{ socioDnicy }}" disabled style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:14px 16px;font-size:16px;font-family:inherit;background:#f4f4f4;color:#525252;cursor:not-allowed">
+          </div>
+        </div>
+
+        <!-- EDITABLE: Personal data -->
         <h3 style="font-size:20px;font-weight:800;margin-bottom:18px">Datos personales</h3>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
-          <sc-for list="{{ prefFields }}" as="f" hint-placeholder-count="5">
-            <div style="{{ f.wrap }}">
-              <label style="display:block;font-size:14px;color:#8b95a1;margin-bottom:8px">{{ f.label }}</label>
-              <input type="{{ f.type }}" placeholder="{{ f.ph }}" style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:14px 16px;font-size:16px;font-family:inherit;outline:none" style-focus="border:1px solid #0043ce;box-shadow:0 0 0 3px #edf5ff">
-            </div>
-          </sc-for>
+          <div>
+            <label style="display:block;font-size:14px;color:#8b95a1;margin-bottom:8px">Apellido paterno</label>
+            <input type="text" value="{{ profileEdit.APEPAT }}" onInput="{{ onProfileField('APEPAT') }}" style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:14px 16px;font-size:16px;font-family:inherit;outline:none" style-focus="border:1px solid #0043ce;box-shadow:0 0 0 3px #edf5ff">
+          </div>
+          <div>
+            <label style="display:block;font-size:14px;color:#8b95a1;margin-bottom:8px">Apellido materno</label>
+            <input type="text" value="{{ profileEdit.APEMAT }}" onInput="{{ onProfileField('APEMAT') }}" style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:14px 16px;font-size:16px;font-family:inherit;outline:none" style-focus="border:1px solid #0043ce;box-shadow:0 0 0 3px #edf5ff">
+          </div>
+          <div style="grid-column:1/-1">
+            <label style="display:block;font-size:14px;color:#8b95a1;margin-bottom:8px">Nombres</label>
+            <input type="text" value="{{ profileEdit.NOMBRE }}" onInput="{{ onProfileField('NOMBRE') }}" style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:14px 16px;font-size:16px;font-family:inherit;outline:none" style-focus="border:1px solid #0043ce;box-shadow:0 0 0 3px #edf5ff">
+          </div>
+          <div>
+            <label style="display:block;font-size:14px;color:#8b95a1;margin-bottom:8px">Estado civil</label>
+            <select value="{{ profileEdit.ESTCIV }}" onInput="{{ onProfileField('ESTCIV') }}" style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:14px 16px;font-size:16px;font-family:inherit;outline:none;background:#fff" style-focus="border:1px solid #0043ce;box-shadow:0 0 0 3px #edf5ff">
+              <option value="">Seleccionar...</option>
+              <option value="S">Soltero(a)</option>
+              <option value="C">Casado(a)</option>
+              <option value="V">Viudo(a)</option>
+              <option value="D">Divorciado(a)</option>
+            </select>
+          </div>
+          <div>
+            <label style="display:block;font-size:14px;color:#8b95a1;margin-bottom:8px">Nombre del cónyuge</label>
+            <input type="text" value="{{ profileEdit.NOMCON }}" onInput="{{ onProfileField('NOMCON') }}" style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:14px 16px;font-size:16px;font-family:inherit;outline:none" style-focus="border:1px solid #0043ce;box-shadow:0 0 0 3px #edf5ff">
+          </div>
+        </div>
+
+        <!-- EDITABLE: Contact -->
+        <h3 style="font-size:20px;font-weight:800;margin:30px 0 18px">Contacto</h3>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
+          <div>
+            <label style="display:block;font-size:14px;color:#8b95a1;margin-bottom:8px">Correo electrónico</label>
+            <input type="email" value="{{ profileEdit.NOMBC2 }}" onInput="{{ onProfileField('NOMBC2') }}" style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:14px 16px;font-size:16px;font-family:inherit;outline:none" style-focus="border:1px solid #0043ce;box-shadow:0 0 0 3px #edf5ff">
+          </div>
+          <div>
+            <label style="display:block;font-size:14px;color:#8b95a1;margin-bottom:8px">Teléfono celular</label>
+            <input type="tel" value="{{ profileEdit.TELCEL }}" onInput="{{ onProfileField('TELCEL') }}" style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:14px 16px;font-size:16px;font-family:inherit;outline:none" style-focus="border:1px solid #0043ce;box-shadow:0 0 0 3px #edf5ff">
+          </div>
+        </div>
+
+        <!-- EDITABLE: Address -->
+        <h3 style="font-size:20px;font-weight:800;margin:30px 0 18px">Dirección</h3>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
+          <div style="grid-column:1/-1">
+            <label style="display:block;font-size:14px;color:#8b95a1;margin-bottom:8px">Dirección completa</label>
+            <input type="text" value="{{ profileEdit.DIRECC }}" onInput="{{ onProfileField('DIRECC') }}" style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:14px 16px;font-size:16px;font-family:inherit;outline:none" style-focus="border:1px solid #0043ce;box-shadow:0 0 0 3px #edf5ff">
+          </div>
+          <div>
+            <label style="display:block;font-size:14px;color:#8b95a1;margin-bottom:8px">Distrito</label>
+            <input type="text" value="{{ profileEdit.LOCALI }}" onInput="{{ onProfileField('LOCALI') }}" style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:14px 16px;font-size:16px;font-family:inherit;outline:none" style-focus="border:1px solid #0043ce;box-shadow:0 0 0 3px #edf5ff">
+          </div>
+          <div>
+            <label style="display:block;font-size:14px;color:#8b95a1;margin-bottom:8px">Provincia</label>
+            <input type="text" value="{{ profileEdit.PROVIN }}" onInput="{{ onProfileField('PROVIN') }}" style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:14px 16px;font-size:16px;font-family:inherit;outline:none" style-focus="border:1px solid #0043ce;box-shadow:0 0 0 3px #edf5ff">
+          </div>
+          <div>
+            <label style="display:block;font-size:14px;color:#8b95a1;margin-bottom:8px">Departamento</label>
+            <input type="text" value="{{ profileEdit.DEPART }}" onInput="{{ onProfileField('DEPART') }}" style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:14px 16px;font-size:16px;font-family:inherit;outline:none" style-focus="border:1px solid #0043ce;box-shadow:0 0 0 3px #edf5ff">
+          </div>
+          <div style="grid-column:1/-1">
+            <label style="display:block;font-size:14px;color:#8b95a1;margin-bottom:8px">Nombre completo de ubicación</label>
+            <input type="text" value="{{ profileEdit.NCOMPL }}" onInput="{{ onProfileField('NCOMPL') }}" style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:14px 16px;font-size:16px;font-family:inherit;outline:none" style-focus="border:1px solid #0043ce;box-shadow:0 0 0 3px #edf5ff">
+          </div>
+        </div>
+
+        <!-- EDITABLE: Employment -->
+        <h3 style="font-size:20px;font-weight:800;margin:30px 0 18px">Datos laborales</h3>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
+          <div>
+            <label style="display:block;font-size:14px;color:#8b95a1;margin-bottom:8px">Cargas familiares</label>
+            <input type="text" value="{{ profileEdit.CARGAM }}" onInput="{{ onProfileField('CARGAM') }}" style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:14px 16px;font-size:16px;font-family:inherit;outline:none" style-focus="border:1px solid #0043ce;box-shadow:0 0 0 3px #edf5ff">
+          </div>
+          <div>
+            <label style="display:block;font-size:14px;color:#8b95a1;margin-bottom:8px">Profesión</label>
+            <input type="text" value="{{ profileEdit.OFICIO }}" onInput="{{ onProfileField('OFICIO') }}" style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:14px 16px;font-size:16px;font-family:inherit;outline:none" style-focus="border:1px solid #0043ce;box-shadow:0 0 0 3px #edf5ff">
+          </div>
+          <div>
+            <label style="display:block;font-size:14px;color:#8b95a1;margin-bottom:8px">Código de ciudad</label>
+            <input type="text" value="{{ profileEdit.CCIUDA }}" onInput="{{ onProfileField('CCIUDA') }}" style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:14px 16px;font-size:16px;font-family:inherit;outline:none" style-focus="border:1px solid #0043ce;box-shadow:0 0 0 3px #edf5ff">
+          </div>
+          <div>
+            <label style="display:block;font-size:14px;color:#8b95a1;margin-bottom:8px">Número de hijos</label>
+            <input type="text" value="{{ profileEdit.SECTO1 }}" onInput="{{ onProfileField('SECTO1') }}" style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:14px 16px;font-size:16px;font-family:inherit;outline:none" style-focus="border:1px solid #0043ce;box-shadow:0 0 0 3px #edf5ff">
+          </div>
         </div>
 
         <h3 style="font-size:20px;font-weight:800;margin:30px 0 6px">Productos que te interesan</h3>
@@ -1410,8 +1625,57 @@
       </div>
 
       <div style="padding:20px 40px;border-top:1px solid #eceef1;display:flex;justify-content:space-between;align-items:center">
-        <a onClick="{{ closePrefs }}" style="font-size:17px;color:#8b95a1;cursor:pointer">Omitir por ahora</a>
-        <button onClick="{{ savePrefs }}" style="background:#0043ce;color:#fff;border:none;border-radius:0;padding:16px 34px;font-size:17px;font-weight:700;cursor:pointer;font-family:inherit">Guardar preferencias</button>
+        <div>
+          <a onClick="{{ closePrefs }}" style="font-size:17px;color:#8b95a1;cursor:pointer">Omitir por ahora</a>
+          <sc-if value="{{ profileSaveMsg }}" hint-placeholder-val="{{ false }}">
+            <span style="margin-left:16px;font-size:14px;font-weight:600;color:#198038">{{ profileSaveMsg }}</span>
+          </sc-if>
+        </div>
+        <button onClick="{{ saveProfile }}" style="background:#0043ce;color:#fff;border:none;border-radius:0;padding:16px 34px;font-size:17px;font-weight:700;cursor:pointer;font-family:inherit">Guardar datos</button>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ================= MODAL CONFIRMACIÓN PERFIL ================= -->
+  <sc-if value="{{ showConfirmProfile }}" hint-placeholder-val="{{ false }}">
+  <div style="position:absolute;inset:0;z-index:70;background:rgba(4,10,20,0.65);display:flex;align-items:center;justify-content:center;padding:32px">
+    <div style="width:100%;max-width:600px;background:#fff;border-radius:0;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,0.35)">
+      <div style="padding:30px 40px 22px;border-bottom:1px solid #eceef1;display:flex;justify-content:space-between;align-items:flex-start">
+        <div>
+          <h2 style="font-size:26px;font-weight:800;letter-spacing:-0.02em">Confirmar cambios</h2>
+          <p style="font-size:14px;color:#8b95a1;margin-top:4px">Revisá los cambios. Al confirmar, se registrará tu solicitud de actualización.</p>
+        </div>
+        <div onClick="{{ closeConfirmProfile }}" style="font-size:26px;line-height:1;color:#8b95a1;cursor:pointer;padding:2px 4px">×</div>
+      </div>
+      <div style="padding:24px 40px;overflow-y:auto;max-height:400px">
+        <sc-if value="{{ profileConfirmHasChanges }}" hint-placeholder-val="{{ false }}">
+          <table style="width:100%;border-collapse:collapse;font-size:14px">
+            <thead>
+              <tr style="border-bottom:2px solid #eceef1">
+                <th style="text-align:left;padding:10px 12px;color:#525252;font-weight:700">Campo</th>
+                <th style="text-align:left;padding:10px 12px;color:#525252;font-weight:700">Actual</th>
+                <th style="text-align:left;padding:10px 12px;color:#525252;font-weight:700">Nuevo</th>
+              </tr>
+            </thead>
+            <tbody>
+              <sc-for list="{{ profileConfirmChanges }}" as="c" hint-placeholder-count="5">
+                <tr style="border-bottom:1px solid #f0f0f0">
+                  <td style="padding:10px 12px;color:#161616;font-weight:600">{{ c.label }}</td>
+                  <td style="padding:10px 12px;color:#525252">{{ c.oldVal }}</td>
+                  <td style="padding:10px 12px;color:#0043ce;font-weight:600">{{ c.newVal }}</td>
+                </tr>
+              </sc-for>
+            </tbody>
+          </table>
+        </sc-if>
+        <sc-if value="{{ !profileConfirmHasChanges }}" hint-placeholder-val="{{ false }}">
+          <p style="padding:20px 0;color:#525252;font-size:15px">No se detectaron cambios.</p>
+        </sc-if>
+      </div>
+      <div style="padding:20px 40px;border-top:1px solid #eceef1;display:flex;justify-content:flex-end;gap:12px">
+        <a onClick="{{ closeConfirmProfile }}" style="font-size:16px;color:#8b95a1;cursor:pointer;padding:12px 20px">Cancelar</a>
+        <button onClick="{{ confirmSaveProfile }}" style="background:#0043ce;color:#fff;border:none;border-radius:0;padding:14px 34px;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit">Confirmar</button>
       </div>
     </div>
   </div>
@@ -1488,13 +1752,43 @@
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;100%&quot;,&quot;height&quot;:&quot;800px&quot;},&quot;mostrarSimulador&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Simulador&quot;,&quot;label&quot;:&quot;Mostrar simulador&quot;}}">
+
+const TIPDID_OPTS = [{v:"1",l:"DNI"}];
+const ESTCIV_OPTS = [{v:"S",l:"Soltero"},{v:"C",l:"Casado"},{v:"D",l:"Divorciado"},{v:"V",l:"Viudo"}];
+const NACION_OPTS = [{v:"1",l:"Peruana"}];
+const SOCIO_FIELDS = [
+  {key:"DOCUME",label:"C\u00f3digo del socio",bytes:6,type:"clave",readOnly:true},
+  {key:"TIPDID",label:"Tipo de documento",bytes:1,type:"select",optsKey:"TIPDID_OPTS",readOnly:true},
+  {key:"DOCIDE",label:"Documento de identidad",bytes:11,type:"text",readOnly:true},
+  {key:"APEPAT",label:"Apellido paterno",bytes:20,type:"text"},
+  {key:"APEMAT",label:"Apellido materno",bytes:20,type:"text"},
+  {key:"NOMBRE",label:"Nombres",bytes:30,type:"text"},
+  {key:"DIRECC",label:"Direcci\u00f3n",bytes:80,type:"text"},
+  {key:"LOCALI",label:"Distrito",bytes:40,type:"text"},
+  {key:"PROVIN",label:"Provincia",bytes:40,type:"text"},
+  {key:"DEPART",label:"Departamento",bytes:40,type:"text"},
+  {key:"NCOMPL",label:"Nombre completo de ubicaci\u00f3n",bytes:60,type:"text"},
+  {key:"NOMBC2",label:"Correo",bytes:50,type:"text"},
+  {key:"TELCEL",label:"Celular",bytes:9,type:"text"},
+  {key:"NACION",label:"Nacionalidad",bytes:1,type:"select",optsKey:"NACION_OPTS",readOnly:true},
+  {key:"CCIUDA",label:"C\u00f3digo de ciudad",bytes:6,type:"text"},
+  {key:"NOMCON",label:"Nombre del c\u00f3nyuge",bytes:40,type:"text"},
+  {key:"DNICY",label:"DNI del c\u00f3nyuge",bytes:8,type:"text",readOnly:true},
+  {key:"ESTCIV",label:"Estado civil",bytes:1,type:"select",optsKey:"ESTCIV_OPTS"},
+  {key:"CARGAM",label:"Cargas familiares",bytes:2,type:"text"},
+  {key:"OFICIO",label:"Profesi\u00f3n",bytes:20,type:"text"},
+  {key:"SECTO1",label:"N.\u00ba de hijos",bytes:2,type:"text"}
+];
+const TXT_LAYOUT_FIELDS = SOCIO_FIELDS;
+function emptySocioForm(){ const f={}; SOCIO_FIELDS.forEach(x=>{f[x.key]="";}); return f; }
+
 class Component extends DCLogic {
   state = { page: "inicio", monto: 300000, plazo: 180, showPrefs: false, showProfile: false, interests: {},
     showOnboarding: false, onboardingStep: 1, onboardingSegments: {},
     simTipo: "hipotecario", ingreso: 6000,
     draft: "", feed: "todos",
     login: { user: "", pass: "" }, loginError: "", simView: "mensual",
-    loginTab: "socio", adminLogin: { user: "", pass: "" }, auth: { role: null, token: null },
+    loginTab: "socio", adminLogin: { user: "", pass: "" }, auth: { role: null, token: null }, socio: null, socioSource: "",
     // Paste your deployed backend URL here (e.g. the Code Engine app URL from backend/README.md).
     // Leave empty to keep running in local-only demo mode (admin/cooperativa2026, nothing persists).
     apiBase: "",
@@ -1552,6 +1846,9 @@ class Component extends DCLogic {
     ],
     editingAhorroTasaSlot: null,
     newAhorroTasa: { plazo: "", soles: "", dolares: "" },
+    socioMsg: "",
+    pendingSummary: { totalSocios: 0, totalChanges: 0, socios: [] },
+    batchHistory: [],
     posts: [
       {id:1,author:"Cooperativa",role:"Cuenta oficial",time:"hace 2 h",tag:"Anuncio",color:"#0043ce",initials:"CI",tab:"cooperativa",text:"📢 Recuerda que puedes solicitar tus préstamos, tu Seguro de Autos con Rímac o inscribirte en el Fondo de Sepelio escribiendo a cualquiera de nuestras contactos en la sección Quiénes Somos.",hasImg:false,slotId:"post-1",img:"",likes:48,liked:false},
       {id:2,author:"Junta Directiva",role:"Gobierno cooperativo",time:"ayer",tag:"Evento",color:"#8a3ffc",initials:"JD",tab:"eventos",text:"Los invitamos a la Asamblea General de Socios. Se presentará la memoria anual y el reparto de excedentes.",hasImg:false,slotId:"post-2",img:"",likes:31,liked:true},
@@ -1585,7 +1882,32 @@ class Component extends DCLogic {
 
   // ---- Backend integration (see backend/README.md) ----
   async componentDidMount(){
+    await this.checkOidcAuth();
     await this.loadContent();
+  }
+
+  async checkOidcAuth(){
+    const params = new URLSearchParams(window.location.search);
+    if(params.get("auth") === "success"){
+      const token = params.get("token");
+      window.history.replaceState({}, "", window.location.pathname);
+      const base = (this.state.apiBase || "").replace(/\/$/, "");
+      if(!base) return;
+      try{
+        const headers = {};
+        if(token) headers["Authorization"] = "Bearer " + token;
+        const res = await fetch(base + "/api/auth/me", { headers });
+        if(!res.ok) throw new Error("not authenticated");
+        const data = await res.json();
+        this.setState({
+          auth: { role: "socio", token: token },
+          socio: data.socio,
+          socioSource: data.source
+        });
+      }catch(e){
+        console.error("[oidc] failed to load socio:", e);
+      }
+    }
   }
 
   async loadContent(){
@@ -1642,6 +1964,26 @@ class Component extends DCLogic {
     }
     if(res.status === 204) return null;
     return res.json();
+  }
+
+  async loadPendingChanges(){
+    if(!this.state.apiBase) return;
+    try{
+      const data = await this.apiFetch("/api/admin/pending-changes");
+      this.setState({ pendingSummary: data });
+    }catch(e){
+      console.error("Error loading pending changes:", e);
+    }
+  }
+
+  async loadBatchHistory(){
+    if(!this.state.apiBase) return;
+    try{
+      const data = await this.apiFetch("/api/admin/batches");
+      this.setState({ batchHistory: data.batches || [] });
+    }catch(e){
+      console.error("Error loading batch history:", e);
+    }
   }
 
   renderVals(){
@@ -1765,7 +2107,9 @@ class Component extends DCLogic {
 
     const navItems = [
       ["Anuncios","anuncios"],["Quiénes Somos","quienes"],["Ahorro","ahorro"],["Proveedores","proveedores"],
-      ["Préstamos","prestamos"],["Servicios","servicios"]
+      ["Préstamos","prestamos"],["Servicios","servicios"],
+      ...(this.state.auth.role === "admin" ? [["Descargar TXT","socios"]] : []),
+      ...(this.state.auth.role === "socio" ? [["Mi Perfil","socio-perfil"]] : [])
     ];
     const nav = navItems.map(([label,key]) => ({
       label, go: () => this.go(key),
@@ -1834,11 +2178,79 @@ class Component extends DCLogic {
       isOncosalud: page==="oncosalud",
       isRimac: page==="rimac",
       isMovistar: page==="movistar",
+
+      socioAdminView: page==="socios" && this.state.auth.role === "admin",
+      socioNoAdminView: page==="socios" && this.state.auth.role !== "admin",
+      socioMsg: this.state.socioMsg || "",
+      pendingChangesList: (this.state.pendingSummary && this.state.pendingSummary.socios) || [],
+      txtLayoutRows: TXT_LAYOUT_FIELDS.map((f,i)=>({n:i+1,key:f.key,label:f.label,bytes:f.bytes,kind:f.type==="select"?"catálogo":f.type==="clave"?"clave":f.type==="numeric"?"numérico":f.type})),
+      batchHistory: (this.state.batchHistory || []).map(b=>({
+        ...b,
+        dateLabel: b.createdAt ? new Date(b.createdAt).toLocaleDateString("es-PE",{day:"2-digit",month:"2-digit",year:"numeric"}) : "",
+        download: async ()=>{
+          try{
+            const base = (this.state.apiBase||"").replace(/\/$/,"");
+            const url = base + "/api/admin/batches/" + encodeURIComponent(b.id) + "/download";
+            const headers = {};
+            if(this.state.auth.token) headers["Authorization"] = "Bearer " + this.state.auth.token;
+            const res = await fetch(url, { headers });
+            if(!res.ok){
+              const body = await res.json().catch(()=>({}));
+              throw new Error(body.error || "No se pudo descargar el batch.");
+            }
+            const txt = await res.text();
+            this.descargarTxt(txt, b.filename);
+          }catch(err){
+            this.setState({ socioMsg: err.message });
+          }
+        }
+      })),
+
+      generarBatch: async ()=>{
+        this.setState({ socioMsg:"" });
+        try{
+          const data = await this.apiFetch("/api/socios/txt", { method:"POST", headers:{ "Content-Type":"application/json" } });
+          this.descargarTxt(data.txt, data.batch.filename);
+          this.setState({ socioMsg: "Batch "+data.batch.id+" generado: "+data.batch.recordCount+" socios exportados." });
+          await this.loadPendingChanges();
+          await this.loadBatchHistory();
+        }catch(err){
+          this.setState({ socioMsg: err.message });
+        }
+      },
+
+      renderSocioReport: (report)=>{
+        if(!Array.isArray(report) || !report.length) return "";
+        const parts = [];
+        report.forEach(r=>{
+          (r.errors||[]).forEach(e=>{ parts.push((r.docume ? "Socio " + r.docume + ": " : "") + e.msg); });
+        });
+        return parts.join(" · ");
+      },
+
+      descargarTxt: (txt, filename)=>{
+        const today = new Date().toISOString().slice(0,10).replace(/-/g,"");
+        const name = filename || ("socios-" + today + ".txt");
+        const blob = new Blob([txt], { type:"text/plain;charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url; a.download = name;
+        document.body.appendChild(a); a.click();
+        setTimeout(()=>{ URL.revokeObjectURL(url); a.remove(); }, 0);
+      },
+
       goInicio: ()=>this.go("inicio"), goRegistro: ()=>this.go("registro"),
       goLogin: ()=>this.go("login"),
+      goOidcLogin: ()=>{ window.location.href = this.state.apiBase + "/api/auth/verify/login"; },
 
       isAdmin: this.state.auth.role === "admin",
-      logout: ()=>{ this.setState({auth:{role:null, token:null}}); this.go("inicio"); },
+      isSocio: this.state.auth.role === "socio",
+      logout: ()=>{ this.setState({auth:{role:null, token:null}, socio:null, socioSource:""}); this.go("inicio"); },
+      socioName: this.state.socio ? [this.state.socio.NOMBRE, this.state.socio.APEPAT, this.state.socio.APEMAT].filter(Boolean).join(" ") : "",
+      socioInitials: this.state.socio ? ((this.state.socio.NOMBRE||"")[0] || "") + ((this.state.socio.APEPAT||"")[0] || "") : "S",
+      socioDocume: this.state.socio ? (this.state.socio.DOCUME || this.state.socio.CODEMPLEADO) : "",
+      socioEmail: this.state.socio ? this.state.socio.NOMBC2 : "",
+      socioPhone: this.state.socio ? this.state.socio.TELCEL : "",
 
       isLoginTabAdmin: this.state.loginTab === "admin",
       setLoginTabSocio: ()=>this.setState({loginTab:"socio", loginError:""}),
@@ -1869,7 +2281,9 @@ class Component extends DCLogic {
               if(!res.ok){ this.setState({loginError: body.error || "Usuario o contraseña de administrador incorrectos."}); return; }
               this.setState({loginError:"", auth:{role:"admin", token: body.token}});
               await this.loadContent();
-              this.go("anuncios");
+              await this.loadPendingChanges();
+              await this.loadBatchHistory();
+              this.go("socios");
             }catch(e){
               this.setState({loginError:"No se pudo conectar con el backend. Revisa apiBase en el estado del componente."});
             }
@@ -1878,7 +2292,9 @@ class Component extends DCLogic {
 
           if(a.user.trim()==="admin" && a.pass==="cooperativa2026"){
             this.setState({loginError:"", auth:{role:"admin", token:null}});
-            this.go("anuncios");
+            await this.loadPendingChanges();
+            await this.loadBatchHistory();
+            this.go("socios");
             return;
           }
           this.setState({loginError:"Usuario o contraseña de administrador incorrectos. (Modo demo local: admin / cooperativa2026)"});
@@ -1895,15 +2311,127 @@ class Component extends DCLogic {
       showProfile: this.state.showProfile,
       toggleProfile: ()=>this.setState(s=>({showProfile:!s.showProfile})),
       closeProfile: ()=>this.setState({showProfile:false}),
-      openPrefsFromProfile: ()=>this.setState({showProfile:false, showPrefs:true}),
+      openPrefsFromProfile: ()=>{
+        const s = this.state.socio || {};
+        this.setState({showProfile:false, showPrefs:true,
+          socioDocide: s.DOCIDE||"",
+          socioDnicy: s.DNICY||"",
+          profileEdit:{
+            APEPAT:s.APEPAT||"", APEMAT:s.APEMAT||"", NOMBRE:s.NOMBRE||"",
+            NOMBC2:s.NOMBC2||"", NOMCON:s.NOMCON||"", DIRECC:s.DIRECC||"",
+            LOCALI:s.LOCALI||"", PROVIN:s.PROVIN||"", DEPART:s.DEPART||"",
+            TELCEL:s.TELCEL||"", CCIUDA:s.CCIUDA||"", ESTCIV:s.ESTCIV||"",
+            NCOMPL:s.NCOMPL||"", CARGAM:s.CARGAM||"", OFICIO:s.OFICIO||"",
+            SECTO1:s.SECTO1||""
+          }
+        });
+      },
       savePrefs: ()=>this.setState({showPrefs:false}),
-      prefFields: [
-        {label:"Nombres",type:"text",ph:"Tus nombres",wrap:""},
-        {label:"Apellidos",type:"text",ph:"Tus apellidos",wrap:""},
-        {label:"Correo electrónico",type:"email",ph:"tucorreo@ibm.com",wrap:"grid-column:1/-1"},
-        {label:"Teléfono",type:"tel",ph:"999 999 999",wrap:""},
-        {label:"DNI / CE",type:"text",ph:"12345678",wrap:""}
-      ],
+      saveProfile: ()=>{
+        if(!this.state.socio) return;
+        const orig = this.state.socio;
+        const edit = this.state.profileEdit;
+        const FIELD_LABELS = {
+          APEPAT:"Apellido paterno", APEMAT:"Apellido materno", NOMBRE:"Nombres",
+          NOMBC2:"Correo", NOMCON:"Nombre del cónyuge",
+          DIRECC:"Dirección", LOCALI:"Distrito", PROVIN:"Provincia",
+          DEPART:"Departamento", TELCEL:"Teléfono", CCIUDA:"Ciudad",
+          ESTCIV:"Estado civil", NCOMPL:"Nombre completo de ubicación",
+          CARGAM:"Cargas familiares", OFICIO:"Profesión", SECTO1:"Número de hijos"
+        };
+        // Frontend validation (PRD §10)
+        const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const PHONE_RE = /^\d{7,9}$/;
+        const email = (edit.NOMBC2||"").trim();
+        const phone = (edit.TELCEL||"").trim();
+        if(email && !EMAIL_RE.test(email)){
+          this.setState({profileSaveMsg:"El correo electronico no es valido."});
+          return;
+        }
+        if(phone && !PHONE_RE.test(phone)){
+          this.setState({profileSaveMsg:"El telefono debe tener entre 7 y 9 digitos."});
+          return;
+        }
+        const changed = [];
+        const diff = {};
+        for(const key of Object.keys(FIELD_LABELS)){
+          const newVal = (edit[key]||"").trim();
+          const oldVal = (orig[key]||"").trim();
+          if(newVal !== oldVal){
+            changed.push({key, label:FIELD_LABELS[key], oldVal: oldVal||"(vacío)", newVal: newVal||"(vacío)"});
+            diff[key] = edit[key] || "";
+          }
+        }
+        if(changed.length === 0){
+          this.setState({profileSaveMsg:"No se detectaron cambios."});
+          return;
+        }
+        this.setState({
+          showConfirmProfile: true,
+          profileConfirmChanges: changed,
+          profileConfirmHasChanges: changed.length > 0,
+          profileDiff: diff,
+          profileSaveMsg: ""
+        });
+      },
+      closeConfirmProfile: ()=>this.setState({showConfirmProfile:false}),
+      confirmSaveProfile: async ()=>{
+        const socio = this.state.socio;
+        if(!socio) return;
+        this.setState({profileSaving:true, profileSaveMsg:""});
+        try{
+          const base = (this.state.apiBase||"").replace(/\/$/,"");
+          const url = base + "/api/socios/" + encodeURIComponent(socio.DOCUME || socio.CODEMPLEADO);
+          const res = await fetch(url, {
+            method:"PUT",
+            headers:{ "Content-Type":"application/json", "Authorization":"Bearer " + (this.state.auth.token||"") },
+            body: JSON.stringify(this.state.profileDiff || {})
+          });
+          const body = await res.json().catch(()=>({}));
+          if(!res.ok){
+            this.setState({profileSaving:false, profileSaveMsg: body.error || "Error al guardar.", showConfirmProfile:false, profileDiff:{}});
+            return;
+          }
+          const updatedSocio = body.socio || {...socio, ...this.state.profileEdit};
+          this.setState({
+            socio: updatedSocio,
+            profileEdit: {
+              APEPAT: updatedSocio.APEPAT||"", APEMAT: updatedSocio.APEMAT||"",
+              NOMBRE: updatedSocio.NOMBRE||"", NOMBC2: updatedSocio.NOMBC2||"",
+              NOMCON: updatedSocio.NOMCON||"", DIRECC: updatedSocio.DIRECC||"",
+              LOCALI: updatedSocio.LOCALI||"", PROVIN: updatedSocio.PROVIN||"",
+              DEPART: updatedSocio.DEPART||"", TELCEL: updatedSocio.TELCEL||"",
+              CCIUDA: updatedSocio.CCIUDA||"", ESTCIV: updatedSocio.ESTCIV||"",
+              NCOMPL: updatedSocio.NCOMPL||"", CARGAM: updatedSocio.CARGAM||"",
+              OFICIO: updatedSocio.OFICIO||"", SECTO1: updatedSocio.SECTO1||""
+            },
+            socioName: [updatedSocio.NOMBRE, updatedSocio.APEPAT, updatedSocio.APEMAT].filter(Boolean).join(" "),
+            socioInitials: ((updatedSocio.NOMBRE||"")[0]||"") + ((updatedSocio.APEPAT||"")[0]||""),
+            socioEmail: updatedSocio.NOMBC2||"",
+            socioPhone: updatedSocio.TELCEL||"",
+            showPrefs: false,
+            showConfirmProfile: false,
+            profileSaving: false,
+            profileDiff: {},
+            profileSaveMsg: "Datos actualizados correctamente."
+          });
+          setTimeout(()=>this.setState({profileSaveMsg:""}), 4000);
+        }catch(e){
+          this.setState({profileSaving:false, profileSaveMsg:"Error de conexión. Intenta de nuevo.", showConfirmProfile:false, profileDiff:{}});
+        }
+      },
+      profileEdit: {},
+      socioDocide: this.state.socio ? this.state.socio.DOCIDE : "",
+      socioDnicy: this.state.socio ? this.state.socio.DNICY : "",
+      onProfileField: (key) => (e) => this.setState(s => ({
+        profileEdit: { ...s.profileEdit, [key]: e.target.value }
+      })),
+      profileSaving: false,
+      profileSaveMsg: "",
+      profileDiff: {},
+      showConfirmProfile: false,
+      profileConfirmChanges: [],
+      profileConfirmHasChanges: false,
       interestOptions: recoCandidates.map(c=>{
         const on = !!interests[c.key];
         return { key:c.key, title:c.title, icon:c.icon, on,

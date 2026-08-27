@@ -1,14 +1,18 @@
 // Delimited TXT serializer for socios data updates (track 2).
-// 21 fields per row, semicolon-delimited ("campo;campo;campo..."), UTF-8, CRLF.
+// 22 fields per row, semicolon-delimited ("campo;campo;campo..."), UTF-8, CRLF.
 // An empty field means the value did not change (no tocar). Rows have exactly
-// 21 fields (20 separators, no trailing ";") — matches the prod loader,
-// which splits on ";" and requires exactly 21 parts.
+// 22 fields (21 separators, no trailing ";") — matches the prod loader,
+// which splits on ";" and requires exactly 22 parts (field 22 = LUGNAC).
 
 const CATALOGS = {
   TIPDID: new Set(["1"]),
   NACION: new Set(["1", "2"]),
   ESTCIV: new Set(["S", "C", "V", "D"])
 };
+
+// Format validators (PRD §10: email, teléfono, catálogos)
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const PHONE_RE = /^\d{7,9}$/;
 
 // readOnly fields are identity/locked by contract (PRD 18-ago-26): they can be
 // read for display but never written by the socio. The TXT delta serializes
@@ -34,7 +38,8 @@ const LAYOUT = [
   { key: "ESTCIV", field: "ESTCIV", length: 1, type: "char" },
   { key: "CARGAM", field: "CARGAM", length: 2, type: "zoned" },
   { key: "OFICIO", field: "OFICIO", length: 20, type: "char" },
-  { key: "SECTO1", field: "SECTO1", length: 2, type: "zoned" }
+  { key: "SECTO1", field: "SECTO1", length: 2, type: "zoned" },
+  { key: "LUGNAC", field: "LUGNAC", length: 6, type: "char", note: "lugar de nacimiento (Ubigeo) — no disponible en DB2, se envía vacío" }
 ];
 
 const NO_TOUCH = "";
@@ -86,6 +91,16 @@ function validateRow(row) {
         const allowed = Array.from(CATALOGS[col.key]).join(", ");
         errors.push({ key: col.key, field: col.field, msg: col.field + " debe ser uno de: " + allowed + "." });
       }
+      continue;
+    }
+    // PRD §10: email format
+    if (col.key === "NOMBC2" && !EMAIL_RE.test(raw)) {
+      errors.push({ key: col.key, field: col.field, msg: col.field + " debe ser un correo electronico valido." });
+      continue;
+    }
+    // PRD §10: phone format (7-9 digits)
+    if (col.key === "TELCEL" && !PHONE_RE.test(raw)) {
+      errors.push({ key: col.key, field: col.field, msg: col.field + " debe tener entre 7 y 9 digitos." });
       continue;
     }
     if (col.type === "zoned") {
