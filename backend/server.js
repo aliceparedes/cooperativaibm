@@ -7,6 +7,7 @@ const verify = require("./src/verify");
 const store = require("./src/store");
 const txt = require("./src/txt");
 const reads = require("./src/reads");
+const mailer = require("./src/mailer");
 
 const app = express();
 app.use(express.json({ limit: "20mb" }));
@@ -80,16 +81,49 @@ app.get("/api/auth/me", requireSocio, async (req, res) => {
   }
 });
 
+// Secciones de contenido público del portal. Se listan explícitamente para no
+// filtrar nunca `socios` / `changes` / `batches` (PII) por este endpoint público,
+// que además el frontend sondea cada pocos segundos.
+const PUBLIC_CONTENT_KEYS = [
+  "tasas",
+  "anuncios",
+  "proveedores",
+  "historia",
+  "productos",
+  "servicios",
+  "prestamos",
+  "docLinks",
+  "ahorroInfo",
+  "ahorroTasas",
+  "sectionUpdatedAt",
+  "updatedAt"
+];
+
 app.get("/api/content", async (req, res) => {
   const data = await store.getAll();
-  res.json(data);
+  const publicData = {};
+  for (const k of PUBLIC_CONTENT_KEYS) {
+    if (data[k] !== undefined) publicData[k] = data[k];
+  }
+  res.json(publicData);
 });
 
 app.post("/api/anuncios", requireAdmin, async (req, res) => {
   const { text } = req.body || {};
   if (!text || !text.trim()) return res.status(400).json({ error: "El anuncio no puede estar vacío." });
   const post = await store.addAnuncio(text.trim());
-  res.status(201).json(post);
+
+  // Notifica a todos los socios con correo válido (db2 completo si DATAAPI_ENABLED,
+  // si no el mirror local). No bloquea ni falla la publicación.
+  let notified = null;
+  try {
+    const { socios, source } = await reads.listSociosForNotify(store);
+    notified = { ...(await mailer.sendAnuncioEmail(post, socios)), source };
+  } catch (e) {
+    console.error(`[anuncios] no se pudo notificar el anuncio ${post.id}: ${e.message}`);
+  }
+
+  res.status(201).json({ ...post, notified });
 });
 
 app.delete("/api/anuncios/:id", requireAdmin, async (req, res) => {
@@ -98,7 +132,7 @@ app.delete("/api/anuncios/:id", requireAdmin, async (req, res) => {
 });
 
 function parseProveedorPayload(body) {
-  const { name, cat, desc, disc, photo, link, docs, links } = body || {};
+  const { name, cat, desc, disc, photo, link, docs, links, destacado } = body || {};
   if (!name || !name.trim()) return { error: "Falta el nombre del proveedor." };
   if (photo && !/^data:image\//.test(photo)) return { error: "El adjunto debe ser una imagen." };
   const cleanDocs = Array.isArray(docs)
@@ -120,7 +154,8 @@ function parseProveedorPayload(body) {
       photo: (photo || "").trim(),
       link: (link || "").trim(),
       docs: cleanDocs,
-      links: cleanLinks
+      links: cleanLinks,
+      destacado: !!destacado
     }
   };
 }
@@ -129,7 +164,18 @@ app.post("/api/proveedores", requireAdmin, async (req, res) => {
   const { error, payload } = parseProveedorPayload(req.body);
   if (error) return res.status(400).json({ error });
   const prov = await store.addProveedor(payload);
-  res.status(201).json(prov);
+
+  // Notifica a los socios del nuevo convenio (db2 completo si DATAAPI_ENABLED,
+  // si no el mirror local). No bloquea ni falla la creación.
+  let notified = null;
+  try {
+    const { socios, source } = await reads.listSociosForNotify(store);
+    notified = { ...(await mailer.sendProveedorEmail(prov, socios)), source };
+  } catch (e) {
+    console.error(`[proveedores] no se pudo notificar el proveedor ${prov.id}: ${e.message}`);
+  }
+
+  res.status(201).json({ ...prov, notified });
 });
 
 app.put("/api/proveedores/:id", requireAdmin, async (req, res) => {
@@ -167,6 +213,18 @@ app.put("/api/productos/:key", requireAdmin, async (req, res) => {
   if (typeof desc === "string") patch.desc = desc.trim();
   const producto = await store.updateProducto(req.params.key, patch);
   res.json(producto);
+});
+
+const SERVICIO_KEYS = ["seguro-autos", "fondo-sepelio", "oncosalud"];
+
+app.put("/api/servicios/:key", requireAdmin, async (req, res) => {
+  if (!SERVICIO_KEYS.includes(req.params.key)) return res.status(404).json({ error: "Servicio no encontrado." });
+  const { title, desc } = req.body || {};
+  const patch = {};
+  if (typeof title === "string") patch.title = title.trim();
+  if (typeof desc === "string") patch.desc = desc.trim();
+  const servicio = await store.updateServicio(req.params.key, patch);
+  res.json(servicio);
 });
 
 const PRESTAMO_KEYS = ["sola-firma", "consumo", "largo-plazo", "automotriz", "hipotecario", "garantia", "academico"];

@@ -871,20 +871,20 @@
                 <label style="display:block;font-size:15px;font-weight:600;margin-bottom:6px">Monto del préstamo (soles)</label>
                 <div style="display:flex;align-items:center;border:1px solid #d9dee4;border-radius:0" style-focus-within="border:1px solid #0043ce;box-shadow:0 0 0 3px #edf5ff">
                   <span style="padding:14px 0 14px 14px;font-size:16px;font-weight:700;color:#8b95a1">S/</span>
-                  <input type="number" min="{{ montoMin }}" max="{{ montoMax }}" step="{{ montoStep }}" value="{{ monto }}" onInput="{{ onMonto }}" style="flex:1;width:100%;min-width:0;border:none;outline:none;padding:14px 14px 14px 6px;font-size:16px;font-weight:700;font-family:inherit;color:#161616;background:transparent">
+                  <input type="number" min="{{ montoMin }}" max="{{ montoMax }}" step="{{ montoStep }}" value="{{ monto }}" onInput="{{ onMonto }}" onChange="{{ onMontoCommit }}" style="flex:1;width:100%;min-width:0;border:none;outline:none;padding:14px 14px 14px 6px;font-size:16px;font-weight:700;font-family:inherit;color:#161616;background:transparent">
                 </div>
                 <div style="font-size:12px;color:#8d8d8d;margin-top:8px">Ingresa un monto entre {{ montoMinLabel }} y {{ montoMaxLabel }}</div>
               </div>
               <div>
                 <label style="display:block;font-size:15px;font-weight:600;margin-bottom:6px">Plazo (meses)</label>
-                <input type="number" min="{{ plazoMin }}" max="{{ plazoMax }}" step="{{ plazoStep }}" value="{{ plazo }}" onInput="{{ onPlazo }}" style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:14px;font-size:16px;font-weight:700;font-family:inherit;outline:none;color:#161616" style-focus="border:1px solid #0043ce;box-shadow:0 0 0 3px #edf5ff">
+                <input type="number" min="{{ plazoMin }}" max="{{ plazoMax }}" step="{{ plazoStep }}" value="{{ plazo }}" onInput="{{ onPlazo }}" onChange="{{ onPlazoCommit }}" style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:14px;font-size:16px;font-weight:700;font-family:inherit;outline:none;color:#161616" style-focus="border:1px solid #0043ce;box-shadow:0 0 0 3px #edf5ff">
                 <div style="font-size:12px;color:#8d8d8d;margin-top:8px">Ingresa un plazo entre {{ plazoMinLabel }} y {{ plazoMaxLabel }}</div>
               </div>
               <div>
                 <label style="display:block;font-size:15px;font-weight:600;margin-bottom:6px">Tu ingreso mensual (soles)</label>
                 <div style="display:flex;align-items:center;border:1px solid #d9dee4;border-radius:0" style-focus-within="border:1px solid #0043ce;box-shadow:0 0 0 3px #edf5ff">
                   <span style="padding:14px 0 14px 14px;font-size:16px;font-weight:700;color:#8b95a1">S/</span>
-                  <input type="number" min="1500" max="20000" step="500" value="{{ ingreso }}" onInput="{{ onIngreso }}" style="flex:1;width:100%;min-width:0;border:none;outline:none;padding:14px 14px 14px 6px;font-size:16px;font-weight:700;font-family:inherit;color:#161616;background:transparent">
+                  <input type="number" min="{{ ingresoMin }}" max="{{ ingresoMax }}" step="500" value="{{ ingreso }}" onInput="{{ onIngreso }}" onChange="{{ onIngresoCommit }}" style="flex:1;width:100%;min-width:0;border:none;outline:none;padding:14px 14px 14px 6px;font-size:16px;font-weight:700;font-family:inherit;color:#161616;background:transparent">
                 </div>
                 <div style="font-size:12px;color:#8d8d8d;margin-top:8px">Ingresa un monto entre {{ ingresoMinLabel }} y {{ ingresoMaxLabel }}</div>
               </div>
@@ -1654,6 +1654,11 @@ class Component extends DCLogic {
     const tasa = sel.tea;
     const montoMin = selLimits.montoMin, montoMax = selLimits.montoMax, montoStep = selLimits.montoStep;
     const plazoMin = selLimits.plazoMin, plazoMax = selLimits.plazoMax, plazoStep = selLimits.plazoStep;
+    const ingresoMin = 1500, ingresoMax = 44000;
+    // clampHi: nunca exceder el tope mientras se escribe. clampTo: al confirmar
+    // (blur/change) encajar en todo el rango [min, max].
+    const clampHi = (v, hi) => (Number.isNaN(v) ? v : Math.min(v, hi));
+    const clampTo = (v, lo, hi) => (Number.isNaN(v) ? lo : Math.min(Math.max(v, lo), hi));
 
     const prestamosData = [
       {key:"sola-firma",slotId:"loan-0",photo:"./uploads/prestamos-inmediatos-firma.jpg",title:"Préstamos Inmediatos",tasa:tasas["sola-firma"].toFixed(1)+"% TEA",img:"Préstamos Inmediatos",desc:"Hasta S/3,000 a pagar en 6 meses. Aprobación rápida, sin garantías adicionales."},
@@ -2341,16 +2346,18 @@ class Component extends DCLogic {
         this.maybeShowOnboarding();
       },
 
-      mostrarSimulador, montoMin, montoMax, montoStep, plazoMin, plazoMax, plazoStep,
+      mostrarSimulador, montoMin, montoMax, montoStep, plazoMin, plazoMax, plazoStep, ingresoMin, ingresoMax,
       montoMinLabel: this.money(montoMin), montoMaxLabel: this.money(montoMax),
       plazoMinLabel: plazoMin+" meses", plazoMaxLabel: plazoMax+" meses",
-      ingresoMinLabel: this.money(1500), ingresoMaxLabel: this.money(20000),
+      ingresoMinLabel: this.money(ingresoMin), ingresoMaxLabel: this.money(ingresoMax),
       monto: this.state.monto, plazo: this.state.plazo,
       tasaLabel: tasa+"%",
       cuota: this.money(cuotaNum), total: this.money(totalNum), intereses: this.money(totalNum-P),
       capitalLabel: this.money(P),
-      onMonto: (e)=>this.setState({monto:+e.target.value}),
-      onPlazo: (e)=>this.setState({plazo:+e.target.value}),
+      onMonto: (e)=>this.setState({monto:clampHi(+e.target.value,montoMax)}),
+      onMontoCommit: (e)=>this.setState({monto:clampTo(+e.target.value,montoMin,montoMax)}),
+      onPlazo: (e)=>this.setState({plazo:clampHi(+e.target.value,plazoMax)}),
+      onPlazoCommit: (e)=>this.setState({plazo:clampTo(+e.target.value,plazoMin,plazoMax)}),
 
       simView,
       ringValue: simView==="total" ? this.money(totalNum) : this.money(cuotaNum),
@@ -2365,11 +2372,12 @@ class Component extends DCLogic {
 
       simTypes: loanTypes.map(t=>{
         const on=t.key===this.state.simTipo;
-        return {key:t.key, label:t.label, teaLabel:t.tea+"%", pick:()=>this.setState({simTipo:t.key}),
+        return {key:t.key, label:t.label, teaLabel:t.tea+"%", pick:()=>{ const L=LOAN_LIMITS[t.key]; this.setState(s=>({simTipo:t.key, monto:clampTo(s.monto,L.montoMin,L.montoMax), plazo:clampTo(s.plazo,L.plazoMin,L.plazoMax)})); },
           style:"border:1px solid "+(on?t.color:"#e0e0e0")+";background:"+(on?t.bg:"#fff")+";color:"+(on?t.color:"#161616")+";border-radius:0;padding:12px 18px;cursor:pointer;line-height:1.25;min-width:120px"};
       }),
       ingreso: ing,
-      onIngreso: (e)=>this.setState({ingreso:+e.target.value}),
+      onIngreso: (e)=>this.setState({ingreso:clampHi(+e.target.value,ingresoMax)}),
+      onIngresoCommit: (e)=>this.setState({ingreso:clampTo(+e.target.value,ingresoMin,ingresoMax)}),
       afPct: Math.round(afRatio*100)+"%", afWidth: Math.min(afRatio*100,100)+"%", afColor, afLabel,
       capPct: capPctN+"%", intPct: (100-capPctN)+"%",
       cuotaBanco: this.money(cuotaBancoNum), totalBanco: this.money(totalBancoNum), bankTeaLabel: sel.bank+"%",

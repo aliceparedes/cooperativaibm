@@ -99,6 +99,21 @@ async function readSocio(docume) {
   return { status: "ok", socio: result.rows[0] };
 }
 
+// Lista TODOS los socios de db2 trayendo solo lo necesario para notificar
+// (DOCUME + correo). Se usa para el envío masivo de anuncios/proveedores.
+// No es un lookup: devuelve { status: "ok", rows: [...] } o { status:
+// "unavailable", error }. El límite es alto y configurable (DATAAPI_LIST_LIMIT)
+// para no chocar con el tope por defecto de LoopBack.
+async function listAllSocios() {
+  const limit = Number(process.env.DATAAPI_LIST_LIMIT || 10000);
+  const result = await queryFilter({
+    fields: { codempleado: true, nombc2: true },
+    limit
+  });
+  if (result.status !== "ok") return result;
+  return { status: "ok", rows: result.rows };
+}
+
 // Lee el perfil de un socio por email (NOMBC2).
 // LoopBack usa campo lowercase 'nombc2'.
 async function readSocioByEmail(email) {
@@ -113,4 +128,4 @@ async function readSocioByEmail(email) {
   return { status: "ok", socio: result.rows[0] };
 }
 
-module.exports = { isEnabled, readSocio, readSocioByEmail, DATAAPI_URL };
+module.exports = { isEnabled, readSocio, readSocioByEmail, listAllSocios, DATAAPI_URL };

@@ -33,8 +33,13 @@ const DEFAULT_DATA = {
     smartfit: { title: "Smart Fit", cat: "Gimnasio", desc: "Plan Black Corporativo, exclusivo para colaboradores de la Cooperativa." },
     oncosalud: { title: "Oncosalud", cat: "Salud", desc: "Convenio corporativo para socios y familiares directos." }
   },
+  servicios: {
+    "seguro-autos": { title: "Seguro de Autos", desc: "Convenio con Rímac que garantiza la mejor tarifa del mercado. Descuento de la prima en 18 meses sin recargo de intereses, con descuento por planilla." },
+    "fondo-sepelio": { title: "Fondo de Sepelio", desc: "Cubre los gastos de sepelio del socio, cónyuge, hijos menores de 25 años y padres. Aporte de $5 mensuales (no reembolsable) y cobertura hasta $3,000 con Jardines de la Paz y Campo Fe." },
+    oncosalud: { title: "Oncosalud", desc: "Convenio corporativo para socios y familiares directos, con 18% de descuento sobre la tarifa de mercado." }
+  },
   prestamos: {
-    "sola-firma": { title: "Préstamos Inmediatos", desc: "Hasta S/3,000 a pagar en 6 meses. Aprobación rápida, sin garantías adicionales.", montoMin: 500, montoMax: 3000, montoStep: 100, plazoMin: 3, plazoMax: 6, plazoStep: 1, bank: 22, defMonto: 1500, defPlazo: 6 },
+    "sola-firma": { title: "Préstamos a Solo Firma", desc: "Hasta S/3,000 a pagar en 6 meses. Aprobación rápida, sin garantías adicionales.", montoMin: 500, montoMax: 3000, montoStep: 100, plazoMin: 3, plazoMax: 6, plazoStep: 1, bank: 22, defMonto: 1500, defPlazo: 6 },
     consumo: { title: "Consumo", desc: "Hasta S/10,000 a pagar en 12 meses. Requiere mínimo 6 meses como socio.", montoMin: 1000, montoMax: 10000, montoStep: 500, plazoMin: 3, plazoMax: 12, plazoStep: 1, bank: 24, defMonto: 5000, defPlazo: 12 },
     "largo-plazo": { title: "Largo Plazo", desc: "Hasta S/60,000 a pagar en 48 meses. Requiere mínimo 6 meses como socio.", montoMin: 2000, montoMax: 60000, montoStep: 1000, plazoMin: 6, plazoMax: 48, plazoStep: 6, bank: 20, defMonto: 20000, defPlazo: 36 },
     automotriz: { title: "Crédito Automotriz", desc: "Hasta el 80% del valor del auto, monto máximo equivalente a US$40,000, a pagar en 60 meses. Requiere mínimo 6 meses como socio.", montoMin: 5000, montoMax: 150000, montoStep: 5000, plazoMin: 6, plazoMax: 60, plazoStep: 6, bank: 15, defMonto: 50000, defPlazo: 48 },
@@ -108,6 +113,7 @@ function touch(container, section) {
 }
 
 const PRODUCTO_KEYS = ["bebidas", "rimac", "movistar", "perufarma", "smartfit", "oncosalud"];
+const SERVICIO_KEYS = ["seguro-autos", "fondo-sepelio", "oncosalud"];
 const PRESTAMO_KEYS = ["sola-firma", "consumo", "largo-plazo", "automotriz", "hipotecario", "garantia", "academico"];
 const DOCLINK_KEYS = ["estatuto", "memorias", "directiva"];
 const AHORRO_INFO_KEYS = ["simple", "plazoFijo"];
@@ -196,6 +202,7 @@ function makeFileStore() {
       return data.tasas;
     },
     updateProducto: patchKeyedMap("productos", PRODUCTO_KEYS),
+    updateServicio: patchKeyedMap("servicios", SERVICIO_KEYS),
     updateLoanProduct: patchKeyedMap("prestamos", PRESTAMO_KEYS),
     updateDocLink: patchKeyedMap("docLinks", DOCLINK_KEYS),
     updateAhorroInfo: patchKeyedMap("ahorroInfo", AHORRO_INFO_KEYS),
@@ -432,6 +439,7 @@ function makeCloudantStore() {
       return doc.tasas;
     },
     updateProducto: patchKeyedMap("productos", PRODUCTO_KEYS),
+    updateServicio: patchKeyedMap("servicios", SERVICIO_KEYS),
     updateLoanProduct: patchKeyedMap("prestamos", PRESTAMO_KEYS),
     updateDocLink: patchKeyedMap("docLinks", DOCLINK_KEYS),
     updateAhorroInfo: patchKeyedMap("ahorroInfo", AHORRO_INFO_KEYS),
