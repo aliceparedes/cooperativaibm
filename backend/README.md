@@ -4,10 +4,11 @@ A small Express API that the site's admin login talks to. It provides:
 
 - `POST /api/auth/login` — admin login, returns a JWT
 - `POST /api/auth/socio-login` — socio login (placeholder del seam IBM Verify), returns `{ token, socio }`
-- `GET /api/content` — public: `{ anuncios, proveedores, tasas, ... }`, plus `updatedAt` (global) and `sectionUpdatedAt` (`{ tasas, ahorroTasas, anuncios, proveedores, historia, productos, ... }`) with the ISO timestamp of the last change to each section
-- `POST /api/anuncios` / `DELETE /api/anuncios/:id` — admin only
-- `POST /api/proveedores` / `PUT /api/proveedores/:id` / `DELETE /api/proveedores/:id` — admin only
+- `GET /api/content` — public: `{ anuncios, proveedores, tasas, servicios, ... }`, plus `updatedAt` (global) and `sectionUpdatedAt` (`{ tasas, ahorroTasas, anuncios, proveedores, historia, productos, servicios, ... }`) with the ISO timestamp of the last change to each section. El frontend hace *polling* de este endpoint cada 8 s y re-hidrata solo cuando cambia `updatedAt` (y no hay una edición admin en curso), de modo que las publicaciones se ven en todos los navegadores sin recargar.
+- `POST /api/anuncios` / `DELETE /api/anuncios/:id` — admin only. Al crear un anuncio se envía un correo (BCC) a todos los socios con `NOMBC2` válido; la respuesta incluye `notified: { sent, skipped, source }`. La lista de destinatarios sale de db2 (padrón completo) cuando `DATAAPI_ENABLED=true`, unida con los socios que solo están en el mirror local; si db2 falla se cae al mirror local con un aviso. Requiere `SMTP_HOST` / `SMTP_USER` / `SMTP_PASS` (ver `.env.example`); si faltan, el anuncio se publica igual y el envío se omite con un aviso en el log.
+- `POST /api/proveedores` / `PUT /api/proveedores/:id` / `DELETE /api/proveedores/:id` — admin only. El payload acepta `destacado` (bool): los proveedores con `destacado:true` encabezan el carrusel "Destacados de la semana". Al **crear** un proveedor se notifica por correo (BCC) a los socios igual que con los anuncios (mismo `SMTP_*`; respuesta con `notified: { sent, skipped }`).
 - `PUT /api/tasas` — admin only
+- `PUT /api/productos/:key` / `PUT /api/servicios/:key` — admin only; edita `title` / `desc` (productos también `cat`) del mapa fijo de tarjetas. Keys de servicios: `seguro-autos`, `fondo-sepelio`, `oncosalud`.
 - `POST /api/socios/txt` — admin only; serializes partner updates to the 21-field semicolon-delimited TXT for the S400
 
 Storage is pluggable: a JSON file by default (fine for local testing), or
@@ -170,6 +171,32 @@ CRLF). Los catálogos TIPDID / NACION / ESTCIV están en el frontend y en el
 `.dc.html` (constantes `OPTS`). El fixture de referencia
 `backend/test/fixtures/cooperativa-txt-prueba.gold.txt` reproduce el formato
 acordado con José y se verifica con `node test/txt.gold.test.js` en `backend/`.
+
+## Notificaciones por correo (anuncios / proveedores)
+
+Al crear un anuncio (`POST /api/anuncios`) o un proveedor (`POST /api/proveedores`)
+se envía un correo (BCC) a todos los socios con `NOMBC2` válido. Requiere
+`SMTP_HOST` / `SMTP_PORT` / `SMTP_SECURE` / `SMTP_USER` / `SMTP_PASS` /
+`MAIL_FROM` (ver `.env.example`); si faltan, la publicación se hace igual y el
+envío se omite con un aviso en el log. La respuesta incluye
+`notified: { sent, skipped, source }`.
+
+Destinatarios: `src/reads.js → listSociosForNotify()`. Con `DATAAPI_ENABLED=true`
+sale el padrón completo de db2 (`dataapi.listAllSocios()`, `limit`
+= `DATAAPI_LIST_LIMIT`, default 10000) unido con los socios que solo están en el
+mirror local; si db2 falla se cae al mirror local con un aviso. El envío es
+best-effort: nunca aborta ni revierte la creación.
+
+> **Recordatorio — cobertura de correos (verificado contra `coop-dataapi`, 2026-08):**
+> de **935** socios en db2, solo **530** tienen correo en `NOMBC2`; los otros
+> **405 (43%) no reciben nada**. Es un hueco de datos en db2, no del código.
+> Antes de anunciar "llega a todos", revisar que suba la cobertura de `NOMBC2`.
+>
+> db2 también tiene `EMAILEMPLEADO` / `EMAILEMPLEADO2`, y en algunas filas no
+> coinciden con `NOMBC2`. Si `NOMBC2` resulta no ser la dirección de contacto
+> fiable, hay que revisar qué campo usar como destinatario — pero eso es zona
+> S-400 / integración de socios, confirmar con quien lleva la migración antes de
+> tocarlo.
 
 ## Notes
 
