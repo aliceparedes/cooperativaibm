@@ -802,7 +802,8 @@
       <sc-if value="{{ isPrestamos }}" hint-placeholder-val="{{ true }}">
       <section style="padding:56px">
         <h1 style="font-size:48px;font-weight:800;letter-spacing:-0.02em;margin-bottom:10px">Préstamos</h1>
-        <p style="font-size:14px;color:#8b95a1;margin-bottom:36px">Tasas actualizadas el {{ tasasUpdated }}</p>
+        <p style="font-size:14px;color:#8b95a1;margin-bottom:14px">Tasas actualizadas el {{ tasasUpdated }}</p>
+        <p style="font-size:13px;color:#8b95a1;max-width:720px;margin-bottom:36px">Las tasas «desde» son referenciales en TEA (Tasa Efectiva Anual) y están sujetas a evaluación crediticia y al cumplimiento de los requisitos de cada producto. Todos los créditos incluyen Seguro de Desgravamen, obligatorio en todas las entidades financieras y bancos.</p>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:52px">
           <sc-for list="{{ prestamos }}" as="l" hint-placeholder-count="4">
             <div>
@@ -909,7 +910,7 @@
           </div>
         </div>
 
-        <p style="font-size:13px;color:#8b95a1;max-width:720px">Consideraciones adicionales: los préstamos están sujetos a evaluación crediticia. Se considera una tasa de 0.5% anual adicional por Seguro de Desgravamen. La columna «TEA + desgrav. (est.)» es una estimación referencial que suma ese 0.5% a la TEA; la tasa final se confirma en la evaluación.</p>
+        <p style="font-size:13px;color:#8b95a1;max-width:720px">Consideraciones adicionales: las tasas mostradas son referenciales y están sujetas a evaluación crediticia y al cumplimiento de los requisitos de cada producto (antigüedad mínima como socio, capacidad de pago y documentación). La TEA (Tasa Efectiva Anual) indicada es la tasa base; la tasa final se confirma en la evaluación. Todos los créditos incluyen Seguro de Desgravamen —requisito obligatorio en todas las entidades financieras y bancos—, estimado en 0.5% anual adicional; ese estimado es el que se refleja en la columna «TEA + desgrav. (est.)».</p>
       </section>
       </sc-if>
 
