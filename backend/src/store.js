@@ -50,7 +50,8 @@ const DEFAULT_DATA = {
   docLinks: {
     estatuto: { label: "Estatuto", url: "" },
     memorias: { label: "Memorias", url: "" },
-    directiva: { label: "Directiva", url: "" }
+    directiva: { label: "Directiva", url: "" },
+    organigrama: { label: "Organigrama", url: "" }
   },
   ahorroInfo: {
     simple: {
@@ -115,7 +116,7 @@ function touch(container, section) {
 const PRODUCTO_KEYS = ["bebidas", "rimac", "movistar", "perufarma", "smartfit", "oncosalud"];
 const SERVICIO_KEYS = ["seguro-autos", "fondo-sepelio", "oncosalud"];
 const PRESTAMO_KEYS = ["sola-firma", "consumo", "largo-plazo", "automotriz", "hipotecario", "garantia", "academico"];
-const DOCLINK_KEYS = ["estatuto", "memorias", "directiva"];
+const DOCLINK_KEYS = ["estatuto", "memorias", "directiva", "organigrama"];
 const AHORRO_INFO_KEYS = ["simple", "plazoFijo"];
 
 // ---------- File-backed store: default, good for local dev / small deployments ----------

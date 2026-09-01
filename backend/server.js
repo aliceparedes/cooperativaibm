@@ -271,7 +271,7 @@ app.delete("/api/historia/:id", requireAdmin, async (req, res) => {
   res.status(204).end();
 });
 
-const DOCLINK_KEYS = ["estatuto", "memorias", "directiva"];
+const DOCLINK_KEYS = ["estatuto", "memorias", "directiva", "organigrama"];
 
 app.put("/api/doclinks/:key", requireAdmin, async (req, res) => {
   if (!DOCLINK_KEYS.includes(req.params.key)) return res.status(404).json({ error: "Documento no encontrado." });

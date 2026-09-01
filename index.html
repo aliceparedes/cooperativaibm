@@ -208,8 +208,8 @@
             </div>
           </sc-if>
         </sc-if>
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:920px">
-          <sc-for list="{{ docLinks }}" as="d" hint-placeholder-count="3">
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;max-width:920px">
+          <sc-for list="{{ docLinks }}" as="d" hint-placeholder-count="4">
             <div onClick="{{ d.go }}" style="border:1px solid #d9dee4;background:#fff;border-radius:0;padding:22px;font-size:17px;font-weight:600;color:#161616;cursor:pointer;font-family:inherit;position:relative" style-hover="border:1px solid #0043ce;background:#edf5ff">
               <sc-if value="{{ isAdmin }}" hint-placeholder-val="{{ false }}">
                 <div onClick="{{ d.edit }}" title="Editar" style="position:absolute;top:8px;right:8px;width:22px;height:22px;border-radius:0;background:#edf5ff;color:#0043ce;display:flex;align-items:center;justify-content:center;cursor:pointer">
@@ -219,132 +219,6 @@
               {{ d.label }}
             </div>
           </sc-for>
-        </div>
-
-        <h2 style="font-size:26px;font-weight:700;margin-bottom:24px;margin-top:52px">Organigrama</h2>
-
-        <div style="margin-bottom:44px">
-          <h3 style="font-size:16px;font-weight:700;color:#0043ce;margin-bottom:16px">1. Gestión</h3>
-          <div style="display:flex;flex-direction:column;align-items:center">
-            <div style="border:1px solid #d9dee4;border-radius:0;padding:14px 22px;text-align:center;background:#fff;min-width:220px">
-              <div style="font-size:15px;font-weight:700">Presidente del Consejo de Administración</div>
-              <div style="font-size:13px;color:#52606d;margin-top:4px">Luis del Busto</div>
-            </div>
-            <div style="width:2px;height:24px;background:#0043ce"></div>
-            <div style="border:1px solid #d9dee4;border-radius:0;padding:14px 22px;text-align:center;background:#fff;min-width:220px">
-              <div style="font-size:15px;font-weight:700">Gerente</div>
-              <div style="font-size:13px;color:#52606d;margin-top:4px">Lucía Torres</div>
-            </div>
-            <div style="width:2px;height:24px;background:#0043ce"></div>
-            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;width:100%;max-width:1000px">
-              <div style="border-top:4px solid #0043ce;padding:16px;background:#f9fafb">
-                <div style="font-size:14px;font-weight:700;margin-bottom:8px">Administradoras</div>
-                <div style="font-size:13px;color:#52606d;line-height:1.7">Diana Huanay<br>Janet Ríos<br>Eliana Barreda</div>
-              </div>
-              <div style="border-top:4px solid #0043ce;padding:16px;background:#f9fafb">
-                <div style="font-size:14px;font-weight:700;margin-bottom:8px">Contador</div>
-                <div style="font-size:13px;color:#52606d">Raúl Tello</div>
-              </div>
-              <div style="border-top:4px solid #0043ce;padding:16px;background:#f9fafb">
-                <div style="font-size:14px;font-weight:700;margin-bottom:8px">Sistemas</div>
-                <div style="font-size:13px;color:#52606d">José Olivera</div>
-              </div>
-              <div style="border-top:4px solid #0043ce;padding:16px;background:#f9fafb">
-                <div style="font-size:14px;font-weight:700;margin-bottom:8px">Crédito</div>
-                <div style="font-size:13px;color:#52606d">Connie Hughes</div>
-              </div>
-              <div style="border-top:4px solid #0043ce;padding:16px;background:#f9fafb">
-                <div style="font-size:14px;font-weight:700;margin-bottom:8px">Riesgo</div>
-                <div style="font-size:13px;color:#52606d">Lucero Miranda</div>
-              </div>
-              <div style="border-top:4px solid #0043ce;padding:16px;background:#f9fafb">
-                <div style="font-size:14px;font-weight:700;margin-bottom:8px">UIF</div>
-                <div style="font-size:13px;color:#52606d">Unidad de Riesgos</div>
-              </div>
-            </div>
-            <div style="border:1px solid #d9dee4;border-radius:0;padding:16px;margin-top:20px;width:100%;max-width:1000px">
-              <div style="font-size:14px;font-weight:700;margin-bottom:8px">Comités</div>
-              <div style="font-size:13px;color:#52606d;line-height:1.7">Comité de Crédito · Comité de Riesgo · Comité de Educación</div>
-            </div>
-          </div>
-        </div>
-
-        <div style="margin-bottom:44px">
-          <h3 style="font-size:16px;font-weight:700;color:#0043ce;margin-bottom:16px">2. Consejo de Administración</h3>
-          <div style="display:flex;flex-direction:column;align-items:center">
-            <div style="border:1px solid #d9dee4;border-radius:0;padding:14px 22px;text-align:center;background:#fff;min-width:220px">
-              <div style="font-size:15px;font-weight:700">Presidente</div>
-              <div style="font-size:13px;color:#52606d;margin-top:4px">Luis del Busto</div>
-            </div>
-            <div style="width:2px;height:24px;background:#0043ce"></div>
-            <div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:center">
-              <div style="border:1px solid #d9dee4;border-radius:0;padding:14px 22px;text-align:center;background:#fff;min-width:180px">
-                <div style="font-size:15px;font-weight:700">Vicepresidente</div>
-                <div style="font-size:13px;color:#52606d;margin-top:4px">Andrea Cabrera</div>
-              </div>
-              <div style="border:1px solid #d9dee4;border-radius:0;padding:14px 22px;text-align:center;background:#fff;min-width:180px">
-                <div style="font-size:15px;font-weight:700">Secretario</div>
-                <div style="font-size:13px;color:#52606d;margin-top:4px">Lucero Miranda</div>
-              </div>
-            </div>
-            <div style="width:2px;height:24px;background:#0043ce"></div>
-            <div style="display:flex;gap:14px;flex-wrap:wrap;justify-content:center">
-              <div style="background:#f1f7f8;border-left:4px solid #0043ce;padding:12px 16px;text-align:center;min-width:150px">
-                <div style="font-size:13px;font-weight:700;margin-bottom:4px">Vocal</div>
-                <div style="font-size:13px;color:#52606d">Connie Hughes</div>
-              </div>
-              <div style="background:#f1f7f8;border-left:4px solid #0043ce;padding:12px 16px;text-align:center;min-width:150px">
-                <div style="font-size:13px;font-weight:700;margin-bottom:4px">Vocal</div>
-                <div style="font-size:13px;color:#52606d">María Katia Pinto</div>
-              </div>
-              <div style="background:#f1f7f8;border-left:4px solid #0043ce;padding:12px 16px;text-align:center;min-width:150px">
-                <div style="font-size:13px;font-weight:700;margin-bottom:4px">Vocal</div>
-                <div style="font-size:13px;color:#52606d">Patricia Macedo</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div style="margin-bottom:44px">
-          <h3 style="font-size:16px;font-weight:700;color:#0043ce;margin-bottom:16px">3. Consejo de Vigilancia</h3>
-          <div style="display:flex;flex-direction:column;align-items:center">
-            <div style="border:1px solid #d9dee4;border-radius:0;padding:14px 22px;text-align:center;background:#fff;min-width:220px">
-              <div style="font-size:15px;font-weight:700">Presidente</div>
-              <div style="font-size:13px;color:#52606d;margin-top:4px">Fernando Giulfo</div>
-            </div>
-            <div style="width:2px;height:24px;background:#0043ce"></div>
-            <div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:center">
-              <div style="border:1px solid #d9dee4;border-radius:0;padding:14px 22px;text-align:center;background:#fff;min-width:180px">
-                <div style="font-size:15px;font-weight:700">Vicepresidente</div>
-                <div style="font-size:13px;color:#52606d;margin-top:4px">Alessi Botto</div>
-              </div>
-              <div style="border:1px solid #d9dee4;border-radius:0;padding:14px 22px;text-align:center;background:#fff;min-width:180px">
-                <div style="font-size:15px;font-weight:700">Secretario</div>
-                <div style="font-size:13px;color:#52606d;margin-top:4px">Gisella Rodríguez</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div>
-          <h3 style="font-size:16px;font-weight:700;color:#0043ce;margin-bottom:16px">4. Comité Electoral</h3>
-          <div style="display:flex;flex-direction:column;align-items:center">
-            <div style="border:1px solid #d9dee4;border-radius:0;padding:14px 22px;text-align:center;background:#fff;min-width:220px">
-              <div style="font-size:15px;font-weight:700">Presidente</div>
-              <div style="font-size:13px;color:#52606d;margin-top:4px">Arturo Vásquez</div>
-            </div>
-            <div style="width:2px;height:24px;background:#0043ce"></div>
-            <div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:center">
-              <div style="border:1px solid #d9dee4;border-radius:0;padding:14px 22px;text-align:center;background:#fff;min-width:180px">
-                <div style="font-size:15px;font-weight:700">Vicepresidente</div>
-                <div style="font-size:13px;color:#52606d;margin-top:4px">Karen Matallana</div>
-              </div>
-              <div style="border:1px solid #d9dee4;border-radius:0;padding:14px 22px;text-align:center;background:#fff;min-width:180px">
-                <div style="font-size:15px;font-weight:700">Secretario</div>
-                <div style="font-size:13px;color:#52606d;margin-top:4px">Rafael Anduaga</div>
-              </div>
-            </div>
-          </div>
         </div>
       </section>
       </sc-if>
@@ -529,7 +403,7 @@
         <!-- FEATURE BANNERS -->
         <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:16px">
           <h2 style="font-size:22px;font-weight:600">Destacados de la semana</h2>
-          <span style="font-size:14px;color:#6f6f6f">Válidos con tu registro de socio</span>
+          <span style="font-size:14px;color:#6f6f6f">Válido mostrando tu badge</span>
         </div>
         <div style="display:grid;grid-auto-flow:column;grid-auto-columns:minmax(360px,1fr);gap:18px;overflow-x:auto;padding-bottom:10px;margin-bottom:44px">
           <sc-for list="{{ banners }}" as="b" hint-placeholder-count="4">
@@ -1857,7 +1731,8 @@ class Component extends DCLogic {
     docLinks: {
       estatuto: { label: "Estatuto", url: "" },
       memorias: { label: "Memorias", url: "" },
-      directiva: { label: "Directiva", url: "" }
+      directiva: { label: "Directiva", url: "" },
+      organigrama: { label: "Organigrama", url: "" }
     },
     editingDocLinkKey: null,
     docLinkEdit: { label: "", url: "" },
@@ -2622,7 +2497,7 @@ class Component extends DCLogic {
         {value:"3",label:"Empresas afiliadas"},
         {value:"84",label:"Años al servicio de nuestros socios"}
       ],
-      docLinks: ["estatuto","memorias","directiva"].map(key=>{
+      docLinks: ["estatuto","memorias","directiva","organigrama"].map(key=>{
         const d = this.state.docLinks[key];
         return {
           key, label: d.label, url: d.url, hasUrl: !!d.url,
