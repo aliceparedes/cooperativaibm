@@ -37,11 +37,13 @@ app.post("/api/auth/login", async (req, res) => {
 });
 
 // Socio login — PLACEHOLDER (seam para IBM Verify).
-// Hoy solo valida que el DOCUME exista (db2 si DATAAPI_ENABLED, si no el
-// mirror local) y emite el JWT de socio. Cuando se integre IBM Verify, este
-// endpoint cambia por la validación del token/oAuth del proveedor: mismo
-// contrato de respuesta { token, socio, source }.
+// DESHABILITADO EN PRODUCCIÓN: todos los socios entran con IBMid (OIDC),
+// nunca con DOCUME. Este endpoint solo se activa en desarrollo con
+// ALLOW_SOCIO_LOGIN=true (para probar el flujo de perfil sin OIDC).
 app.post("/api/auth/socio-login", async (req, res) => {
+  if (process.env.ALLOW_SOCIO_LOGIN !== "true") {
+    return res.status(403).json({ error: "Login por DOCUME deshabilitado. Usa IBMid." });
+  }
   const { docume } = req.body || {};
   if (!docume || !String(docume).trim()) {
     return res.status(400).json({ error: "Falta el código de socio (DOCUME)." });
