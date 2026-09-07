@@ -208,8 +208,8 @@
             </div>
           </sc-if>
         </sc-if>
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:920px">
-          <sc-for list="{{ docLinks }}" as="d" hint-placeholder-count="3">
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;max-width:920px">
+          <sc-for list="{{ docLinks }}" as="d" hint-placeholder-count="4">
             <div onClick="{{ d.go }}" style="border:1px solid #d9dee4;background:#fff;border-radius:0;padding:22px;font-size:17px;font-weight:600;color:#161616;cursor:pointer;font-family:inherit;position:relative" style-hover="border:1px solid #0043ce;background:#edf5ff">
               <sc-if value="{{ isAdmin }}" hint-placeholder-val="{{ false }}">
                 <div onClick="{{ d.edit }}" title="Editar" style="position:absolute;top:8px;right:8px;width:22px;height:22px;border-radius:0;background:#edf5ff;color:#0043ce;display:flex;align-items:center;justify-content:center;cursor:pointer">
@@ -219,132 +219,6 @@
               {{ d.label }}
             </div>
           </sc-for>
-        </div>
-
-        <h2 style="font-size:26px;font-weight:700;margin-bottom:24px;margin-top:52px">Organigrama</h2>
-
-        <div style="margin-bottom:44px">
-          <h3 style="font-size:16px;font-weight:700;color:#0043ce;margin-bottom:16px">1. Gestión</h3>
-          <div style="display:flex;flex-direction:column;align-items:center">
-            <div style="border:1px solid #d9dee4;border-radius:0;padding:14px 22px;text-align:center;background:#fff;min-width:220px">
-              <div style="font-size:15px;font-weight:700">Presidente del Consejo de Administración</div>
-              <div style="font-size:13px;color:#52606d;margin-top:4px">Luis del Busto</div>
-            </div>
-            <div style="width:2px;height:24px;background:#0043ce"></div>
-            <div style="border:1px solid #d9dee4;border-radius:0;padding:14px 22px;text-align:center;background:#fff;min-width:220px">
-              <div style="font-size:15px;font-weight:700">Gerente</div>
-              <div style="font-size:13px;color:#52606d;margin-top:4px">Lucía Torres</div>
-            </div>
-            <div style="width:2px;height:24px;background:#0043ce"></div>
-            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;width:100%;max-width:1000px">
-              <div style="border-top:4px solid #0043ce;padding:16px;background:#f9fafb">
-                <div style="font-size:14px;font-weight:700;margin-bottom:8px">Administradoras</div>
-                <div style="font-size:13px;color:#52606d;line-height:1.7">Diana Huanay<br>Janet Ríos<br>Eliana Barreda</div>
-              </div>
-              <div style="border-top:4px solid #0043ce;padding:16px;background:#f9fafb">
-                <div style="font-size:14px;font-weight:700;margin-bottom:8px">Contador</div>
-                <div style="font-size:13px;color:#52606d">Raúl Tello</div>
-              </div>
-              <div style="border-top:4px solid #0043ce;padding:16px;background:#f9fafb">
-                <div style="font-size:14px;font-weight:700;margin-bottom:8px">Sistemas</div>
-                <div style="font-size:13px;color:#52606d">José Olivera</div>
-              </div>
-              <div style="border-top:4px solid #0043ce;padding:16px;background:#f9fafb">
-                <div style="font-size:14px;font-weight:700;margin-bottom:8px">Crédito</div>
-                <div style="font-size:13px;color:#52606d">Connie Hughes</div>
-              </div>
-              <div style="border-top:4px solid #0043ce;padding:16px;background:#f9fafb">
-                <div style="font-size:14px;font-weight:700;margin-bottom:8px">Riesgo</div>
-                <div style="font-size:13px;color:#52606d">Lucero Miranda</div>
-              </div>
-              <div style="border-top:4px solid #0043ce;padding:16px;background:#f9fafb">
-                <div style="font-size:14px;font-weight:700;margin-bottom:8px">UIF</div>
-                <div style="font-size:13px;color:#52606d">Unidad de Riesgos</div>
-              </div>
-            </div>
-            <div style="border:1px solid #d9dee4;border-radius:0;padding:16px;margin-top:20px;width:100%;max-width:1000px">
-              <div style="font-size:14px;font-weight:700;margin-bottom:8px">Comités</div>
-              <div style="font-size:13px;color:#52606d;line-height:1.7">Comité de Crédito · Comité de Riesgo · Comité de Educación</div>
-            </div>
-          </div>
-        </div>
-
-        <div style="margin-bottom:44px">
-          <h3 style="font-size:16px;font-weight:700;color:#0043ce;margin-bottom:16px">2. Consejo de Administración</h3>
-          <div style="display:flex;flex-direction:column;align-items:center">
-            <div style="border:1px solid #d9dee4;border-radius:0;padding:14px 22px;text-align:center;background:#fff;min-width:220px">
-              <div style="font-size:15px;font-weight:700">Presidente</div>
-              <div style="font-size:13px;color:#52606d;margin-top:4px">Luis del Busto</div>
-            </div>
-            <div style="width:2px;height:24px;background:#0043ce"></div>
-            <div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:center">
-              <div style="border:1px solid #d9dee4;border-radius:0;padding:14px 22px;text-align:center;background:#fff;min-width:180px">
-                <div style="font-size:15px;font-weight:700">Vicepresidente</div>
-                <div style="font-size:13px;color:#52606d;margin-top:4px">Andrea Cabrera</div>
-              </div>
-              <div style="border:1px solid #d9dee4;border-radius:0;padding:14px 22px;text-align:center;background:#fff;min-width:180px">
-                <div style="font-size:15px;font-weight:700">Secretario</div>
-                <div style="font-size:13px;color:#52606d;margin-top:4px">Lucero Miranda</div>
-              </div>
-            </div>
-            <div style="width:2px;height:24px;background:#0043ce"></div>
-            <div style="display:flex;gap:14px;flex-wrap:wrap;justify-content:center">
-              <div style="background:#f1f7f8;border-left:4px solid #0043ce;padding:12px 16px;text-align:center;min-width:150px">
-                <div style="font-size:13px;font-weight:700;margin-bottom:4px">Vocal</div>
-                <div style="font-size:13px;color:#52606d">Connie Hughes</div>
-              </div>
-              <div style="background:#f1f7f8;border-left:4px solid #0043ce;padding:12px 16px;text-align:center;min-width:150px">
-                <div style="font-size:13px;font-weight:700;margin-bottom:4px">Vocal</div>
-                <div style="font-size:13px;color:#52606d">María Katia Pinto</div>
-              </div>
-              <div style="background:#f1f7f8;border-left:4px solid #0043ce;padding:12px 16px;text-align:center;min-width:150px">
-                <div style="font-size:13px;font-weight:700;margin-bottom:4px">Vocal</div>
-                <div style="font-size:13px;color:#52606d">Patricia Macedo</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div style="margin-bottom:44px">
-          <h3 style="font-size:16px;font-weight:700;color:#0043ce;margin-bottom:16px">3. Consejo de Vigilancia</h3>
-          <div style="display:flex;flex-direction:column;align-items:center">
-            <div style="border:1px solid #d9dee4;border-radius:0;padding:14px 22px;text-align:center;background:#fff;min-width:220px">
-              <div style="font-size:15px;font-weight:700">Presidente</div>
-              <div style="font-size:13px;color:#52606d;margin-top:4px">Fernando Giulfo</div>
-            </div>
-            <div style="width:2px;height:24px;background:#0043ce"></div>
-            <div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:center">
-              <div style="border:1px solid #d9dee4;border-radius:0;padding:14px 22px;text-align:center;background:#fff;min-width:180px">
-                <div style="font-size:15px;font-weight:700">Vicepresidente</div>
-                <div style="font-size:13px;color:#52606d;margin-top:4px">Alessi Botto</div>
-              </div>
-              <div style="border:1px solid #d9dee4;border-radius:0;padding:14px 22px;text-align:center;background:#fff;min-width:180px">
-                <div style="font-size:15px;font-weight:700">Secretario</div>
-                <div style="font-size:13px;color:#52606d;margin-top:4px">Gisella Rodríguez</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div>
-          <h3 style="font-size:16px;font-weight:700;color:#0043ce;margin-bottom:16px">4. Comité Electoral</h3>
-          <div style="display:flex;flex-direction:column;align-items:center">
-            <div style="border:1px solid #d9dee4;border-radius:0;padding:14px 22px;text-align:center;background:#fff;min-width:220px">
-              <div style="font-size:15px;font-weight:700">Presidente</div>
-              <div style="font-size:13px;color:#52606d;margin-top:4px">Arturo Vásquez</div>
-            </div>
-            <div style="width:2px;height:24px;background:#0043ce"></div>
-            <div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:center">
-              <div style="border:1px solid #d9dee4;border-radius:0;padding:14px 22px;text-align:center;background:#fff;min-width:180px">
-                <div style="font-size:15px;font-weight:700">Vicepresidente</div>
-                <div style="font-size:13px;color:#52606d;margin-top:4px">Karen Matallana</div>
-              </div>
-              <div style="border:1px solid #d9dee4;border-radius:0;padding:14px 22px;text-align:center;background:#fff;min-width:180px">
-                <div style="font-size:15px;font-weight:700">Secretario</div>
-                <div style="font-size:13px;color:#52606d;margin-top:4px">Rafael Anduaga</div>
-              </div>
-            </div>
-          </div>
         </div>
       </section>
       </sc-if>
@@ -469,6 +343,7 @@
             <input type="text" placeholder="Categoría (ej. Salud, Seguros)" value="{{ newProv.cat }}" onInput="{{ onNewProvCat }}" style="border:1px solid #d9dee4;border-radius:0;padding:11px 12px;font-size:14px;font-family:inherit;outline:none">
             <input type="text" placeholder="Descuento (ej. 10% dcto.)" value="{{ newProv.disc }}" onInput="{{ onNewProvDisc }}" style="border:1px solid #d9dee4;border-radius:0;padding:11px 12px;font-size:14px;font-family:inherit;outline:none">
           </div>
+          <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#3b4653;margin-bottom:16px;cursor:pointer"><input type="checkbox" checked="{{ newProvDestacado }}" onClick="{{ onNewProvDestacado }}" style="accent-color:#0043ce">Destacar en el carrusel "Destacados de la semana"</label>
 
           <div style="font-size:13px;font-weight:700;color:#161616;margin-bottom:6px">2. Descripción larga (explícalo con palabras sencillas: qué es, qué incluye, cómo lo usa el socio)</div>
           <textarea value="{{ newProv.desc }}" onInput="{{ onNewProvDesc }}" placeholder="Ejemplo: Este convenio le da al socio y su familia directa un descuento del 20% en consultas y exámenes. Para usarlo, presenta tu carnet de socio en cualquier sede..." style="width:100%;min-height:90px;resize:vertical;border:1px solid #d9dee4;border-radius:0;padding:11px 12px;font-size:14px;font-family:inherit;outline:none;margin-bottom:16px;box-sizing:border-box"></textarea>
@@ -528,7 +403,7 @@
         <!-- FEATURE BANNERS -->
         <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:16px">
           <h2 style="font-size:22px;font-weight:600">Destacados de la semana</h2>
-          <span style="font-size:14px;color:#6f6f6f">Válidos con tu registro de socio</span>
+          <span style="font-size:14px;color:#6f6f6f">Válido mostrando tu badge</span>
         </div>
         <div style="display:grid;grid-auto-flow:column;grid-auto-columns:minmax(360px,1fr);gap:18px;overflow-x:auto;padding-bottom:10px;margin-bottom:44px">
           <sc-for list="{{ banners }}" as="b" hint-placeholder-count="4">
@@ -592,6 +467,7 @@
             <div onClick="{{ p.goDetalle }}" style="border:1px solid #e5e8ec;border-radius:0;padding:22px;display:flex;flex-direction:column;gap:12px;position:relative;cursor:pointer" style-hover="box-shadow:0 8px 26px rgba(15,36,56,0.09)">
               <sc-if value="{{ isAdmin }}" hint-placeholder-val="{{ false }}">
                 <div style="position:absolute;top:12px;right:12px;display:flex;gap:6px;z-index:1">
+                  <div onClick="{{ p.toggleDestacado }}" title="{{ p.destacarTitle }}" style="width:26px;height:26px;border-radius:0;background:{{ p.destacarBg }};color:{{ p.destacarColor }};display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;line-height:1">★</div>
                   <div onClick="{{ p.edit }}" title="Editar proveedor" style="width:26px;height:26px;border-radius:0;background:#edf5ff;color:#0043ce;display:flex;align-items:center;justify-content:center;cursor:pointer">
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
                   </div>
@@ -926,7 +802,8 @@
       <sc-if value="{{ isPrestamos }}" hint-placeholder-val="{{ true }}">
       <section style="padding:56px">
         <h1 style="font-size:48px;font-weight:800;letter-spacing:-0.02em;margin-bottom:10px">Préstamos</h1>
-        <p style="font-size:14px;color:#8b95a1;margin-bottom:36px">Tasas actualizadas el {{ tasasUpdated }}</p>
+        <p style="font-size:14px;color:#8b95a1;margin-bottom:14px">Tasas actualizadas el {{ tasasUpdated }}</p>
+        <p style="font-size:13px;color:#8b95a1;max-width:720px;margin-bottom:36px">Las tasas «desde» son referenciales en TEA (Tasa Efectiva Anual) y están sujetas a evaluación crediticia y al cumplimiento de los requisitos de cada producto. Todos los créditos incluyen Seguro de Desgravamen, obligatorio en todas las entidades financieras y bancos.</p>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:52px">
           <sc-for list="{{ prestamos }}" as="l" hint-placeholder-count="4">
             <div>
@@ -1008,12 +885,12 @@
           <div>
             <h3 style="font-size:17px;font-weight:700;margin-bottom:12px">Soles</h3>
             <div style="border:1px solid #e5e8ec;border-radius:0;overflow:hidden">
-              <div style="display:grid;grid-template-columns:2fr 1fr;background:#0043ce;color:#fff;font-size:13px;font-weight:700;padding:12px 16px">
-                <div>Concepto</div><div>TEA</div>
+              <div style="display:grid;grid-template-columns:2fr 1fr 1fr;background:#0043ce;color:#fff;font-size:13px;font-weight:700;padding:12px 16px">
+                <div>Concepto</div><div>TEA</div><div>TEA + desgrav. (est.)</div>
               </div>
               <sc-for list="{{ tasasSoles }}" as="t" hint-placeholder-count="12">
-                <div style="display:grid;grid-template-columns:2fr 1fr;padding:11px 16px;font-size:14px;border-top:1px solid #eceef1" style-hover="background:#f4f8fc">
-                  <div style="font-weight:600">{{ t.concepto }}</div><div>{{ t.tea }}</div>
+                <div style="display:grid;grid-template-columns:2fr 1fr 1fr;padding:11px 16px;font-size:14px;border-top:1px solid #eceef1" style-hover="background:#f4f8fc">
+                  <div style="font-weight:600">{{ t.concepto }}</div><div>{{ t.tea }}</div><div>{{ t.teaEst }}</div>
                 </div>
               </sc-for>
             </div>
@@ -1021,19 +898,19 @@
           <div>
             <h3 style="font-size:17px;font-weight:700;margin-bottom:12px">Dólares</h3>
             <div style="border:1px solid #e5e8ec;border-radius:0;overflow:hidden">
-              <div style="display:grid;grid-template-columns:2fr 1fr;background:#0043ce;color:#fff;font-size:13px;font-weight:700;padding:12px 16px">
-                <div>Concepto</div><div>TEA</div>
+              <div style="display:grid;grid-template-columns:2fr 1fr 1fr;background:#0043ce;color:#fff;font-size:13px;font-weight:700;padding:12px 16px">
+                <div>Concepto</div><div>TEA</div><div>TEA + desgrav. (est.)</div>
               </div>
               <sc-for list="{{ tasasDolares }}" as="t" hint-placeholder-count="7">
-                <div style="display:grid;grid-template-columns:2fr 1fr;padding:11px 16px;font-size:14px;border-top:1px solid #eceef1" style-hover="background:#f4f8fc">
-                  <div style="font-weight:600">{{ t.concepto }}</div><div>{{ t.tea }}</div>
+                <div style="display:grid;grid-template-columns:2fr 1fr 1fr;padding:11px 16px;font-size:14px;border-top:1px solid #eceef1" style-hover="background:#f4f8fc">
+                  <div style="font-weight:600">{{ t.concepto }}</div><div>{{ t.tea }}</div><div>{{ t.teaEst }}</div>
                 </div>
               </sc-for>
             </div>
           </div>
         </div>
 
-        <p style="font-size:13px;color:#8b95a1;max-width:720px">Consideraciones adicionales: los préstamos están sujetos a evaluación crediticia. Se considera una tasa de 0.5% anual adicional por Seguro de Desgravamen.</p>
+        <p style="font-size:13px;color:#8b95a1;max-width:720px">Consideraciones adicionales: las tasas mostradas son referenciales y están sujetas a evaluación crediticia y al cumplimiento de los requisitos de cada producto (antigüedad mínima como socio, capacidad de pago y documentación). La TEA (Tasa Efectiva Anual) indicada es la tasa base; la tasa final se confirma en la evaluación. Todos los créditos incluyen Seguro de Desgravamen —requisito obligatorio en todas las entidades financieras y bancos—, estimado en 0.5% anual adicional; ese estimado es el que se refleja en la columna «TEA + desgrav. (est.)».</p>
       </section>
       </sc-if>
 
@@ -1078,14 +955,14 @@
                 <label style="display:block;font-size:15px;font-weight:600;margin-bottom:6px">Monto del préstamo (soles)</label>
                 <div style="display:flex;align-items:center;border:1px solid #d9dee4;border-radius:0" style-focus-within="border:1px solid #0043ce;box-shadow:0 0 0 3px #edf5ff">
                   <span style="padding:14px 0 14px 14px;font-size:16px;font-weight:700;color:#8b95a1">S/</span>
-                  <input type="number" min="{{ montoMin }}" max="{{ montoMax }}" step="{{ montoStep }}" value="{{ monto }}" onInput="{{ onMonto }}" style="flex:1;width:100%;min-width:0;border:none;outline:none;padding:14px 14px 14px 6px;font-size:16px;font-weight:700;font-family:inherit;color:#161616;background:transparent">
+                  <input type="number" min="{{ montoMin }}" max="{{ montoMax }}" step="{{ montoStep }}" value="{{ monto }}" onInput="{{ onMonto }}" onChange="{{ onMontoCommit }}" style="flex:1;width:100%;min-width:0;border:none;outline:none;padding:14px 14px 14px 6px;font-size:16px;font-weight:700;font-family:inherit;color:#161616;background:transparent">
                 </div>
                 <input type="range" class="range-slider" min="{{ montoMin }}" max="{{ montoMax }}" step="{{ montoStep }}" value="{{ monto }}" onInput="{{ onMonto }}" style="{{ montoSliderStyle }}">
                 <div style="display:flex;justify-content:space-between;font-size:12px;color:#8d8d8d;margin-top:8px"><span>{{ montoMinLabel }}</span><span>{{ montoMaxLabel }}</span></div>
               </div>
               <div>
                 <label style="display:block;font-size:15px;font-weight:600;margin-bottom:6px">Plazo (meses)</label>
-                <input type="number" min="{{ plazoMin }}" max="{{ plazoMax }}" step="{{ plazoStep }}" value="{{ plazo }}" onInput="{{ onPlazo }}" style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:14px;font-size:16px;font-weight:700;font-family:inherit;outline:none;color:#161616" style-focus="border:1px solid #0043ce;box-shadow:0 0 0 3px #edf5ff">
+                <input type="number" min="{{ plazoMin }}" max="{{ plazoMax }}" step="{{ plazoStep }}" value="{{ plazo }}" onInput="{{ onPlazo }}" onChange="{{ onPlazoCommit }}" style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:14px;font-size:16px;font-weight:700;font-family:inherit;outline:none;color:#161616" style-focus="border:1px solid #0043ce;box-shadow:0 0 0 3px #edf5ff">
                 <input type="range" class="range-slider" min="{{ plazoMin }}" max="{{ plazoMax }}" step="{{ plazoStep }}" value="{{ plazo }}" onInput="{{ onPlazo }}" style="{{ plazoSliderStyle }}">
                 <div style="display:flex;justify-content:space-between;font-size:12px;color:#8d8d8d;margin-top:8px"><span>{{ plazoMinLabel }}</span><span>{{ plazoMaxLabel }}</span></div>
               </div>
@@ -1093,7 +970,7 @@
                 <label style="display:block;font-size:15px;font-weight:600;margin-bottom:6px">Tu ingreso mensual (soles)</label>
                 <div style="display:flex;align-items:center;border:1px solid #d9dee4;border-radius:0" style-focus-within="border:1px solid #0043ce;box-shadow:0 0 0 3px #edf5ff">
                   <span style="padding:14px 0 14px 14px;font-size:16px;font-weight:700;color:#8b95a1">S/</span>
-                  <input type="number" min="1500" max="20000" step="500" value="{{ ingreso }}" onInput="{{ onIngreso }}" style="flex:1;width:100%;min-width:0;border:none;outline:none;padding:14px 14px 14px 6px;font-size:16px;font-weight:700;font-family:inherit;color:#161616;background:transparent">
+                  <input type="number" min="{{ ingresoMin }}" max="{{ ingresoMax }}" step="500" value="{{ ingreso }}" onInput="{{ onIngreso }}" onChange="{{ onIngresoCommit }}" style="flex:1;width:100%;min-width:0;border:none;outline:none;padding:14px 14px 14px 6px;font-size:16px;font-weight:700;font-family:inherit;color:#161616;background:transparent">
                 </div>
                 <div style="font-size:12px;color:#8d8d8d;margin-top:8px">Ingresa un monto entre {{ ingresoMinLabel }} y {{ ingresoMaxLabel }}</div>
               </div>
@@ -1189,10 +1066,31 @@
       <!-- ================= SERVICIOS ================= -->
       <sc-if value="{{ isServicios }}" hint-placeholder-val="{{ true }}">
       <section style="padding:56px">
-        <h1 style="font-size:48px;font-weight:800;letter-spacing:-0.02em;margin-bottom:36px">Servicios</h1>
+        <h1 style="font-size:48px;font-weight:800;letter-spacing:-0.02em;margin-bottom:6px">Servicios</h1>
+        <p style="font-size:13px;color:#8b95a1;margin-bottom:30px">Actualizado el {{ serviciosUpdated }}</p>
+        <sc-if value="{{ isAdmin }}" hint-placeholder-val="{{ false }}">
+          <sc-if value="{{ editingServicioKey }}" hint-placeholder-val="{{ false }}">
+            <div style="border:1px solid #d9dee4;background:#f9fafb;border-radius:0;padding:20px;margin-bottom:18px;max-width:1000px;display:flex;flex-direction:column;gap:12px">
+              <div style="font-size:15px;font-weight:700">Editar servicio</div>
+              <label style="font-size:13px;font-weight:600;color:#3b4653">Título</label>
+              <input type="text" value="{{ servicioEdit.title }}" onInput="{{ onServicioEditTitle }}" style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:10px;font-size:14px;font-family:inherit;outline:none">
+              <label style="font-size:13px;font-weight:600;color:#3b4653">Descripción</label>
+              <textarea value="{{ servicioEdit.desc }}" onInput="{{ onServicioEditDesc }}" rows="3" style="width:100%;border:1px solid #d9dee4;border-radius:0;padding:10px;font-size:14px;font-family:inherit;outline:none;resize:vertical"></textarea>
+              <div style="display:flex;gap:10px">
+                <button onClick="{{ saveServicioEdit }}" style="background:#0043ce;color:#fff;border:none;border-radius:0;padding:10px 18px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit">Guardar</button>
+                <button onClick="{{ cancelServicioEdit }}" style="background:transparent;color:#52606d;border:1px solid #d9dee4;border-radius:0;padding:10px 18px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit">Cancelar</button>
+              </div>
+            </div>
+          </sc-if>
+        </sc-if>
         <div style="display:flex;flex-direction:column;gap:22px;max-width:1000px">
           <sc-for list="{{ servicios }}" as="s" hint-placeholder-count="3">
-            <div style="border:1px solid #e5e8ec;border-radius:0;overflow:hidden;display:grid;grid-template-columns:340px 1fr">
+            <div style="border:1px solid #e5e8ec;border-radius:0;overflow:hidden;display:grid;grid-template-columns:340px 1fr;position:relative">
+              <sc-if value="{{ isAdmin }}" hint-placeholder-val="{{ false }}">
+                <div onClick="{{ s.edit }}" title="Editar servicio" style="position:absolute;top:12px;right:12px;width:26px;height:26px;border-radius:0;background:#edf5ff;color:#0043ce;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:1">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
+                </div>
+              </sc-if>
               <div style="position:relative;min-height:200px;overflow:hidden">
                 <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="{{ s.slotId }}" shape="rect" fit="cover" src="{{ s.photo }}" placeholder="{{ s.img }}" hint-size="100%,100%"></x-import>
               </div>
@@ -1791,14 +1689,14 @@ class Component extends DCLogic {
     loginTab: "socio", adminLogin: { user: "", pass: "" }, auth: { role: null, token: null }, socio: null, socioSource: "",
     // Paste your deployed backend URL here (e.g. the Code Engine app URL from backend/README.md).
     // Leave empty to keep running in local-only demo mode (admin/cooperativa2026, nothing persists).
-    apiBase: "",
+    apiBase: "https://coop-api.2dfzriph4wl8.us-south.codeengine.appdomain.cloud",
     apiError: "",
     lastUpdatedAt: "2026-08-03T00:00:00-05:00",
     sectionUpdatedAt: {},
     tasas: { "sola-firma": 13, consumo: 13, "largo-plazo": 12, automotriz: 8.0, hipotecario: 8, garantia: 11, academico: 8.75 },
     tasaSaved: {},
     registro: { nombres: "", apellidos: "", dni: "", area: "", email: "", celular: "", password: "", accept: false }, registroError: "", registroSuccess: false,
-    newProv: { name: "", cat: "", desc: "", disc: "", photo: "", link: "", docs: [], links: [], linkDraft: { label: "", url: "" } },
+    newProv: { name: "", cat: "", desc: "", disc: "", photo: "", link: "", docs: [], links: [], destacado: false, linkDraft: { label: "", url: "" } },
     proveedorDetalleSlot: null,
     editingProveedorSlot: null,
     proveedores: [],
@@ -1812,6 +1710,13 @@ class Component extends DCLogic {
     },
     editingProductoKey: null,
     productoEdit: { title: "", cat: "", desc: "" },
+    serviciosContent: {
+      "seguro-autos": { title: "Seguro de Autos", desc: "Convenio con Rímac que garantiza la mejor tarifa del mercado. Descuento de la prima en 18 meses sin recargo de intereses, con descuento por planilla." },
+      "fondo-sepelio": { title: "Fondo de Sepelio", desc: "Cubre los gastos de sepelio del socio, cónyuge, hijos menores de 25 años y padres. Aporte de $5 mensuales (no reembolsable) y cobertura hasta $3,000 con Jardines de la Paz y Campo Fe." },
+      oncosalud: { title: "Oncosalud", desc: "Convenio corporativo para socios y familiares directos, con 18% de descuento sobre la tarifa de mercado." }
+    },
+    editingServicioKey: null,
+    servicioEdit: { title: "", desc: "" },
     prestamosOverrides: {},
     editingPrestamoKey: null,
     prestamoEdit: { title: "", desc: "", montoMin: 0, montoMax: 0, plazoMin: 0, plazoMax: 0, bank: 0 },
@@ -1827,7 +1732,8 @@ class Component extends DCLogic {
     docLinks: {
       estatuto: { label: "Estatuto", url: "" },
       memorias: { label: "Memorias", url: "" },
-      directiva: { label: "Directiva", url: "" }
+      directiva: { label: "Directiva", url: "" },
+      organigrama: { label: "Organigrama", url: "" }
     },
     editingDocLinkKey: null,
     docLinkEdit: { label: "", url: "" },
@@ -1884,23 +1790,56 @@ class Component extends DCLogic {
   async componentDidMount(){
     await this.checkOidcAuth();
     await this.loadContent();
+    // Publicaciones "instantáneas": sondeo ligero de /api/content. Solo re-hidrata
+    // cuando cambia updatedAt y no hay una edición admin en curso.
+    this._pollTimer = setInterval(()=>this.pollContent(), 8000);
+    this._onVis = ()=>{ if(document.visibilityState === "visible") this.pollContent(); };
+    document.addEventListener("visibilitychange", this._onVis);
+  }
+
+  componentWillUnmount(){
+    if(this._pollTimer) clearInterval(this._pollTimer);
+    if(this._onVis) document.removeEventListener("visibilitychange", this._onVis);
+  }
+
+  isEditing(){
+    const s = this.state;
+    return !!(s.editingProductoKey || s.editingServicioKey || s.editingPrestamoKey ||
+      s.editingDocLinkKey || s.editingProveedorSlot || s.editingAhorroTasaSlot ||
+      (s.draft && s.draft.trim()) ||
+      (s.newProv && s.newProv.name && s.newProv.name.trim()) ||
+      (s.newAhorroTasa && (s.newAhorroTasa.plazo || s.newAhorroTasa.soles || s.newAhorroTasa.dolares)) ||
+      (s.newHistoria && (s.newHistoria.date || s.newHistoria.text)));
+  }
+
+  async pollContent(){
+    const base = (this.state.apiBase || "").replace(/\/$/, "");
+    if(!base || document.visibilityState === "hidden") return;
+    try{
+      const res = await fetch(base + "/api/content");
+      if(!res.ok) return;
+      const data = await res.json();
+      if((data.updatedAt || "") === (this.state.lastUpdatedAt || "")) return;
+      if(this.isEditing()) return; // no pisar una edición en curso; reintenta al próximo ciclo
+      this.applyContent(data);
+    }catch(e){ /* silencioso: reintenta en el próximo ciclo */ }
   }
 
   async checkOidcAuth(){
     const params = new URLSearchParams(window.location.search);
     if(params.get("auth") === "success"){
-      const token = params.get("token");
       window.history.replaceState({}, "", window.location.pathname);
       const base = (this.state.apiBase || "").replace(/\/$/, "");
       if(!base) return;
       try{
-        const headers = {};
-        if(token) headers["Authorization"] = "Bearer " + token;
-        const res = await fetch(base + "/api/auth/me", { headers });
+        // El token vive en la cookie httpOnly del backend (auth_token); se envía
+        // con credentials:"include" y el middleware cookieToAuth lo convierte en
+        // el Authorization header (§13.3: nunca token en URL/localStorage).
+        const res = await fetch(base + "/api/auth/me", { credentials: "include" });
         if(!res.ok) throw new Error("not authenticated");
         const data = await res.json();
         this.setState({
-          auth: { role: "socio", token: token },
+          auth: { role: "socio", token: null },
           socio: data.socio,
           socioSource: data.source
         });
@@ -1917,13 +1856,30 @@ class Component extends DCLogic {
       const res = await fetch(base + "/api/content");
       if(!res.ok) throw new Error("bad response");
       const data = await res.json();
-      this.setState(s => ({
+      this.applyContent(data);
+    }catch(e){
+      this.setState({ apiError: "No se pudo conectar con el backend. Mostrando datos locales." });
+    }
+  }
+
+  // Vuelca el contenido del backend al estado. Se usa en la carga inicial y en
+  // el sondeo. Conserva el "like" local de cada anuncio (no se sincroniza).
+  applyContent(data){
+    this.setState(s => {
+      const prevLikes = {};
+      (s.posts || []).forEach(p => { if(p.remoteId != null) prevLikes[p.remoteId] = { liked: p.liked, likes: p.likes }; });
+      return {
         tasas: { ...s.tasas, ...(data.tasas||{}) },
-        posts: (data.anuncios||[]).map(a => this.mapAnuncio(a)),
+        posts: (data.anuncios||[]).map(a => {
+          const m = this.mapAnuncio(a);
+          const keep = prevLikes[m.remoteId];
+          return keep ? { ...m, liked: keep.liked, likes: keep.likes } : m;
+        }),
         proveedores: (data.proveedores||[])
           .filter(p => !["Rímac Seguros", "Oncosalud"].includes(p.name))
-          .map(p => ({ slotId: "prov-"+p.id, remoteId: p.id, name: p.name, cat: p.cat, desc: p.desc, disc: p.disc })),
+          .map(p => ({ slotId: "prov-"+p.id, remoteId: p.id, name: p.name, cat: p.cat, desc: p.desc, disc: p.disc, photo: p.photo||"", link: p.link||"", docs: p.docs||[], links: p.links||[], destacado: !!p.destacado })),
         productos: { ...s.productos, ...Object.fromEntries(Object.entries(data.productos||{}).map(([k,v])=>[k,{...s.productos[k],...v}])) },
+        serviciosContent: { ...s.serviciosContent, ...Object.fromEntries(Object.entries(data.servicios||{}).map(([k,v])=>[k,{...s.serviciosContent[k],...v}])) },
         prestamosOverrides: { ...s.prestamosOverrides, ...(data.prestamos||{}) },
         docLinks: { ...s.docLinks, ...Object.fromEntries(Object.entries(data.docLinks||{}).map(([k,v])=>[k,{...s.docLinks[k],...v}])) },
         historia: (data.historia||[]).map(h => ({ id: h.id, remoteId: h.id, date: h.date, text: h.text })),
@@ -1931,10 +1887,8 @@ class Component extends DCLogic {
         ahorroTasas: (data.ahorroTasas||[]).map(t => ({ id: t.id, remoteId: t.id, plazo: t.plazo, soles: t.soles, dolares: t.dolares })),
         lastUpdatedAt: data.updatedAt || s.lastUpdatedAt,
         sectionUpdatedAt: { ...(s.sectionUpdatedAt||{}), ...(data.sectionUpdatedAt||{}) }
-      }));
-    }catch(e){
-      this.setState({ apiError: "No se pudo conectar con el backend. Mostrando datos locales." });
-    }
+      };
+    });
   }
 
   maybeShowOnboarding(){
@@ -1951,7 +1905,7 @@ class Component extends DCLogic {
 
   async apiFetch(path, options){
     const base = (this.state.apiBase || "").replace(/\/$/, "");
-    const opts = { ...options, headers: { "Content-Type": "application/json", ...(options && options.headers) } };
+    const opts = { ...options, credentials: "include", headers: { "Content-Type": "application/json", ...(options && options.headers) } };
     if(this.state.auth.token) opts.headers.Authorization = "Bearer " + this.state.auth.token;
     const res = await fetch(base + path, opts);
     if(res.status === 401 || res.status === 403){
@@ -2020,7 +1974,7 @@ class Component extends DCLogic {
 
     const tasas = this.state.tasas;
     const loanTypes = [
-      {key:"sola-firma",label:"Préstamos Inmediatos",tea:tasas["sola-firma"]},
+      {key:"sola-firma",label:"Préstamos a Solo Firma",tea:tasas["sola-firma"]},
       {key:"consumo",label:"Consumo",tea:tasas.consumo},
       {key:"largo-plazo",label:"Largo Plazo",tea:tasas["largo-plazo"]},
       {key:"automotriz",label:"Automotriz",tea:tasas.automotriz},
@@ -2036,11 +1990,16 @@ class Component extends DCLogic {
     const tasa = sel.tea;
     const montoMin = selLimits.montoMin, montoMax = selLimits.montoMax, montoStep = selLimits.montoStep;
     const plazoMin = selLimits.plazoMin, plazoMax = selLimits.plazoMax, plazoStep = selLimits.plazoStep;
+    const ingresoMin = 1500, ingresoMax = 44000;
+    // clampHi: nunca exceder el tope mientras se escribe. clampTo: al confirmar
+    // (blur/change) encajar en todo el rango [min, max].
+    const clampHi = (v, hi) => (Number.isNaN(v) ? v : Math.min(v, hi));
+    const clampTo = (v, lo, hi) => (Number.isNaN(v) ? lo : Math.min(Math.max(v, lo), hi));
 
     const prestamosData = [
-      {key:"sola-firma",slotId:"loan-0",photo:"./uploads/prestamos-inmediatos-firma.jpg",title:"Préstamos Inmediatos",tasa:tasas["sola-firma"].toFixed(1)+"% TEA",img:"Préstamos Inmediatos",desc:"Hasta S/3,000 a pagar en 6 meses. Aprobación rápida, sin garantías adicionales."},
+      {key:"sola-firma",slotId:"loan-0",photo:"./uploads/prestamos-inmediatos-firma.jpg",title:"Préstamos a Solo Firma",tasa:tasas["sola-firma"].toFixed(1)+"% TEA",img:"Préstamos a Solo Firma",desc:"Hasta S/3,000 a pagar en 6 meses. Aprobación rápida, sin garantías adicionales."},
       {key:"consumo",slotId:"loan-1",photo:"./uploads/consumo-bolsas.jpg",title:"Consumo",tasa:tasas.consumo.toFixed(1)+"% TEA",img:"Préstamo de consumo",desc:"Hasta S/10,000 a pagar en 12 meses. Requiere mínimo 6 meses como socio."},
-      {key:"largo-plazo",slotId:"loan-2",photo:"https://picsum.photos/seed/wallet3/800/400",title:"Largo Plazo",tasa:tasas["largo-plazo"].toFixed(1)+"% TEA",img:"Préstamo a largo plazo",desc:"Hasta S/60,000 a pagar en 48 meses. Requiere mínimo 6 meses como socio."},
+      {key:"largo-plazo",slotId:"loan-2",photo:"./uploads/familia-socios.jpg",title:"Largo Plazo",tasa:tasas["largo-plazo"].toFixed(1)+"% TEA",img:"Préstamo a largo plazo",desc:"Hasta S/60,000 a pagar en 48 meses. Requiere mínimo 6 meses como socio."},
       {key:"automotriz",slotId:"loan-3",photo:"./uploads/automotriz-auto.jpg",title:"Crédito Automotriz",tasa:tasas.automotriz.toFixed(1)+"% TEA",img:"Foto auto",desc:"Hasta el 80% del valor del auto, monto máximo equivalente a US$40,000, a pagar en 60 meses. Requiere mínimo 6 meses como socio."},
       {key:"hipotecario",slotId:"loan-4",photo:"./uploads/hipotecario-llaves.jpg",title:"Crédito Hipotecario",tasa:tasas.hipotecario.toFixed(1)+"% TEA",img:"Foto casa",desc:"Hasta el 80% del valor del inmueble, monto máximo S/900,000, a pagar en hasta 216 meses (18 años). Requiere 12 meses como socio."},
       {key:"garantia",slotId:"loan-5",photo:"./uploads/hipotecario-casa.jpg",title:"Garantía Hipotecaria",tasa:tasas.garantia.toFixed(1)+"% TEA",img:"Garantía hipotecaria",desc:"Hasta S/900,000, a pagar en hasta 216 meses (18 años). Requiere 12 meses como socio."},
@@ -2193,7 +2152,7 @@ class Component extends DCLogic {
             const url = base + "/api/admin/batches/" + encodeURIComponent(b.id) + "/download";
             const headers = {};
             if(this.state.auth.token) headers["Authorization"] = "Bearer " + this.state.auth.token;
-            const res = await fetch(url, { headers });
+            const res = await fetch(url, { credentials: "include", headers });
             if(!res.ok){
               const body = await res.json().catch(()=>({}));
               throw new Error(body.error || "No se pudo descargar el batch.");
@@ -2245,7 +2204,13 @@ class Component extends DCLogic {
 
       isAdmin: this.state.auth.role === "admin",
       isSocio: this.state.auth.role === "socio",
-      logout: ()=>{ this.setState({auth:{role:null, token:null}, socio:null, socioSource:""}); this.go("inicio"); },
+      logout: async ()=>{ 
+        try{
+          const base = (this.state.apiBase||"").replace(/\/$/,"");
+          if(base) await fetch(base + "/api/auth/verify/logout", { method:"POST", credentials:"include" }).catch(()=>{});
+        }catch(e){}
+        this.setState({auth:{role:null, token:null}, socio:null, socioSource:""}); this.go("inicio"); 
+      },
       socioName: this.state.socio ? [this.state.socio.NOMBRE, this.state.socio.APEPAT, this.state.socio.APEMAT].filter(Boolean).join(" ") : "",
       socioInitials: this.state.socio ? ((this.state.socio.NOMBRE||"")[0] || "") + ((this.state.socio.APEPAT||"")[0] || "") : "S",
       socioDocume: this.state.socio ? (this.state.socio.DOCUME || this.state.socio.CODEMPLEADO) : "",
@@ -2384,6 +2349,7 @@ class Component extends DCLogic {
           const url = base + "/api/socios/" + encodeURIComponent(socio.DOCUME || socio.CODEMPLEADO);
           const res = await fetch(url, {
             method:"PUT",
+            credentials:"include",
             headers:{ "Content-Type":"application/json", "Authorization":"Bearer " + (this.state.auth.token||"") },
             body: JSON.stringify(this.state.profileDiff || {})
           });
@@ -2471,22 +2437,34 @@ class Component extends DCLogic {
 
       pilares: [
         {icon:"%",title:"Ahorra e invierte",desc:"Ahorro simple desde S/50 mensuales o depósitos a plazo fijo, con intereses en soles y dólares."},
-        {icon:"S/",title:"Crédito a tasa preferencial",desc:"Préstamos Inmediatos, Consumo, Largo Plazo, Automotriz, Hipotecario, Garantía Hipotecaria y Académico, sin comisiones ni gastos administrativos."},
+        {icon:"S/",title:"Crédito a tasa preferencial",desc:"Préstamos a Solo Firma, Consumo, Largo Plazo, Automotriz, Hipotecario, Garantía Hipotecaria y Académico, sin comisiones ni gastos administrativos."},
         {icon:"★",title:"Convenios corporativos",desc:"Seguro de Autos, Fondo de Sepelio, Oncosalud, telefonía y otros proveedores a tarifa especial."}
       ],
       beneficios: [
-        {key:"ben0",slotId:"ben-0",go:()=>this.go("proveedores"),photo:"https://picsum.photos/seed/ibmshop/800/500",title:"Convenios Corporativos",desc:"Seguro de Autos con Rímac, Oncosalud, telefonía Movistar, Assist Card y otros proveedores a precio de socio."},
-        {key:"ben1",slotId:"ben-1",go:()=>this.go("prestamos"),photo:"https://picsum.photos/id/500/800/500",title:"Préstamos",desc:"Préstamos Inmediatos, Consumo, Largo Plazo, Automotriz, Hipotecario, Garantía Hipotecaria y Académico con tasas preferenciales."},
-        {key:"ben2",slotId:"ben-2",go:()=>this.go("servicios"),photo:"https://picsum.photos/seed/ibmserv/800/500",title:"Servicios",desc:"Fondo de Sepelio, Seguro de Autos y convenios de salud para ti y tu familia."},
-        {key:"ben3",slotId:"ben-3",go:()=>this.go("ahorro"),photo:"https://picsum.photos/seed/ibmsave/800/500",title:"Ahorro",desc:"Ahorro simple desde S/50 mensuales o depósitos a plazo fijo, con intereses en soles y dólares."}
+        {key:"ben0",slotId:"ben-0",go:()=>this.go("proveedores"),photo:"./uploads/smartfit-gym.jpg",title:"Convenios Corporativos",desc:"Seguro de Autos con Rímac, Oncosalud, telefonía Movistar, Assist Card y otros proveedores a precio de socio."},
+        {key:"ben1",slotId:"ben-1",go:()=>this.go("prestamos"),photo:"./uploads/prestamos-inmediatos-firma.jpg",title:"Préstamos",desc:"Préstamos a Solo Firma, Consumo, Largo Plazo, Automotriz, Hipotecario, Garantía Hipotecaria y Académico con tasas preferenciales."},
+        {key:"ben2",slotId:"ben-2",go:()=>this.go("servicios"),photo:"./uploads/oncosalud-doctora.png",title:"Servicios",desc:"Fondo de Sepelio, Seguro de Autos y convenios de salud para ti y tu familia."},
+        {key:"ben3",slotId:"ben-3",go:()=>this.go("ahorro"),photo:"./uploads/hipotecario-casa.jpg",title:"Ahorro",desc:"Ahorro simple desde S/50 mensuales o depósitos a plazo fijo, con intereses en soles y dólares."}
       ],
 
-      banners: [
-        {slotId:"ban-0",brand:"Smart Fit",tag:"Plan Black Corporativo",photo:"./uploads/smartfit-gym.jpg",headline:"Planes Smart Fit",go:()=>this.go("smartfit")},
-        {slotId:"ban-1",brand:"Rímac Seguros",tag:"Tarifa corporativa",photo:"./uploads/rimac-auto.jpg",headline:"Seguros Vehiculares",go:()=>this.go("rimac")},
-        {slotId:"ban-2",brand:"Oncosalud",tag:"18% dcto.",photo:"./uploads/oncosalud-doctora.png",headline:"Seguro Oncológico",go:()=>this.go("oncosalud")},
-        {slotId:"ban-3",brand:"Bebidas",tag:"Precio de socio",photo:"./uploads/bebidas-licores.jpg",headline:"Licores y Bebidas",go:()=>this.go("bebidas")}
-      ],
+      banners: (()=>{
+        // Proveedores marcados como "destacado" por el admin encabezan el carrusel.
+        const featured = this.state.proveedores.filter(p=>p.destacado).map(p=>({
+          slotId: p.slotId+"-ban",
+          brand: p.name,
+          tag: p.disc || "Convenio",
+          photo: p.photo || "",
+          headline: p.name,
+          go: ()=>this.setState({page:"proveedor-detalle", proveedorDetalleSlot:p.slotId})
+        }));
+        const defaults = [
+          {slotId:"ban-0",brand:"Smart Fit",tag:"Plan Black Corporativo",photo:"./uploads/smartfit-gym.jpg",headline:"Planes Smart Fit",go:()=>this.go("smartfit")},
+          {slotId:"ban-1",brand:"Rímac Seguros",tag:"Tarifa corporativa",photo:"./uploads/rimac-auto.jpg",headline:"Seguros Vehiculares",go:()=>this.go("rimac")},
+          {slotId:"ban-2",brand:"Oncosalud",tag:"18% dcto.",photo:"./uploads/oncosalud-doctora.png",headline:"Seguro Oncológico",go:()=>this.go("oncosalud")},
+          {slotId:"ban-3",brand:"Bebidas",tag:"Precio de socio",photo:"./uploads/bebidas-licores.jpg",headline:"Licores y Bebidas",go:()=>this.go("bebidas")}
+        ];
+        return [...featured, ...defaults];
+      })(),
 
       draft: this.state.draft,
       onDraft: (e)=>this.setState({draft:e.target.value}),
@@ -2527,7 +2505,7 @@ class Component extends DCLogic {
         {value:"3",label:"Empresas afiliadas"},
         {value:"84",label:"Años al servicio de nuestros socios"}
       ],
-      docLinks: ["estatuto","memorias","directiva"].map(key=>{
+      docLinks: ["estatuto","memorias","directiva","organigrama"].map(key=>{
         const d = this.state.docLinks[key];
         return {
           key, label: d.label, url: d.url, hasUrl: !!d.url,
@@ -2623,27 +2601,27 @@ class Component extends DCLogic {
 
       tasasVigencia: "setiembre 2025",
       tasasSoles: [
-        {concepto:"Préstamos Inmediatos",tea:"13.00%"},
-        {concepto:"Crédito de Consumo",tea:"13.00%"},
-        {concepto:"Crédito Escolar",tea:"9.00%"},
-        {concepto:"Crédito Salud (Oncosalud)",tea:"6.00%"},
-        {concepto:"Crédito Largo Plazo",tea:"12.00%"},
-        {concepto:"Crédito Largo Plazo compra de deuda",tea:"10.00%"},
-        {concepto:"Crédito Académico",tea:"8.75%"},
-        {concepto:"Crédito Automóvil",tea:"8.00%"},
-        {concepto:"Crédito Hipotecario",tea:"8.00%"},
-        {concepto:"Crédito Garantía Hipotecaria",tea:"11.00%"},
-        {concepto:"Crédito Traslado Hipotecario",tea:"7.00%"},
-        {concepto:"Seguro de Desgravamen",tea:"0.50%"}
+        {concepto:"Préstamos a Solo Firma",tea:"13.00%",teaEst:"13.50%"},
+        {concepto:"Crédito de Consumo",tea:"13.00%",teaEst:"13.50%"},
+        {concepto:"Crédito Escolar",tea:"9.00%",teaEst:"9.50%"},
+        {concepto:"Crédito Salud (Oncosalud)",tea:"6.00%",teaEst:"6.50%"},
+        {concepto:"Crédito Largo Plazo",tea:"12.00%",teaEst:"12.50%"},
+        {concepto:"Crédito Largo Plazo compra de deuda",tea:"10.00%",teaEst:"10.50%"},
+        {concepto:"Crédito Académico",tea:"8.75%",teaEst:"9.25%"},
+        {concepto:"Crédito Automóvil",tea:"8.00%",teaEst:"8.50%"},
+        {concepto:"Crédito Hipotecario",tea:"8.00%",teaEst:"8.50%"},
+        {concepto:"Crédito Garantía Hipotecaria",tea:"11.00%",teaEst:"11.50%"},
+        {concepto:"Crédito Traslado Hipotecario",tea:"7.00%",teaEst:"7.50%"},
+        {concepto:"Seguro de Desgravamen",tea:"0.50%",teaEst:"—"}
       ],
       tasasDolares: [
-        {concepto:"Crédito de Consumo",tea:"11.00%"},
-        {concepto:"Crédito Largo Plazo",tea:"9.00%"},
-        {concepto:"Crédito Académico",tea:"6.00%"},
-        {concepto:"Crédito Automóvil",tea:"7.50%"},
-        {concepto:"Crédito Hipotecario",tea:"5.50%"},
-        {concepto:"Crédito Garantía Hipotecaria",tea:"7.00%"},
-        {concepto:"Seguro de Desgravamen",tea:"0.50%"}
+        {concepto:"Crédito de Consumo",tea:"11.00%",teaEst:"11.50%"},
+        {concepto:"Crédito Largo Plazo",tea:"9.00%",teaEst:"9.50%"},
+        {concepto:"Crédito Académico",tea:"6.00%",teaEst:"6.50%"},
+        {concepto:"Crédito Automóvil",tea:"7.50%",teaEst:"8.00%"},
+        {concepto:"Crédito Hipotecario",tea:"5.50%",teaEst:"6.00%"},
+        {concepto:"Crédito Garantía Hipotecaria",tea:"7.00%",teaEst:"7.50%"},
+        {concepto:"Seguro de Desgravamen",tea:"0.50%",teaEst:"—"}
       ],
       bebidas: [
         {cat:"WHISKY",marca:"JOHNNIE WALKER GOLD RESERVE",medida:"X 750",cant:4,precio:"195.00"},
@@ -2782,7 +2760,7 @@ class Component extends DCLogic {
       contactos: [
         {name:"Diana Huanay",email:"dhuanay@pe.ibm.com",mailto:"mailto:dhuanay@pe.ibm.com",roles:"Préstamos Hipotecarios y Vehiculares · Inscripción en Seguro de Autos · Liquidación de Fondo de Sepelio · 999 436 902"},
         {name:"Janet Ríos",email:"jrios@pe.ibm.com",mailto:"mailto:jrios@pe.ibm.com",roles:"Préstamos Consumo y Largo Plazo · Inscripción en Telefonía y Oncosalud"},
-        {name:"Eliana Barreda",email:"ebarreda@pe.ibm.com",mailto:"mailto:ebarreda@pe.ibm.com",roles:"Inscripción de nuevos socios · Préstamos Inmediatos"},
+        {name:"Eliana Barreda",email:"ebarreda@pe.ibm.com",mailto:"mailto:ebarreda@pe.ibm.com",roles:"Inscripción de nuevos socios · Préstamos a Solo Firma"},
         {name:"Lucía Torres",email:"lucia.torres.polo@ibm.com",mailto:"mailto:lucia.torres.polo@ibm.com",roles:"Contacto general"}
       ],
 
@@ -2802,6 +2780,8 @@ class Component extends DCLogic {
       onNewProvCat: (e)=>this.setState(s=>({newProv:{...s.newProv,cat:e.target.value}})),
       onNewProvDesc: (e)=>this.setState(s=>({newProv:{...s.newProv,desc:e.target.value}})),
       onNewProvDisc: (e)=>this.setState(s=>({newProv:{...s.newProv,disc:e.target.value}})),
+      newProvDestacado: !!this.state.newProv.destacado,
+      onNewProvDestacado: ()=>this.setState(s=>({newProv:{...s.newProv, destacado: !s.newProv.destacado}})),
       onNewProvPhoto: (e)=>{
         const file = e.target.files && e.target.files[0];
         if(!file) return;
@@ -2833,8 +2813,8 @@ class Component extends DCLogic {
         if(!np.name.trim()) return;
         const docs = np.docs.map(d=>({name:d.name, data:d.data}));
         const links = np.links.map(l=>({label:l.label, url:l.url}));
-        const empty = {name:"",cat:"",desc:"",disc:"",photo:"",link:"",docs:[],links:[],linkDraft:{label:"",url:""}};
-        const payload = {name:np.name.trim(), cat:np.cat.trim()||"General", desc:np.desc.trim(), disc:np.disc.trim()||"Beneficios", photo:np.photo||"", link:np.link.trim(), docs, links};
+        const empty = {name:"",cat:"",desc:"",disc:"",photo:"",link:"",docs:[],links:[],destacado:false,linkDraft:{label:"",url:""}};
+        const payload = {name:np.name.trim(), cat:np.cat.trim()||"General", desc:np.desc.trim(), disc:np.disc.trim()||"Beneficios", photo:np.photo||"", link:np.link.trim(), docs, links, destacado:!!np.destacado};
         const editingSlot = this.state.editingProveedorSlot;
         const editing = editingSlot ? this.state.proveedores.find(x=>x.slotId===editingSlot) : null;
 
@@ -2842,7 +2822,7 @@ class Component extends DCLogic {
           if(this.state.apiBase){
             try{
               const updated = await this.apiFetch("/api/proveedores/"+(editing.remoteId||editing.slotId), { method:"PUT", body: JSON.stringify(payload) });
-              const entry = {slotId:editing.slotId, remoteId:editing.remoteId, name:updated.name, cat:updated.cat, desc:updated.desc, disc:updated.disc, photo:updated.photo||"", link:updated.link||"", docs:updated.docs||[], links:updated.links||[]};
+              const entry = {slotId:editing.slotId, remoteId:editing.remoteId, name:updated.name, cat:updated.cat, desc:updated.desc, disc:updated.disc, photo:updated.photo||"", link:updated.link||"", docs:updated.docs||[], links:updated.links||[], destacado:!!updated.destacado};
               this.setState(s=>({proveedores:s.proveedores.map(x=>x.slotId===editing.slotId?entry:x), newProv:empty, editingProveedorSlot:null, apiError:"", ...this.touchSection(s,"proveedores")}));
             }catch(e){ this.setState({apiError: e.message}); }
             return;
@@ -2855,7 +2835,7 @@ class Component extends DCLogic {
         if(this.state.apiBase){
           try{
             const created = await this.apiFetch("/api/proveedores", { method:"POST", body: JSON.stringify(payload) });
-            const entry = {slotId:"prov-"+created.id, remoteId:created.id, name:created.name, cat:created.cat, desc:created.desc, disc:created.disc, photo:created.photo||"", link:created.link||"", docs:created.docs||[], links:created.links||[]};
+            const entry = {slotId:"prov-"+created.id, remoteId:created.id, name:created.name, cat:created.cat, desc:created.desc, disc:created.disc, photo:created.photo||"", link:created.link||"", docs:created.docs||[], links:created.links||[], destacado:!!created.destacado};
             this.setState(s=>({proveedores:[...s.proveedores, entry], newProv:empty, apiError:"", ...this.touchSection(s,"proveedores")}));
           }catch(e){ this.setState({apiError: e.message}); }
           return;
@@ -2863,8 +2843,12 @@ class Component extends DCLogic {
         const entry = {slotId:"prov-"+Date.now(), ...payload};
         this.setState(s=>({proveedores:[...s.proveedores, entry], newProv:empty, ...this.touchSection(s,"proveedores")}));
       },
-      cancelEditProveedor: ()=>this.setState({editingProveedorSlot:null, newProv:{name:"",cat:"",desc:"",disc:"",photo:"",link:"",docs:[],links:[],linkDraft:{label:"",url:""}}}),
+      cancelEditProveedor: ()=>this.setState({editingProveedorSlot:null, newProv:{name:"",cat:"",desc:"",disc:"",photo:"",link:"",docs:[],links:[],destacado:false,linkDraft:{label:"",url:""}}}),
       proveedores: this.state.proveedores.map(p=>({...p,
+        destacado: !!p.destacado,
+        destacarTitle: p.destacado ? "Quitar de Destacados" : "Destacar en la portada",
+        destacarBg: p.destacado ? "#0043ce" : "#edf5ff",
+        destacarColor: p.destacado ? "#fff" : "#0043ce",
         goDetalle: ()=>this.setState({page:"proveedor-detalle", proveedorDetalleSlot:p.slotId}),
         edit: (e)=>{
           if(e && e.stopPropagation) e.stopPropagation();
@@ -2873,11 +2857,25 @@ class Component extends DCLogic {
               name: p.name, cat: p.cat, desc: p.desc, disc: p.disc, photo: p.photo||"", link: p.link||"",
               docs: (p.docs||[]).map(d=>({name:d.name, data:d.data})),
               links: (p.links||[]).map(l=>({label:l.label, url:l.url})),
+              destacado: !!p.destacado,
               linkDraft: { label:"", url:"" }
             },
             editingProveedorSlot: p.slotId
           });
           const m = this.mainEl; if(m) m.scrollTop = 0;
+        },
+        toggleDestacado: async (e)=>{
+          if(e && e.stopPropagation) e.stopPropagation();
+          const next = !p.destacado;
+          const payload = {name:p.name, cat:p.cat, desc:p.desc, disc:p.disc, photo:p.photo||"", link:p.link||"", docs:(p.docs||[]).map(d=>({name:d.name,data:d.data})), links:(p.links||[]).map(l=>({label:l.label,url:l.url})), destacado:next};
+          if(this.state.apiBase){
+            try{
+              const updated = await this.apiFetch("/api/proveedores/"+(p.remoteId||p.slotId), { method:"PUT", body: JSON.stringify(payload) });
+              this.setState(st=>({proveedores:st.proveedores.map(x=>x.slotId===p.slotId?{...x, destacado:!!updated.destacado}:x), apiError:"", ...this.touchSection(st,"proveedores")}));
+            }catch(err){ this.setState({apiError: err.message}); }
+            return;
+          }
+          this.setState(st=>({proveedores:st.proveedores.map(x=>x.slotId===p.slotId?{...x, destacado:next}:x), ...this.touchSection(st,"proveedores")}));
         },
         remove: async (e)=>{
           if(e && e.stopPropagation) e.stopPropagation();
@@ -2991,11 +2989,39 @@ class Component extends DCLogic {
       goServicios: ()=>this.go("servicios"),
       goPerufarma: ()=>this.go("perufarma"),
 
-      servicios: [
-        {slotId:"serv-0",photo:"./uploads/rimac-auto.jpg",title:"Seguro de Autos",img:"Foto auto",desc:"Convenio con Rímac que garantiza la mejor tarifa del mercado. Descuento de la prima en 18 meses sin recargo de intereses, con descuento por planilla.",goDetalle:()=>this.go("rimac")},
-        {slotId:"serv-1",photo:"https://picsum.photos/seed/park2/700/400",title:"Fondo de Sepelio",img:"Foto parque cementerio",desc:"Cubre los gastos de sepelio del socio, cónyuge, hijos menores de 25 años y padres. Aporte de $5 mensuales (no reembolsable) y cobertura hasta $3,000 con Jardines de la Paz y Campo Fe.",goDetalle:()=>this.go("fondo-sepelio")},
-        {slotId:"serv-2",photo:"./uploads/oncosalud-doctora.png",title:"Oncosalud",img:"Foto consultorio",desc:"Convenio corporativo para socios y familiares directos, con 18% de descuento sobre la tarifa de mercado.",goDetalle:()=>this.go("oncosalud")}
-      ],
+      servicios: (()=>{
+        const SERVICIO_META = {
+          "seguro-autos": {slotId:"serv-0", photo:"./uploads/rimac-auto.jpg", img:"Foto auto", page:"rimac"},
+          "fondo-sepelio": {slotId:"serv-1", photo:"https://picsum.photos/seed/park2/700/400", img:"Foto parque cementerio", page:"fondo-sepelio"},
+          oncosalud: {slotId:"serv-2", photo:"./uploads/oncosalud-doctora.png", img:"Foto consultorio", page:"oncosalud"}
+        };
+        return Object.keys(SERVICIO_META).map(key=>({
+          key,
+          ...this.state.serviciosContent[key],
+          ...SERVICIO_META[key],
+          goDetalle: ()=>this.go(SERVICIO_META[key].page),
+          edit: (e)=>{ if(e && e.stopPropagation) e.stopPropagation(); this.setState({editingServicioKey:key, servicioEdit:{...this.state.serviciosContent[key]}}); }
+        }));
+      })(),
+      editingServicioKey: this.state.editingServicioKey,
+      servicioEdit: this.state.servicioEdit,
+      onServicioEditTitle: (e)=>this.setState(s=>({servicioEdit:{...s.servicioEdit, title:e.target.value}})),
+      onServicioEditDesc: (e)=>this.setState(s=>({servicioEdit:{...s.servicioEdit, desc:e.target.value}})),
+      saveServicioEdit: async ()=>{
+        const key = this.state.editingServicioKey;
+        if(!key) return;
+        const payload = {...this.state.servicioEdit};
+        if(this.state.apiBase){
+          try{
+            const updated = await this.apiFetch("/api/servicios/"+key, { method:"PUT", body: JSON.stringify(payload) });
+            this.setState(s=>({serviciosContent:{...s.serviciosContent, [key]: updated}, editingServicioKey:null, apiError:"", ...this.touchSection(s,"servicios")}));
+          }catch(e){ this.setState({apiError: e.message}); }
+          return;
+        }
+        this.setState(s=>({serviciosContent:{...s.serviciosContent, [key]: payload}, editingServicioKey:null, ...this.touchSection(s,"servicios")}));
+      },
+      cancelServicioEdit: ()=>this.setState({editingServicioKey:null}),
+      serviciosUpdated: this.sectionUpdated("servicios"),
 
       regFields: [
         {key:"nombres",label:"Nombres",type:"text",ph:"Nombres",wrap:""},
@@ -3021,16 +3047,18 @@ class Component extends DCLogic {
         this.maybeShowOnboarding();
       },
 
-      mostrarSimulador, montoMin, montoMax, montoStep, plazoMin, plazoMax, plazoStep,
+      mostrarSimulador, montoMin, montoMax, montoStep, plazoMin, plazoMax, plazoStep, ingresoMin, ingresoMax,
       montoMinLabel: this.money(montoMin), montoMaxLabel: this.money(montoMax),
       plazoMinLabel: plazoMin+" meses", plazoMaxLabel: plazoMax+" meses",
-      ingresoMinLabel: this.money(1500), ingresoMaxLabel: this.money(20000),
+      ingresoMinLabel: this.money(ingresoMin), ingresoMaxLabel: this.money(ingresoMax),
       monto: this.state.monto, plazo: this.state.plazo,
       tasaLabel: tasa+"%",
       cuota: this.money(cuotaNum), total: this.money(totalNum), intereses: this.money(totalNum-P),
       capitalLabel: this.money(P),
-      onMonto: (e)=>this.setState({monto:+e.target.value}),
-      onPlazo: (e)=>this.setState({plazo:+e.target.value}),
+      onMonto: (e)=>this.setState({monto:clampHi(+e.target.value,montoMax)}),
+      onMontoCommit: (e)=>this.setState({monto:clampTo(+e.target.value,montoMin,montoMax)}),
+      onPlazo: (e)=>this.setState({plazo:clampHi(+e.target.value,plazoMax)}),
+      onPlazoCommit: (e)=>this.setState({plazo:clampTo(+e.target.value,plazoMin,plazoMax)}),
       montoSliderStyle: "-webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:0;outline:none;cursor:pointer;margin-top:10px;background:linear-gradient(to right,#0043ce "+Math.round(((this.state.monto-montoMin)/(montoMax-montoMin))*100)+"%,#e0e0e0 "+Math.round(((this.state.monto-montoMin)/(montoMax-montoMin))*100)+"%)",
       plazoSliderStyle: "-webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:0;outline:none;cursor:pointer;margin-top:10px;background:linear-gradient(to right,#0043ce "+Math.round(((this.state.plazo-plazoMin)/(plazoMax-plazoMin))*100)+"%,#e0e0e0 "+Math.round(((this.state.plazo-plazoMin)/(plazoMax-plazoMin))*100)+"%)",
 
@@ -3047,11 +3075,12 @@ class Component extends DCLogic {
 
       simTypes: loanTypes.map(t=>{
         const on=t.key===this.state.simTipo;
-        return {key:t.key, label:t.label, teaLabel:t.tea+"%", pick:()=>this.setState({simTipo:t.key}),
+        return {key:t.key, label:t.label, teaLabel:t.tea+"%", pick:()=>{ const L=LOAN_LIMITS[t.key]; this.setState(s=>({simTipo:t.key, monto:clampTo(s.monto,L.montoMin,L.montoMax), plazo:clampTo(s.plazo,L.plazoMin,L.plazoMax)})); },
           style:"border:1px solid "+(on?t.color:"#e0e0e0")+";background:"+(on?t.bg:"#fff")+";color:"+(on?t.color:"#161616")+";border-radius:0;padding:12px 18px;cursor:pointer;line-height:1.25;min-width:120px"};
       }),
       ingreso: ing,
-      onIngreso: (e)=>this.setState({ingreso:+e.target.value}),
+      onIngreso: (e)=>this.setState({ingreso:clampHi(+e.target.value,ingresoMax)}),
+      onIngresoCommit: (e)=>this.setState({ingreso:clampTo(+e.target.value,ingresoMin,ingresoMax)}),
       afPct: Math.round(afRatio*100)+"%", afWidth: Math.min(afRatio*100,100)+"%", afColor, afLabel,
       capPct: capPctN+"%", intPct: (100-capPctN)+"%",
       cuotaBanco: this.money(cuotaBancoNum), bankTeaLabel: sel.bank+"%",

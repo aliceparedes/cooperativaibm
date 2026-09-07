@@ -395,7 +395,9 @@ async function verifyCallbackHandler(req, res) {
     res.clearCookie("verify_nonce", { path: "/" });
 
     const frontendUrl = process.env.FRONTEND_URL || "https://coop-frontend.2dfzriph4wl8.us-south.codeengine.appdomain.cloud";
-    const redirectUrl = `${frontendUrl}/?auth=success&token=${encodeURIComponent(token)}`;
+    // El token viaja solo en la cookie httpOnly (auth_token), nunca en el URL
+    // (§13.3: token en query param = logs/history/analytics).
+    const redirectUrl = `${frontendUrl}/?auth=success`;
     console.log("[verify/callback] redirecting to:", redirectUrl.substring(0, 80) + "...");
     res.redirect(redirectUrl);
   } catch (e) {

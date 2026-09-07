@@ -94,4 +94,47 @@ async function readSocio(store, docume) {
   throw err;
 }
 
-module.exports = { readSocio, applyOverlay, isActive, ACTIVE_STATUSES };
+// Lista de socios para envíos masivos (anuncios / proveedores).
+// - DATAAPI_ENABLED=false -> solo el mirror local.
+// - DATAAPI_ENABLED=true  -> lista completa de db2, unida con los socios que
+//   solo existen en el mirror local (registrados pero aún no en db2).
+//   Si db2 falla NO se aborta el envío: se cae al mirror local con un aviso
+//   (para notificaciones, alcanzar a algunos es mejor que a nadie).
+// Devuelve { socios, source, db2Count?, localExtra?, error? }.
+async function listSociosForNotify(store) {
+  const local = await store.listSocios();
+
+  if (!dataapi.isEnabled()) {
+    return { socios: local, source: "local" };
+  }
+
+  const result = await dataapi.listAllSocios();
+  if (result.status === "ok") {
+    const byKey = new Map();
+    for (const s of result.rows) {
+      const k = String(s.DOCUME || s.CODEMPLEADO || "").trim();
+      if (k) byKey.set(k, s);
+    }
+    let localExtra = 0;
+    for (const s of local) {
+      const k = String(s.DOCUME || "").trim();
+      if (k && !byKey.has(k)) {
+        byKey.set(k, s);
+        localExtra++;
+      }
+    }
+    return {
+      socios: [...byKey.values()],
+      source: "db2",
+      db2Count: result.rows.length,
+      localExtra
+    };
+  }
+
+  console.error(
+    `[notify] no se pudo listar socios de db2: ${result.error} — usando mirror local (${local.length}).`
+  );
+  return { socios: local, source: "local (db2 unavailable)", error: result.error };
+}
+
+module.exports = { readSocio, listSociosForNotify, applyOverlay, isActive, ACTIVE_STATUSES };
