@@ -62,6 +62,20 @@ function getDb2Conn() {
   return _db2Conn;
 }
 
+// DB2 COOPESOCIOS keys socios by CODEMPLEADO, not DOCUME (verified: no DOCUME
+// column). Mirrors dataapi.js DB2_TO_S400 so the direct path exposes DOCUME the
+// same way the dataapi read path does (socioLogin + frontend expect it).
+function rowToSocio(row) {
+  const socio = {};
+  for (const [key, val] of Object.entries(row)) {
+    socio[key.toUpperCase()] = val;
+  }
+  if (socio.DOCUME == null && socio.CODEMPLEADO != null) {
+    socio.DOCUME = socio.CODEMPLEADO;
+  }
+  return socio;
+}
+
 /**
  * Direct DB2 lookup: email → full socio record.
  * Tries NOMBC2 first (primary IBM email), then EMAILEMPLEADO (alternate).
@@ -85,10 +99,7 @@ function lookupSocioByEmailDirect(email) {
           if (rows.length > 1) {
             console.warn("[verify] ambiguous email in nombc2 — multiple rows:", rows.length);
           }
-          const socio = {};
-          for (const [key, val] of Object.entries(rows[0])) {
-            socio[key.toUpperCase()] = val;
-          }
+          const socio = rowToSocio(rows[0]);
           return resolve({ status: "ok", socio });
         }
 
@@ -107,10 +118,7 @@ function lookupSocioByEmailDirect(email) {
           if (rows2.length > 1) {
             console.warn("[verify] ambiguous email in emailempleado — multiple rows:", rows2.length);
           }
-          const socio = {};
-          for (const [key, val] of Object.entries(rows2[0])) {
-            socio[key.toUpperCase()] = val;
-          }
+          const socio = rowToSocio(rows2[0]);
           resolve({ status: "ok", socio });
         });
       });
@@ -413,6 +421,7 @@ module.exports = {
   buildAuthUrl,
   exchangeCode,
   getAuthenticatedIdentity,
+  lookupSocioByEmailDirect,
   verifyLoginHandler,
   verifyCallbackHandler,
   cookieToAuth,

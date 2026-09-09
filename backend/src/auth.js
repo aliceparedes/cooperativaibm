@@ -53,7 +53,11 @@ function requireAdmin(req, res, next) {
 // de IBM Verify y la emisión (o mapeo) del JWT interno que usa el resto de
 // endpoints del portal.
 function socioLogin(socio) {
-  return jwt.sign({ role: "socio", docume: socio.DOCUME }, secret, { expiresIn: "12h" });
+  const docume = socio && (socio.DOCUME || socio.CODEMPLEADO);
+  if (!docume) {
+    throw new Error("No se pudo determinar el código de socio (DOCUME/CODEMPLEADO).");
+  }
+  return jwt.sign({ role: "socio", docume }, secret, { expiresIn: "12h" });
 }
 
 // Middleware para endpoints de socio: agrega req.socio = { role, docume }
